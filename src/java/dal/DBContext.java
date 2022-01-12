@@ -13,24 +13,23 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author Vu Duc Tien
+ * @author ducky
  */
 public class DBContext {
-    protected Connection connection;
-    
-    public DBContext(){
+    public Connection connection;
+    public DBContext()
+    {
         try {
             String user = "root";
             String pass = "admin123";
-            String url = "jdbc:mysql://localhost:3306/testsql?useSSL=false";
+            String url = "jdbc:mysql://localhost:3306/quiz_practice_db?allowPublicKeyRetrieval=true&useSSL=false";
             Class.forName("com.mysql.cj.jdbc.Driver");
             connection = DriverManager.getConnection(url, user, pass);
-            System.out.println(connection.getCatalog());
-        } catch (ClassNotFoundException | SQLException ex) {
+        } catch (ClassNotFoundException ex) {
             Logger.getLogger(DBContext.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-    public static void main(String[] args) {
-           DBContext db = new DBContext();
+        } catch (SQLException ex) {
+            Logger.getLogger(DBContext.class.getName()).log(Level.SEVERE, null, ex);
+        } 
     }
 }
+
