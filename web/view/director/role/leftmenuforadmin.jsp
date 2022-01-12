@@ -5,7 +5,7 @@
         <!-- Sidebar user panel -->
         <div class="user-panel">
             <div class="pull-left image">
-                <img src="../bootstrap_for_admin/img/avatar3.png" class="img-circle" alt="User Image" />
+                <img src="../../../bootstrap_for_admin/img/avatar3.png" class="img-circle" alt="User Image" />
             </div>
             <div class="pull-left info">
                 <p>Hello, Admin</p>

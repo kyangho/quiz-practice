@@ -13,28 +13,28 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Settings List</title>
-    <link href="../bootstrap_for_admin/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="../../../bootstrap_for_admin/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
     <!-- font Awesome -->
-    <link href="../bootstrap_for_admin/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+    <link href="../../../bootstrap_for_admin/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
     <!-- Ionicons -->
-    <link href="../bootstrap_for_admin/css/ionicons.min.css" rel="stylesheet" type="text/css" />
+    <link href="../../../bootstrap_for_admin/css/ionicons.min.css" rel="stylesheet" type="text/css" />
     <!-- Morris chart -->
-    <link href="../bootstrap_for_admin/css/morris/morris.css" rel="stylesheet" type="text/css" />
+    <link href="../../../bootstrap_for_admin/css/morris/morris.css" rel="stylesheet" type="text/css" />
     <!-- jvectormap -->
-    <link href="../bootstrap_for_admin/css/jvectormap/jquery-jvectormap-1.2.2.css" rel="stylesheet" type="text/css" />
+    <link href="../../../bootstrap_for_admin/css/jvectormap/jquery-jvectormap-1.2.2.css" rel="stylesheet" type="text/css" />
     <!-- Date Picker -->
-    <link href="../bootstrap_for_admin/css/datepicker/datepicker3.css" rel="stylesheet" type="text/css" />
+    <link href="../../../bootstrap_for_admin/css/datepicker/datepicker3.css" rel="stylesheet" type="text/css" />
     <!-- fullCalendar -->
     <!-- <link href="css/fullcalendar/fullcalendar.css" rel="stylesheet" type="text/css" /> -->
     <!-- Daterange picker -->
-    <link href="../bootstrap_for_admin/css/daterangepicker/daterangepicker-bs3.css" rel="stylesheet" type="text/css" />
+    <link href="../../../bootstrap_for_admin/css/daterangepicker/daterangepicker-bs3.css" rel="stylesheet" type="text/css" />
     <!-- iCheck for checkboxes and radio inputs -->
-    <link href="../bootstrap_for_admin/css/iCheck/all.css" rel="stylesheet" type="text/css" />
+    <link href="../../../bootstrap_for_admin/css/iCheck/all.css" rel="stylesheet" type="text/css" />
     <!-- bootstrap wysihtml5 - text editor -->
     <!-- <link href="css/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css" rel="stylesheet" type="text/css" /> -->
     <link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
     <!-- CSS -->
-    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../../../css/style.css">
 </head>
 
 <body class="skin-black">
@@ -160,15 +160,15 @@
     <!-- Bootstrap WYSIHTML5
     <script src="js/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js" type="text/javascript"></script>-->
     <!-- iCheck -->
-    <script src="../bootstrap_for_admin/js/plugins/iCheck/icheck.min.js" type="text/javascript"></script>
+    <script src="../../../bootstrap_for_admin/js/plugins/iCheck/icheck.min.js" type="text/javascript"></script>
     <!-- calendar -->
-    <script src="../bootstrap_for_admin/js/plugins/fullcalendar/fullcalendar.js" type="text/javascript"></script>
+    <script src="../../../bootstrap_for_admin/js/plugins/fullcalendar/fullcalendar.js" type="text/javascript"></script>
 
     <!-- Director App -->
-    <script src="../bootstrap_for_admin/js/Director/app.js" type="text/javascript"></script>
+    <script src="../../../bootstrap_for_admin/js/Director/app.js" type="text/javascript"></script>
 
     <!-- Director dashboard demo (This is only for demo purposes) -->
-    <script src="../bootstrap_for_admin/js/Director/dashboard.js" type="text/javascript"></script>
+    <script src="../../../bootstrap_for_admin/js/Director/dashboard.js" type="text/javascript"></script>
 
     <!-- Director for demo purposes -->
     <script type="text/javascript">
