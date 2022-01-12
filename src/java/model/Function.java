@@ -47,5 +47,7 @@ public class Function {
         this.url = url;
     }
     
-    
+    public String toString(){
+        return this.id + " " + this.name + " " + this.url;
+    }
 }

@@ -47,9 +47,5 @@ public class DBContextTest {
         DBContext db = new DBContext();
         assertNotNull("Driver is not connect", db.connection);
     }
-    @Test
-    public void isNullGetFunctionDBContext(){
-        FunctionDBContext fdb = new FunctionDBContext();
-        assertNotNull("not null", fdb.getFunctions());
-    }
+    
 }
