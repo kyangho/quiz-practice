@@ -1,5 +1,5 @@
 jQuery(function ($) {
-       'use strict',
+       'use strict';
                var form = $('.contact-form');
        form.submit(function () {
               'use strict',

@@ -13,15 +13,15 @@
        <meta name="viewport" content="width=device-width, initial-scale=1.0">
        <meta name="description" content="">
        <meta name="author" content="">
-       <title>Home | E-Shopper</title>
-       <link href="../Css/bootstrap.min.css" rel="stylesheet">
-       <link href="../Css/font-awesome.min.css" rel="stylesheet">
-       <link href="../Css/prettyPhoto.css" rel="stylesheet">
-       <link href="../Css/price-range.css" rel="stylesheet">
-       <link href="../Css/animate.css" rel="stylesheet">
-       <link href="../Css/main.css" rel="stylesheet">
-       <link href="../Css/responsive.css" rel="stylesheet">
-       <link rel="stylesheet" href="../Css/login_popup.css">
+       <title>Quzizz</title>
+       <link href="css/bootstrap.min.css" rel="stylesheet">
+       <link href="css/font-awesome.min.css" rel="stylesheet">
+       <link href="css/prettyPhoto.css" rel="stylesheet">
+       <link href="css/price-range.css" rel="stylesheet">
+       <link href="css/animate.css" rel="stylesheet">
+       <link href="css/main.css" rel="stylesheet">
+       <link href="css/responsive.css" rel="stylesheet">
+       <link rel="stylesheet" href="css/login_popup.css">
        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
              integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
@@ -39,7 +39,7 @@
                             <div class="row">
                                    <div class="col-sm-5">
                                           <div class="logo pull-left">
-                                                 <a href="index.html"><img id="content_img"
+                                                 <a href="#"><img id="content_img"
                                                                            src="https://cf.quizizz.com/img/quizizz_logos/purple-brandmark-600x164.png"
                                                                            alt="Loading ..." /></a>
                                           </div>
@@ -180,8 +180,7 @@
                                                                <button type="button" class="btn btn-default get">Get it now</button>
                                                         </div>
                                                         <div class="col-sm-6">
-                                                               <img src="../Images/book.png" class="girl img-responsive" alt="" />
-                                                               <!-- <img src="images/home/pricing.png" class="pricing" alt="" /> -->
+                                                               <img src="images/book.png" class="girl img-responsive" alt="" />
                                                         </div>
                                                  </div>
                                           </div>
