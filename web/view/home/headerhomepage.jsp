@@ -51,11 +51,11 @@
                                                              width: 290px; " class="main-nav">
                                                                <ul>
                                                                       <li>
-                                                                             <a class="cd-signin" href="#0">Đăng nhập
+                                                                             <a class="cd-signin" href="#0">Login
                                                                              </a>
                                                                       </li>
                                                                       <li>
-                                                                             <a class="cd-signup" href="#0">Đăng ký
+                                                                             <a class="cd-signup" href="#0">Register
                                                                              </a>
                                                                       </li>
                                                                </ul>
@@ -96,11 +96,11 @@
               <!-- this is the container wrapper -->
               <ul class="cd-switcher">
                      <li>
-                            <a href="#0">Đăng nhập
+                            <a href="#0">Login
                             </a>
                      </li>
                      <li>
-                            <a href="#0">Tạo tài khoản
+                            <a href="#0">Register
                             </a>
                      </li>
               </ul>
@@ -111,7 +111,7 @@
                                    <label class="image-replace cd-email" for="signin-email">Email
                                    </label>
                                    <input class="full-width has-padding has-border" id="signin-email" type="email" placeholder="E-mail">
-                                   <span class="cd-error-message">Email không được bỏ trống!
+                                   <span class="cd-error-message">Email is not vacant!
                                    </span>
                             </p>
                             <p class="fieldset">
@@ -120,22 +120,22 @@
                                    <input class="full-width has-padding has-border" id="signin-password" type="text"  placeholder="Password">
                                    <a href="#0" class="hide-password">Hide
                                    </a>
-                                   <span class="cd-error-message">Password không được bỏ trống!
+                                   <span class="cd-error-message">Password  is not vacant!
                                    </span>
                             </p>
-                            <p class="fieldset">
+<!--                            <p class="fieldset">
                                    <input type="checkbox" id="remember-me" checked>
-                                   <label for="remember-me">Nhớ đăng nhập
+                                   <label for="remember-me">Remember to login
                                    </label>
-                            </p>
+                            </p>-->
                             <p class="fieldset">
-                                   <input class="full-width" type="submit" value="Đăng nhập">
+                                   <input class="full-width" type="submit" value="Sign in">
                             </p>
                      </form>
-                     <p class="cd-form-bottom-message">
-                            <a href="#0">Quên mật khẩu?
+<!--                     <p class="cd-form-bottom-message">
+                            <a href="#0">Forgot password?
                             </a>
-                     </p>
+                     </p>-->
                      <!-- <a href="#0" class="cd-close-form">Close</a> -->
               </div> 
               <!-- cd-login -->
@@ -146,14 +146,14 @@
                                    <label class="image-replace cd-username" for="signup-username">Username
                                    </label>
                                    <input class="full-width has-padding has-border" id="signup-username" type="text" placeholder="Username">
-                                   <span class="cd-error-message">Username không được bỏ trống!
+                                   <span class="cd-error-message">Username is not vacant!
                                    </span>
                             </p>
                             <p class="fieldset">
                                    <label class="image-replace cd-email" for="signup-email">Email
                                    </label>
                                    <input class="full-width has-padding has-border" id="signup-email" type="email" placeholder="E-mail">
-                                   <span class="cd-error-message">Email không được bỏ trống!
+                                   <span class="cd-error-message">Email  is not vacant!
                                    </span>
                             </p>
                             <p class="fieldset">
@@ -162,18 +162,18 @@
                                    <input class="full-width has-padding has-border" id="signup-password" type="text"  placeholder="Password">
                                    <a href="#0" class="hide-password">Hide
                                    </a>
-                                   <span class="cd-error-message">Password không được bỏ trống!
+                                   <span class="cd-error-message">Password  is not vacant!
                                    </span>
                             </p>
-                            <p class="fieldset">
+<!--                            <p class="fieldset">
                                    <input type="checkbox" id="accept-terms">
                                    <label for="accept-terms">Tôi đồng ý với 
                                           <a href="#0">Điều khoản & Chính sách
                                           </a>
                                    </label>
-                            </p>
+                            </p>-->
                             <p class="fieldset">
-                                   <input class="full-width has-padding" type="submit" value="Tạo tài khoản">
+                                   <input class="full-width has-padding" type="submit" value="Sign up">
                             </p>
                      </form>
                      <!-- <a href="#0" class="cd-close-form">Close</a> -->
