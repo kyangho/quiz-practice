@@ -106,7 +106,7 @@
               </ul>
               <div id="cd-login"> 
                      <!-- log in form -->
-                     <form class="cd-form">
+                     <form class="cd-form" action="" method="">
                             <p class="fieldset">
                                    <label class="image-replace cd-email" for="signin-email">Email
                                    </label>
@@ -123,19 +123,19 @@
                                    <span class="cd-error-message">Password  is not vacant!
                                    </span>
                             </p>
-<!--                            <p class="fieldset">
-                                   <input type="checkbox" id="remember-me" checked>
-                                   <label for="remember-me">Remember to login
-                                   </label>
-                            </p>-->
+                            <!--                            <p class="fieldset">
+                                                               <input type="checkbox" id="remember-me" checked>
+                                                               <label for="remember-me">Remember to login
+                                                               </label>
+                                                        </p>-->
                             <p class="fieldset">
                                    <input class="full-width" type="submit" value="Sign in">
                             </p>
                      </form>
-<!--                     <p class="cd-form-bottom-message">
-                            <a href="#0">Forgot password?
-                            </a>
-                     </p>-->
+                     <!--                     <p class="cd-form-bottom-message">
+                                                 <a href="#0">Forgot password?
+                                                 </a>
+                                          </p>-->
                      <!-- <a href="#0" class="cd-close-form">Close</a> -->
               </div> 
               <!-- cd-login -->
@@ -165,13 +165,13 @@
                                    <span class="cd-error-message">Password  is not vacant!
                                    </span>
                             </p>
-<!--                            <p class="fieldset">
-                                   <input type="checkbox" id="accept-terms">
-                                   <label for="accept-terms">Tôi đồng ý với 
-                                          <a href="#0">Điều khoản & Chính sách
-                                          </a>
-                                   </label>
-                            </p>-->
+                            <!--                            <p class="fieldset">
+                                                               <input type="checkbox" id="accept-terms">
+                                                               <label for="accept-terms">Tôi đồng ý với 
+                                                                      <a href="#0">Điều khoản & Chính sách
+                                                                      </a>
+                                                               </label>
+                                                        </p>-->
                             <p class="fieldset">
                                    <input class="full-width has-padding" type="submit" value="Sign up">
                             </p>
