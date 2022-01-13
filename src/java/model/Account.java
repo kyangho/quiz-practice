@@ -5,6 +5,7 @@
  */
 package model;
 
+import java.sql.Date;
 import java.util.ArrayList;
 
 /**
@@ -15,17 +16,36 @@ public class Account {
     private int id;
     private String username;
     private String password;
-
-    private ArrayList<Role> roles;
+    private String email;
+    private String phone;
+    private String fullname;
+    private Date DoB;
+    private String address;
 
     public Account() {
     }
 
-    public Account(int id, String username, String password, ArrayList<Role> roles) {
+    public Account(String username, String password, String email, String phone, String fullname, Date DoB, String address) {
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.phone = phone;
+        this.fullname = fullname;
+        this.DoB = DoB;
+        this.address = address;
+    }
+    
+    
+
+    public Account(int id, String username, String password, String email, String phone, String fullname, Date DoB, String address) {
         this.id = id;
         this.username = username;
         this.password = password;
-        this.roles = roles;
+        this.email = email;
+        this.phone = phone;
+        this.fullname = fullname;
+        this.DoB = DoB;
+        this.address = address;
     }
 
     public int getId() {
@@ -52,14 +72,50 @@ public class Account {
         this.password = password;
     }
 
-    public ArrayList<Role> getRoles() {
-        return roles;
+    public String getEmail() {
+        return email;
     }
 
-    public void setRoles(ArrayList<Role> roles) {
-        this.roles = roles;
+    public void setEmail(String email) {
+        this.email = email;
     }
-    
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getFullname() {
+        return fullname;
+    }
+
+    public void setFullname(String fullname) {
+        this.fullname = fullname;
+    }
+
+    public Date getDoB() {
+        return DoB;
+    }
+
+    public void setDoB(Date DoB) {
+        this.DoB = DoB;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    @Override
+    public String toString() {
+        return "Account{" + "id=" + id + ", username=" + username + ", password=" + password + ", email=" + email + ", phone=" + phone + ", fullname=" + fullname + ", DoB=" + DoB + ", address=" + address + '}';
+    }
     
     
 }
