@@ -217,22 +217,39 @@ img {
 .label-success {
   background-color: #27C24C;
   color: #DFF5E4;
+  border: none;
+}
+
+.label-success:hover{
+    background-color: green;
 }
 .label-info {
   background-color: #23B7E5;
   color: #E3F6FC;
+  border: none;
+}
+
+.label-info:hover{
+    background-color: #093b86;
 }
 .label-inverse {
   background-color: #4f5259;
   color: #DFE2F0;
+  border: none;
 }
 .label-warning {
   background-color: #FAD733;
   color: #FDF8E5;
+  border: none;
 }
 .label-danger {
   background-color: #F05050;
   color: #FAE6E6;
+  border: none;
+}
+
+.label-danger:hover{
+    background-color: red;
 }
 /* Background colors */
 .bg-red,

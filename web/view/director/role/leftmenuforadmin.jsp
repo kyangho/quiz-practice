@@ -34,7 +34,7 @@
 
             <li>
                 <a href="#">
-                    <i class="fa fa-glass"></i> <span>Simple tables</span>
+                    <i class="glyphicon glyphicon-user"></i> <span>Users List</span>
                 </a>
             </li>
 

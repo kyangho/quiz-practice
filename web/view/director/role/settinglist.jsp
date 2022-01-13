@@ -58,8 +58,8 @@
                                                 <th>ID</th>
                                                 <th>Setting Name</th>
                                                 <th>Description</th>
-                                                <th>View</th>
                                                 <th>Type</th>
+                                                 <th>View</th>
                                                 <th>Status</th>
                                                 <th>Change status</th>
                                             </tr>
@@ -67,10 +67,8 @@
                                                 <td>183</td>
                                                 <td>Jane Doe</td>
                                                 <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
-                                                <td>
-                                                    <Button onclick="showDetail()">Details</Button>
-                                                </td>
-                                                <td>11-7-2014</td>
+                                                <td>Category</td>
+                                                 <td><button class="label label-info">Details</button></td>
                                                 <td><button class="label label-success">Active</button></td>
                                                 <td><button class="label label-danger">De-active</button></td>
                                             </tr>
@@ -78,10 +76,8 @@
                                                 <td>219</td>
                                                 <td>Jane Doe</td>
                                                 <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
-                                                <td>
-                                                    <Button>Details</Button>
-                                                </td>
-                                                <td>11-7-2014</td>
+                                                <td>Category</td>
+                                                <td><button class="label label-info">Details</button></td>
                                                 <td><button class="label label-success">Active</button></td>
                                                 <td><button class="label label-danger">De-active</button></td>
                                             </tr>
@@ -89,10 +85,8 @@
                                                 <td>657</td>
                                                 <td>Bob Doe</td>
                                                 <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
-                                                <td>
-                                                    <Button>Details</Button>
-                                                </td>
-                                                <td>11-7-2014</td>
+                                                <td>Category</td>
+                                                <td><button class="label label-info">Details</button></td>
                                                 <td><button class="label label-success">Active</button></td>
                                                 <td><button class="label label-danger">De-active</button></td>
                                             </tr>
@@ -100,10 +94,8 @@
                                                 <td>175</td>
                                                 <td>Mike Doe</td>
                                                 <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
-                                                <td>
-                                                    <Button>Details</Button>
-                                                </td>
-                                                <td>11-7-2014</td>
+                                                <td>Category</td>
+                                                <td><button class="label label-info">Details</button></td>
                                                 <td><button class="label label-danger">De-active</button></td>
                                                 <td><button class="label label-success">Active</button></td>
                                             </tr>
