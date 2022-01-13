@@ -14,14 +14,14 @@
        <meta name="description" content="">
        <meta name="author" content="">
        <title>Quzizz</title>
-       <link href="../../css/bootstrap.min.css" rel="stylesheet">
-       <link href="../../css/font-awesome.min.css" rel="stylesheet">
-       <link href="../../css/prettyPhoto.css" rel="stylesheet">
-       <link href="../../css/price-range.css" rel="stylesheet">
-       <link href="../../css/animate.css" rel="stylesheet">
-       <link href="../../css/main.css" rel="stylesheet">
-       <link href="../../css/responsive.css" rel="stylesheet">
-       <link rel="stylesheet" href="../../css/login_popup.css">
+       <link href="css/bootstrap.min.css" rel="stylesheet">
+       <link href="css/font-awesome.min.css" rel="stylesheet">
+       <link href="css/prettyPhoto.css" rel="stylesheet">
+       <link href="css/price-range.css" rel="stylesheet">
+       <link href="css/animate.css" rel="stylesheet">
+       <link href="css/main.css" rel="stylesheet">
+       <link href="css/responsive.css" rel="stylesheet">
+       <link rel="stylesheet" href="css/login_popup.css">
        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
              integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">

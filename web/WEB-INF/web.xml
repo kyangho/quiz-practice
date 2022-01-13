@@ -6,7 +6,7 @@
          version="3.1">
        <!--<url-pattern>*.html</url-pattern>-->
        <welcome-file-list>
-              <welcome-file>view/homepage.jsp</welcome-file>
+              <welcome-file>view/home/homepage.jsp</welcome-file>
        </welcome-file-list>
        <session-config>
               <session-timeout>
