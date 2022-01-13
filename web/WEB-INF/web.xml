@@ -2,25 +2,6 @@
 <web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
     <!--<url-pattern>*.html</url-pattern>-->
     <welcome-file-list>
-        <welcome-file>view/homepage.jsp</welcome-file>
-    </welcome-file-list>
-    <servlet>
-        <servlet-name>settinglistcontroller</servlet-name>
-        <servlet-class>controller.SettingListController</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>homecontroller</servlet-name>
-        <servlet-class>controller.HomeController</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>settinglistcontroller</servlet-name>
-        <url-pattern>/director/role/settinglist</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>homecontroller</servlet-name>
-        <url-pattern>/home</url-pattern>
-    </servlet-mapping>
-    <welcome-file-list>
         <welcome-file>view/home/homepage.jsp</welcome-file>
     </welcome-file-list>
     <session-config>
