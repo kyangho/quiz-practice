@@ -12,25 +12,17 @@ import java.util.ArrayList;
  * @author ducky
  */
 public class Account {
-    private int id;
     private String username;
     private String password;
+    private String status;
 
     public Account() {
     }
 
-    public Account(int id, String username, String password) {
-        this.id = id;
+    public Account(String username, String password, String status) {
         this.username = username;
         this.password = password;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
+        this.status = status;
     }
 
     public String getUsername() {
@@ -49,4 +41,13 @@ public class Account {
         this.password = password;
     }
 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    
 }
