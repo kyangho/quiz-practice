@@ -123,6 +123,7 @@
                                    <span class="cd-error-message">Password  is not vacant!
                                    </span>
                             </p>
+
                             <!--                            <p class="fieldset">
                                                                <input type="checkbox" id="remember-me" checked>
                                                                <label for="remember-me">Remember to login
@@ -141,7 +142,32 @@
               <!-- cd-login -->
               <div id="cd-signup"> 
                      <!-- sign up form -->
-                     <form class="cd-form">
+                     <form class="cd-form" action="" method="">
+
+                            <!--thêm input here-->
+
+                            
+
+
+
+
+
+
+
+                            <p class="fieldset">
+                                   <label class="image-replace cd-username" for="signup-username">Full name
+                                   </label>
+                                   <input class="full-width has-padding has-border" id="signup-username" value="fullname" type="text" placeholder="Fullname">
+                                   <span class="cd-error-message">Full name is not null!
+                                   </span>
+                            </p>
+
+
+
+
+
+
+
                             <p class="fieldset">
                                    <label class="image-replace cd-username" for="signup-username">Username
                                    </label>
