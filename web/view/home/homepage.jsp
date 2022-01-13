@@ -41,13 +41,13 @@
                      <div class="row">
                             <div class="col-sm-12">
                                    <div id="slider-carousel" class="carousel slide" data-ride="carousel">
-                                          <ol class="carousel-indicators">
+<!--                                          <ol class="carousel-indicators">
                                                  <li data-target="#slider-carousel" data-slide-to="0" class="active"></li>
                                                  <li data-target="#slider-carousel" data-slide-to="1"></li>
                                                  <li data-target="#slider-carousel" data-slide-to="2"></li>
                                                  <li data-target="#slider-carousel" data-slide-to="3"></li>
                                                  <li data-target="#slider-carousel" data-slide-to="4"></li>
-                                          </ol>
+                                          </ol>-->
 
                                           <div class="carousel-inner">
                                                  <div class="item active">
@@ -130,14 +130,17 @@
        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
                integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
        crossorigin="anonymous"></script>
-       <script src="../../js/jquery.js"></script>
-       <script src="../../js/bootstrap.min.js"></script>
-       <script src="../../js/jquery.scrollUp.min.js"></script>
-       <script src="../../js/price-range.js"></script>
-       <script src="../../js/jquery.prettyPhoto.js"></script>
-       <script src="../../js/main.js"></script>
-
-
+       <script src="js/jquery.js"></script>
+       <script src="js/bootstrap.min.js"></script>
+       <script src="js/jquery.scrollUp.min.js"></script>
+       <script src="js/price-range.js"></script>
+       <script src="js/jquery.prettyPhoto.js"></script>
+       <script src="js/main.js"></script>
+       <script src="js/popuplogin.js"></script>
+       <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js">
+       </script>
+       <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js">
+       </script>
 </body>
 </html>
 
