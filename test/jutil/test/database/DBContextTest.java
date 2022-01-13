@@ -6,7 +6,6 @@ package jutil.test.database;
  * and open the template in the editor.
  */
 import dal.DBContext;
-import dal.FunctionDBContext;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
