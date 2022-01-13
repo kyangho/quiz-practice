@@ -144,8 +144,20 @@
                      <!-- sign up form -->
                      <form class="cd-form" action="" method="">
 
-                            <!--thêm input here-->
+                            <!---------------------------------------------------------------------------thêm input here-------------------------------------------->
 
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
                             
 
 
@@ -157,16 +169,10 @@
                             <p class="fieldset">
                                    <label class="image-replace cd-username" for="signup-username">Full name
                                    </label>
-                                   <input class="full-width has-padding has-border" id="signup-username" value="fullname" type="text" placeholder="Fullname">
+                                   <input class="full-width has-padding has-border" id="signup-username" name="fullname" type="text" placeholder="Fullname">
                                    <span class="cd-error-message">Full name is not null!
                                    </span>
                             </p>
-
-
-
-
-
-
 
                             <p class="fieldset">
                                    <label class="image-replace cd-username" for="signup-username">Username
