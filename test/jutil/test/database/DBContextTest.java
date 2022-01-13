@@ -6,7 +6,6 @@ package jutil.test.database;
  * and open the template in the editor.
  */
 import dal.DBContext;
-import dal.FunctionDBContext;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -47,9 +46,5 @@ public class DBContextTest {
         DBContext db = new DBContext();
         assertNotNull("Driver is not connect", db.connection);
     }
-    @Test
-    public void isNullGetFunctionDBContext(){
-        FunctionDBContext fdb = new FunctionDBContext();
-        assertNotNull("not null", fdb.getFunctions());
-    }
+    
 }
