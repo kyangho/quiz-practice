@@ -22,7 +22,7 @@ public class DBContext {
         try {
             String user = "root";
             String pass = "admin123";
-            String url = "jdbc:mysql://localhost:3306/testsql?useSSL=false";
+            String url = "jdbc:mysql://localhost:3306/quiz_practice_db?useSSL=false";
             Class.forName("com.mysql.cj.jdbc.Driver");
             connection = DriverManager.getConnection(url, user, pass);
             System.out.println(connection.getCatalog());

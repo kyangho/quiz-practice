@@ -3,7 +3,8 @@
     Created on : Jan 12, 2022, 2:52:19 PM
     Author     : Tebellum
 --%>
-
+<%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -30,62 +31,97 @@
 </head>
 <body>
        <jsp:include page="headerhomepage.jsp"></jsp:include>
-              <section id="slider">
-                     <!--slider-->
-                     <div class="container">
-                            <div class="row">
-                                   <div class="col-sm-12">
-                                          <div id="slider-carousel" class="carousel slide" data-ride="carousel">
-                                                 <!--                                          <ol class="carousel-indicators">
-                                                                                                  <li data-target="#slider-carousel" data-slide-to="0" class="active"></li>
-                                                                                                  <li data-target="#slider-carousel" data-slide-to="1"></li>
-                                                                                                  <li data-target="#slider-carousel" data-slide-to="2"></li>
-                                                                                                  <li data-target="#slider-carousel" data-slide-to="3"></li>
-                                                                                                  <li data-target="#slider-carousel" data-slide-to="4"></li>
-                                                                                           </ol>-->
+              <table>
+                     <tr>
+                            <td>ID</td>
+                            <td>Username</td>
+                            <td>Gender</td>
+                     </tr>
 
-                                                 <div class="carousel-inner">
-                                                        <div class="item active">
-                                                               <div class="col-sm-6">
-                                                                      <h1 class="platform">The 100% engagement platform</h1>
-                                                                      <h2>Free E-Commerce Template</h2>
-                                                                      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
-                                                                             incididunt ut labore et dolore magna aliqua. </p>
-                                                                      <button type="button" class="btn btn-default get">Get it now</button>
-                                                               </div>
-                                                               <div class="col-sm-6">
-                                                                      <img src="${pageContext.request.contextPath}/images/book.png"
-                                                                           class="girl img-responsive" alt="" />
-                                                                      <!-- <img src="images/home/pricing.png" class="pricing" alt="" /> -->
-                                                               </div>
+              <c:forEach items="${requestScope.students}" var="st">
+                     <tr>
+                            <td>${st.id} </td>
+                            <td>${st.name}</td>
+                            <td>
+                                   <c:if test="${st.gender}">
+                                          <!--<img src="../img/Ky-Hieu-Nam-Png.png" alt=""/>-->
+                                          Male
+                                   </c:if><c:if test="${!st.gender}">
+                                          <!--<img src="../img/Ky-Hieu-Nam-Png.png" alt=""/>-->
+                                          Female
+                                   </c:if>
+                            </td>
+                            <td>${st.dob}</td>
+                            <td>${st.dept.name}</td>
+
+                            <td><a href="detail?id=${st.id} ">Detail</a></td>
+                            <td><input type="button" onclick="doUpdate(${st.id});" value="update"/></td>              
+                            <td><input type="button" onclick="doDelete(${st.id});" value="delete"/></td>
+                     </tr>
+
+              </c:forEach>
+
+       </table>
+
+
+
+
+       <section id="slider">
+              <!--slider-->
+              <div class="container">
+                     <div class="row">
+                            <div class="col-sm-12">
+                                   <div id="slider-carousel" class="carousel slide" data-ride="carousel">
+                                          <!--                                          <ol class="carousel-indicators">
+                                                                                           <li data-target="#slider-carousel" data-slide-to="0" class="active"></li>
+                                                                                           <li data-target="#slider-carousel" data-slide-to="1"></li>
+                                                                                           <li data-target="#slider-carousel" data-slide-to="2"></li>
+                                                                                           <li data-target="#slider-carousel" data-slide-to="3"></li>
+                                                                                           <li data-target="#slider-carousel" data-slide-to="4"></li>
+                                                                                    </ol>-->
+
+                                          <div class="carousel-inner">
+                                                 <div class="item active">
+                                                        <div class="col-sm-6">
+                                                               <h1 class="platform">The 100% engagement platform</h1>
+                                                               <h2>Free E-Commerce Template</h2>
+                                                               <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
+                                                                      incididunt ut labore et dolore magna aliqua. </p>
+                                                               <button type="button" class="btn btn-default get">Get it now</button>
                                                         </div>
-                                                        <div class="item">
-                                                               <div class="col-sm-6">
-                                                                      <h1 class="platform">Find step-by-step textbook solutions.</h1>
-                                                                      <h2>100% Responsive Design</h2>
-                                                                      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
-                                                                             incididunt ut labore et dolore magna aliqua. </p>
-                                                                      <button type="button" class="btn btn-default get">Get it now</button>
-                                                               </div>
-                                                               <div class="col-sm-6">
-                                                                      <img src="${pageContext.request.contextPath}/images/book.png" class="girl img-responsive" alt="" />
-                                                               </div>
+                                                        <div class="col-sm-6">
+                                                               <img src="${pageContext.request.contextPath}/images/book.png"
+                                                                    class="girl img-responsive" alt="" />
+                                                               <!-- <img src="images/home/pricing.png" class="pricing" alt="" /> -->
                                                         </div>
                                                  </div>
-
-                                                 <a href="#slider-carousel" class="left control-carousel hidden-xs" data-slide="prev">
-                                                        <i class="fa fa-angle-left"></i>
-                                                 </a>
-                                                 <a href="#slider-carousel" class="right control-carousel hidden-xs" data-slide="next">
-                                                        <i class="fa fa-angle-right"></i>
-                                                 </a>
+                                                 <div class="item">
+                                                        <div class="col-sm-6">
+                                                               <h1 class="platform">Find step-by-step textbook solutions.</h1>
+                                                               <h2>100% Responsive Design</h2>
+                                                               <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
+                                                                      incididunt ut labore et dolore magna aliqua. </p>
+                                                               <button type="button" class="btn btn-default get">Get it now</button>
+                                                        </div>
+                                                        <div class="col-sm-6">
+                                                               <img src="${pageContext.request.contextPath}/images/book.png" class="girl img-responsive" alt="" />
+                                                        </div>
+                                                 </div>
                                           </div>
 
+                                          <a href="#slider-carousel" class="left control-carousel hidden-xs" data-slide="prev">
+                                                 <i class="fa fa-angle-left"></i>
+                                          </a>
+                                          <a href="#slider-carousel" class="right control-carousel hidden-xs" data-slide="next">
+                                                 <i class="fa fa-angle-right"></i>
+                                          </a>
                                    </div>
+
                             </div>
                      </div>
-              </section>
-              <!--/slider-->
+              </div>
+       </section>
+       <!--/slider-->
 
        <jsp:include page="footerhomepage.jsp"></jsp:include>
               <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
