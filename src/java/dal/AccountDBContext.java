@@ -25,7 +25,7 @@ public class AccountDBContext extends DBContext {
                     + "ap.account_email, ap.account_phone,\n"
                     + "ap.account_fullname, ap.account_dob, ap.address\n"
                     + "FROM account as a\n"
-                    + "JOIN account_profile as ap on a.account_id = ap.account_id"
+                    + "JOIN account_profile as ap on a.account_id = ap.account_id\n"
                     + "WHERE a.username = ? and a.password = ?";
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setString(1, username);
@@ -154,9 +154,9 @@ public class AccountDBContext extends DBContext {
 
     public static void main(String[] args) {
         AccountDBContext adbc = new AccountDBContext();
-        adbc.insertAccount(new Account("tienvd", "he153313", "tienvdhe153313@fpt.edu.vn", "0983563147", "Vu Duc Tien", new Date(2001, 7, 2), "Ha Noi"));
-//        Account a = adbc.getAccount("admin", "admin");
-//        System.out.println(a.toString());
+//        adbc.insertAccount(new Account("tienvd", "he153313", "tienvdhe153313@fpt.edu.vn", "0983563147", "Vu Duc Tien", new Date(2001, 7, 2), "Ha Noi"));
+        Account a = adbc.getAccount("admin", "admin");
+        System.out.println(a.toString());
 //        Account a = new Account();
 //        a.setId(1);
 //        a.setUsername("admin");

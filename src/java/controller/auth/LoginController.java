@@ -19,7 +19,7 @@ import model.Account;
  *
  * @author Vu Duc Tien
  */
-public class Login extends HttpServlet {
+public class LoginController extends HttpServlet {
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -33,6 +33,7 @@ public class Login extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        request.getRequestDispatcher("view/home/login.jsp").forward(request, response);
     }
 
     /**
@@ -47,21 +48,27 @@ public class Login extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String username = request.getParameter("username");
-        String pass = request.getParameter("password");
+        String password = request.getParameter("password");
         AccountDBContext adbc = new AccountDBContext();
-        
-        Account account = adbc.getAccount(username, pass);
-        
+
+        Account account = adbc.getAccount(username, password);
+
         if (account == null) {
-            request.setAttribute("isFail", true);
-            request.setAttribute("account", null);
-            request.setAttribute("user", null);
-            request.getRequestDispatcher("View/auth/login.jsp").forward(request, response);
+            response.getWriter().print("fail");
         } else {
-            HttpSession session = request.getSession();
-            session.setAttribute("account", account);
-            response.sendRedirect("home");
+            response.getWriter().print("success");
         }
+
+//        if (account == null) {
+//            request.setAttribute("isFail", true);
+//            request.setAttribute("account", null);
+//            request.setAttribute("user", null);
+//            request.getRequestDispatcher("View/auth/login.jsp").forward(request, response);
+//        } else {
+//            HttpSession session = request.getSession();
+//            session.setAttribute("account", account);
+//            response.sendRedirect("home");
+//        }
     }
 
     /**
