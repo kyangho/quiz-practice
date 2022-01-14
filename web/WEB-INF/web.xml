@@ -18,7 +18,7 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>SettingListController</servlet-name>
-        <url-pattern>/director/role/settinglist</url-pattern>
+        <url-pattern>/director/setting/settinglist</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
