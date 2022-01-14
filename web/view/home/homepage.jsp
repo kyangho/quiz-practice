@@ -63,9 +63,6 @@
 
        </table>
 
-
-
-
        <section id="slider">
               <!--slider-->
               <div class="container">
