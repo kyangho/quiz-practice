@@ -34,7 +34,7 @@ public class LoginController extends HttpServlet {
             throws ServletException, IOException {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
-        
+
         AccountDBContext adbc = new AccountDBContext();
 
         Account account = adbc.getAccount(username, password);
@@ -62,14 +62,9 @@ public class LoginController extends HttpServlet {
         AccountDBContext adbc = new AccountDBContext();
 
         Account account = adbc.getAccount(username, password);
-
-        if (account == null) {
-            request.setAttribute("fail", false);
-        } else {
-            HttpSession session = request.getSession();
-            session.setAttribute("account", account);
-            response.sendRedirect("home");
-        }
+        HttpSession session = request.getSession();
+        session.setAttribute("account", account);
+        response.sendRedirect("home");
     }
 
     /**

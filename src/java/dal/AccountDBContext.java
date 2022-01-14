@@ -48,14 +48,16 @@ public class AccountDBContext extends DBContext {
         }
         return null;
     }
-    
-    public boolean isExistAccount(String phone, String email) {
+
+    public boolean isExistAccount(String phone, String email, String username) {
         try {
-            String sql = "SELECT account_phone, account_email FROM account_profile"
-                    + "  WHERE [account_phone] = ? OR [account_email] = ?";
+            String sql = "SELECT a.username, ap.account_phone, ap.account_email FROM account_profile as ap\n"
+                    + "JOIN account as a on ap.account_id = a.account_id\n"
+                    + "WHERE ap.account_phone = ? OR ap.account_email = ? OR a.username = ?";
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setString(1, phone);
             stm.setString(2, email);
+            stm.setString(3, username);
             ResultSet rs = stm.executeQuery();
             if (rs.next()) {
                 return true;
@@ -169,12 +171,13 @@ public class AccountDBContext extends DBContext {
     public static void main(String[] args) {
         AccountDBContext adbc = new AccountDBContext();
 //        adbc.insertAccount(new Account("tienvd", "he153313", "tienvdhe153313@fpt.edu.vn", "0983563147", "Vu Duc Tien", new Date(2001, 7, 2), "Ha Noi"));
-        Account a = adbc.getAccount("admin", "admin");
-        System.out.println(a.toString());
+//        Account a = adbc.getAccount("admin", "admin");
+//        System.out.println(a.toString());
 //        Account a = new Account();
 //        a.setId(1);
 //        a.setUsername("admin");
 //        a.setPassword("admin");
 //        adbc.changePassword(a);
+        System.out.println(adbc.isExistAccount("", "", ""));
     }
 }

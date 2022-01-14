@@ -108,29 +108,29 @@
             <!-- log in form -->
             <form class="cd-form" id="myForm" action="login" method="post">
                 <p class="fieldset">
-                    <label class="image-replace cd-email" for="signin-email">Email
+                    <label class="image-replace cd-email" for="signin-username">Username
                     </label>
-                    <input class="full-width has-padding has-border" id="signin-email" type="text" placeholder="E-mail" name="username"/>
-                    <span class="cd-error-message">Email is not vacant!
+                    <input class="full-width has-padding has-border" id="signin-email" type="text" placeholder="Username/Email" required="required" name="username"/>
+                    <span class="cd-error-message">Username is not vacant!
                     </span>
                 </p>
                 <p class="fieldset">
                     <label class="image-replace cd-password" for="signin-password">Password
                     </label>
-                    <input class="full-width has-padding has-border" id="signin-password" type="text"  placeholder="Password" name="password"/>
+                    <input class="full-width has-padding has-border" id="signin-password" type="text" placeholder="Password" required="required" name="password"/>
                     <a href="#0" class="hide-password">Hide
                     </a>
-                    <span class="cd-error-message">Password  is not vacant!
+                    <span class="cd-error-message">Password is not vacant!
                     </span>
                 </p>
-                <div id="demo"></div>
+                <div id="alert1"></div>
                 <!--                            <p class="fieldset">
                                                    <input type="checkbox" id="remember-me" checked>
                                                    <label for="remember-me">Remember to login
                                                    </label>
                                             </p>-->
                 <div class="fieldset">
-                    <button id="signin" class="full-width" type="submit">Sign in</button>
+                    <input id="signin" class="full-width" type="submit" value="Sign in">
 
                     <script>
                         var signin = document.getElementById("signin");
@@ -144,7 +144,7 @@
                             xhttp.onreadystatechange = function () {
                                 if (this.readyState == 4 && this.status == 200) {
                                     if(this.responseText == "fail"){
-                                        document.getElementById("demo").innerHTML = this.responseText;
+                                        document.getElementById("alert1").innerHTML = this.responseText;
                                     }else{
 //                                        document.getElementById("demo").innerHTML = this.responseText;
                                         document.getElementById("myForm").submit();
@@ -166,59 +166,50 @@
         <!-- cd-login -->
         <div id="cd-signup"> 
             <!-- sign up form -->
-            <form class="cd-form" action="" method="">
-
-                <!---------------------------------------------------------------------------thêm input here-------------------------------------------->
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                <p class="fieldset">
-                    <label class="image-replace cd-username" for="signup-username">Full name
-                    </label>
-                    <input class="full-width has-padding has-border" id="signup-username" name="fullname" type="text" placeholder="Fullname">
-                    <span class="cd-error-message">Full name is not null!
-                    </span>
-                </p>
-
+            <form class="cd-form" action="register" method="post">
                 <p class="fieldset">
                     <label class="image-replace cd-username" for="signup-username">Username
                     </label>
-                    <input class="full-width has-padding has-border" id="signup-username" type="text" placeholder="Username">
+                    <input class="full-width has-padding has-border" id="signup-username" type="text" name="register_username" required="required" placeholder="Username">
                     <span class="cd-error-message">Username is not vacant!
+                    </span>
+                </p>
+                
+                <p class="fieldset">
+                    <label class="image-replace cd-password" for="signup-password">Password
+                    </label>
+                    <input class="full-width has-padding has-border" id="signup-password" type="text" name="register_password" required="required" placeholder="Password">
+                    <a href="#0" class="hide-password">Hide
+                    </a>
+                    <span class="cd-error-message">Password is not vacant!
+                    </span>
+                </p>
+                <p class="fieldset">
+                    <label class="image-replace cd-username" for="signup-fullname">Full name
+                    </label>
+                    <input class="full-width has-padding has-border" id="signup-username" name="register_fullname" type="text" required="required" placeholder="Fullname">
+                    <span class="cd-error-message">Full name is not null!
                     </span>
                 </p>
                 <p class="fieldset">
                     <label class="image-replace cd-email" for="signup-email">Email
                     </label>
-                    <input class="full-width has-padding has-border" id="signup-email" type="email" placeholder="E-mail">
-                    <span class="cd-error-message">Email  is not vacant!
+                    <input class="full-width has-padding has-border" id="signup-email" type="email" name="register_email" required="required" placeholder="E-mail">
+                    <span class="cd-error-message">Email is not vacant!
                     </span>
                 </p>
                 <p class="fieldset">
-                    <label class="image-replace cd-password" for="signup-password">Password
+                    <label class="image-replace cd-email" for="signup-phone">Phone
                     </label>
-                    <input class="full-width has-padding has-border" id="signup-password" type="text"  placeholder="Password">
-                    <a href="#0" class="hide-password">Hide
-                    </a>
-                    <span class="cd-error-message">Password  is not vacant!
+                    <input class="full-width has-padding has-border" id="signup-phone" type="tel" name="register_phone" placeholder="Phone number">
+                    <span class="cd-error-message">Phone is not vacant!
+                    </span>
+                </p>
+                <p class="fieldset">
+                    <label class="image-replace cd-email" for="signup-address">Address
+                    </label>
+                    <input class="full-width has-padding has-border" id="signup-address" type="text" name="register_address" placeholder="Address">
+                    <span class="cd-error-message">Address is not vacant!
                     </span>
                 </p>
                 <!--                            <p class="fieldset">
@@ -228,9 +219,33 @@
                                                           </a>
                                                    </label>
                                             </p>-->
-                <p class="fieldset">
+                <div id="alert2"></div>
+                <div class="fieldset">
                     <input class="full-width has-padding" type="submit" value="Sign up">
-                </p>
+                    <script>
+                        var signin = document.getElementById("signin");
+                        signin.addEventListener("click", checkAccount);
+                        function checkAccount(e) {
+                            e.preventDefault();
+                            var signinEmail = document.getElementById("signin-email").value;
+                            var signinPassword = document.getElementById("signin-password").value;
+                            var link = "http://localhost:8080/QuizPractice/register?username=" + signinEmail + "&password=" + signinPassword;
+                            var xhttp = new XMLHttpRequest();
+                            xhttp.onreadystatechange = function () {
+                                if (this.readyState == 4 && this.status == 200) {
+                                    if(this.responseText == "fail"){
+                                        document.getElementById("alert2").innerHTML = this.responseText;
+                                    }else{
+//                                        document.getElementById("demo").innerHTML = this.responseText;
+                                        document.getElementById("myForm").submit();
+                                    }
+                                }
+                            };
+                            xhttp.open("GET", link, false);
+                            xhttp.send();
+                        }
+                    </script>
+                </div>
             </form>
             <!-- <a href="#0" class="cd-close-form">Close</a> -->
         </div> 
