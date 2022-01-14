@@ -4,6 +4,22 @@
     <welcome-file-list>
         <welcome-file>view/home/homepage.jsp</welcome-file>
     </welcome-file-list>
+    <servlet>
+        <servlet-name>HomePageController</servlet-name>
+        <servlet-class>controller.HomePageController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>SettingListController</servlet-name>
+        <servlet-class>controller.SettingListController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>HomePageController</servlet-name>
+        <url-pattern>/home</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SettingListController</servlet-name>
+        <url-pattern>/director/role/settinglist</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>
             30

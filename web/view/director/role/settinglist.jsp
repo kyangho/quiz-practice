@@ -4,6 +4,7 @@
     Author     : conmu
 --%>
 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
@@ -59,57 +60,56 @@
                                                 <th>Setting Name</th>
                                                 <th>Description</th>
                                                 <th>Type</th>
-                                                 <th>View</th>
+                                                <th>View</th>
                                                 <th>Status</th>
                                                 <th>Change status</th>
                                             </tr>
+                                        <c:forEach items="${requestScope.settings}" var="s">
                                             <tr>
-                                                <td>183</td>
-                                                <td>Jane Doe</td>
-                                                <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
-                                                <td>Category</td>
-                                                 <td><button class="label label-info">Details</button></td>
-                                                <td><button class="label label-success">Active</button></td>
-                                                <td><button class="label label-danger">De-active</button></td>
-                                            </tr>
-                                            <tr>
-                                                <td>219</td>
-                                                <td>Jane Doe</td>
-                                                <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
-                                                <td>Category</td>
+                                                <td>${s.id}</td>
+                                                <td>${s.name}</td>
+                                                <td>${s.description}</td>
+                                                <td>${s.type}</td>
                                                 <td><button class="label label-info">Details</button></td>
-                                                <td><button class="label label-success">Active</button></td>
-                                                <td><button class="label label-danger">De-active</button></td>
-                                            </tr>
-                                            <tr>
-                                                <td>657</td>
-                                                <td>Bob Doe</td>
-                                                <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
-                                                <td>Category</td>
-                                                <td><button class="label label-info">Details</button></td>
-                                                <td><button class="label label-success">Active</button></td>
-                                                <td><button class="label label-danger">De-active</button></td>
-                                            </tr>
-                                            <tr>
-                                                <td>175</td>
-                                                <td>Mike Doe</td>
-                                                <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
-                                                <td>Category</td>
-                                                <td><button class="label label-info">Details</button></td>
-                                                <td><button class="label label-danger">De-active</button></td>
-                                                <td><button class="label label-success">Active</button></td>
-                                            </tr>
-                                        </table>
-                                    </div>
-                                    <!-- /.box-body -->
-                                </div>
-                                <!-- /.box -->
-                            </div>
-                        </div>
-                    </section>
-                </aside>
+                                                <td><button class="label
+                                                            <c:if test="${s.status eq \"ACTIVE\"}">
+                                                                label-success
+                                                            </c:if>
+                                                            <c:if test="${s.status eq \"DEACTIVE\"}">
+                                                                label-danger
+                                                            </c:if>
+                                                            ">${s.status}</button></td>
+                                                <td><button class="label 
+                                                            <c:if test="${s.status eq \"ACTIVE\"}">
+                                                                label-danger
+                                                            </c:if>
+                                                            <c:if test="${s.status eq \"DEACTIVE\"}">
+                                                                label-success
+                                                            </c:if>
+                                                            ">
+                                                        <c:if test="${s.status eq \"ACTIVE\"}">
+                                                            DEACTIVE
+                                                        </c:if>
+                                                        <c:if test="${s.status eq \"DEACTIVE\"}">
+                                                            ACTIVE
+                                                        </c:if>
 
-            </div>
+                                                    </button></td>
+                                            </tr>
+                                        </c:forEach>
+
+
+                                    </table>
+                                </div>
+                                <!-- /.box-body -->
+                            </div>
+                            <!-- /.box -->
+                        </div>
+                    </div>
+                </section>
+            </aside>
+
+        </div>
         <jsp:include page="linkjavascript.jsp"></jsp:include>
     </body>
 
