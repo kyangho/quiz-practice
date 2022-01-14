@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 /**
  *
- * @author ducky
+ * @author Vu Duc Tien
  */
 public class Account {
     private int id;
@@ -19,32 +19,27 @@ public class Account {
     private String email;
     private String phone;
     private String fullname;
-    private Date DoB;
     private String address;
 
     public Account() {
     }
 
-    public Account(String username, String password, String email, String phone, String fullname, Date DoB, String address) {
+    public Account(String username, String password, String email, String phone, String fullname, String address) {
         this.username = username;
         this.password = password;
         this.email = email;
         this.phone = phone;
         this.fullname = fullname;
-        this.DoB = DoB;
         this.address = address;
     }
-    
-    
 
-    public Account(int id, String username, String password, String email, String phone, String fullname, Date DoB, String address) {
+    public Account(int id, String username, String password, String email, String phone, String fullname, String address) {
         this.id = id;
         this.username = username;
         this.password = password;
         this.email = email;
         this.phone = phone;
         this.fullname = fullname;
-        this.DoB = DoB;
         this.address = address;
     }
 
@@ -96,14 +91,6 @@ public class Account {
         this.fullname = fullname;
     }
 
-    public Date getDoB() {
-        return DoB;
-    }
-
-    public void setDoB(Date DoB) {
-        this.DoB = DoB;
-    }
-
     public String getAddress() {
         return address;
     }
@@ -114,6 +101,6 @@ public class Account {
 
     @Override
     public String toString() {
-        return "Account{" + "id=" + id + ", username=" + username + ", password=" + password + ", email=" + email + ", phone=" + phone + ", fullname=" + fullname + ", DoB=" + DoB + ", address=" + address + '}';
+        return "Account{" + "id=" + id + ", username=" + username + ", password=" + password + ", email=" + email + ", phone=" + phone + ", fullname=" + fullname + ", address=" + address + '}';
     }
 }

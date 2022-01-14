@@ -7,7 +7,6 @@ package controller.auth;
 
 import dal.AccountDBContext;
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -56,19 +55,10 @@ public class LoginController extends HttpServlet {
         if (account == null) {
             response.getWriter().print("fail");
         } else {
-            response.getWriter().print("success");
+            HttpSession session = request.getSession();
+            session.setAttribute("account", account);
+            response.sendRedirect("home");
         }
-
-//        if (account == null) {
-//            request.setAttribute("isFail", true);
-//            request.setAttribute("account", null);
-//            request.setAttribute("user", null);
-//            request.getRequestDispatcher("View/auth/login.jsp").forward(request, response);
-//        } else {
-//            HttpSession session = request.getSession();
-//            session.setAttribute("account", account);
-//            response.sendRedirect("home");
-//        }
     }
 
     /**

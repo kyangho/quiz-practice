@@ -23,13 +23,14 @@ public class AccountDBContext extends DBContext {
         try {
             String sql = "SELECT a.account_id, a.username, a.password,\n"
                     + "ap.account_email, ap.account_phone,\n"
-                    + "ap.account_fullname, ap.account_dob, ap.address\n"
+                    + "ap.account_fullname, ap.address\n"
                     + "FROM account as a\n"
                     + "JOIN account_profile as ap on a.account_id = ap.account_id\n"
-                    + "WHERE a.username = ? and a.password = ?";
+                    + "WHERE (a.username = ? OR a.email = ?) and a.password = ?";
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setString(1, username);
-            stm.setString(2, password);
+            stm.setString(2, username);
+            stm.setString(3, password);
             ResultSet rs = stm.executeQuery();
             if (rs.next()) {
                 Account account = new Account();
@@ -39,14 +40,30 @@ public class AccountDBContext extends DBContext {
                 account.setEmail(rs.getString(4));
                 account.setPhone(rs.getString(5));
                 account.setFullname(rs.getString(6));
-                account.setDoB(rs.getDate(7));
-                account.setAddress(rs.getString(8));
+                account.setAddress(rs.getString(7));
                 return account;
             }
         } catch (SQLException ex) {
             Logger.getLogger(AccountDBContext.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
+    }
+    
+    public boolean isExistAccount(String phone, String email) {
+        try {
+            String sql = "SELECT account_phone, account_email FROM account_profile"
+                    + "  WHERE [account_phone] = ? OR [account_email] = ?";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setString(1, phone);
+            stm.setString(2, email);
+            ResultSet rs = stm.executeQuery();
+            if (rs.next()) {
+                return true;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(AccountDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
     }
 
     public void insertAccount(Account account) {
@@ -61,9 +78,8 @@ public class AccountDBContext extends DBContext {
                     + "(`account_email`,\n"
                     + "`account_phone`,\n"
                     + "`account_fullname`,\n"
-                    + "`account_dob`,\n"
                     + "`address`)\n"
-                    + "VALUES(?,?,?,?,?);";
+                    + "VALUES(?,?,?,?);";
             PreparedStatement stm1 = connection.prepareStatement(sql1);
             stm1.setString(1, account.getUsername());
             stm1.setString(2, account.getPassword());
@@ -72,8 +88,7 @@ public class AccountDBContext extends DBContext {
             stm2.setString(1, account.getEmail());
             stm2.setString(2, account.getPhone());
             stm2.setString(3, account.getFullname());
-            stm2.setDate(4, account.getDoB());
-            stm2.setString(5, account.getAddress());
+            stm2.setString(4, account.getAddress());
             stm2.executeUpdate();
             connection.commit();
         } catch (SQLException ex) {
@@ -128,7 +143,6 @@ public class AccountDBContext extends DBContext {
                     + "`account_email` = ?,\n"
                     + "`account_phone` = ?,\n"
                     + "`account_fullname` = ?,\n"
-                    + "`account_dob` = ?,\n"
                     + "`address` = ?\n"
                     + "WHERE `account_id` = ?;";
             PreparedStatement stm = connection.prepareStatement(sql);
