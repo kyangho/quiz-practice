@@ -5,13 +5,20 @@
  */
 package model;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.*;
+
 /**
  *
  * @author ducky
  */
+@XmlRootElement(name = "setting")
+@XmlAccessorType (XmlAccessType.FIELD)
 public class Setting {
     private int id;
     private String name;
+    @XmlElement
     private String type;
     private String description;
     private String value;
@@ -32,15 +39,13 @@ public class Setting {
     public int getId() {
         return id;
     }
-
     public void setId(int id) {
         this.id = id;
     }
-
+    
     public String getName() {
         return name;
     }
-
     public void setName(String name) {
         this.name = name;
     }
@@ -48,7 +53,6 @@ public class Setting {
     public String getType() {
         return type;
     }
-
     public void setType(String type) {
         this.type = type;
     }
