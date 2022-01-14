@@ -26,7 +26,7 @@ public class AccountDBContext extends DBContext {
                     + "ap.account_fullname, ap.address\n"
                     + "FROM account as a\n"
                     + "JOIN account_profile as ap on a.account_id = ap.account_id\n"
-                    + "WHERE (a.username = ? OR a.email = ?) and a.password = ?";
+                    + "WHERE (a.username = ? OR ap.account_email = ?) and a.password = ?";
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setString(1, username);
             stm.setString(2, username);

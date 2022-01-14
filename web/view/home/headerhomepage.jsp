@@ -106,7 +106,7 @@
         </ul>
         <div id="cd-login"> 
             <!-- log in form -->
-            <form class="cd-form" action="login" method="post">
+            <form class="cd-form" id="myForm" action="login" method="post">
                 <p class="fieldset">
                     <label class="image-replace cd-email" for="signin-email">Email
                     </label>
@@ -123,14 +123,38 @@
                     <span class="cd-error-message">Password  is not vacant!
                     </span>
                 </p>
-
+                <div id="demo"></div>
                 <!--                            <p class="fieldset">
                                                    <input type="checkbox" id="remember-me" checked>
                                                    <label for="remember-me">Remember to login
                                                    </label>
                                             </p>-->
                 <div class="fieldset">
-                    <button class="full-width" type="submit">Sign in</button>
+                    <button id="signin" class="full-width" type="submit">Sign in</button>
+
+                    <script>
+                        var signin = document.getElementById("signin");
+                        signin.addEventListener("click", checkAccount);
+                        function checkAccount(e) {
+                            e.preventDefault();
+                            var signinEmail = document.getElementById("signin-email").value;
+                            var signinPassword = document.getElementById("signin-password").value;
+                            var link = "http://localhost:8080/QuizPractice/login?username=" + signinEmail + "&password=" + signinPassword;
+                            var xhttp = new XMLHttpRequest();
+                            xhttp.onreadystatechange = function () {
+                                if (this.readyState == 4 && this.status == 200) {
+                                    if(this.responseText == "fail"){
+                                        document.getElementById("demo").innerHTML = this.responseText;
+                                    }else{
+//                                        document.getElementById("demo").innerHTML = this.responseText;
+                                        document.getElementById("myForm").submit();
+                                    }
+                                }
+                            };
+                            xhttp.open("GET", link, false);
+                            xhttp.send();
+                        }
+                    </script>
                 </div>
             </form>
             <!--                     <p class="cd-form-bottom-message">
