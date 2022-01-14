@@ -54,9 +54,8 @@
                                                                       <button type="button" class="btn btn-default get">Get it now</button>
                                                                </div>
                                                                <div class="col-sm-6">
-                                                                      <img src="https://cf.quizizz.com/img/mkt/1-HERO-Digital_Collage.png"
-                                                                           class="girl img-responsive" style=" height: 441px;
-                                                                           " alt="" />
+                                                                      <img src="${pageContext.request.contextPath}/images/book.png"
+                                                                           class="girl img-responsive" alt="" />
                                                                       <!-- <img src="images/home/pricing.png" class="pricing" alt="" /> -->
                                                                </div>
                                                         </div>

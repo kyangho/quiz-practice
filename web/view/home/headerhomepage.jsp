@@ -11,7 +11,7 @@
        <div class="header-middle">
               <div class="container">
                      <div class="row">
-                            <div class="col-sm-5">
+                            <div class="col-sm-7">
                                    <div class="logo pull-left">
                                           <a href="#"><img id="content_img"
                                                            src="https://cf.quizizz.com/img/quizizz_logos/purple-brandmark-600x164.png"
@@ -19,13 +19,15 @@
                                    </div>
                                    <div class="shop-menu pull-left">
                                           <ul class="nav navbar-nav">
-                                                 <li><a href="#"><i class="fa fa-home"></i> Home</a></li>
-                                                 <li><a href="#">For work</a></li>
-                                                 <li><a href="#">For Teacher</a></li>
+                                                 <li class="left_home"><a href="#"><i class="fa fa-home"></i> Home</a></li>
+                                                 <li class="left_home"><a href="#"><i class="fa fa-concierge-bell"></i>Services</a></li>
+                                                 <li class="left_home"><a href="#"><i class="fa fa-address-book"></i>Contacts</a></li>
+                                                 <li class="left_home"><a href="#"><i class="fa fa-user-graduate"></i>For work</a></li>
+                                                 <li class="left_home"><a href="#"><i class="fa fa-chalkboard-teacher"></i>For Teacher</a></li>
                                           </ul>
                                    </div>
                             </div>
-                            <div class="col-sm-7">
+                            <div class="col-sm-5">
                                    <div class="shop-menu pull-right">
                                           <ul class="nav navbar-nav">            
                                                  <li>
@@ -33,8 +35,7 @@
                                                                <div class="btn-group">
                                                                       <button type="button" class="btn btn-default dropdown-toggle usa"
                                                                               data-toggle="dropdown" style="border: none;
-                                                                              color: #696763;margin-right: 0px;
-                                                                              padding-right: 0px;"><i class="fa fa-star"></i>
+                                                                              color: #696763;margin-right: 0px;padding-right: 0px; padding-top: 0px; padding-bottom: 0px "><i class="fa fa-star"></i>
                                                                              Wishlist
                                                                              <span class="caret"></span>
                                                                       </button>
@@ -46,17 +47,13 @@
                                                         </div>
                                                  </li>
                                                  <li>
-
-                                                        <nav style="
-                                                             width: 290px; " class="main-nav">
-                                                               <ul>
+                                                        <nav style="width: 150px;padding-top: 0px; padding-bottom: 0px " class="main-nav">
+                                                               <ul style="padding: 0 0px">
                                                                       <li>
-                                                                             <a class="cd-signin" href="#0">Login
-                                                                             </a>
+                                                                             <a  class="cd-signin" href="#0">Login</a>
                                                                       </li>
                                                                       <li>
-                                                                             <a class="cd-signup" href="#0">Register
-                                                                             </a>
+                                                                             <a class="cd-signup" href="#0">Register </a>
                                                                       </li>
                                                                </ul>
                                                         </nav>
@@ -146,19 +143,19 @@
 
                             <!---------------------------------------------------------------------------thêm input here-------------------------------------------->
 
-                            
-                            
-                            
-                            
-                            
-                            
-                            
-                            
-                            
-                            
-                            
-                            
-                            
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
