@@ -9,7 +9,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.Setting;
@@ -20,7 +19,7 @@ import model.Setting;
  */
 public class SettingDBContext extends DBContext {
 
-    public ArrayList<Setting> getSettings(int lastSettingID, int pageSize, String key, String value) {
+    public ArrayList<Setting> getSettings(String lastSettingID, int pageSize, String key, String value) {
         String sql_get = "SELECT * FROM quiz_practice_db.setting\n"
                 + "where (1=1) ";
         if (key != null && !key.equalsIgnoreCase("setting_name")) {
@@ -32,9 +31,16 @@ public class SettingDBContext extends DBContext {
         }
         ArrayList<Setting> settings = new ArrayList<>();
         try {
-            sql_get += "and setting_id > ? order by setting_id asc limit " + pageSize + ";";
+            if (lastSettingID.equals("<1")) {
+                lastSettingID = ">0";
+            }
+            if (lastSettingID.contains(">")) {
+                sql_get += "and setting_id " + lastSettingID + " order by setting_id asc limit " + pageSize + ";";
+            } else {
+                sql_get += "and setting_id " + lastSettingID + " order by setting_id desc limit " + pageSize + ";";
+            }
             PreparedStatement stm = connection.prepareStatement(sql_get);
-            stm.setInt(1, lastSettingID);
+//            stm.setInt(1, lastSettingID);
             ResultSet rs = stm.executeQuery();
 
             while (rs.next()) {
@@ -58,8 +64,12 @@ public class SettingDBContext extends DBContext {
     public int toltalRowsInSetting(String key, String value) {
         try {
             String sql = "select count(*) as toltalRows from quiz_practice_db.setting";
-            if (key != null) {
+            if (key != null && !value.equals("all") && !key.equals("setting_status")) {
                 sql += " where " + key + " like '%" + value + "%';";
+            }
+
+            if (key != null && !value.equals("all") && key.equals("setting_status")) {
+                sql += " where " + key + "='" + value + "';";
             }
             PreparedStatement stm = connection.prepareStatement(sql);
             ResultSet rs = stm.executeQuery();
@@ -159,9 +169,9 @@ public class SettingDBContext extends DBContext {
 
     public static void main(String[] args) {
         SettingDBContext sdb = new SettingDBContext();
-//        System.out.println(sdb.toltalRowsInSetting("setting_name", "About role"));
-        for (Setting setting : sdb.getSettings(0, 3, "setting_status", "Active")) {
-            System.out.println(setting.getId() + " "+setting.getName());
+//        System.out.println(sdb.toltalRowsInSetting("setting_status", "Active"));
+        for (Setting setting : sdb.getSettings(">0", 3, "setting_status", "Active")) {
+            System.out.println(setting.getId() + " " + setting.getName());
         }
     }
 }
