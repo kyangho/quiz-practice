@@ -27,7 +27,7 @@
             </li>
 
             <li class="active">
-                <a href="#">
+                <a href="settinglist">
                     <i class="glyphicon glyphicon-cog"></i> <span>Settings List</span>
                 </a>
             </li>

@@ -6,7 +6,7 @@
     </servlet>
     <servlet>
         <servlet-name>SettingListController</servlet-name>
-        <servlet-class>controller.SettingListController</servlet-class>
+        <servlet-class>controller.director.SettingListController</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>SettingDetailsController</servlet-name>
@@ -22,7 +22,7 @@
     </servlet>
     <servlet>
         <servlet-name>ChangeStatusController</servlet-name>
-        <servlet-class>controller.ChangeStatusController</servlet-class>
+        <servlet-class>controller.director.ChangeStatusController</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>HomePageController</servlet-name>

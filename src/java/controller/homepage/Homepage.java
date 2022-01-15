@@ -7,7 +7,6 @@ package controller.homepage;
 
 import dal.HomeDBContext;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -21,7 +20,14 @@ import model.Account;
  */
 public class Homepage extends HttpServlet {
 
-       @Override
+    /**
+     *
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException
+     */
+    @Override
        protected void doGet(HttpServletRequest request, HttpServletResponse response)
                throws ServletException, IOException {
               HomeDBContext hdbc = new HomeDBContext();

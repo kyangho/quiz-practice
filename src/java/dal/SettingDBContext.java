@@ -167,11 +167,11 @@ public class SettingDBContext extends DBContext {
         return true;
     }
 
-    public static void main(String[] args) {
-        SettingDBContext sdb = new SettingDBContext();
-//        System.out.println(sdb.toltalRowsInSetting("setting_status", "Active"));
-        for (Setting setting : sdb.getSettings(">0", 3, "setting_status", "Active")) {
-            System.out.println(setting.getId() + " " + setting.getName());
-        }
-    }
+//    public static void main(String[] args) {
+//        SettingDBContext sdb = new SettingDBContext();
+////        System.out.println(sdb.toltalRowsInSetting("setting_status", "Active"));
+//        for (Setting setting : sdb.getSettings(">0", 3, "setting_status", "Active")) {
+//            System.out.println(setting.getId() + " " + setting.getName());
+//        }
+//    }
 }
