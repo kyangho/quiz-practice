@@ -5,11 +5,12 @@
  */
 package model;
 
+import java.sql.Date;
 import java.util.ArrayList;
 
 /**
  *
- * @author ducky
+ * @author Vu Duc Tien
  */
 public class Account {
 

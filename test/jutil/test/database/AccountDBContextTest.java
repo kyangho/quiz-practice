@@ -54,6 +54,7 @@ public class AccountDBContextTest {
 //    @Test
 //    public void insertAccount(){
 //        Account account = new Account("test1", "123");
+//        Account account = new Account("test1", "123", "ACTIVE");
 //        assertTrue("Insert failed", adb.insertAccount(account));
 //        System.out.println(account.getUsername() + " " + account.getPassword());
 //    }
