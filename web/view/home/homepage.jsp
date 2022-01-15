@@ -40,8 +40,8 @@
                      }
                      table tr:first-child{
                             font-weight: bold;
-                            text-align: center;
                      }
+
               </style>
 
        </head>
