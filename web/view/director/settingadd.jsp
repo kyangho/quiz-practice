@@ -1,6 +1,6 @@
 <%-- 
-    Document   : settingdetails
-    Created on : Jan 11, 2022, 7:23:39 PM
+    Document   : add
+    Created on : Jan 15, 2022, 7:51:32 PM
     Author     : ducky
 --%>
 
@@ -12,18 +12,15 @@
 <div class="col-md-12">
     <section class="panel">
         <header class="panel-heading">
-            Setting Details - ID: ${requestScope.setting.id}
+            Add new setting
         </header>
         <div class="panel-body">
-            <form class="form-horizontal tasi-form update-form">
-                <input type="hidden" name="settingId" class="form-control" 
-                       value="${requestScope.setting.id}">
+            <form class="form-horizontal tasi-form add-form" method="post">
                 <div class="form-group">
                     <label class="col-sm-2 col-sm-2 control-label">Setting name:</label>
                     <div class="col-sm-10">
                         <input type="text" name="settingName" class="form-control" 
-                               value="${requestScope.setting.name}"
-                               required placeholder="Setting name">
+                               value="${requestScope.setting.name}" required placeholder="Setting name">
                     </div>
                 </div>
                 <div class="form-group">
@@ -31,14 +28,13 @@
                     <div class="col-sm-10">
                         <input type="text" name="settingDescription" class="form-control" 
                                value="${requestScope.setting.description}"
-                               required placeholder="Setting name">
+                               required placeholder="Setting description">
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 col-sm-2 control-label">Type</label>
                     <div class="col-sm-10">
                         <select name="settingType" class="form-control m-b-10">
-                            <option value="${requestScope.setting.type}">${requestScope.setting.type}</option>
                             <c:forEach items="${requestScope.types}" var="type">
                                 <option value="${type.name}">${type.name}</option>
                             </c:forEach>
@@ -74,20 +70,20 @@
                     </div>
                 </div>
                 <div class="col-sm-12">
-                    <div class="notification-update col-sm-6 center-block">
+                    <div class="notification-add col-sm-6 center-block">
                     </div>
                 </div>
                 <div class="col-sm-12">
                     <div class="col-sm-4">
                     </div>
                     <div class="col-sm-2">
-                        <button type="button" class="btn btn-danger center-block col-sm-12"
-                                onclick="location.href = 'list'">
+                        <button type="button" class="btn btn-danger center-block col-sm-10"
+                                onclick="location.href = 'settinglist'">
                             Discard
                         </button>
                     </div>
                     <div class="col-sm-2">
-                        <button type="submit" class="btn btn-info center-block col-sm-12 btn-update">Update</button>
+                        <button type="submit" class="btn btn-info center-block col-sm-10">Add</button>
                     </div>
                 </div>
             </form>

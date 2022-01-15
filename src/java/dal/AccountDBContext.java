@@ -5,7 +5,6 @@
  */
 package dal;
 
-import com.mysql.cj.xdevapi.Result;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;

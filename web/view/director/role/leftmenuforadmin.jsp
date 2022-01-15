@@ -5,7 +5,7 @@
         <!-- Sidebar user panel -->
         <div class="user-panel">
             <div class="pull-left image">
-                <img src="../../../bootstrap_for_admin/img/avatar3.png" class="img-circle" alt="User Image" />
+                <img src="${pageContext.request.contextPath}/bootstrap_for_admin/img/avatar3.png" class="img-circle" alt="User Image" />
             </div>
             <div class="pull-left info">
                 <p>Hello, Admin</p>
@@ -34,7 +34,7 @@
 
             <li>
                 <a href="#">
-                    <i class="fa fa-glass"></i> <span>Simple tables</span>
+                    <i class="glyphicon glyphicon-user"></i> <span>Users List</span>
                 </a>
             </li>
 
