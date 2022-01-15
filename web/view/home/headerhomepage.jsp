@@ -106,7 +106,7 @@
         </ul>
         <div id="cd-login"> 
             <!-- log in form -->
-            <form class="cd-form" id="myForm" action="login" method="post">
+            <form class="cd-form" id="myForm1" action="login" method="post">
                 <p class="fieldset">
                     <label class="image-replace cd-email" for="signin-username">Username
                     </label>
@@ -144,10 +144,10 @@
                             xhttp.onreadystatechange = function () {
                                 if (this.readyState == 4 && this.status == 200) {
                                     if(this.responseText == "fail"){
-                                        document.getElementById("alert1").innerHTML = this.responseText;
+                                        document.getElementById("alert1").innerHTML = "Wrong username or password";
                                     }else{
 //                                        document.getElementById("demo").innerHTML = this.responseText;
-                                        document.getElementById("myForm").submit();
+                                        document.getElementById("myForm1").submit();
                                     }
                                 }
                             };
@@ -166,7 +166,7 @@
         <!-- cd-login -->
         <div id="cd-signup"> 
             <!-- sign up form -->
-            <form class="cd-form" action="register" method="post">
+            <form class="cd-form" id="myForm2" action="register" method="post">
                 <p class="fieldset">
                     <label class="image-replace cd-username" for="signup-username">Username
                     </label>
@@ -221,15 +221,16 @@
                                             </p>-->
                 <div id="alert2"></div>
                 <div class="fieldset">
-                    <input class="full-width has-padding" type="submit" value="Sign up">
+                    <input id="signup" class="full-width has-padding" type="submit" value="Sign up">
                     <script>
-                        var signin = document.getElementById("signin");
-                        signin.addEventListener("click", checkAccount);
-                        function checkAccount(e) {
+                        var signup = document.getElementById("signup");
+                        signup.addEventListener("click", checkAccount);
+                        function checkRegister(e) {
                             e.preventDefault();
-                            var signinEmail = document.getElementById("signin-email").value;
-                            var signinPassword = document.getElementById("signin-password").value;
-                            var link = "http://localhost:8080/QuizPractice/register?username=" + signinEmail + "&password=" + signinPassword;
+                            var signupUsername = document.getElementById("signup-username").value;
+                            var signupEmail = document.getElementById("signup-email").value;
+                            var signupPhone = document.getElementById("signup-password").value;
+                            var link = "http://localhost:8080/QuizPractice/register?username=" + signupUsername + "&email=" + signupEmail+ "&phone=" + signupPhone;
                             var xhttp = new XMLHttpRequest();
                             xhttp.onreadystatechange = function () {
                                 if (this.readyState == 4 && this.status == 200) {
@@ -237,7 +238,7 @@
                                         document.getElementById("alert2").innerHTML = this.responseText;
                                     }else{
 //                                        document.getElementById("demo").innerHTML = this.responseText;
-                                        document.getElementById("myForm").submit();
+                                        document.getElementById("myForm2").submit();
                                     }
                                 }
                             };

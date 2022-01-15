@@ -36,9 +36,7 @@ public class LoginController extends HttpServlet {
         String password = request.getParameter("password");
 
         AccountDBContext adbc = new AccountDBContext();
-
         Account account = adbc.getAccount(username, password);
-
         if (account == null) {
             response.getWriter().print("fail");
         } else {
@@ -62,9 +60,12 @@ public class LoginController extends HttpServlet {
         AccountDBContext adbc = new AccountDBContext();
 
         Account account = adbc.getAccount(username, password);
-        HttpSession session = request.getSession();
-        session.setAttribute("account", account);
-        response.sendRedirect("home");
+        if (account == null) {
+        } else {
+            HttpSession session = request.getSession();
+            session.setAttribute("account", account);
+            response.sendRedirect("home");
+        }
     }
 
     /**
