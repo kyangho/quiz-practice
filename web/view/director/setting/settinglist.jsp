@@ -7,6 +7,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
+
 <html lang="en">
 
     <head>
@@ -15,6 +16,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Settings List</title>
         <jsp:include page="linkcss.jsp"></jsp:include>
+
         </head>
 
         <body class="skin-black">
@@ -68,9 +70,9 @@
                                         </div>
                                         <div class="input-group">
                                             <form action="settinglist" method="POST">
-                                                <input type="hidden" name="filter" value="search">
+                                                <input type="hidden" name="filter" value="setting_name">
                                                 <input type="hidden" name="lastID" value="${requestScope.lastID}">
-                                                <input type="text" name="setting_name" class="form-control input-sm pull-right" style="width: 150px;" placeholder="Search by setting name" value="${value}" />
+                                                <input type="text" name="setting_name" class="form-control input-sm pull-right" style="width: 150px;" placeholder="Search by setting name" value="${valueSearch}" />
                                                 <button class="btn btn-sm btn-default" type="submit"><i class="fa fa-search"></i> </button>                                             
                                             </form>
                                         </div>
@@ -93,27 +95,48 @@
                                                 <td>${s.type}</td>
                                                 <td>${s.status}</td>
                                                 <td><button class="label label-info">Details</button></td>
-                                                <td><button class="label 
-                                                            <c:if test="${s.status eq \"ACTIVE\"}">
+                                                <td><button onclick="changeStatus(${s.id}, '${s.status}', ${requestScope.pageindex})" type="button" class="label 
+                                                            <c:if test="${s.status == 'ACTIVE'}">
                                                                 label-danger
                                                             </c:if>
-                                                            <c:if test="${s.status eq \"DEACTIVE\"}">
+                                                            <c:if test="${s.status eq 'DEACTIVE'}">
                                                                 label-success
                                                             </c:if>
                                                             ">
-                                                        <c:if test="${s.status eq \"ACTIVE\"}">
+                                                        <c:if test="${s.status eq 'ACTIVE'}">
                                                             DEACTIVE
                                                         </c:if>
-                                                        <c:if test="${s.status eq \"DEACTIVE\"}">
+                                                        <c:if test="${s.status eq 'DEACTIVE'}">
                                                             ACTIVE
                                                         </c:if>
-
-                                                    </button></td>
+                                                    </button>
+                                                </td>
                                             </tr>
                                         </c:forEach>
-
-
                                     </table>
+                                    <div id="paggingBottom" class="pageLine" style=" margin: 1%; float: right;">
+                                    </div>
+                                    <script>
+                                        generatePagger('paggingBottom',${requestScope.pageindex},${requestScope.totalPage}, '${requestScope.url}', 2);
+                                        function generatePagger(div, pageIndex, totalpage, url, gap) {
+                                            var container = document.getElementById(div);
+
+//                                            container.innerHTML += '<form><button>1</button></form>';
+                                            if (pageIndex - gap > 0)
+                                                container.innerHTML += '<a href="' + url + '1">First</a>';
+                                            for (var i = (pageIndex) - gap; i < pageIndex; i++) {
+                                                if (i > 0)
+                                                container.innerHTML += '<a href="' + url.replace('>', '<') + i + '">' + i + '</a>';
+                                            }
+                                            container.innerHTML += '<span >' + pageIndex + '</span>';
+                                            for (var i = (pageIndex) + 1; i <= pageIndex + gap; i++) {
+                                                if (i <= totalpage)
+                                                    container.innerHTML += '<a href="' + url.replace('<', '>') + i + '">' + i + '</a>';
+                                            }
+                                            if (pageIndex + gap < totalpage)
+                                                container.innerHTML += '<a href="' + url + totalpage + '">Last</a>';
+                                        }
+                                    </script>
                                 </div>
                                 <!-- /.box-body -->
                             </div>
@@ -126,5 +149,4 @@
         </div>
         <jsp:include page="linkjavascript.jsp"></jsp:include>
     </body>
-
 </html>

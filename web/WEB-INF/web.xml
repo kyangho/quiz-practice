@@ -20,6 +20,10 @@
         <servlet-name>AddSettingController</servlet-name>
         <servlet-class>controller.director.AddSettingController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ChangeStatusController</servlet-name>
+        <servlet-class>controller.ChangeStatusController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>HomePageController</servlet-name>
         <url-pattern>/home</url-pattern>
@@ -55,6 +59,10 @@
     <servlet-mapping>
         <servlet-name>Register</servlet-name>
         <url-pattern>/register</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ChangeStatusController</servlet-name>
+        <url-pattern>/director/setting/changestatus</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>
