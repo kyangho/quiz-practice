@@ -11,7 +11,6 @@ jQuery(function ($) {
               });
               return false;
        });
-
 });
 
 // Google Map Customization
