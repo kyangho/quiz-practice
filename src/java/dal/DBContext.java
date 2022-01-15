@@ -7,6 +7,8 @@ package dal;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -16,9 +18,10 @@ import java.util.logging.Logger;
  * @author ducky
  */
 public class DBContext {
+
     public Connection connection;
-    public DBContext()
-    {
+
+    public DBContext() {
         try {
             String user = "root";
             String pass = "admin123";
@@ -29,7 +32,6 @@ public class DBContext {
             Logger.getLogger(DBContext.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {
             Logger.getLogger(DBContext.class.getName()).log(Level.SEVERE, null, ex);
-        } 
+        }
     }
 }
-

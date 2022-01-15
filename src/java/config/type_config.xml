@@ -4,4 +4,8 @@
         <id>1</id>
         <name>Role</name>
     </type>
+    <type>
+        <id>2</id>
+        <name>Subject</name>
+    </type>
 </types>

@@ -6,8 +6,12 @@
 package controller;
 
 import java.io.File;
+import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
@@ -23,9 +27,7 @@ import model.Type;
  */
 @XmlRootElement(name = "types")
 @XmlAccessorType(XmlAccessType.FIELD)
-
 class Types {
-
     @XmlElement(name = "type")
     private ArrayList<Type> types;
 
@@ -44,35 +46,40 @@ class Types {
 }
 
 public class TypeConfigController {
+    private static final String FILENAME = "/config/type_config.xml";
 
-    private static final String FILENAME = "src\\java\\config\\type_config.xml";
+    public String getRealPath(String fileName) {
+        String path = this.getClass().getResource(fileName).getPath();
+        return path;
+    }
 
-    public static ArrayList<Type> getTypesList() {
+    public TypeConfigController() {
+    }
+
+    public ArrayList<Type> getTypesList() {
         ArrayList<Type> typesList = new ArrayList<>();
         try {
-
-            File file = new File(FILENAME);
+            
+            File file = new File(getRealPath(FILENAME));
+            System.out.println(file.exists());;
             JAXBContext jaxbContext = JAXBContext.newInstance(Types.class);
             Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
             
             Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
             Types types = (Types) unmarshaller.unmarshal(file);
             
-            for(Type t : types.getTypes()){
-                typesList.add(t);
-            }
+            return types.getTypes();
             
         } catch (JAXBException e) {
             return null;
         }
-        return typesList;
     }
 
-    public static void updateTypesList(ArrayList<Type> typesList) {
+    public void updateTypesList(ArrayList<Type> typesList) {
 
         try {
 
-            File file = new File(FILENAME);
+            File file = new File(getRealPath(FILENAME));
             JAXBContext jaxbContext = JAXBContext.newInstance(Types.class);
             Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
             Types types = new Types();
@@ -85,14 +92,17 @@ public class TypeConfigController {
             e.printStackTrace();
         }
     }
-//    public static void main(String[] args) {
-//        for (Type t : getTypesList()) {
-//            System.out.println(t.getName());
-//        }
-//        Types types = new Types();
-//        Type type = new Type(1, "Role");
-//        
-//        types.getTypes().add(type);
-//        updateTypesList(types.getTypes());
-//    }
+    public static void main(String[] args) {
+        TypeConfigController tcc = new TypeConfigController();
+        
+        for (Type t : tcc.getTypesList()) {
+            System.out.println(t.getName());
+        }
+        Types types = new Types();
+        
+        types.getTypes().add(new Type(1, "Role"));
+        types.getTypes().add(new Type(2, "Subject"));
+
+//        tcc.updateTypesList(types.getTypes());
+    }
 }
