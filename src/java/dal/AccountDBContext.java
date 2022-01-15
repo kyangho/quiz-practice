@@ -52,7 +52,6 @@ public class AccountDBContext extends DBContext{
             PreparedStatement stm = connection.prepareStatement(sql_insert);
             stm.setString(1, account.getUsername());
             stm.setString(2, account.getPassword());
-            stm.setString(3, account.getStatus());
             
             stm.executeUpdate();
         } catch (SQLException ex) {
