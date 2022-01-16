@@ -4,6 +4,7 @@
         <!-- Add the class icon to your logo image or logo icon to add the margining -->
         Management
     </a>
+    
     <!-- Header Navbar: style can be found in header.less -->
     <nav class="navbar navbar-static-top" role="navigation">
         <a href="#" class="navbar-btn sidebar-toggle" data-toggle="offcanvas" role="button">

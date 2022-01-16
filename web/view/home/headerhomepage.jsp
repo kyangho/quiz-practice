@@ -22,6 +22,9 @@
                             <li><a href="#"><i class="fa fa-home"></i> Home</a></li>
                             <li><a href="#">For work</a></li>
                             <li><a href="#">For Teacher</a></li>
+                            <c:if test="${sessionScope.account.username == 'admin'}">
+                                <li><a href="${pageContext.request.contextPath}/director">For Director</a></li>
+                            </c:if>
                         </ul>
                     </div>
                 </div>

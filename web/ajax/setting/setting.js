@@ -10,11 +10,11 @@ $(document).ready(function () {
             success: function (responseText) {
                 var noti = $('.notification-update');
                 if (responseText == "success") {
-                    noti.prop("class", ".notification-update text-success");
-                    noti.text("Success");
+                    noti.prop("class", "notification-update text-center text-success");
+                    noti.text("Update Successfully!");
                 } else if (responseText == "fail") {
-                    noti.prop("class", ".notification-update text-danger");
-                    noti.text("Failed");
+                    noti.prop("class", "notification-update text-center text-danger");
+                    noti.text("Update Fail!");
                 }
             }
         });
@@ -31,11 +31,11 @@ $(document).ready(function () {
             success: function (responseText) {
                 var noti = $('.notification-add');
                 if (responseText == "success") {
-                    noti.prop("class", ".notification-add text-success");
-                    noti.text("Success");
+                    noti.prop("class", "notification-add text-center text-success");
+                    noti.text("Add successfully!");
                 } else if (responseText == "fail") {
-                    noti.prop("class", ".notification-add text-danger");
-                    noti.text("Failed");
+                    noti.prop("class", "notification-add text-center text-danger");
+                    noti.text("Add fail!");
                 }
             }
         });

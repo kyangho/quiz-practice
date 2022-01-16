@@ -16,6 +16,11 @@
         <!-- sidebar menu: : style can be found in sidebar.less -->
         <ul class="sidebar-menu">
             <li>
+                <a href="${pageContext.request.contextPath}/home">
+                    <i class="fa fa-home"></i> <span>Home</span>
+                </a>
+            </li>
+            <li>
                 <a href="#">
                     <i class="fa fa-dashboard"></i> <span>Dashboard</span>
                 </a>
