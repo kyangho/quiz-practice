@@ -8,4 +8,8 @@
         <id>2</id>
         <name>Subject</name>
     </type>
+    <type>
+        <id>3</id>
+        <name>Category</name>
+    </type>
 </types>

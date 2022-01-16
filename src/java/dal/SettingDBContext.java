@@ -61,6 +61,37 @@ public class SettingDBContext extends DBContext {
         return settings;
     }
 
+    public Setting getSettingById(int id) {
+        String sql_select = "SELECT \n"
+                + "    `setting`.`setting_name`,\n"
+                + "    `setting`.`setting_type`,\n"
+                + "    `setting`.`setting_description`,\n"
+                + "    `setting`.`setting_value`,\n"
+                + "    `setting`.`setting_status`\n"
+                + "FROM `quiz_practice_db`.`setting`\n"
+                + "WHERE `setting`.`setting_id` = ?";
+
+        try {
+            PreparedStatement stm = connection.prepareStatement(sql_select);
+            stm.setInt(1, id);
+            ResultSet rs = stm.executeQuery();
+            if (rs.next()) {
+                Setting setting = new Setting();
+                setting.setId(id);
+                setting.setName(rs.getString("setting_name"));
+                setting.setDescription(rs.getString("setting_description"));
+                setting.setType(rs.getString("setting_type"));
+                setting.setValue(rs.getString("setting_value"));
+                setting.setStatus(rs.getString("setting_status"));
+                return setting;
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(SettingDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+
     public int toltalRowsInSetting(String key, String value) {
         try {
             String sql = "select count(*) as toltalRows from quiz_practice_db.setting";

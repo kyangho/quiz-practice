@@ -24,10 +24,29 @@ public class SettingDetailsController extends HomeDirectorController {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String contextPath = request.getContextPath();
+        //Add jsp link for body content
         request.setAttribute("contentPageIncluded", "/view/director/settingdetails.jsp");
+        
         //Get setting
-        Setting setting = (Setting) request.getSession().getAttribute("setting");
+        SettingDBContext sdb = new SettingDBContext();
+        Integer id = null;
+            //Check id is valid or not
+        try{
+            id = Integer.parseInt(request.getParameter("id"));
+        }catch(Exception e){
+            response.sendRedirect("settinglist");
+            return;
+        }
+        if (id == null){
+            response.sendRedirect("settinglist");
+            return;
+        }
+            //Get setting by id from database
+        Setting setting = sdb.getSettingById(id);
+        if (setting == null){
+            response.sendRedirect("settinglist");
+            return;
+        }
         request.setAttribute("setting", setting);
         
         //Get type list

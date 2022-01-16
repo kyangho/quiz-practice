@@ -21,21 +21,13 @@ public class HomeDirectorController extends HttpServlet {
 
     protected void loadHeader(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-//        if (request.getSession().getAttribute("account") == null){
-//            response.sendRedirect("");
-//            return;
-//        }
-//        Account account = (Account) request.getSession().getAttribute("account");
-//        if (account.getUsername() != "admin"){
-//            response.sendRedirect("");
-//            return;
-//        }
         Account account = (Account) request.getSession().getAttribute("account");
+        
         if (account == null){
-            response.sendRedirect("home");
+            response.sendRedirect(request.getContextPath() + "/home");
             return;
         }else if (account.getUsername().compareTo("admin") != 0){
-            response.sendRedirect("home");
+            response.sendRedirect(request.getContextPath() + "/home");
             return;
         }
         String contextPath = request.getServletContext().getContextPath();

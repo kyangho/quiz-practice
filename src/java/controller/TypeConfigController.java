@@ -94,14 +94,14 @@ public class TypeConfigController {
     }
     public static void main(String[] args) {
         TypeConfigController tcc = new TypeConfigController();
-        
+        System.out.println(tcc.getRealPath(FILENAME));
         for (Type t : tcc.getTypesList()) {
             System.out.println(t.getName());
         }
-        Types types = new Types();
-        
-        types.getTypes().add(new Type(1, "Role"));
-        types.getTypes().add(new Type(2, "Subject"));
+//        Types types = new Types();
+//        
+//        types.getTypes().add(new Type(1, "Role"));
+//        types.getTypes().add(new Type(2, "Subject"));
 
 //        tcc.updateTypesList(types.getTypes());
     }

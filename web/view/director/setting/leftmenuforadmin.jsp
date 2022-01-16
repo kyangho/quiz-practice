@@ -27,7 +27,7 @@
             </li>
 
             <li class="active">
-                <a href="settinglist">
+                <a href="${pageContext.request.contextPath}/director/setting/settinglist">
                     <i class="glyphicon glyphicon-cog"></i> <span>Settings List</span>
                 </a>
             </li>
