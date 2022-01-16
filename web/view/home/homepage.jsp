@@ -42,14 +42,16 @@
                                    <h3>Infomation</h3>
                                    <ul>
                                           <li>${requestScope.acc.id} </li>
-                                          <li>${requestScope.acc.fullname} </li>
-                                          <li>${requestScope.acc.username}</li>
-                                          <li>${requestScope.acc.password}</li>
-                                          <li>${requestScope.acc.email}</li>
-                                          <li>${requestScope.acc.phone}</li>
-                                          <li>${requestScope.acc.address}</li>
-                                         
-                                   </ul>
+                                   <li>${requestScope.acc.fullname} </li>
+                                   <li>${requestScope.acc.username}</li>
+                                   <li>${requestScope.acc.password}</li>
+                                   <li>${requestScope.acc.email}</li>
+                                   <li>${requestScope.acc.phone}</li>
+                                   <li>${requestScope.acc.address}</li>
+                                          <c:if test="${sessionScope.account == requestScope.IsAdmin}">
+                                          <li><a href="director/setting/settinglist">Setting list</a></li>
+                                          </c:if>
+                            </ul>
                      </div>
               </div>
               <table>
@@ -72,7 +74,7 @@
                                    <td>${inf.email}</td>
                                    <td>${inf.phone}</td>
                                    <td>${inf.address}</td>
-                                   
+
                             </tr>
                      </c:forEach>
               </table>

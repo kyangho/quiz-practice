@@ -25,8 +25,8 @@ public class HomePageController extends HttpServlet {
                throws ServletException, IOException {
               HomeDBContext hdbc = new HomeDBContext();
               ArrayList<Account> accounts = hdbc.getAccounts();
-//              String admin = "admin";
-//              request.setAttribute("IsAdmin", admin);
+              String admin = "admin";
+              request.setAttribute("IsAdmin", admin);
               
               request.setAttribute("information", accounts);
               request.getRequestDispatcher("view/home/homepage.jsp").forward(request, response);
