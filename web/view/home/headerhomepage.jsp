@@ -9,7 +9,7 @@
 
 <header id="header">
        <div class="header-middle">
-              <div class="container">
+              <div class="container" style="width: 1238px;">
                      <div class="row">
                             <div class="col-sm-7">
                                    <div class="logo pull-left">
@@ -50,7 +50,7 @@
                                                         </div>
                                                  </li>
                                                  <li>
-                                                        <nav style="width: 150px;padding-top: 0px; padding-bottom: 0px " class="main-nav">
+                                                        <nav style="width: 300px;padding-top: 0px; padding-bottom: 0px " class="main-nav">
                                                                <ul style="padding: 0px">
                                                                       <c:if test="${sessionScope.account == null}"> 
                                                                              <li>
@@ -62,9 +62,24 @@
                                                                       </c:if>
                                                                       <c:if test="${sessionScope.account != null}">                                                                       
                                                                              <li>
-                                                                                    <button onclick="togglePopup()"><a class="cd-user" href="profile"><i class="fa fa-user"></i>User</a></button>
+                                                                                    <button onclick="togglePopup()"><a class="cd-user" href="profile"><i class="fa fa-user"></i>${sessionScope.account.fullname}</a></button>
                                                                              </li>                    
                                                                              <li><a class="cd-user" href="logout"><i class="fa fa-sign-out-alt"></i>Logout</a></li>
+                                                                             </c:if>
+                                                               </ul>
+                                                        </nav>
+
+                                                 </li> 
+                                                 <li>
+                                                        <nav style="width: 300px;padding-top: 0px; padding-bottom: 0px " class="main-nav">
+                                                               <ul style="padding: 0px">
+
+                                                                      <c:if test="${sessionScope.account != null}">                                                                       
+                                                                             <li>
+                                                                                    <button onclick="togglePopup()" style="border-style: none; border: none; background: white;">
+                                                                                           <a onclick="togglePopup()" style=" border-top: none;" class="cd-user" href="profile?id=${sessionScope.account.id}"><i class="fa fa-user"></i>${sessionScope.account.fullname}</a></button>
+                                                                             </li>                    
+                                                                             <li><a style=" border-top: none;" class="cd-user" href="logout"><i class="fa fa-sign-out-alt"></i>Logout</a></li>
                                                                              </c:if>
                                                                </ul>
                                                         </nav>
@@ -119,14 +134,14 @@
                             <p class="fieldset">
                                    <label class="image-replace cd-email" for="signin-username">Username
                                    </label>
-                                   <input class="full-width has-padding has-border" id="signin-email" type="text" placeholder="Username/Email" required="required" name="username"/>
+                                   <input class="full-width has-padding has-border" id="signin-email" type="text" placeholder="Username/Email" required name="username"/>
                                    <span class="cd-error-message">Username is not vacant!
                                    </span>
                             </p>
                             <p class="fieldset">
                                    <label class="image-replace cd-password" for="signin-password">Password
                                    </label>
-                                   <input class="full-width has-padding has-border" id="signin-password" type="text" placeholder="Password" required="required" name="password"/>
+                                   <input class="full-width has-padding has-border" id="signin-password" type="text" placeholder="Password" required name="password"/>
                                    <a href="#0" class="hide-password">Hide
                                    </a>
                                    <span class="cd-error-message">Password is not vacant!
@@ -179,7 +194,7 @@
                             <p class="fieldset">
                                    <label class="image-replace cd-username" for="signup-username">Username
                                    </label>
-                                   <input class="full-width has-padding has-border" id="signup-username" type="text" name="register_username" required="required" placeholder="Username">
+                                   <input class="full-width has-padding has-border" id="signup-username" type="text" name="register_username" required placeholder="Username">
                                    <span class="cd-error-message">Username is not vacant!
                                    </span>
                             </p>
@@ -187,7 +202,7 @@
                             <p class="fieldset">
                                    <label class="image-replace cd-password" for="signup-password">Password
                                    </label>
-                                   <input class="full-width has-padding has-border" id="signup-password" type="text" name="register_password" required="required" placeholder="Password">
+                                   <input class="full-width has-padding has-border" id="signup-password" type="text" name="register_password" required placeholder="Password">
                                    <a href="#0" class="hide-password">Hide
                                    </a>
                                    <span class="cd-error-message">Password is not vacant!
@@ -196,28 +211,28 @@
                             <p class="fieldset">
                                    <label class="image-replace cd-username" for="signup-fullname">Full name
                                    </label>
-                                   <input class="full-width has-padding has-border" id="signup-username" name="register_fullname" type="text" required="required" placeholder="Fullname">
+                                   <input class="full-width has-padding has-border" id="signup-username" name="register_fullname" type="text" required placeholder="Fullname">
                                    <span class="cd-error-message">Full name is not null!
                                    </span>
                             </p>
                             <p class="fieldset">
                                    <label class="image-replace cd-email" for="signup-email">Email
                                    </label>
-                                   <input class="full-width has-padding has-border" id="signup-email" type="email" name="register_email" required="required" placeholder="E-mail">
+                                   <input class="full-width has-padding has-border" id="signup-email" type="email" name="register_email" required placeholder="E-mail">
                                    <span class="cd-error-message">Email is not vacant!
                                    </span>
                             </p>
                             <p class="fieldset">
                                    <label class="image-replace cd-email" for="signup-phone">Phone
                                    </label>
-                                   <input class="full-width has-padding has-border" id="signup-phone" type="tel" name="register_phone" placeholder="Phone number">
+                                   <input class="full-width has-padding has-border" id="signup-phone" type="tel" name="register_phone" placeholder="Phone number" required>
                                    <span class="cd-error-message">Phone is not vacant!
                                    </span>
                             </p>
                             <p class="fieldset">
                                    <label class="image-replace cd-email" for="signup-address">Address
                                    </label>
-                                   <input class="full-width has-padding has-border" id="signup-address" type="text" name="register_address" placeholder="Address">
+                                   <input class="full-width has-padding has-border" id="signup-address" type="text" name="register_address" placeholder="Address" required>
                                    <span class="cd-error-message">Address is not vacant!
                                    </span>
                             </p>
@@ -268,12 +283,12 @@
                             <p class="fieldset">
                                    <label class="image-replace cd-email" for="reset-email">Email
                                    </label>
-                                   <input class="full-width has-padding has-border" id="reset-email" type="email" placeholder="E-mail">
+                                   <input class="full-width has-padding has-border" id="reset-email" type="email" placeholder="E-mail" required>
                                    <span class="cd-error-message">Email không được bỏ trống!
                                    </span>
                             </p>
                             <p class="fieldset">
-                                   <input class="full-width has-padding" type="submit" value="Reset password">
+                                   <input class="full-width has-padding" type="submit" value="Reset password" required>
                             </p>
                      </form>
                      <p class="cd-form-bottom-message">

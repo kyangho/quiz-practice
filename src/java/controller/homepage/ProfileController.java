@@ -37,13 +37,12 @@ public class ProfileController extends HttpServlet {
 //                     response.sendRedirect("home");
 //                     return;
 //              }
-//              String id = request.getParameter("id");
-              String id = "1";
+              String id = request.getParameter("id");
+//              String id = "1";
               HomeDBContext hdbc = new HomeDBContext();
               Account acc = hdbc.getInfomation(id);
               ArrayList<Account> accounts = hdbc.getAccounts();
               request.setAttribute("information", accounts);
-
               request.setAttribute("acc", acc);
               request.getRequestDispatcher("view/home/homepage.jsp").forward(request, response);
        }
