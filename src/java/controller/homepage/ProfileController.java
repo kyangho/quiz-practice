@@ -8,6 +8,7 @@ package controller.homepage;
 import dal.HomeDBContext;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -31,15 +32,18 @@ public class ProfileController extends HttpServlet {
         */
        protected void processRequest(HttpServletRequest request, HttpServletResponse response)
                throws ServletException, IOException {
-              Account account = (Account) request.getSession().getAttribute("account");
-              if (account == null) {
-                     response.sendRedirect("home");
-                     return;
-              }
-              String id = request.getParameter("id");
-//              String id = "2";
+//              Account account = (Account) request.getSession().getAttribute("account");
+//              if (account == null) {
+//                     response.sendRedirect("home");
+//                     return;
+//              }
+//              String id = request.getParameter("id");
+              String id = "1";
               HomeDBContext hdbc = new HomeDBContext();
               Account acc = hdbc.getInfomation(id);
+              ArrayList<Account> accounts = hdbc.getAccounts();
+              request.setAttribute("information", accounts);
+
               request.setAttribute("acc", acc);
               request.getRequestDispatcher("view/home/homepage.jsp").forward(request, response);
        }

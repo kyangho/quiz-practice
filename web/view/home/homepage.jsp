@@ -48,7 +48,7 @@
                                    <li>${requestScope.acc.email}</li>
                                    <li>${requestScope.acc.phone}</li>
                                    <li>${requestScope.acc.address}</li>
-                                          <c:if test="${sessionScope.account.username == requestScope.IsAdmin}">
+                                          <c:if test="${sessionScope.account.username == 'admin'}">
                                           <li><a href="director/setting/settinglist">Setting list</a></li>
                                           </c:if>
                             </ul>
