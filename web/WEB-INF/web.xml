@@ -2,11 +2,11 @@
 <web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
     <servlet>
         <servlet-name>HomePageController</servlet-name>
-        <servlet-class>controller.HomePageController</servlet-class>
+        <servlet-class>controller.homepage.HomePageController</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>SettingListController</servlet-name>
-        <servlet-class>controller.SettingListController</servlet-class>
+        <servlet-class>controller.director.SettingListController</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>SettingDetailsController</servlet-name>
@@ -22,7 +22,7 @@
     </servlet>
     <servlet>
         <servlet-name>ChangeStatusController</servlet-name>
-        <servlet-class>controller.ChangeStatusController</servlet-class>
+        <servlet-class>controller.director.ChangeStatusController</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>HomePageController</servlet-name>

@@ -32,7 +32,7 @@
                                     <div class="panel-heading" style="display: flex;">
                                         <div style="margin-right: 74%;"> List of settings</div>
                                         <div>
-                                            <a href="#">Add new setting </a>
+                                            <a href="add">Add new setting </a>
                                         </div>
                                     </div>
 
@@ -94,7 +94,7 @@
                                                 <td>${s.description}</td>
                                                 <td>${s.type}</td>
                                                 <td>${s.status}</td>
-                                                <td><button class="label label-info">Details</button></td>
+                                                <td><button class="label label-info"><a style="color: white;" href="details?id=${s.id}">Details</a></button></td>
                                                 <td><button onclick="changeStatus(${s.id}, '${s.status}', ${requestScope.pageindex})" type="button" class="label 
                                                             <c:if test="${s.status == 'ACTIVE'}">
                                                                 label-danger
@@ -120,13 +120,11 @@
                                         generatePagger('paggingBottom',${requestScope.pageindex},${requestScope.totalPage}, '${requestScope.url}', 2);
                                         function generatePagger(div, pageIndex, totalpage, url, gap) {
                                             var container = document.getElementById(div);
-
-//                                            container.innerHTML += '<form><button>1</button></form>';
                                             if (pageIndex - gap > 0)
                                                 container.innerHTML += '<a href="' + url + '1">First</a>';
                                             for (var i = (pageIndex) - gap; i < pageIndex; i++) {
                                                 if (i > 0)
-                                                container.innerHTML += '<a href="' + url.replace('>', '<') + i + '">' + i + '</a>';
+                                                    container.innerHTML += '<a href="' + url.replace('>', '<') + i + '">' + i + '</a>';
                                             }
                                             container.innerHTML += '<span >' + pageIndex + '</span>';
                                             for (var i = (pageIndex) + 1; i <= pageIndex + gap; i++) {
