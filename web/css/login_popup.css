@@ -16,7 +16,23 @@ section {
 body {
        line-height: 1;
 }
+.body_inf {
+       height: 50vh;
+       background-color: #817d7c45;
+       width: 75%;
+       margin: 0 auto;
+       margin-bottom: 50px;
+}
 
+table {
+       border-collapse: collapse;
+       width: 100%;
+       margin: 0 auto;
+}
+
+table tr:first-child {
+       font-weight: bold;
+}
 ol,
 ul {
        list-style: none;
@@ -291,7 +307,7 @@ header[role="banner"]::after {
               -ms-transform: translateY(0);
               -o-transform: translateY(0);
               transform: translateY(0);
-/*              line-height: 80px;*/
+              /*              line-height: 80px;*/
        }
 
        .main-nav ul.is-visible {
@@ -302,14 +318,14 @@ header[role="banner"]::after {
               transform: translateY(0);
        }
 
-/*       .main-nav li {
-              display: inline-block;
-              margin-left: 1em;
-       }*/
+       /*       .main-nav li {
+                     display: inline-block;
+                     margin-left: 1em;
+              }*/
 
-/*       .main-nav li:nth-last-child(2) {
-              margin-left: 2em;
-       }*/
+       /*       .main-nav li:nth-last-child(2) {
+                     margin-left: 2em;
+              }*/
 
        .main-nav a {
               display: inline-block;

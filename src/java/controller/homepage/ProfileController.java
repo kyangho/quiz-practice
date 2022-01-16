@@ -7,7 +7,7 @@ package controller.homepage;
 
 import dal.HomeDBContext;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -16,20 +16,42 @@ import model.Account;
 
 /**
  *
- * @author conmu
+ * @author Tebellum
  */
-public class HomePageController extends HttpServlet {
-       
+public class ProfileController extends HttpServlet {
+
+       /**
+        * Processes requests for both HTTP <code>GET</code> and
+        * <code>POST</code> methods.
+        *
+        * @param request servlet request
+        * @param response servlet response
+        * @throws ServletException if a servlet-specific error occurs
+        * @throws IOException if an I/O error occurs
+        */
+       protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+               throws ServletException, IOException {
+//              String id = request.getParameter("id");
+              String id = "2";
+              HomeDBContext hdbc = new HomeDBContext();
+              Account acc = hdbc.getInfomation(id);
+              request.setAttribute("acc", acc);
+              request.getRequestDispatcher("view/home/homepage.jsp").forward(request, response);
+       }
+
+       // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+       /**
+        * Handles the HTTP <code>GET</code> method.
+        *
+        * @param request servlet request
+        * @param response servlet response
+        * @throws ServletException if a servlet-specific error occurs
+        * @throws IOException if an I/O error occurs
+        */
        @Override
        protected void doGet(HttpServletRequest request, HttpServletResponse response)
                throws ServletException, IOException {
-              HomeDBContext hdbc = new HomeDBContext();
-              ArrayList<Account> accounts = hdbc.getAccounts();
-              String admin = "admin";
-              request.setAttribute("IsAdmin", admin);
-              
-              request.setAttribute("information", accounts);
-              request.getRequestDispatcher("view/home/homepage.jsp").forward(request, response);
+              processRequest(request, response);
        }
 
        /**
@@ -43,7 +65,7 @@ public class HomePageController extends HttpServlet {
        @Override
        protected void doPost(HttpServletRequest request, HttpServletResponse response)
                throws ServletException, IOException {
-              response.getWriter().print("da login");
+              processRequest(request, response);
        }
 
        /**

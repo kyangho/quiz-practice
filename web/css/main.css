@@ -907,7 +907,6 @@ h2.title {
 }
 
 .product-overlay {
-<<<<<<< HEAD
        background:#FE980F;
        top: 0;
        display: none;
@@ -916,17 +915,7 @@ h2.title {
        transition: height 500ms ease 0s;
        width: 100%;
        display: block;
-=======
-  background:#FE980F;
-  top: 0;
-  display: none;
-  height: 0;
-  position: absolute;
-  transition: height 500ms ease 0s;
-  width: 100%;
-  display: block;
-  opacity:0.5;
->>>>>>> origin/tienvd/user_login
+
 }
 
 .single-products:hover .product-overlay {
