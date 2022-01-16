@@ -45,6 +45,32 @@ public class HomeDBContext extends DBContext {
               return acc;
        }
 
+       public Account getInfomation(String user) {
+              try {
+                     String sql = "select * from `quiz_practice_db`.account a join `quiz_practice_db`.account_profile ap \n"
+                             + "on a.account_id = ap.account_id\n"
+                             + "where a.account_id = ?\n"
+                             + ";";
+                     PreparedStatement ps = connection.prepareStatement(sql);
+                     ps.setString(1, user);
+                     ResultSet rs = ps.executeQuery();
+                     if (rs.next()) {
+                            Account a = new Account();
+                            a.setId(rs.getInt(1));
+                            a.setUsername(rs.getString(2));
+                            a.setPassword(rs.getString(3));
+                            a.setEmail(rs.getString(5));
+                            a.setPhone(rs.getString(6));
+                            a.setFullname(rs.getString(7));
+                            a.setAddress(rs.getString(8));
+                            return a;
+                     }
+
+              } catch (SQLException ex) {
+                     Logger.getLogger(HomeDBContext.class.getName()).log(Level.SEVERE, null, ex);
+              }
+              return null;
+       }
 //       public static void main(String[] args) {
 //              HomeDBContext h = new HomeDBContext();
 //              for (Account b : h.getBooks()) {
