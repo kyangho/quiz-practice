@@ -30,6 +30,14 @@ public class HomeDirectorController extends HttpServlet {
 //            response.sendRedirect("");
 //            return;
 //        }
+        Account account = (Account) request.getSession().getAttribute("account");
+        if (account == null){
+            response.sendRedirect("home");
+            return;
+        }else if (account.getUsername().compareTo("admin") != 0){
+            response.sendRedirect("home");
+            return;
+        }
         String contextPath = request.getServletContext().getContextPath();
         request.getRequestDispatcher("/view/director/homedirector.jsp").forward(request, response);
         
