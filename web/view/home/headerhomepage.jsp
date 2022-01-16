@@ -68,12 +68,10 @@
                                                                              </c:if>
                                                                </ul>
                                                         </nav>
-
                                                  </li> 
                                                  <li>
                                                         <nav style="width: 300px;padding-top: 0px; padding-bottom: 0px " class="main-nav">
                                                                <ul style="padding: 0px">
-
                                                                       <c:if test="${sessionScope.account != null}">                                                                       
                                                                              <li>
                                                                                     <button onclick="togglePopup()" style="border-style: none; border: none; background: white;">
