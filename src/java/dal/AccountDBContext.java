@@ -72,24 +72,34 @@ public class AccountDBContext extends DBContext {
             connection.setAutoCommit(false);
             String sql1 = "INSERT INTO `quiz_practice_db`.`account`\n"
                     + "(`username`,\n"
-                    + "`password`)\n"
+                    + "`password`,\n"
+                    + "`account_status`)\n"
                     + "VALUES\n"
-                    + "(?,?);\n";
+                    + "(?,?,?);\n";
             String sql2 = "INSERT INTO `quiz_practice_db`.`account_profile`\n"
-                    + "(`account_email`,\n"
+                    + "(`account_id`,\n"
+                    + "`account_email`,\n"
                     + "`account_phone`,\n"
                     + "`account_fullname`,\n"
                     + "`address`)\n"
-                    + "VALUES(?,?,?,?);";
+                    + "VALUES(?,?,?,?,?);";
             PreparedStatement stm1 = connection.prepareStatement(sql1);
             stm1.setString(1, account.getUsername());
             stm1.setString(2, account.getPassword());
+            stm1.setString(3, "ACTIVE");
             stm1.executeUpdate();
+            
+            String sql3 = "SELECT LAST_INSERT_ID();";
+            PreparedStatement stm3 = connection.prepareStatement(sql3);
+            ResultSet rs = stm3.executeQuery();
+            rs.next();
+            int id = rs.getInt("LAST_INSERT_ID()");
             PreparedStatement stm2 = connection.prepareStatement(sql2);
-            stm2.setString(1, account.getEmail());
-            stm2.setString(2, account.getPhone());
-            stm2.setString(3, account.getFullname());
-            stm2.setString(4, account.getAddress());
+            stm2.setInt(1, id);
+            stm2.setString(2, account.getEmail());
+            stm2.setString(3, account.getPhone());
+            stm2.setString(4, account.getFullname());
+            stm2.setString(5, account.getAddress());
             stm2.executeUpdate();
             connection.commit();
         } catch (SQLException ex) {
