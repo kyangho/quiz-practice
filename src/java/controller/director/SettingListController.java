@@ -108,8 +108,9 @@ public class SettingListController extends HttpServlet {
             request.setAttribute("pageindex", pageIndex);
             request.setAttribute("url", url);
             request.setAttribute("settings", settinglist);
+            request.setAttribute("tag", "settinglist");
             request.getRequestDispatcher("../../view/director/setting/settinglist.jsp").forward(request, response);
-        }else{
+        } else {
             response.sendRedirect("../../home");
         }
     }
@@ -180,6 +181,7 @@ public class SettingListController extends HttpServlet {
         String url = "settinglist?lastID=" + s + "&filter=" + filter + "&value=" + value + "&pageindex=";
         request.setAttribute("url", url);
         request.setAttribute("settings", settinglist);
+        request.setAttribute("tag", "settinglist");
 
 //        response.getWriter().print(lastID);
         request.getRequestDispatcher("../../view/director/setting/settinglist.jsp").forward(request, response);

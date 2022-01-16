@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!-- Left side column. contains the logo and sidebar -->
 <aside class="left-side sidebar-offcanvas">
     <!-- sidebar: style can be found in sidebar.less -->
@@ -31,7 +32,7 @@
                 </a>
             </li>
 
-            <li class="active">
+            <li <c:if test="${tag eq 'settinglist'}">class="active"</c:if>  >
                 <a href="${pageContext.request.contextPath}/director/setting/settinglist">
                     <i class="glyphicon glyphicon-cog"></i> <span>Settings List</span>
                 </a>
