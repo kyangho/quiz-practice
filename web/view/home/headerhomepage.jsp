@@ -49,7 +49,7 @@
                                                  <li>
                                                         <nav style="width: 200px;padding-top: 0px; padding-bottom: 0px " class="main-nav">
                                                                <ul style="padding: 0px">
-                                                                      <c:if test="${sessionScope.account == null}"> 
+                                                                      <c:if test="${sessionScope.account != null}"> 
                                                                              <li>
                                                                                     <a  class="cd-signin" href="#0">Login</a>
                                                                              </li>
@@ -57,11 +57,11 @@
                                                                                     <a class="cd-signup" href="#0">Register </a>
                                                                              </li>            
                                                                       </c:if>
-                                                                      <c:if test="${sessionScope.account != null}">                                                                       
+                                                                      <c:if test="${sessionScope.account == null}">                                                                       
                                                                              <li>
-                                                                                    <button onclick="togglePopup()"> <a class="cd-user" href="profile"><i class="fa fa-user"></i>User</a></button>
+                                                                                    <button onclick="togglePopup()"><a class="cd-user" href="profile"><i class="fa fa-user"></i>User</a></button>
                                                                              </li>                    
-                                                                             <li><a class="cd-user" href="LogoutController"><i class="fa fa-sign-out-alt"></i>Logout</a></li>
+                                                                             <li><a class="cd-user" href="logout"><i class="fa fa-sign-out-alt"></i>Logout</a></li>
                                                                              </c:if>
                                                                </ul>
                                                         </nav>
