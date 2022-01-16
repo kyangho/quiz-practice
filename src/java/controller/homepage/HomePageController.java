@@ -26,6 +26,7 @@ public class HomePageController extends HttpServlet {
               HomeDBContext hdbc = new HomeDBContext();
               ArrayList<Account> accounts = hdbc.getAccounts();
               String admin = "admin";
+              Account account = (Account) request.getSession().getAttribute("account");
               request.setAttribute("IsAdmin", admin);
               
               request.setAttribute("information", accounts);

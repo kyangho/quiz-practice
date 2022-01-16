@@ -25,7 +25,7 @@ public class SettingDetailsController extends HomeDirectorController {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         //Add jsp link for body content
-        request.setAttribute("contentPageIncluded", "/view/director/settingdetails.jsp");
+        request.setAttribute("contentPageIncluded", "/view/director/setting/settingdetails.jsp");
         
         //Get setting
         SettingDBContext sdb = new SettingDBContext();

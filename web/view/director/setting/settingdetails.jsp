@@ -82,7 +82,7 @@
                     </div>
                     <div class="col-sm-2">
                         <button type="button" class="btn btn-danger center-block col-sm-12"
-                                onclick="location.href = 'list'">
+                                onclick="location.href = 'settinglist'">
                             Discard
                         </button>
                     </div>

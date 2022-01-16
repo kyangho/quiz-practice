@@ -34,7 +34,7 @@ public class AddSettingController extends HomeDirectorController {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.setAttribute("contentPageIncluded", "/view/director/settingadd.jsp");
+        request.setAttribute("contentPageIncluded", "/view/director/setting/settingadd.jsp");
         //Get type list
         TypeConfigController tcc = new TypeConfigController();
         ArrayList<Type> types = tcc.getTypesList();
