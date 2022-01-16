@@ -32,80 +32,86 @@ public class SettingListController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        int pageSize = 1;
-        String filter = request.getParameter("filter");
-        String value = request.getParameter("value");
-        int pageIndex;
-        String lastID;
-        int lastID_raw;
-        SettingDBContext stdb = new SettingDBContext();
-        ArrayList<Setting> settinglist;
-        String url;
-        String pageIndex_raw = request.getParameter("pageindex");
-        if (filter == null) {
-            if (pageIndex_raw == null) {
-                lastID = "> 0";
-                pageIndex = 1;
-            } else {
-                pageIndex = Integer.parseInt(pageIndex_raw);
-                lastID_raw = pageIndex * pageSize - 1;
-                lastID = ">" + lastID_raw;
-            }
 
-            settinglist = stdb.getSettings(lastID, pageSize, null, null);
-            int totalRows = stdb.toltalRowsInSetting(null, null);
-            int toltalPage = (totalRows % pageSize == 0) ? totalRows / pageSize : totalRows / pageSize + 1;
-            request.setAttribute("totalPage", toltalPage);
-            url = "settinglist?pageindex=";
-        } else {
-            if (pageIndex_raw == null) {
-                lastID = ">0";
-                pageIndex = 1;
-            } else {
-                pageIndex = Integer.parseInt(pageIndex_raw);
-                lastID = request.getParameter("lastID");
-            }
+        if (request.getSession().getAttribute("account") != null) {
 
-            if (filter.equals("setting_type")) {
-                settinglist = new ArrayList<>();
-                if (value.equals("all")) {
-                    settinglist = stdb.getSettings(lastID, pageSize, null, null);
+            int pageSize = 10;
+            String filter = request.getParameter("filter");
+            String value = request.getParameter("value");
+            int pageIndex;
+            String lastID;
+            int lastID_raw;
+            SettingDBContext stdb = new SettingDBContext();
+            ArrayList<Setting> settinglist;
+            String url;
+            String pageIndex_raw = request.getParameter("pageindex");
+            if (filter == null) {
+                if (pageIndex_raw == null) {
+                    lastID = "> 0";
+                    pageIndex = 1;
                 } else {
-                    settinglist = stdb.getSettings(lastID, pageSize, filter, value);
+                    pageIndex = Integer.parseInt(pageIndex_raw);
+                    lastID_raw = pageIndex * pageSize - 1;
+                    lastID = ">" + lastID_raw;
                 }
-                request.setAttribute("value", value);
-            } else if (filter.equals("setting_status")) {
-                settinglist = new ArrayList<>();
-                if (value.equals("all")) {
-                    settinglist = stdb.getSettings(lastID, pageSize, null, null);
-                } else {
-                    settinglist = stdb.getSettings(lastID, pageSize, filter, value);
-                }
-                request.setAttribute("value", value);
-            } else {
-                settinglist = new ArrayList<>();
-                if (value.length() == 0) {
-                    settinglist = stdb.getSettings(lastID, pageSize, null, null);
-                } else {
-                    settinglist = stdb.getSettings(lastID, pageSize, filter, value);
-                }
-                request.setAttribute("valueSearch", value);
-            }
 
-            int totalRows = stdb.toltalRowsInSetting(filter, value);
-            int toltalPage = (totalRows % pageSize == 0) ? totalRows / pageSize : totalRows / pageSize + 1;
-            request.setAttribute("totalPage", toltalPage);
-            lastID_raw = settinglist.get(settinglist.size() - 1).getId();
-            request.setAttribute("lastID", lastID_raw);
-            String s = lastID.charAt(0) + Integer.toString(lastID_raw);
-            url = "settinglist?lastID=" + s + "&filter=" + filter + "&value=" + value + "&pageindex=";
-        }
+                settinglist = stdb.getSettings(lastID, pageSize, null, null);
+                int totalRows = stdb.toltalRowsInSetting(null, null);
+                int toltalPage = (totalRows % pageSize == 0) ? totalRows / pageSize : totalRows / pageSize + 1;
+                request.setAttribute("totalPage", toltalPage);
+                url = "settinglist?pageindex=";
+            } else {
+                if (pageIndex_raw == null) {
+                    lastID = ">0";
+                    pageIndex = 1;
+                } else {
+                    pageIndex = Integer.parseInt(pageIndex_raw);
+                    lastID = request.getParameter("lastID");
+                }
+
+                if (filter.equals("setting_type")) {
+                    settinglist = new ArrayList<>();
+                    if (value.equals("all")) {
+                        settinglist = stdb.getSettings(lastID, pageSize, null, null);
+                    } else {
+                        settinglist = stdb.getSettings(lastID, pageSize, filter, value);
+                    }
+                    request.setAttribute("value", value);
+                } else if (filter.equals("setting_status")) {
+                    settinglist = new ArrayList<>();
+                    if (value.equals("all")) {
+                        settinglist = stdb.getSettings(lastID, pageSize, null, null);
+                    } else {
+                        settinglist = stdb.getSettings(lastID, pageSize, filter, value);
+                    }
+                    request.setAttribute("value", value);
+                } else {
+                    settinglist = new ArrayList<>();
+                    if (value.length() == 0) {
+                        settinglist = stdb.getSettings(lastID, pageSize, null, null);
+                    } else {
+                        settinglist = stdb.getSettings(lastID, pageSize, filter, value);
+                    }
+                    request.setAttribute("valueSearch", value);
+                }
+
+                int totalRows = stdb.toltalRowsInSetting(filter, value);
+                int toltalPage = (totalRows % pageSize == 0) ? totalRows / pageSize : totalRows / pageSize + 1;
+                request.setAttribute("totalPage", toltalPage);
+                lastID_raw = settinglist.get(settinglist.size() - 1).getId();
+                request.setAttribute("lastID", lastID_raw);
+                String s = lastID.charAt(0) + Integer.toString(lastID_raw);
+                url = "settinglist?lastID=" + s + "&filter=" + filter + "&value=" + value + "&pageindex=";
+            }
 
 //        2 => lastID = 10*2-1 = 19
-        request.setAttribute("pageindex", pageIndex);
-        request.setAttribute("url", url);
-        request.setAttribute("settings", settinglist);
-        request.getRequestDispatcher("../../view/director/setting/settinglist.jsp").forward(request, response);
+            request.setAttribute("pageindex", pageIndex);
+            request.setAttribute("url", url);
+            request.setAttribute("settings", settinglist);
+            request.getRequestDispatcher("../../view/director/setting/settinglist.jsp").forward(request, response);
+        }else{
+            response.sendRedirect("../../home");
+        }
     }
 
     /**
@@ -119,7 +125,7 @@ public class SettingListController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        int pageSize = 1;
+        int pageSize = 10;
         SettingDBContext stdb = new SettingDBContext();
         ArrayList<Setting> settinglist = null;
         String filter = request.getParameter("filter");
