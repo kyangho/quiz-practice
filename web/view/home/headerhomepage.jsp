@@ -244,7 +244,7 @@
                                           <input id="signup" class="full-width has-padding" type="submit" value="Sign up">
                                           <script>
                                                  var signup = document.getElementById("signup");
-                                                 signup.addEventListener("click", checkAccount);
+                                                 signup.addEventListener("click", checkRegister);
                                                  function checkRegister(e) {
                                                         e.preventDefault();
                                                         var signupUsername = document.getElementById("signup-username").value;
