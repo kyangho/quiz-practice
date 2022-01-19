@@ -49,7 +49,7 @@
                                                     <option ${requestScope.value eq "role" ? "selected=\"selected\"" : ""} value="role">Role</option>
                                                     <option ${requestScope.value eq "tag" ? "selected=\"selected\"" : ""} value="tag">Tag</option>
                                                     <option ${requestScope.value eq "subject" ? "selected=\"selected\"" : ""} value="subject">Subject</option>
-                                                    <option ${requestScope.value eq "quiz" ? "selected=\"selected\"" : ""} value="quiz">Quiz</option>
+                                                    <option ${requestScope.value eq "category" ? "selected=\"selected\"" : ""} value="category">Category</option>
                                                 </select>
                                                 <button class="btn btn-sm btn-default" style="color: black;font-weight: bolder;" type="submit">Apply</button>
                                             </form>

@@ -43,9 +43,9 @@ public class AccountDBContextTest {
 
     @Test
     public void getAdminAccountTest(){
-        Account account = adb.getAccount("admin", "123");
+        Account account = adb.getAccount("admin", "admin123");
         assertNotNull("Null Account", account);
-        Object[] excepted = {"admin", "123"};
+        Object[] excepted = {"admin", "admin123"};
         Object[] actuals = {account.getUsername(), account.getPassword()};
         assertArrayEquals("Get admin account failed", excepted, actuals);
         System.out.println(account.getUsername() + " " + account.getPassword());
