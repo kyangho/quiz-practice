@@ -176,6 +176,12 @@ public class AccountDBContext extends DBContext {
             }
         }
     }
+    
+    public Account getAccountProfileById(int id){
+        Account resAccount = new Account();
+        
+        return resAccount;
+    }
 
     public static void main(String[] args) {
         AccountDBContext adbc = new AccountDBContext();

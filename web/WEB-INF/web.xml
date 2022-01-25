@@ -9,16 +9,8 @@
         <servlet-class>controller.director.SettingListController</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>SettingDetailsController</servlet-name>
-        <servlet-class>controller.director.SettingDetailsController</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>HomeDirectorController</servlet-name>
         <servlet-class>controller.director.HomeDirectorController</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>AddSettingController</servlet-name>
-        <servlet-class>controller.director.AddSettingController</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>ChangeStatusController</servlet-name>
@@ -37,16 +29,8 @@
         <url-pattern>/director/setting/settinglist</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>SettingDetailsController</servlet-name>
-        <url-pattern>/director/setting/details</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
         <servlet-name>HomeDirectorController</servlet-name>
         <url-pattern>/director</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>AddSettingController</servlet-name>
-        <url-pattern>/director/setting/add</url-pattern>
     </servlet-mapping>
     <servlet>
         <servlet-name>Login</servlet-name>
@@ -86,4 +70,7 @@
     <welcome-file-list>
         <welcome-file>home</welcome-file>
     </welcome-file-list>
-</web-app>
+    <error-page>
+        <location>/view/404.jsp</location>
+    </error-page>
+</web-app>  
