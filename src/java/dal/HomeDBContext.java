@@ -28,13 +28,13 @@ public class HomeDBContext extends DBContext {
                      ResultSet rs = ps.executeQuery();
                      while (rs.next()) {
                             Account a = new Account();
-                            a.setId(rs.getInt(1));
-                            a.setUsername(rs.getString(2));
-                            a.setPassword(rs.getString(3));
-                            a.setEmail(rs.getString(5));
-                            a.setPhone(rs.getString(6));
-                            a.setFullname(rs.getString(7));
-                            a.setAddress(rs.getString(8));
+                            a.setId(rs.getInt("account_id"));
+                            a.setUsername(rs.getString("username"));
+                            a.setPassword(rs.getString("password"));
+                            a.setEmail(rs.getString("account_email"));
+                            a.setPhone(rs.getString("account_phone"));
+                            a.setFullname(rs.getString("account_fullname"));
+                            a.setAddress(rs.getString("address"));
 
                             acc.add(a);
                      }
@@ -71,10 +71,10 @@ public class HomeDBContext extends DBContext {
               }
               return null;
        }
-//       public static void main(String[] args) {
-//              HomeDBContext h = new HomeDBContext();
-//              for (Account b : h.getBooks()) {
-//                     System.out.println(b.toString());
-//              }
-//       }
+       public static void main(String[] args) {
+              HomeDBContext h = new HomeDBContext();
+              for (Account b : h.getAccounts()) {
+                     System.out.println(b.toString());
+              }
+       }
 }
