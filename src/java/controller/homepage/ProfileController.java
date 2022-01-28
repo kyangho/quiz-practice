@@ -5,7 +5,7 @@
  */
 package controller.homepage;
 
-import dal.HomeDBContext;
+import dal.HomeDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -39,7 +39,7 @@ public class ProfileController extends HttpServlet {
 //              }
               String id = request.getParameter("id");
 //              String id = "1";
-              HomeDBContext hdbc = new HomeDBContext();
+              HomeDAO hdbc = new HomeDAO();
               Account acc = hdbc.getInfomation(id);
               ArrayList<Account> accounts = hdbc.getAccounts();
               request.setAttribute("information", accounts);

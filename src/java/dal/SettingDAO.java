@@ -17,7 +17,7 @@ import model.Setting;
  *
  * @author ducky
  */
-public class SettingDBContext extends DBContext {
+public class SettingDAO extends DBContext {
 
     public ArrayList<Setting> getSettings(String lastSettingID, int pageSize, String key, String value) {
         String sql_get = "SELECT * FROM quiz_practice_db.setting\n"
@@ -55,7 +55,7 @@ public class SettingDBContext extends DBContext {
                 settings.add(setting);
             }
         } catch (SQLException ex) {
-            Logger.getLogger(SettingDBContext.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(SettingDAO.class.getName()).log(Level.SEVERE, null, ex);
             return null;
         }
         return settings;
@@ -87,7 +87,7 @@ public class SettingDBContext extends DBContext {
             }
 
         } catch (SQLException ex) {
-            Logger.getLogger(SettingDBContext.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(SettingDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
     }
@@ -109,7 +109,7 @@ public class SettingDBContext extends DBContext {
                 return rs.getInt("toltalRows");
             }
         } catch (SQLException ex) {
-            Logger.getLogger(SettingDBContext.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(SettingDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         return -1;
@@ -132,7 +132,7 @@ public class SettingDBContext extends DBContext {
 
             stm.executeUpdate();
         } catch (SQLException ex) {
-            Logger.getLogger(SettingDBContext.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(SettingDAO.class.getName()).log(Level.SEVERE, null, ex);
             return false;
         }
         return true;
@@ -156,7 +156,7 @@ public class SettingDBContext extends DBContext {
 
             stm.executeUpdate();
         } catch (SQLException ex) {
-            Logger.getLogger(SettingDBContext.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(SettingDAO.class.getName()).log(Level.SEVERE, null, ex);
             return false;
         }
         return true;
@@ -174,7 +174,7 @@ public class SettingDBContext extends DBContext {
 
             stm.executeUpdate();
         } catch (SQLException ex) {
-            Logger.getLogger(SettingDBContext.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(SettingDAO.class.getName()).log(Level.SEVERE, null, ex);
             return false;
         }
         return true;
@@ -192,14 +192,14 @@ public class SettingDBContext extends DBContext {
 
             stm.executeUpdate();
         } catch (SQLException ex) {
-            Logger.getLogger(SettingDBContext.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(SettingDAO.class.getName()).log(Level.SEVERE, null, ex);
             return false;
         }
         return true;
     }
 
 //    public static void main(String[] args) {
-//        SettingDBContext sdb = new SettingDBContext();
+//        SettingDAO sdb = new SettingDAO();
 ////        System.out.println(sdb.toltalRowsInSetting("setting_status", "Active"));
 //        for (Setting setting : sdb.getSettings(">0", 3, "setting_status", "Active")) {
 //            System.out.println(setting.getId() + " " + setting.getName());

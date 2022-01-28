@@ -5,7 +5,7 @@
  */
 package controller.auth;
 
-import dal.AccountDBContext;
+import dal.AccountDAO;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -34,7 +34,7 @@ public class LoginController extends HttpServlet {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
 
-        AccountDBContext adbc = new AccountDBContext();
+        AccountDAO adbc = new AccountDAO();
         Account account = adbc.getAccount(username, password);
         if (account == null) {
             response.getWriter().print("fail");
@@ -56,7 +56,7 @@ public class LoginController extends HttpServlet {
             throws ServletException, IOException {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
-        AccountDBContext adbc = new AccountDBContext();
+        AccountDAO adbc = new AccountDAO();
 
         Account account = adbc.getAccount(username, password);
         if (account == null) {

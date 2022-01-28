@@ -5,7 +5,7 @@
  */
 package controller.director;
 
-import dal.SettingDBContext;
+import dal.SettingDAO;
 import java.io.IOException;
 import java.util.ArrayList;
 import javax.servlet.ServletException;
@@ -41,7 +41,7 @@ public class SettingListController extends HttpServlet {
             int pageIndex;
             String lastID;
             int lastID_raw;
-            SettingDBContext stdb = new SettingDBContext();
+            SettingDAO stdb = new SettingDAO();
             ArrayList<Setting> settinglist;
             String url;
             String pageIndex_raw = request.getParameter("pageindex");
@@ -127,7 +127,7 @@ public class SettingListController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         int pageSize = 10;
-        SettingDBContext stdb = new SettingDBContext();
+        SettingDAO stdb = new SettingDAO();
         ArrayList<Setting> settinglist = null;
         String filter = request.getParameter("filter");
         String value;

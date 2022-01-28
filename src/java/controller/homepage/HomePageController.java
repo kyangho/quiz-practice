@@ -5,7 +5,7 @@
  */
 package controller.homepage;
 
-import dal.HomeDBContext;
+import dal.HomeDAO;
 import java.io.IOException;
 import java.util.ArrayList;
 import javax.servlet.ServletException;
@@ -23,7 +23,7 @@ public class HomePageController extends HttpServlet {
        @Override
        protected void doGet(HttpServletRequest request, HttpServletResponse response)
                throws ServletException, IOException {
-              HomeDBContext hdbc = new HomeDBContext();
+              HomeDAO hdbc = new HomeDAO();
               ArrayList<Account> accounts = hdbc.getAccounts();
               String admin = "admin";
               Account account = (Account) request.getSession().getAttribute("account");

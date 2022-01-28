@@ -5,7 +5,7 @@
  */
 package controller.auth;
 
-import dal.AccountDBContext;
+import dal.AccountDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -37,7 +37,7 @@ public class RegisterController extends HttpServlet {
         String email = request.getParameter("register_email");
         String username = request.getParameter("register_username");
 
-        AccountDBContext adbc = new AccountDBContext();
+        AccountDAO adbc = new AccountDAO();
 
         if (adbc.isExistAccount(phone, email, username)) {
             response.getWriter().print("fail");
@@ -69,7 +69,7 @@ public class RegisterController extends HttpServlet {
         account.setFullname(request.getParameter("register_fullname"));
         account.setAddress(request.getParameter("register_address"));
 
-        AccountDBContext adbc = new AccountDBContext();
+        AccountDAO adbc = new AccountDAO();
         adbc.insertAccount(account);
         response.sendRedirect("home");
 
