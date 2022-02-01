@@ -47,62 +47,67 @@
                                         </div>
                                     </div>
                                     <form action="settinglist" method="POST">
-                                        <table class="table table-hover">
-                                            <tr>
-                                                <th>ID</th>
-                                                <th>Setting Name</th>
-                                                <th>Description</th>
-
-                                                <th>
-                                                    Type:
-                                                    <select name="type" class=" input-sm">
-                                                        <option ${requestScope.type eq "all" ? "selected=\"selected\"" : ""} value="all">All</option>
-                                                        <option ${requestScope.type eq "role" ? "selected=\"selected\"" : ""} value="role">Role</option>
-                                                        <option ${requestScope.type eq "tag" ? "selected=\"selected\"" : ""} value="tag">Tag</option>
-                                                        <option ${requestScope.type eq "subject" ? "selected=\"selected\"" : ""} value="subject">Subject</option>
-                                                        <option ${requestScope.type eq "category" ? "selected=\"selected\"" : ""} value="category">Category</option>
-                                                    </select>
-                                                    <!--<button class="btn btn-sm btn-default" style="color: black;font-weight: bolder;" type="submit">Apply</button>-->
-                                                </th>
-                                                <th>
-                                                    Status:
-                                                    <select name="status" class=" input-sm">
-                                                        <option ${requestScope.status eq "all" ? "selected=\"selected\"" : ""} value="all">All</option>
-                                                        <option ${requestScope.status eq "Active" ? "selected=\"selected\"" : ""} value="Active">Active</option>
-                                                        <option ${requestScope.status eq "Deactive" ? "selected=\"selected\"" : ""} value="Deactive">Deactive</option>
-                                                    </select>
-                                                    <button class="btn btn-sm btn-default" style="color: black;font-weight: bolder;" type="submit">Apply</button>
-                                                </th>
-                                                <th>View</th>
-                                                <th>Change status</th>
-                                            </tr>
-                                            <c:forEach items="${requestScope.settings}" var="s">
+                                        <c:if test="${requestScope.settings.isEmpty()}">
+                                            <h3>Not Found Settings</h3>
+                                        </c:if>
+                                        <c:if test="${!requestScope.settings.isEmpty()}">
+                                            <table class="table table-hover">
                                                 <tr>
-                                                    <td>${s.id}</td>
-                                                    <td>${s.name}</td>
-                                                    <td>${s.description}</td>
-                                                    <td>${s.type}</td>
-                                                    <td>${s.status}</td>
-                                                    <td><button class="label label-info"><a style="color: white;" href="details?id=${s.id}">Details</a></button></td>
-                                                    <td><button onclick="changeStatus(${s.id}, '${s.status}', ${requestScope.pageindex})" type="button" class="label 
-                                                                <c:if test="${s.status == 'ACTIVE'}">
-                                                                    label-danger
+                                                    <th>ID</th>
+                                                    <th>Setting Name</th>
+                                                    <th>Description</th>
+
+                                                    <th>
+                                                        Type:
+                                                        <select name="type" class=" input-sm">
+                                                            <option ${requestScope.type eq "all" ? "selected=\"selected\"" : ""} value="all">All</option>
+                                                            <option ${requestScope.type eq "role" ? "selected=\"selected\"" : ""} value="role">Role</option>
+                                                            <option ${requestScope.type eq "tag" ? "selected=\"selected\"" : ""} value="tag">Tag</option>
+                                                            <option ${requestScope.type eq "subject" ? "selected=\"selected\"" : ""} value="subject">Subject</option>
+                                                            <option ${requestScope.type eq "category" ? "selected=\"selected\"" : ""} value="category">Category</option>
+                                                        </select>
+                                                        <!--<button class="btn btn-sm btn-default" style="color: black;font-weight: bolder;" type="submit">Apply</button>-->
+                                                    </th>
+                                                    <th>
+                                                        Status:
+                                                        <select name="status" class=" input-sm">
+                                                            <option ${requestScope.status eq "all" ? "selected=\"selected\"" : ""} value="all">All</option>
+                                                            <option ${requestScope.status eq "Active" ? "selected=\"selected\"" : ""} value="Active">Active</option>
+                                                            <option ${requestScope.status eq "Deactive" ? "selected=\"selected\"" : ""} value="Deactive">Deactive</option>
+                                                        </select>
+                                                        <button class="btn btn-sm btn-default" style="color: black;font-weight: bolder;" type="submit">Apply</button>
+                                                    </th>
+                                                    <th>View</th>
+                                                    <th>Change status</th>
+                                                </tr>
+                                                <c:forEach items="${requestScope.settings}" var="s">
+                                                    <tr>
+                                                        <td>${s.id}</td>
+                                                        <td>${s.name}</td>
+                                                        <td>${s.description}</td>
+                                                        <td>${s.type}</td>
+                                                        <td>${s.status}</td>
+                                                        <td><button class="label label-info"><a style="color: white;" href="details?id=${s.id}">Details</a></button></td>
+                                                        <td><button onclick="changeStatus(${s.id}, '${s.status}', ${requestScope.pageindex})" type="button" class="label 
+                                                                    <c:if test="${s.status == 'ACTIVE'}">
+                                                                        label-danger
+                                                                    </c:if>
+                                                                    <c:if test="${s.status eq 'DEACTIVE'}">
+                                                                        label-success
+                                                                    </c:if>
+                                                                    ">
+                                                                <c:if test="${s.status eq 'ACTIVE'}">
+                                                                    DEACTIVE
                                                                 </c:if>
                                                                 <c:if test="${s.status eq 'DEACTIVE'}">
-                                                                    label-success
+                                                                    ACTIVE
                                                                 </c:if>
-                                                                ">
-                                                            <c:if test="${s.status eq 'ACTIVE'}">
-                                                                DEACTIVE
-                                                            </c:if>
-                                                            <c:if test="${s.status eq 'DEACTIVE'}">
-                                                                ACTIVE
-                                                            </c:if>
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                            </c:forEach>
-                                        </table>
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+                                                </c:forEach>
+                                            </table>
+                                        </c:if>    
                                     </form>
                                     <div id="paggingBottom" class="pageLine" style=" margin: 1%; float: right;">
                                     </div>
