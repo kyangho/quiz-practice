@@ -31,19 +31,7 @@ public class RegisterController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.setCharacterEncoding("UTF-8");
-        Account account = new Account();
-        String phone = request.getParameter("register_phone");
-        String email = request.getParameter("register_email");
-        String username = request.getParameter("register_username");
-
-        AccountDBContext adbc = new AccountDBContext();
-
-        if (adbc.isExistAccount(phone, email, username)) {
-            response.getWriter().print("fail");
-        } else {
-            response.getWriter().print("true");
-        }
+        request.getRequestDispatcher("view/home/register.jsp").forward(request, response);
 
     }
 
