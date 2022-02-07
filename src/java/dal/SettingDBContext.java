@@ -68,7 +68,7 @@ public class SettingDBContext extends DBContext {
             if (setting_name != null) {
                 sql += "where setting_name like '%" + setting_name + "%'";
             }
-            System.out.println(sql);
+//            System.out.println(sql);
 
             PreparedStatement stm = connection.prepareStatement(sql);
             ResultSet rs = stm.executeQuery();
@@ -168,8 +168,8 @@ public class SettingDBContext extends DBContext {
     public ArrayList<Setting> GetALLSetting(int pageSize, int pageIndex, String type, String status, String setting_name) {
         String sql_get = "select * from\n"
                 + "	(select row_number() over (order by setting_id ) as stt,\n"
-                + "		setting_id, setting_name, setting_status, setting_type, setting_description,\n"
-                + "        setting_value from quiz_practice_db.setting\n";
+                + "		setting_id, setting_name, setting_status, setting_type, setting_description"
+                + "         from quiz_practice_db.setting\n";
         if (status != null && type != null) {
                 if (!type.equals("all") && !status.equals("all")) {
                     sql_get += "where setting_type = '" + type + "'" + " AND setting_status = '" + status + "'";
@@ -203,7 +203,6 @@ public class SettingDBContext extends DBContext {
                 setting.setName(rs.getString("setting_name"));
                 setting.setType(rs.getString("setting_type"));
                 setting.setDescription(rs.getString("setting_description"));
-                setting.setValue(rs.getString("setting_value"));
                 setting.setStatus(rs.getString("setting_status"));
 
                 settings.add(setting);
@@ -219,9 +218,9 @@ public class SettingDBContext extends DBContext {
 //    public static void main(String[] args) {
 //        SettingDBContext sdb = new SettingDBContext();
 //        System.out.println(sdb.totalRowsInSetting(null, null, "a"));
-////        for (Setting setting :sdb.GetALLSetting(10, 1, "all", "active")) {
-////            System.out.println(setting.toString());
-////            System.out.println("");
-////        }
+//        for (Setting setting :sdb.GetALLSetting(2, 1, "role", "Active", null)) {
+//            System.out.println(setting.toString());
+//            System.out.println("");
+//        }
 //    }
 }
