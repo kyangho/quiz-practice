@@ -17,6 +17,10 @@ import model.Account;
  * @author Vu Duc Tien
  */
 public class AccountDBContext extends DBContext {
+    
+    public void getAllAccounts(){
+        String sql = "";
+    }
 
     public Account getAccount(String username, String password) {
         try {
