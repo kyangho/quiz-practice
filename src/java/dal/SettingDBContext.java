@@ -188,7 +188,6 @@ public class SettingDBContext extends DBContext {
 
         sql_get += "        ) as t\n"
                 + " where  t.stt >= (? - 1)*? + 1 AND t.stt <= ? * ?;";
-        System.out.println(sql_get);
         ArrayList<Setting> settings = new ArrayList<>();
         try {
             PreparedStatement stm = connection.prepareStatement(sql_get);
@@ -217,12 +216,12 @@ public class SettingDBContext extends DBContext {
 
     }
 
-    public static void main(String[] args) {
-        SettingDBContext sdb = new SettingDBContext();
-        System.out.println(sdb.totalRowsInSetting(null, null, "a"));
-//        for (Setting setting :sdb.GetALLSetting(10, 1, "all", "active")) {
-//            System.out.println(setting.toString());
-//            System.out.println("");
-//        }
-    }
+//    public static void main(String[] args) {
+//        SettingDBContext sdb = new SettingDBContext();
+//        System.out.println(sdb.totalRowsInSetting(null, null, "a"));
+////        for (Setting setting :sdb.GetALLSetting(10, 1, "all", "active")) {
+////            System.out.println(setting.toString());
+////            System.out.println("");
+////        }
+//    }
 }
