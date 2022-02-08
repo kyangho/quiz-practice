@@ -5,7 +5,7 @@
  */
 package controller.auth;
 
-import dal.AccountDAO;
+import dal.AccountDBContext;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -31,19 +31,7 @@ public class RegisterController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.setCharacterEncoding("UTF-8");
-        Account account = new Account();
-        String phone = request.getParameter("register_phone");
-        String email = request.getParameter("register_email");
-        String username = request.getParameter("register_username");
-
-        AccountDAO adbc = new AccountDAO();
-
-        if (adbc.isExistAccount(phone, email, username)) {
-            response.getWriter().print("fail");
-        } else {
-            response.getWriter().print("true");
-        }
+        request.getRequestDispatcher("view/home/register.jsp").forward(request, response);
 
     }
 
@@ -69,7 +57,7 @@ public class RegisterController extends HttpServlet {
         account.setFullname(request.getParameter("register_fullname"));
         account.setAddress(request.getParameter("register_address"));
 
-        AccountDAO adbc = new AccountDAO();
+        AccountDBContext adbc = new AccountDBContext();
         adbc.insertAccount(account);
         response.sendRedirect("home");
 

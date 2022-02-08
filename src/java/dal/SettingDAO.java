@@ -92,19 +92,28 @@ public class SettingDAO extends DBContext {
         return null;
     }
 
-    public int toltalRowsInSetting(String key, String value) {
+    public int totalRowsInSetting(String status, String type, String setting_name) {
         try {
-            String sql = "select count(*) as toltalRows from quiz_practice_db.setting";
-            if (key != null && !value.equals("all") && !key.equals("setting_status")) {
-                sql += " where " + key + " like '%" + value + "%';";
+            String sql = "select count(*) as toltalRows from quiz_practice_db.setting\n";
+            if (status != null && type != null) {
+                if (!type.equals("all") && !status.equals("all")) {
+                    sql += "where setting_type = '" + type + "'" + " AND setting_status = '" + status + "'";
+                }
+                if (type.equals("all") && !status.equals("all")) {
+                    sql += "where setting_status = '" + status + "'";
+                }
+                if (!type.equals("all") && status.equals("all")) {
+                    sql += "where setting_type = '" + type + "'";
+                }
             }
 
-            if (key != null && !value.equals("all") && key.equals("setting_status")) {
-                sql += " where " + key + "='" + value + "';";
+            if (setting_name != null) {
+                sql += "where setting_name like '%" + setting_name + "%'";
             }
+//            System.out.println(sql);
+
             PreparedStatement stm = connection.prepareStatement(sql);
             ResultSet rs = stm.executeQuery();
-
             if (rs.next()) {
                 return rs.getInt("toltalRows");
             }
@@ -198,11 +207,62 @@ public class SettingDAO extends DBContext {
         return true;
     }
 
+    public ArrayList<Setting> GetALLSetting(int pageSize, int pageIndex, String type, String status, String setting_name) {
+        String sql_get = "select * from\n"
+                + "	(select row_number() over (order by setting_id ) as stt,\n"
+                + "		setting_id, setting_name, setting_status, setting_type, setting_description"
+                + "         from quiz_practice_db.setting\n";
+        if (status != null && type != null) {
+                if (!type.equals("all") && !status.equals("all")) {
+                    sql_get += "where setting_type = '" + type + "'" + " AND setting_status = '" + status + "'";
+                }
+                if (type.equals("all") && !status.equals("all")) {
+                    sql_get += "where setting_status = '" + status + "'";
+                }
+                if (!type.equals("all") && status.equals("all")) {
+                    sql_get += "where setting_type = '" + type + "'";
+                }
+            }
+
+        if (setting_name != null) {
+            sql_get += "where setting_name like '%" + setting_name + "%'";
+        }
+
+        sql_get += "        ) as t\n"
+                + " where  t.stt >= (? - 1)*? + 1 AND t.stt <= ? * ?;";
+        ArrayList<Setting> settings = new ArrayList<>();
+        try {
+            PreparedStatement stm = connection.prepareStatement(sql_get);
+            stm.setInt(1, pageIndex);
+            stm.setInt(2, pageSize);
+            stm.setInt(3, pageIndex);
+            stm.setInt(4, pageSize);
+            ResultSet rs = stm.executeQuery();
+
+            while (rs.next()) {
+                Setting setting = new Setting();
+                setting.setId(rs.getInt("setting_id"));
+                setting.setName(rs.getString("setting_name"));
+                setting.setType(rs.getString("setting_type"));
+                setting.setDescription(rs.getString("setting_description"));
+                setting.setStatus(rs.getString("setting_status"));
+
+                settings.add(setting);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(SettingDBContext.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+        return settings;
+
+    }
+
 //    public static void main(String[] args) {
-//        SettingDAO sdb = new SettingDAO();
-////        System.out.println(sdb.toltalRowsInSetting("setting_status", "Active"));
-//        for (Setting setting : sdb.getSettings(">0", 3, "setting_status", "Active")) {
-//            System.out.println(setting.getId() + " " + setting.getName());
+//        SettingDBContext sdb = new SettingDBContext();
+//        System.out.println(sdb.totalRowsInSetting(null, null, "a"));
+//        for (Setting setting :sdb.GetALLSetting(2, 1, "role", "Active", null)) {
+//            System.out.println(setting.toString());
+//            System.out.println("");
 //        }
 //    }
 }

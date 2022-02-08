@@ -19,7 +19,7 @@ import java.util.logging.Logger;
  */
 public class DBContext {
 
-       public Connection connection;
+    public Connection connection;
 
     public DBContext() {
         try {
