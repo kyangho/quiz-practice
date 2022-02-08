@@ -14,7 +14,7 @@
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Settings List</title>
+        <title>Users List</title>
         <jsp:include page="../header/linkcss.jsp"></jsp:include>
 
         </head>
@@ -37,42 +37,10 @@
                                     </div>
 
                                     <div class="panel-body table-responsive">
-
-                                        <div class="box-tools m-b-15" style="display: flex;">
-                                            <div style="margin-right: 25%;">
+                                        <div class="box-tools m-b-15" style="float: right;">
+                                            <div class="input-group">
                                                 <form action="settinglist" method="POST">
-                                                    <input type="hidden" name="filter" value="setting_type">
-                                                    <input type="hidden" name="lastID" value="${requestScope.lastID}">
-                                                Type:
-                                                <select name="type" class=" input-sm">
-                                                    <option ${requestScope.value eq "all" ? "selected=\"selected\"" : ""} value="all">All</option>
-                                                    <option ${requestScope.value eq "role" ? "selected=\"selected\"" : ""} value="role">Role</option>
-                                                    <option ${requestScope.value eq "tag" ? "selected=\"selected\"" : ""} value="tag">Tag</option>
-                                                    <option ${requestScope.value eq "subject" ? "selected=\"selected\"" : ""} value="subject">Subject</option>
-                                                    <option ${requestScope.value eq "category" ? "selected=\"selected\"" : ""} value="category">Category</option>
-                                                </select>
-                                                <button class="btn btn-sm btn-default" style="color: black;font-weight: bolder;" type="submit">Apply</button>
-                                            </form>
-
-                                        </div>
-                                        <div style="margin-right: 25%;">
-                                            <form action="settinglist" method="POST">
-                                                <input type="hidden" name="filter" value="setting_status">
-                                                <input type="hidden" name="lastID" value="${requestScope.lastID}">
-                                                Status:
-                                                <select name="status" class=" input-sm">
-                                                    <option ${requestScope.value eq "all" ? "selected=\"selected\"" : ""} value="all">All</option>
-                                                    <option ${requestScope.value eq "Active" ? "selected=\"selected\"" : ""} value="Active">Active</option>
-                                                    <option ${requestScope.value eq "Deactive" ? "selected=\"selected\"" : ""} value="Deactive">Deactive</option>
-                                                </select>
-                                                <button class="btn btn-sm btn-default" style="color: black;font-weight: bolder;" type="submit">Apply</button>
-                                            </form>
-                                        </div>
-                                        <div class="input-group">
-                                            <form action="settinglist" method="POST">
-                                                <input type="hidden" name="filter" value="setting_name">
-                                                <input type="hidden" name="lastID" value="${requestScope.lastID}">
-                                                <input type="text" name="setting_name" class="form-control input-sm pull-right" style="width: 150px;" placeholder="Search by setting name" value="${valueSearch}" />
+                                                    <input type="text" name="setting_name" class="form-control input-sm pull-right" style="width: 150px;" placeholder="Search by setting name" value="${valueSearch}" />
                                                 <button class="btn btn-sm btn-default" type="submit"><i class="fa fa-search"></i> </button>                                             
                                             </form>
                                         </div>
@@ -99,23 +67,25 @@
                                                     </c:forEach>
                                                 </td>
                                                 <td>${a.status eq true? "Active":"De-active"}</td>
-                                                <td><button class="label label-info"><a style="color: white;" href="details?id=${s.id}">Details</a></button></td>
-<!--                                                <td><button onclick="changeStatus(${s.id}, '${s.status}', ${requestScope.pageindex})" type="button" class="label 
-                                                <c:if test="${s.status == 'ACTIVE'}">
-                                                    label-danger
-                                                </c:if>
-                                                <c:if test="${s.status eq 'DEACTIVE'}">
-                                                    label-success
-                                                </c:if>
-                                                ">
-                                                <c:if test="${s.status eq 'ACTIVE'}">
-                                                    DEACTIVE
-                                                </c:if>
-                                                <c:if test="${s.status eq 'DEACTIVE'}">
-                                                    ACTIVE
-                                                </c:if>
-                                            </button>
-                                        </td>-->
+                                                <td><button class="label label-info"><a style="color: white;" href="#">Details</a></button></td>
+                                                <td><button 
+                                                        <%-- onclick="changeStatus(${s.id}, '${s.status}', ${requestScope.pageindex})" --%>
+                                                        type="button" class="label 
+                                                        <c:if test="${a.status}">
+                                                            label-danger
+                                                        </c:if>
+                                                        <c:if test="${!a.status}">
+                                                            label-success
+                                                        </c:if>
+                                                        ">
+                                                        <c:if test="${a.status}">
+                                                            DEACTIVE
+                                                        </c:if>
+                                                        <c:if test="${!a.status}">
+                                                            ACTIVE
+                                                        </c:if>
+                                                    </button>
+                                                </td>
                                             </tr>
                                         </c:forEach>
                                     </table>
