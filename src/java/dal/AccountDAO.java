@@ -8,7 +8,7 @@ package dal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.logging.Level;s
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.Account;
 
@@ -16,7 +16,7 @@ import model.Account;
  *
  * @author Vu Duc Tien
  */
-public class AccountDBContext extends DBContext {
+public class AccountDAO extends DBContext {
     
     public void getAllAccounts(){
         String sql = "";

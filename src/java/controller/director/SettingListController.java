@@ -44,7 +44,7 @@ public class SettingListController extends HttpServlet {
         } else {
             pageIndex = Integer.parseInt(pageIndex_raw);
         }
-        SettingDBContext stdb = new SettingDBContext();
+        SettingDAO stdb = new SettingDAO();
         ArrayList<Setting> settings = null;
         int totalRows;
         int totalPage;
@@ -90,7 +90,7 @@ public class SettingListController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         int pageSize = 2;
-        SettingDBContext stdb = new SettingDBContext();
+        SettingDAO stdb = new SettingDAO();
         String type = request.getParameter("type");
         String status = request.getParameter("status");
         String setting_name = request.getParameter("setting_name");

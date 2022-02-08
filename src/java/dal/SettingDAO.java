@@ -250,7 +250,7 @@ public class SettingDAO extends DBContext {
                 settings.add(setting);
             }
         } catch (SQLException ex) {
-            Logger.getLogger(SettingDBContext.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(SettingDAO.class.getName()).log(Level.SEVERE, null, ex);
             return null;
         }
         return settings;
