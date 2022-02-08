@@ -69,7 +69,7 @@
                 <a href="contact.html" class="nav-item nav-link">Contact</a>
                 <a href="${pageContext.request.contextPath}/profile" class="nav-item nav-link">List User</a>
                 <c:if test="${sessionScope.account.username == 'admin'}">
-                    <a href="${pageContext.request.contextPath}/director" class="nav-item nav-link">For Director</a>
+                    <a href="${pageContext.request.contextPath}/director/setting/settinglist" class="nav-item nav-link">For Director</a>
                 </c:if>
                     <c:if test="${sessionScope.account == null}"> 
                         <a href="${pageContext.request.contextPath}/login" class="btn btn-primary py-4 px-lg-5 d-none d-lg-block">Join Now<i class="fa fa-arrow-right ms-3"></i></a>
