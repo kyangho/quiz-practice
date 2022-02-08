@@ -26,25 +26,25 @@
                 <div class="col-lg-5">
                     <div class="card border-0">
                         <div class="card-header bg-light text-center p-4" style="display: flex">
-                            <div class="form-header active"><a href="login"><h1 class="m-0">Sign In</h1></a></div>
-                            <div class="form-header"><a href="register"><h1 class="m-0">Sign Up</h1></a></div>
-                        </div>
-                        <div class="card-body rounded-bottom bg-primary p-5">
-                            <form>
-                                <div class="form-group">
-                                    <input name="username" type="text" class="form-control border-0 p-4" placeholder="Username" required="required" />
-                                </div>
-                                <div class="form-group">
-                                    <input name="password" type="password" class="form-control border-0 p-4" placeholder="Password" required="required" />
-                                </div>
-                                <div>
-                                    <button class="btn btn-dark btn-block border-0 py-3" type="submit">Sign In</button>
-                                </div>
-                            </form>
-                        </div>
+                            <div class="form-header active"><a href="${pageContext.request.contextPath}/login"><h1 class="m-0">Sign In</h1></a></div>
+                        <div class="form-header"><a href="${pageContext.request.contextPath}/register"><h1 class="m-0">Sign Up</h1></a></div>
+                    </div>
+                    <div class="card-body rounded-bottom bg-primary p-5">
+                        <form action="${pageContext.request.contextPath}/login" method="POST">
+                            <div class="form-group">
+                                <input name="username" type="text" class="form-control border-0 p-4" placeholder="Username" required="required" />
+                            </div>
+                            <div class="form-group">
+                                <input name="password" type="password" class="form-control border-0 p-4" placeholder="Password" required="required" />
+                            </div>
+                            <div>
+                                <button class="btn btn-dark btn-block border-0 py-3" type="submit">Sign In</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
 <jsp:include page="header_footer/footer.jsp"></jsp:include>

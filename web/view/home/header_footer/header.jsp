@@ -9,7 +9,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <head>
     <meta charset="utf-8">
-    <title>eLEARNING - eLearning HTML Template</title>
+    <title>Quizz</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
@@ -45,19 +45,17 @@
         </div>
     </div>
     <!-- Spinner End -->
-
-
     <!-- Navbar Start -->
     <nav class="navbar navbar-expand-lg bg-white navbar-light shadow sticky-top p-0">
-        <a href="index.html" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
-            <h2 class="m-0 text-primary"><i class="fa fa-book me-3"></i>eLEARNING</h2>
+        <a href="${pageContext.request.contextPath}/home" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
+            <h2 class="m-0 text-primary"><i class="fa fa-book me-3"></i>Quizz</h2>
         </a>
         <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <div class="navbar-nav ms-auto p-4 p-lg-0">
-                <a href="home" class="nav-item nav-link active">Home</a>
+                <a href="${pageContext.request.contextPath}/home" class="nav-item nav-link active">Home</a>
                 <a href="about.html" class="nav-item nav-link">About</a>
                 <a href="courses.html" class="nav-item nav-link">Courses</a>
                 <div class="nav-item dropdown">
@@ -69,8 +67,22 @@
                     </div>
                 </div>
                 <a href="contact.html" class="nav-item nav-link">Contact</a>
+                <a href="${pageContext.request.contextPath}/profile" class="nav-item nav-link">List User</a>
+                <c:if test="${sessionScope.account.username == 'admin'}">
+                    <a href="${pageContext.request.contextPath}/director" class="nav-item nav-link">For Director</a>
+                </c:if>
+                    <c:if test="${sessionScope.account == null}"> 
+                        <a href="${pageContext.request.contextPath}/login" class="btn btn-primary py-4 px-lg-5 d-none d-lg-block">Join Now<i class="fa fa-arrow-right ms-3"></i></a>
+                        </c:if>
+                        <c:if test="${sessionScope.account != null}">                                                                       
+                        <button onclick="togglePopup()" class="nav-item nav-link" style="border-style: none; border: none; background: white;" >
+                            <i class="fa fa-user "></i>${sessionScope.account.fullname}
+                        </button>
+                        <a style=" border-top: none;" class="nav-item nav-link" href="${pageContext.request.contextPath}/logout"><i class="fa fa-sign-out-alt"></i>Logout</a>
+                    </c:if>
             </div>
-            <a href="login" class="btn btn-primary py-4 px-lg-5 d-none d-lg-block">Join Now<i class="fa fa-arrow-right ms-3"></i></a>
+
+
+
         </div>
     </nav>
-    <!-- Navbar End -->
