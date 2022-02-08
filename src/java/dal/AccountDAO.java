@@ -88,7 +88,7 @@ public class AccountDAO extends DBContext {
             stm1.setString(2, account.getPassword());
             stm1.setString(3, "ACTIVE");
             stm1.executeUpdate();
-            
+
             String sql3 = "SELECT LAST_INSERT_ID();";
             PreparedStatement stm3 = connection.prepareStatement(sql3);
             ResultSet rs = stm3.executeQuery();
@@ -176,11 +176,33 @@ public class AccountDAO extends DBContext {
             }
         }
     }
-    
-    public Account getAccountProfileById(int id){
-        Account resAccount = new Account();
-        
-        return resAccount;
+
+    public Account getAccountById(int id) {
+        try {
+            String sql = "SELECT a.account_id, a.username, a.password,\n"
+                    + "ap.account_email, ap.account_phone,\n"
+                    + "ap.account_fullname, ap.address\n"
+                    + "FROM account as a\n"
+                    + "JOIN account_profile as ap on a.account_id = ap.account_id\n"
+                    + "WHERE a.account_id = ?";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setInt(1, id);
+            ResultSet rs = stm.executeQuery();
+            if (rs.next()) {
+                Account account = new Account();
+                account.setId(rs.getInt(1));
+                account.setUsername(rs.getString(2));
+                account.setPassword(rs.getString(3));
+                account.setEmail(rs.getString(4));
+                account.setPhone(rs.getString(5));
+                account.setFullname(rs.getString(6));
+                account.setAddress(rs.getString(7));
+                return account;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(AccountDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
 
     public static void main(String[] args) {
