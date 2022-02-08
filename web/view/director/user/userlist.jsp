@@ -1,21 +1,25 @@
 <%-- 
-    Document   : userlist
-    Created on : Feb 1, 2022, 10:02:15 AM
+    Document   : settinglist
+    Created on : Jan 12, 2022, 7:42:08 PM
     Author     : conmu
 --%>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html>
+
+<html lang="en">
+
     <head>
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Users List</title>
+        <title>Settings List</title>
         <jsp:include page="../header/linkcss.jsp"></jsp:include>
-    </head>
-        <body>
+
+        </head>
+
+        <body class="skin-black">
         <jsp:include page="../header/headerforadmin.jsp"></jsp:include>
 
             <div class="wrapper row-offcanvas row-offcanvas-left">
@@ -97,21 +101,21 @@
                                                 <td>${a.status eq true? "Active":"De-active"}</td>
                                                 <td><button class="label label-info"><a style="color: white;" href="details?id=${s.id}">Details</a></button></td>
 <!--                                                <td><button onclick="changeStatus(${s.id}, '${s.status}', ${requestScope.pageindex})" type="button" class="label 
-                                                            <c:if test="${s.status == 'ACTIVE'}">
-                                                                label-danger
-                                                            </c:if>
-                                                            <c:if test="${s.status eq 'DEACTIVE'}">
-                                                                label-success
-                                                            </c:if>
-                                                            ">
-                                                        <c:if test="${s.status eq 'ACTIVE'}">
-                                                            DEACTIVE
-                                                        </c:if>
-                                                        <c:if test="${s.status eq 'DEACTIVE'}">
-                                                            ACTIVE
-                                                        </c:if>
-                                                    </button>
-                                                </td>-->
+                                                <c:if test="${s.status == 'ACTIVE'}">
+                                                    label-danger
+                                                </c:if>
+                                                <c:if test="${s.status eq 'DEACTIVE'}">
+                                                    label-success
+                                                </c:if>
+                                                ">
+                                                <c:if test="${s.status eq 'ACTIVE'}">
+                                                    DEACTIVE
+                                                </c:if>
+                                                <c:if test="${s.status eq 'DEACTIVE'}">
+                                                    ACTIVE
+                                                </c:if>
+                                            </button>
+                                        </td>-->
                                             </tr>
                                         </c:forEach>
                                     </table>

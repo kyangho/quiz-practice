@@ -268,6 +268,6 @@ public class AccountDBContext extends DBContext {
 //        a.setUsername("admin");
 //        a.setPassword("admin");
 //        adbc.changePassword(a);
-        System.out.println(adbc.isExistAccount("", "", ""));
+//        System.out.println(adbc.isExistAccount("", "", ""));
     }
 }
