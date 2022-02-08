@@ -19,7 +19,7 @@ import model.Role;
  * @author Vu Duc Tien
  */
 public class AccountDBContext extends DBContext {
-
+    
     public ArrayList<Account> getAllAccounts() {
         ArrayList<Account> accounts = new ArrayList<>();
         try {
@@ -48,7 +48,7 @@ public class AccountDBContext extends DBContext {
                         if (account.getId() == a.getId()) {
                             account.getRole().add(new Role(rs.getInt(8), rs.getString(9)));
                             break;
-                        }
+    }
                     }
                 }
             }
@@ -230,10 +230,32 @@ public class AccountDBContext extends DBContext {
         }
     }
 
-    public Account getAccountProfileById(int id) {
-        Account resAccount = new Account();
-
-        return resAccount;
+    public Account getAccountById(int id) {
+        try {
+            String sql = "SELECT a.account_id, a.username, a.password,\n"
+                    + "ap.account_email, ap.account_phone,\n"
+                    + "ap.account_fullname, ap.address\n"
+                    + "FROM account as a\n"
+                    + "JOIN account_profile as ap on a.account_id = ap.account_id\n"
+                    + "WHERE a.account_id = ?";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setInt(1, id);
+            ResultSet rs = stm.executeQuery();
+            if (rs.next()) {
+                Account account = new Account();
+                account.setId(rs.getInt(1));
+                account.setUsername(rs.getString(2));
+                account.setPassword(rs.getString(3));
+                account.setEmail(rs.getString(4));
+                account.setPhone(rs.getString(5));
+                account.setFullname(rs.getString(6));
+                account.setAddress(rs.getString(7));
+                return account;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(AccountDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
 
     public static void main(String[] args) {
@@ -246,8 +268,6 @@ public class AccountDBContext extends DBContext {
 //        a.setUsername("admin");
 //        a.setPassword("admin");
 //        adbc.changePassword(a);
-//        for (Account allAccount : adbc.getAllAccounts()) {
-//            allAccount.display();
-//        }
+        System.out.println(adbc.isExistAccount("", "", ""));
     }
 }

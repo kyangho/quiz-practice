@@ -5,7 +5,7 @@
  */
 package jutil.test.database;
 
-import dal.SettingDBContext;
+import dal.SettingDAO;
 import java.util.ArrayList;
 import model.Setting;
 import org.junit.After;
@@ -21,7 +21,7 @@ import org.junit.Ignore;
  * @author ducky
  */
 public class SettingDBContextTest {
-    SettingDBContext sdb = new SettingDBContext();
+    SettingDAO sdb = new SettingDAO();
     
     public SettingDBContextTest() {
     }
