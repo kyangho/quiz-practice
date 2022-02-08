@@ -5,7 +5,7 @@
  */
 package jutil.test.database;
 
-import dal.AccountDAO;
+import dal.AccountDBContext;
 import model.Account;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -20,7 +20,7 @@ import static org.junit.Assert.*;
  */
 public class AccountDBContextTest {
     
-    private AccountDAO adb = new AccountDAO();
+    private AccountDBContext adb = new AccountDBContext();
     
     public AccountDBContextTest() {
     }

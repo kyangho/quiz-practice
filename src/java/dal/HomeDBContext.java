@@ -17,7 +17,7 @@ import model.Account;
  *
  * @author Tebellum
  */
-public class HomeDAO extends DBContext {
+public class HomeDBContext extends DBContext {
 
        public ArrayList<Account> getAccounts() {
 
@@ -39,7 +39,7 @@ public class HomeDAO extends DBContext {
                             acc.add(a);
                      }
               } catch (SQLException ex) {
-                     Logger.getLogger(HomeDAO.class.getName()).log(Level.SEVERE, null, ex);
+                     Logger.getLogger(HomeDBContext.class.getName()).log(Level.SEVERE, null, ex);
               }
 
               return acc;
@@ -67,12 +67,12 @@ public class HomeDAO extends DBContext {
                      }
 
               } catch (SQLException ex) {
-                     Logger.getLogger(HomeDAO.class.getName()).log(Level.SEVERE, null, ex);
+                     Logger.getLogger(HomeDBContext.class.getName()).log(Level.SEVERE, null, ex);
               }
               return null;
        }
        public static void main(String[] args) {
-              HomeDAO h = new HomeDAO();
+              HomeDBContext h = new HomeDBContext();
               for (Account b : h.getAccounts()) {
                      System.out.println(b.toString());
               }

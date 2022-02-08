@@ -6,7 +6,7 @@
 package controller.director;
 
 import controller.TypeConfigController;
-import dal.SettingDAO;
+import dal.SettingDBContext;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -102,7 +102,7 @@ public class SettingController extends HomeDirectorController {
         String type = request.getParameter("settingType");
         String status = request.getParameter("settingStatus");
         String value = request.getParameter("settingValue");
-        SettingDAO sdb = new SettingDAO();
+        SettingDBContext sdb = new SettingDBContext();
         Setting setting = new Setting(0, name, type, description, value, status);
 
         boolean isSuccess = sdb.insertSetting(setting);
@@ -120,7 +120,7 @@ public class SettingController extends HomeDirectorController {
         request.setAttribute("contentPageIncluded", "/view/director/setting/settingdetails.jsp");
         
         //Get setting
-        SettingDAO sdb = new SettingDAO();
+        SettingDBContext sdb = new SettingDBContext();
         Integer id = null;
             //Check id is valid or not
         try{
@@ -164,7 +164,7 @@ public class SettingController extends HomeDirectorController {
         String type = request.getParameter("settingType");
         String status = request.getParameter("settingStatus");
         String value = request.getParameter("settingValue");
-        SettingDAO sdb = new SettingDAO();
+        SettingDBContext sdb = new SettingDBContext();
         Setting setting = new Setting(Integer.parseInt(id), name, type, description, value, status);
         boolean isSuccess = sdb.updateSetting(setting);
         if (isSuccess){
