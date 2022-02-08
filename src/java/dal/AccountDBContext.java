@@ -8,18 +8,67 @@ package dal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.Account;
+import model.Role;
 
 /**
  *
  * @author Vu Duc Tien
  */
 public class AccountDBContext extends DBContext {
-    
-    public void getAllAccounts(){
-        String sql = "";
+
+    public ArrayList<Account> getAllAccounts() {
+        ArrayList<Account> accounts = new ArrayList<>();
+        try {
+            String sql = "select a.account_id, ap.account_fullname, ap.account_email, ap.account_phone, ap.address, ap.`status`,\n"
+                    + "		ap.gender, r.role_id, r.role_name\n"
+                    + "from quiz_practice_db.`account` as a\n"
+                    + "join quiz_practice_db.account_profile as ap on a.account_id = ap.account_id\n"
+                    + "left join quiz_practice_db.account_role as ar on ar.account_id = ap.account_id\n"
+                    + "left join quiz_practice_db.`role` as r on ar.role_id = r.role_id;";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                Account a = new Account();
+                a.setId(rs.getInt(1));
+                if (!checkAccountIsExist(a, accounts)) {
+                    a.setFullname(rs.getString(2));
+                    a.setEmail(rs.getString(3));
+                    a.setPhone(rs.getString(4));
+                    a.setAddress(rs.getString(5));
+                    a.setStatus(rs.getBoolean(6));
+                    a.setGender(rs.getBoolean(7));
+                    a.getRole().add(new Role(rs.getInt(8), rs.getString(9)));
+                    accounts.add(a);
+                } else {
+                    for (Account account : accounts) {
+                        if (account.getId() == a.getId()) {
+                            account.getRole().add(new Role(rs.getInt(8), rs.getString(9)));
+                            break;
+                        }
+                    }
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(AccountDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return accounts;
+    }
+
+    private boolean checkAccountIsExist(Account a, ArrayList<Account> accounts) {
+        if (accounts.isEmpty()) {
+            return false;
+        }
+        boolean flag = false;
+        for (Account acc : accounts) {
+            if (acc.getId() == a.getId()) {
+                flag = true;
+            }
+        }
+        return flag;
     }
 
     public Account getAccount(String username, String password) {
@@ -92,7 +141,7 @@ public class AccountDBContext extends DBContext {
             stm1.setString(2, account.getPassword());
             stm1.setString(3, "ACTIVE");
             stm1.executeUpdate();
-            
+
             String sql3 = "SELECT LAST_INSERT_ID();";
             PreparedStatement stm3 = connection.prepareStatement(sql3);
             ResultSet rs = stm3.executeQuery();
@@ -180,10 +229,10 @@ public class AccountDBContext extends DBContext {
             }
         }
     }
-    
-    public Account getAccountProfileById(int id){
+
+    public Account getAccountProfileById(int id) {
         Account resAccount = new Account();
-        
+
         return resAccount;
     }
 
@@ -197,6 +246,8 @@ public class AccountDBContext extends DBContext {
 //        a.setUsername("admin");
 //        a.setPassword("admin");
 //        adbc.changePassword(a);
-        System.out.println(adbc.isExistAccount("", "", ""));
+//        for (Account allAccount : adbc.getAllAccounts()) {
+//            allAccount.display();
+//        }
     }
 }

@@ -52,12 +52,12 @@ public class SettingListController extends HttpServlet {
         if (setting_name == null) {
             if (status == null && type == null) {
                 settings = new ArrayList<>();
-                settings = stdb.GetALLSetting(pageSize, pageIndex, "all", "all", null);
+                settings = stdb.getALLSetting(pageSize, pageIndex, "all", "all", null);
                 totalRows = stdb.totalRowsInSetting("all", "all", null);
                 url = "settinglist?pageindex=";
             } else {
                 settings = new ArrayList<>();
-                settings = stdb.GetALLSetting(pageSize, pageIndex, type, status, null);
+                settings = stdb.getALLSetting(pageSize, pageIndex, type, status, null);
                 totalRows = stdb.totalRowsInSetting(status, type, null);
                 url = "settinglist?status=" + status + "&type=" + type + "&pageindex=";
                 request.setAttribute("type", type);
@@ -65,7 +65,7 @@ public class SettingListController extends HttpServlet {
             }
         } else {
             settings = new ArrayList<>();
-            settings = stdb.GetALLSetting(pageSize, pageIndex, null, null, setting_name);
+            settings = stdb.getALLSetting(pageSize, pageIndex, null, null, setting_name);
             request.setAttribute("valueSearch", setting_name);
             url = "settinglist?setting_name=" + setting_name + "&pageindex=";
             totalRows = stdb.totalRowsInSetting(null, null, setting_name);
@@ -75,6 +75,7 @@ public class SettingListController extends HttpServlet {
         request.setAttribute("settings", settings);
         request.setAttribute("url", url);
         request.setAttribute("pageindex", pageIndex);
+        request.setAttribute("tag", "settinglist");
         request.getRequestDispatcher("../../view/director/setting/settinglist.jsp").forward(request, response);
     }
 
@@ -100,7 +101,7 @@ public class SettingListController extends HttpServlet {
         ArrayList<Setting> settings = null;
         if (setting_name == null) {
             settings = new ArrayList<>();
-            settings = stdb.GetALLSetting(pageSize, 1, type, status, null);
+            settings = stdb.getALLSetting(pageSize, 1, type, status, null);
             totalRows = stdb.totalRowsInSetting(status, type, null);
             url = "settinglist?status=" + status + "&type=" + type + "&pageindex=";
 
@@ -108,7 +109,7 @@ public class SettingListController extends HttpServlet {
             request.setAttribute("status", status);
         } else {
             settings = new ArrayList<>();
-            settings = stdb.GetALLSetting(pageSize, 1, null, null, setting_name);
+            settings = stdb.getALLSetting(pageSize, 1, null, null, setting_name);
             request.setAttribute("valueSearch", setting_name);
             url = "settinglist?setting_name=" + setting_name + "&pageindex=";
             totalRows = stdb.totalRowsInSetting(null, null, setting_name);
@@ -119,6 +120,7 @@ public class SettingListController extends HttpServlet {
         request.setAttribute("settings", settings);
         request.setAttribute("url", url);
         request.setAttribute("pageindex", 1);
+        request.setAttribute("tag", "settinglist");
         request.getRequestDispatcher("../../view/director/setting/settinglist.jsp").forward(request, response);
     }
 

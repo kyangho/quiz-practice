@@ -165,7 +165,7 @@ public class SettingDBContext extends DBContext {
         return true;
     }
 
-    public ArrayList<Setting> GetALLSetting(int pageSize, int pageIndex, String type, String status, String setting_name) {
+    public ArrayList<Setting> getALLSetting(int pageSize, int pageIndex, String type, String status, String setting_name) {
         String sql_get = "select * from\n"
                 + "	(select row_number() over (order by setting_id ) as stt,\n"
                 + "		setting_id, setting_name, setting_status, setting_type, setting_description"

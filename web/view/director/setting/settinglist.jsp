@@ -15,15 +15,15 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Settings List</title>
-        <jsp:include page="linkcss.jsp"></jsp:include>
+        <jsp:include page="../header/linkcss.jsp"></jsp:include>
 
         </head>
 
         <body class="skin-black">
-        <jsp:include page="headerforadmin.jsp"></jsp:include>
+        <jsp:include page="../header/headerforadmin.jsp"></jsp:include>
 
             <div class="wrapper row-offcanvas row-offcanvas-left">
-            <jsp:include page="leftmenuforadmin.jsp"></jsp:include>
+            <jsp:include page="../header/leftmenuforadmin.jsp"></jsp:include>
                 <aside class="right-side">
                     <section class="content">
                         <div class="row">
@@ -62,7 +62,7 @@
                                                         <select name="type" class=" input-sm">
                                                             <option ${requestScope.type eq "all" ? "selected=\"selected\"" : ""} value="all">All</option>
                                                             <option ${requestScope.type eq "role" ? "selected=\"selected\"" : ""} value="role">Role</option>
-                                                            <option ${requestScope.type eq "tag" ? "selected=\"selected\"" : ""} value="tag">Tag</option>
+                                                            <option ${requestScope.type eq "learn" ? "selected=\"selected\"" : ""} value="learn">Learn</option>
                                                             <option ${requestScope.type eq "subject" ? "selected=\"selected\"" : ""} value="subject">Subject</option>
                                                             <option ${requestScope.type eq "category" ? "selected=\"selected\"" : ""} value="category">Category</option>
                                                         </select>
@@ -75,7 +75,6 @@
                                                             <option ${requestScope.status eq "Active" ? "selected=\"selected\"" : ""} value="Active">Active</option>
                                                             <option ${requestScope.status eq "Deactive" ? "selected=\"selected\"" : ""} value="Deactive">Deactive</option>
                                                         </select>
-                                                        <button class="btn btn-sm btn-default" style="color: black;font-weight: bolder;" type="submit">Apply</button>
                                                     </th>
                                                     <th>View</th>
                                                     <th>Change status</th>
@@ -106,7 +105,11 @@
                                                         </td>
                                                     </tr>
                                                 </c:forEach>
+                                                </tr>
                                             </table>
+                                            <div style="margin: -2% 0 1% 93%;">
+                                                <button class="btn btn-sm btn-default" style="color: black;font-weight: bolder;" type="submit">Apply</button>
+                                            </div>
                                         </c:if>    
                                     </form>
                                     <div id="paggingBottom" class="pageLine" style=" margin: 1%; float: right;">
@@ -140,6 +143,6 @@
             </aside>
 
         </div>
-        <jsp:include page="linkjavascript.jsp"></jsp:include>
+        <jsp:include page="../header/linkjavascript.jsp"></jsp:include>
     </body>
 </html>
