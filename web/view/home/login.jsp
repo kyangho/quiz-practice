@@ -30,7 +30,7 @@
                             <div class="form-header"><a href="register"><h1 class="m-0">Sign Up</h1></a></div>
                         </div>
                         <div class="card-body rounded-bottom bg-primary p-5">
-                            <form>
+                            <form action="login" method="POST">
                                 <div class="form-group">
                                     <input name="username" type="text" class="form-control border-0 p-4" placeholder="Username" required="required" />
                                 </div>

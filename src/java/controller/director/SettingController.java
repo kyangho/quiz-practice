@@ -10,6 +10,7 @@ import dal.SettingDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -63,6 +64,9 @@ public class SettingController extends HomeDirectorController {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String URI = request.getRequestURI().replaceFirst("\\w+/", "");
+        String URL = request.getServletPath();
+        String test = request.getHeaderNames().nextElement();
+        Enumeration<String> names = request.getHeaderNames();
         if (URI.compareTo("/director/setting") == 0) {
             super.doPost(request, response);
         } else if (URI.compareTo(settingAddPath) == 0) {

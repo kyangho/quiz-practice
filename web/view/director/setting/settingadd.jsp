@@ -7,15 +7,14 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<script src="${pageContext.request.contextPath}/ajax/setting/setting.js?v=1" type="text/javascript"></script>
-
+<script src="${pageContext.request.contextPath}/ajax/setting/setting.js?v=3" type="text/javascript"></script>
 <div class="col-md-12">
     <section class="panel">
         <header class="panel-heading">
             Add new setting
         </header>
         <div class="panel-body">
-            <form class="form-horizontal tasi-form add-form" method="post">
+            <form class="form-horizontal tasi-form add-form">
                 <div class="form-group">
                     <label class="col-sm-2 col-sm-2 control-label">Setting name:</label>
                     <div class="col-sm-10">
