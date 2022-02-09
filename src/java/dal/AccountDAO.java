@@ -8,9 +8,11 @@ package dal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.Account;
+import model.Role;
 
 /**
  *
@@ -18,8 +20,55 @@ import model.Account;
  */
 public class AccountDAO extends DBContext {
     
-    public void getAllAccounts(){
-        String sql = "";
+    public ArrayList<Account> getAllAccounts() {
+        ArrayList<Account> accounts = new ArrayList<>();
+        try {
+            String sql = "select a.account_id, ap.account_fullname, ap.account_email, ap.account_phone, ap.address, ap.`status`,\n"
+                    + "		ap.gender, r.role_id, r.role_name\n"
+                    + "from quiz_practice_db.`account` as a\n"
+                    + "join quiz_practice_db.account_profile as ap on a.account_id = ap.account_id\n"
+                    + "left join quiz_practice_db.account_role as ar on ar.account_id = ap.account_id\n"
+                    + "left join quiz_practice_db.`role` as r on ar.role_id = r.role_id;";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                Account a = new Account();
+                a.setId(rs.getInt(1));
+                if (!checkAccountIsExist(a, accounts)) {
+                    a.setFullname(rs.getString(2));
+                    a.setEmail(rs.getString(3));
+                    a.setPhone(rs.getString(4));
+                    a.setAddress(rs.getString(5));
+                    a.setStatus(rs.getBoolean(6));
+                    a.setGender(rs.getBoolean(7));
+                    a.getRole().add(new Role(rs.getInt(8), rs.getString(9)));
+                    accounts.add(a);
+                } else {
+                    for (Account account : accounts) {
+                        if (account.getId() == a.getId()) {
+                            account.getRole().add(new Role(rs.getInt(8), rs.getString(9)));
+                            break;
+    }
+                    }
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(AccountDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return accounts;
+    }
+
+    private boolean checkAccountIsExist(Account a, ArrayList<Account> accounts) {
+        if (accounts.isEmpty()) {
+            return false;
+        }
+        boolean flag = false;
+        for (Account acc : accounts) {
+            if (acc.getId() == a.getId()) {
+                flag = true;
+            }
+        }
+        return flag;
     }
 
     public Account getAccount(String username, String password) {
@@ -218,6 +267,6 @@ public class AccountDAO extends DBContext {
 //        a.setUsername("admin");
 //        a.setPassword("admin");
 //        adbc.changePassword(a);
-        System.out.println(adbc.isExistAccount("", "", ""));
+//        System.out.println(adbc.isExistAccount("", "", ""));
     }
 }

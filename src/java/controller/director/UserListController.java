@@ -5,11 +5,14 @@
  */
 package controller.director;
 
+import dal.AccountDAO;
 import java.io.IOException;
+import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import model.Account;
 
 /**
  *
@@ -29,7 +32,11 @@ public class UserListController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-//        processRequest(request, response);
+        AccountDAO adbc = new AccountDAO();
+        ArrayList<Account> allAccounts = adbc.getAllAccounts();
+        request.setAttribute("accounts", allAccounts);
+        request.setAttribute("tag", "userlist");
+        request.getRequestDispatcher("../../view/director/user/userlist.jsp").forward(request, response);
     }
 
     /**

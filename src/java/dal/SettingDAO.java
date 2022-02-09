@@ -19,48 +19,6 @@ import model.Setting;
  */
 public class SettingDAO extends DBContext {
 
-    public ArrayList<Setting> getSettings(String lastSettingID, int pageSize, String key, String value) {
-        String sql_get = "SELECT * FROM quiz_practice_db.setting\n"
-                + "where (1=1) ";
-        if (key != null && !key.equalsIgnoreCase("setting_name")) {
-            sql_get += "and " + key + " = '" + value + "'\n";
-        }
-
-        if (key != null && key.equalsIgnoreCase("setting_name")) {
-            sql_get += "and " + key + " like '%" + value + "%'\n";
-        }
-        ArrayList<Setting> settings = new ArrayList<>();
-        try {
-            if (lastSettingID.equals("<1")) {
-                lastSettingID = ">0";
-            }
-            if (lastSettingID.contains(">")) {
-                sql_get += "and setting_id " + lastSettingID + " order by setting_id asc limit " + pageSize + ";";
-            } else {
-                sql_get += "and setting_id " + lastSettingID + " order by setting_id desc limit " + pageSize + ";";
-            }
-            PreparedStatement stm = connection.prepareStatement(sql_get);
-//            stm.setInt(1, lastSettingID);
-            ResultSet rs = stm.executeQuery();
-
-            while (rs.next()) {
-                Setting setting = new Setting();
-                setting.setId(rs.getInt("setting_id"));
-                setting.setName(rs.getString("setting_name"));
-                setting.setType(rs.getString("setting_type"));
-                setting.setDescription(rs.getString("setting_description"));
-                setting.setValue(rs.getString("setting_value"));
-                setting.setStatus(rs.getString("setting_status"));
-
-                settings.add(setting);
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(SettingDAO.class.getName()).log(Level.SEVERE, null, ex);
-            return null;
-        }
-        return settings;
-    }
-
     public Setting getSettingById(int id) {
         String sql_select = "SELECT \n"
                 + "    `setting`.`setting_name`,\n"
@@ -207,7 +165,7 @@ public class SettingDAO extends DBContext {
         return true;
     }
 
-    public ArrayList<Setting> GetALLSetting(int pageSize, int pageIndex, String type, String status, String setting_name) {
+    public ArrayList<Setting> getALLSetting(int pageSize, int pageIndex, String type, String status, String setting_name) {
         String sql_get = "select * from\n"
                 + "	(select row_number() over (order by setting_id ) as stt,\n"
                 + "		setting_id, setting_name, setting_status, setting_type, setting_description"
@@ -258,7 +216,7 @@ public class SettingDAO extends DBContext {
     }
 
 //    public static void main(String[] args) {
-//        SettingDBContext sdb = new SettingDBContext();
+//        SettingDAO sdb = new SettingDAO();
 //        System.out.println(sdb.totalRowsInSetting(null, null, "a"));
 //        for (Setting setting :sdb.GetALLSetting(2, 1, "role", "Active", null)) {
 //            System.out.println(setting.toString());

@@ -38,9 +38,10 @@
                 </a>
             </li>
 
-            <li>
-                <a href="#">
-                    <i class="glyphicon glyphicon-user"></i> <span>Users List</span>
+            <li
+                <c:if test="${tag eq 'userlist'}">class="active"</c:if>  >
+                <a href="${pageContext.request.contextPath}/director/user/userlist">
+                    <i class="glyphicon glyphicon-cog"></i> <span>Users List</span>
                 </a>
             </li>
 
