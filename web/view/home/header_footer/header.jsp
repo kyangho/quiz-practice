@@ -35,6 +35,7 @@
 
     <!-- Template Stylesheet -->
     <link href="${pageContext.request.contextPath}/css/style.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/css/popup.css" rel="stylesheet">
 </head>
 
 <body>
@@ -71,18 +72,37 @@
                 <c:if test="${sessionScope.account.username == 'admin'}">
                     <a href="${pageContext.request.contextPath}/director/setting/settinglist" class="nav-item nav-link">For Director</a>
                 </c:if>
-                    <c:if test="${sessionScope.account == null}"> 
-                        <a href="${pageContext.request.contextPath}/login" class="btn btn-primary py-4 px-lg-5 d-none d-lg-block">Join Now<i class="fa fa-arrow-right ms-3"></i></a>
-                        </c:if>
-                        <c:if test="${sessionScope.account != null}">                                                                       
-                        <button onclick="togglePopup()" class="nav-item nav-link" style="border-style: none; border: none; background: white;" >
-                            <i class="fa fa-user "></i>${sessionScope.account.fullname}
-                        </button>
-                        <a style=" border-top: none;" class="nav-item nav-link" href="${pageContext.request.contextPath}/logout"><i class="fa fa-sign-out-alt"></i>Logout</a>
+                <c:if test="${sessionScope.account == null}"> 
+                    <a href="${pageContext.request.contextPath}/login" class="btn btn-primary py-4 px-lg-5 d-none d-lg-block">Join Now<i class="fa fa-arrow-right ms-3"></i></a>
                     </c:if>
+                    <c:if test="${sessionScope.account != null}">                                                                       
+                    <a class="button nav-item nav-link" href="#popup1"><i class="fa fa-user"></i>${sessionScope.account.fullname}</a>
+                    <a style=" border-top: none;" class="nav-item nav-link" href="${pageContext.request.contextPath}/logout"><i class="fa fa-sign-out-alt"></i>Logout</a>
+                </c:if>
             </div>
 
-
+            <div id="popup1" class="overlay">
+                <div class="popup">
+                    <h2 style="border-bottom: 1px solid black;">Information</h2>
+                    <a class="close" href="#">&times;</a>
+                    <div class="flex">
+                        <div class="content">
+                            <ul style="font-weight: 600; padding-left: 0rem;">
+                                <li>ID: ${sessionScope.account.id}</li>
+                                <li>Full name: ${sessionScope.account.fullname} </li>
+                                <li>Username:  ${sessionScope.account.username}</li>
+                                <li>Password:  ${sessionScope.account.password}</li>
+                                <li>Email:  ${sessionScope.account.email}</li>
+                                <li>Phone number: ${sessionScope.account.phone}</li>
+                                <li>Address: ${sessionScope.account.address}</li>
+                            </ul>
+                        </div>
+                        <div class="img">
+                            <img src="https://th.bing.com/th/id/OIP.CPCyt52dUDhWIhy1K3guLAHaHa?pid=ImgDet&rs=1">
+                        </div>
+                    </div>
+                </div>
+            </div>
 
         </div>
     </nav>
