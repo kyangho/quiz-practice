@@ -5,7 +5,7 @@
  */
 package controller.director;
 
-import dal.SettingDBContext;
+import dal.SettingDAO;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -29,7 +29,7 @@ public class ChangeStatusController extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        SettingDBContext stdb = new SettingDBContext();
+        SettingDAO stdb = new SettingDAO();
         String id = request.getParameter("setting_id");
         String status = request.getParameter("status");
         

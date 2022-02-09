@@ -14,14 +14,14 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Director</title>
-        <jsp:include page="setting/linkcss.jsp"></jsp:include>
+        <jsp:include page="header/linkcss.jsp"></jsp:include>
         </head>
 
         <body class="skin-black">
-        <jsp:include page="setting/headerforadmin.jsp"></jsp:include>
+        <jsp:include page="header/headerforadmin.jsp"></jsp:include>
 
             <div class="wrapper row-offcanvas row-offcanvas-left">
-            <jsp:include page="setting/leftmenuforadmin.jsp"></jsp:include>
+            <jsp:include page="header/leftmenuforadmin.jsp"></jsp:include>
                 <aside class="right-side">
                     <section class="content">
                     <c:if test="${requestScope.contentPageIncluded != null}">
@@ -30,6 +30,6 @@
                     </section>
                 </aside>
             </div>
-        <jsp:include page="setting/linkjavascript.jsp"></jsp:include>
+        <jsp:include page="header/linkjavascript.jsp"></jsp:include>
     </body>
 </html>

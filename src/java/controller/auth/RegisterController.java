@@ -5,7 +5,7 @@
  */
 package controller.auth;
 
-import dal.AccountDBContext;
+import dal.AccountDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -57,7 +57,7 @@ public class RegisterController extends HttpServlet {
         account.setFullname(request.getParameter("register_fullname"));
         account.setAddress(request.getParameter("register_address"));
 
-        AccountDBContext adbc = new AccountDBContext();
+        AccountDAO adbc = new AccountDAO();
         adbc.insertAccount(account);
         response.sendRedirect("home");
 

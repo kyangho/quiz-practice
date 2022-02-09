@@ -19,7 +19,7 @@ import model.PostFile;
  *
  * @author ducky
  */
-public class PostDBContext extends DBContext {
+public class PostDAO extends DBContext {
 
     public ArrayList<Post> getPostsList() {
         ArrayList<Post> resPosts = new ArrayList<>();
@@ -35,7 +35,7 @@ public class PostDBContext extends DBContext {
                 resPosts.add(post);
             }
         } catch (SQLException ex) {
-            Logger.getLogger(PostDBContext.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(PostDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return resPosts;
     }
@@ -69,7 +69,7 @@ public class PostDBContext extends DBContext {
                 resPosts.add(post);
             }
         } catch (SQLException ex) {
-            Logger.getLogger(PostDBContext.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(PostDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return resPosts;
     }
@@ -107,7 +107,7 @@ public class PostDBContext extends DBContext {
                 resPost.setPostFiles(getPostFileListWithId(resPost.getId()));
             }
         } catch (SQLException ex) {
-            Logger.getLogger(PostDBContext.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(PostDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return resPost;
     }
@@ -130,7 +130,7 @@ public class PostDBContext extends DBContext {
                 resPostFileList.add(tmpPostFile);
             }
         } catch (SQLException ex) {
-            Logger.getLogger(PostDBContext.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(PostDAO.class.getName()).log(Level.SEVERE, null, ex);
             return null;
         }
         return resPostFileList;
@@ -156,7 +156,7 @@ public class PostDBContext extends DBContext {
                 resPostFile.setFileBlob(rs.getBlob("file_blob"));
             }
         } catch (SQLException ex) {
-            Logger.getLogger(PostDBContext.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(PostDAO.class.getName()).log(Level.SEVERE, null, ex);
             return null;
         }
         return resPostFile;

@@ -18,7 +18,7 @@ import model.Role;
  *
  * @author Vu Duc Tien
  */
-public class AccountDBContext extends DBContext {
+public class AccountDAO extends DBContext {
     
     public ArrayList<Account> getAllAccounts() {
         ArrayList<Account> accounts = new ArrayList<>();
@@ -53,7 +53,7 @@ public class AccountDBContext extends DBContext {
                 }
             }
         } catch (SQLException ex) {
-            Logger.getLogger(AccountDBContext.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AccountDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return accounts;
     }
@@ -78,11 +78,10 @@ public class AccountDBContext extends DBContext {
                     + "ap.account_fullname, ap.address\n"
                     + "FROM account as a\n"
                     + "JOIN account_profile as ap on a.account_id = ap.account_id\n"
-                    + "WHERE (a.username = ? OR ap.account_email = ?) and a.password = ?";
+                    + "WHERE a.username = ? and a.password = ?";
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setString(1, username);
-            stm.setString(2, username);
-            stm.setString(3, password);
+            stm.setString(2, password);
             ResultSet rs = stm.executeQuery();
             if (rs.next()) {
                 Account account = new Account();
@@ -96,7 +95,7 @@ public class AccountDBContext extends DBContext {
                 return account;
             }
         } catch (SQLException ex) {
-            Logger.getLogger(AccountDBContext.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AccountDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
     }
@@ -115,7 +114,7 @@ public class AccountDBContext extends DBContext {
                 return true;
             }
         } catch (SQLException ex) {
-            Logger.getLogger(AccountDBContext.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AccountDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return false;
     }
@@ -156,17 +155,17 @@ public class AccountDBContext extends DBContext {
             stm2.executeUpdate();
             connection.commit();
         } catch (SQLException ex) {
-            Logger.getLogger(AccountDBContext.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AccountDAO.class.getName()).log(Level.SEVERE, null, ex);
             try {
                 connection.rollback();
             } catch (SQLException ex1) {
-                Logger.getLogger(AccountDBContext.class.getName()).log(Level.SEVERE, null, ex1);
+                Logger.getLogger(AccountDAO.class.getName()).log(Level.SEVERE, null, ex1);
             }
         } finally {
             try {
                 connection.setAutoCommit(true);
             } catch (SQLException ex) {
-                Logger.getLogger(AccountDBContext.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(AccountDAO.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }
@@ -184,17 +183,17 @@ public class AccountDBContext extends DBContext {
             stm.execute();
             connection.commit();
         } catch (SQLException ex) {
-            Logger.getLogger(AccountDBContext.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AccountDAO.class.getName()).log(Level.SEVERE, null, ex);
             try {
                 connection.rollback();
             } catch (SQLException ex1) {
-                Logger.getLogger(AccountDBContext.class.getName()).log(Level.SEVERE, null, ex1);
+                Logger.getLogger(AccountDAO.class.getName()).log(Level.SEVERE, null, ex1);
             }
         } finally {
             try {
                 connection.setAutoCommit(true);
             } catch (SQLException ex) {
-                Logger.getLogger(AccountDBContext.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(AccountDAO.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }
@@ -215,17 +214,17 @@ public class AccountDBContext extends DBContext {
             stm.execute();
             connection.commit();
         } catch (SQLException ex) {
-            Logger.getLogger(AccountDBContext.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AccountDAO.class.getName()).log(Level.SEVERE, null, ex);
             try {
                 connection.rollback();
             } catch (SQLException ex1) {
-                Logger.getLogger(AccountDBContext.class.getName()).log(Level.SEVERE, null, ex1);
+                Logger.getLogger(AccountDAO.class.getName()).log(Level.SEVERE, null, ex1);
             }
         } finally {
             try {
                 connection.setAutoCommit(true);
             } catch (SQLException ex) {
-                Logger.getLogger(AccountDBContext.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(AccountDAO.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }
@@ -253,13 +252,13 @@ public class AccountDBContext extends DBContext {
                 return account;
             }
         } catch (SQLException ex) {
-            Logger.getLogger(AccountDBContext.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AccountDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
     }
 
     public static void main(String[] args) {
-        AccountDBContext adbc = new AccountDBContext();
+        AccountDAO adbc = new AccountDAO();
 //        adbc.insertAccount(new Account("tienvd", "he153313", "tienvdhe153313@fpt.edu.vn", "0983563147", "Vu Duc Tien", new Date(2001, 7, 2), "Ha Noi"));
 //        Account a = adbc.getAccount("admin", "admin");
 //        System.out.println(a.toString());

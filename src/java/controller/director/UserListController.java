@@ -5,7 +5,7 @@
  */
 package controller.director;
 
-import dal.AccountDBContext;
+import dal.AccountDAO;
 import java.io.IOException;
 import java.util.ArrayList;
 import javax.servlet.ServletException;
@@ -32,7 +32,7 @@ public class UserListController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        AccountDBContext adbc = new AccountDBContext();
+        AccountDAO adbc = new AccountDAO();
         ArrayList<Account> allAccounts = adbc.getAllAccounts();
         request.setAttribute("accounts", allAccounts);
         request.setAttribute("tag", "userlist");

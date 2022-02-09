@@ -5,7 +5,7 @@
  */
 package controller.homepage;
 
-import dal.HomeDBContext;
+import dal.HomeDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -32,7 +32,7 @@ public class ProfileController extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HomeDBContext hdbc = new HomeDBContext();
+        HomeDAO hdbc = new HomeDAO();
         ArrayList<Account> accounts = hdbc.getAccounts();
         request.setAttribute("information", accounts);
         request.getRequestDispatcher("view/home/list_user.jsp").forward(request, response);
