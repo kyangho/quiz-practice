@@ -75,8 +75,12 @@
                 <c:if test="${sessionScope.account == null}"> 
                     <a href="${pageContext.request.contextPath}/login" class="btn btn-primary py-4 px-lg-5 d-none d-lg-block">Join Now<i class="fa fa-arrow-right ms-3"></i></a>
                     </c:if>
-                    <c:if test="${sessionScope.account != null}">                                                                       
-                    <a class="button nav-item nav-link" href="#popup1"><i class="fa fa-user"></i>${sessionScope.account.fullname}</a>
+                    <c:if test="${sessionScope.account != null}">             
+                    <div class="inf button nav-item nav-link" style="padding: 18px 0 0 0;"><img src="https://th.bing.com/th/id/OIP.CPCyt52dUDhWIhy1K3guLAHaHa?pid=ImgDet&rs=1"
+                           style="width: 35px; height: 35px ; margin-right: 4px; border-radius: 50%;">
+                        <a href="#popup1" style="    padding-top: 7px;">${sessionScope.account.fullname}</a>
+                    </div>
+
                     <a style=" border-top: none;" class="nav-item nav-link" href="${pageContext.request.contextPath}/logout"><i class="fa fa-sign-out-alt"></i>Logout</a>
                 </c:if>
             </div>

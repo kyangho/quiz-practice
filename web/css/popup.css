@@ -87,3 +87,6 @@ and open the template in the editor.
         width: 70%;
     }
 }
+.inf{
+    display: flex;    
+}
