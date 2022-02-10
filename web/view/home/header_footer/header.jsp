@@ -68,7 +68,9 @@
                     </div>
                 </div>
                 <a href="contact.html" class="nav-item nav-link">Contact</a>
-                <a href="${pageContext.request.contextPath}/profile" class="nav-item nav-link">List User</a>
+                <c:if test="${sessionScope.account.username == 'admin'}">
+                    <a href="${pageContext.request.contextPath}/profile" class="nav-item nav-link">List User</a>
+                </c:if>
                 <c:if test="${sessionScope.account.username == 'admin'}">
                     <a href="${pageContext.request.contextPath}/director/setting/settinglist" class="nav-item nav-link">For Director</a>
                 </c:if>
@@ -84,7 +86,6 @@
                     <a style=" border-top: none;" class="nav-item nav-link" href="${pageContext.request.contextPath}/logout"><i class="fa fa-sign-out-alt"></i>Logout</a>
                 </c:if>
             </div>
-
             <div id="popup1" class="overlay">
                 <div class="popup">
                     <h2 style="border-bottom: 1px solid black;">Information</h2>
@@ -107,6 +108,5 @@
                     </div>
                 </div>
             </div>
-
         </div>
     </nav>

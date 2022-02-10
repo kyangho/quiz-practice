@@ -133,8 +133,10 @@ public class AccountDAO extends DBContext {
                     + "`account_email`,\n"
                     + "`account_phone`,\n"
                     + "`account_fullname`,\n"
-                    + "`address`)\n"
-                    + "VALUES(?,?,?,?,?);";
+                    + "`address`,"
+                    + "`status`,"
+                    + "`gender`)\n"
+                    + "VALUES(?,?,?,?,?,?,?);";
             PreparedStatement stm1 = connection.prepareStatement(sql1);
             stm1.setString(1, account.getUsername());
             stm1.setString(2, account.getPassword());
@@ -152,6 +154,8 @@ public class AccountDAO extends DBContext {
             stm2.setString(3, account.getPhone());
             stm2.setString(4, account.getFullname());
             stm2.setString(5, account.getAddress());
+            stm2.setBoolean(6, account.isStatus());
+            stm2.setBoolean(7, account.isGender());
             stm2.executeUpdate();
             connection.commit();
         } catch (SQLException ex) {

@@ -31,8 +31,11 @@ public class RegisterController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher("view/home/register.jsp").forward(request, response);
-
+        if (request.getSession().getAttribute("account") != null) {
+            response.sendRedirect("home");
+        } else {
+            request.getRequestDispatcher("view/home/register.jsp").forward(request, response);
+        }
     }
 
     /**
@@ -47,19 +50,28 @@ public class RegisterController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
+        AccountDAO adbc = new AccountDAO();
+
         Account account = new Account();
         String phone = request.getParameter("register_phone");
         String email = request.getParameter("register_email");
-        account.setUsername(request.getParameter("register_username"));
-        account.setPassword(request.getParameter("register_password"));
-        account.setEmail(email);
-        account.setPhone(phone);
-        account.setFullname(request.getParameter("register_fullname"));
-        account.setAddress(request.getParameter("register_address"));
+        String username = request.getParameter("register_username");
 
-        AccountDAO adbc = new AccountDAO();
-        adbc.insertAccount(account);
-        response.sendRedirect("home");
+        if (adbc.isExistAccount(phone, email, username)) {
+            request.setAttribute("isFail", true);
+            request.getRequestDispatcher("view/home/register.jsp").forward(request, response);
+        } else {
+            account.setUsername(username);
+            account.setPassword(request.getParameter("register_password"));
+            account.setEmail(email);
+            account.setPhone(phone);
+            account.setFullname(request.getParameter("register_fullname"));
+            account.setAddress(request.getParameter("register_address"));
+            account.setStatus(true);
+            account.setGender(request.getParameter("gender").equalsIgnoreCase("male"));
+            adbc.insertAccount(account);
+            response.sendRedirect("home");
+        }
 
     }
 

@@ -1,9 +1,10 @@
 <%-- 
-    Document   : login
-    Created on : Jan 14, 2022, 4:54:19 PM
+    Document   : register
+    Created on : Feb 9, 2022, 11:46:49 PM
     Author     : Vu Duc Tien
 --%>
 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <jsp:include page="header_footer/header.jsp"></jsp:include>
     <div class="container-fluid bg-registration py-5" style="margin: 3rem 0;">
@@ -30,18 +31,34 @@
                         <div class="form-header"><a href="${pageContext.request.contextPath}/register"><h1 class="m-0">Sign Up</h1></a></div>
                     </div>
                     <div class="card-body rounded-bottom bg-primary p-5">
-                        <form action="${pageContext.request.contextPath}/login" method="POST">
+                        <form action="${pageContext.request.contextPath}/register" method="post">
                             <div class="form-group">
-                                <input name="username" type="text" class="form-control border-0 p-4" placeholder="Username" required="required" />
+                                <input name="register_username" type="text" class="form-control border-0 p-4" placeholder="Username" required="required" />
                             </div>
                             <div class="form-group">
-                                <input name="password" type="password" class="form-control border-0 p-4" placeholder="Password" required="required" />
+                                <input name="register_password" type="password" class="form-control border-0 p-4" placeholder="Password" required="required" />
+                            </div>
+                            <div class="form-group">
+                                <input name="register_fullname" type="text" class="form-control border-0 p-4" placeholder="Fullname" required="required" />
+                            </div>
+                            <div class="form-group">
+                                <input name="gender" type="radio" value="male" required="required"/>Male
+                                <input name="gender" type="radio" value="female"/>Female
+                            </div>
+                            <div class="form-group">
+                                <input name="register_email" type="email" class="form-control border-0 p-4" placeholder="Email" required="required" />
+                            </div>
+                            <div class="form-group">
+                                <input name="register_phone" type="tel" class="form-control border-0 p-4" placeholder="Phone number" required="required" />
+                            </div>
+                            <div class="form-group">
+                                <input name="register_address" type="text" class="form-control border-0 p-4" placeholder="Address" required="required" />
                             </div>
                             <div>
-                                <button class="btn btn-dark btn-block border-0 py-3" type="submit">Sign In</button>
+                                <button class="btn btn-dark btn-block border-0 py-3" type="submit">Register</button>
                             </div>
                             <c:if test="${requestScope.isFail == true}" >
-                                <p>Wrong username or password</p>
+                                <p>Username, email or phone number already in use</p>
                             </c:if>
                         </form>
                     </div>
@@ -51,3 +68,4 @@
     </div>
 </div>
 <jsp:include page="header_footer/footer.jsp"></jsp:include>
+
