@@ -56,7 +56,6 @@
                                                     <th>ID</th>
                                                     <th>Setting Name</th>
                                                     <th>Description</th>
-
                                                     <th>
                                                         Type:
                                                         <select name="type" class=" input-sm">
@@ -87,7 +86,7 @@
                                                         <td>${s.type}</td>
                                                         <td>${s.status}</td>
                                                         <td><button class="label label-info"><a style="color: white;" href="details?id=${s.id}">Details</a></button></td>
-                                                        <td><button onclick="changeStatus(${s.id}, '${s.status}', ${requestScope.pageindex})" type="button" class="label 
+                                                        <td><button onclick="changeStatus(${s.id}, '${s.status}', 'changestatusforsetting')" type="button" class="label 
                                                                     <c:if test="${s.status == 'ACTIVE'}">
                                                                         label-danger
                                                                     </c:if>

@@ -41,7 +41,7 @@
             <li
                 <c:if test="${tag eq 'userlist'}">class="active"</c:if>  >
                 <a href="${pageContext.request.contextPath}/director/user/userlist">
-                    <i class="glyphicon glyphicon-cog"></i> <span>Users List</span>
+                    <i class="fa fa-user"></i> <span>Users List</span>
                 </a>
             </li>
 

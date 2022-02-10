@@ -5,7 +5,7 @@
  */
 package controller.director;
 
-import dal.SettingDAO;
+import dal.AccountDAO;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author conmu
  */
-public class ChangeStatusController extends HttpServlet {
+public class ChangeStatusForUserController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -29,18 +29,18 @@ public class ChangeStatusController extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        SettingDAO stdb = new SettingDAO();
-        String id = request.getParameter("setting_id");
+        String accountID = request.getParameter("id");
         String status = request.getParameter("status");
-        
-        if (status.equalsIgnoreCase("active")) {
-            stdb.deactiveSetting(Integer.parseInt(id));
+        AccountDAO adao = new AccountDAO();
+        if (status.equalsIgnoreCase("deactive")) {
+            adao.ActiveStatus(Integer.parseInt(accountID));
         }else{
-            stdb.activeSetting(Integer.parseInt(id));
+            adao.DeActiveStatus(Integer.parseInt(accountID));
         }
-//        request.setAttribute("pageindex", request.getParameter("pageindex"));
-        response.sendRedirect("settinglist");
-//        response.getWriter().print(id + " " + status);
+        
+        response.sendRedirect("userlist");
+        
+        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

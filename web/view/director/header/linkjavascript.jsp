@@ -1,5 +1,3 @@
-<!--<script src="${pageContext.request.contextPath}/js/settinglistcode.js" type="text/javascript"></script>-->
-
 
 <!-- jQuery 2.0.2 -->
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
