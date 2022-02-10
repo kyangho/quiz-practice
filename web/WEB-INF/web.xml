@@ -45,6 +45,10 @@
         <servlet-name>ChangeStatusForUserController</servlet-name>
         <servlet-class>controller.director.ChangeStatusForUserController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AddNewUserController</servlet-name>
+        <servlet-class>controller.director.AddNewUserController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>HomePageController</servlet-name>
         <url-pattern>/home</url-pattern>
@@ -96,6 +100,10 @@
     <servlet-mapping>
         <servlet-name>ChangeStatusForUserController</servlet-name>
         <url-pattern>/director/user/changestatusforuser</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddNewUserController</servlet-name>
+        <url-pattern>/director/user/adduser</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>

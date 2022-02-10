@@ -32,7 +32,7 @@
                                     <div class="panel-heading" style="display: flex;">
                                         <div style="margin-right: 74%;"> List of users</div>
                                         <div>
-                                            <a href="add">Add new user </a>
+                                            <a href="adduser">Add new user </a>
                                         </div>
                                     </div>
 
