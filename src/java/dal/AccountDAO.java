@@ -23,8 +23,8 @@ public class AccountDAO extends DBContext {
     public ArrayList<Account> getAllAccounts() {
         ArrayList<Account> accounts = new ArrayList<>();
         try {
-            String sql = "select a.account_id, ap.account_fullname, ap.account_email, ap.account_phone, ap.address, ap.`status`,\n"
-                    + "		ap.gender, r.role_id, r.role_name\n"
+            String sql = "select a.account_id, ap.account_fullname, ap.account_email, ap.account_phone, ap.account_address, a.`account_status`,\n"
+                    + "		ap.account_gender, r.role_id, r.role_name\n"
                     + "from quiz_practice_db.`account` as a\n"
                     + "join quiz_practice_db.account_profile as ap on a.account_id = ap.account_id\n"
                     + "left join quiz_practice_db.account_role as ar on ar.account_id = ap.account_id\n"
@@ -39,7 +39,7 @@ public class AccountDAO extends DBContext {
                     a.setEmail(rs.getString(3));
                     a.setPhone(rs.getString(4));
                     a.setAddress(rs.getString(5));
-                    a.setStatus(rs.getBoolean(6));
+                    a.setStatus(rs.getString(6));
                     a.setGender(rs.getBoolean(7));
                     a.getRole().add(new Role(rs.getInt(8), rs.getString(9)));
                     accounts.add(a);
@@ -75,7 +75,7 @@ public class AccountDAO extends DBContext {
         try {
             String sql = "SELECT a.account_id, a.username, a.password,\n"
                     + "ap.account_email, ap.account_phone,\n"
-                    + "ap.account_fullname, ap.address\n"
+                    + "ap.account_fullname, ap.account_address, a.account_status\n"
                     + "FROM account as a\n"
                     + "JOIN account_profile as ap on a.account_id = ap.account_id\n"
                     + "WHERE a.username = ? and a.password = ?";
@@ -92,6 +92,7 @@ public class AccountDAO extends DBContext {
                 account.setPhone(rs.getString(5));
                 account.setFullname(rs.getString(6));
                 account.setAddress(rs.getString(7));
+                account.setStatus(rs.getString(8));
                 return account;
             }
         } catch (SQLException ex) {
@@ -154,7 +155,7 @@ public class AccountDAO extends DBContext {
             stm2.setString(3, account.getPhone());
             stm2.setString(4, account.getFullname());
             stm2.setString(5, account.getAddress());
-            stm2.setBoolean(6, account.isStatus());
+            stm2.setString(6, account.getStatus());
             stm2.setBoolean(7, account.isGender());
             stm2.executeUpdate();
             connection.commit();
@@ -264,8 +265,8 @@ public class AccountDAO extends DBContext {
     public static void main(String[] args) {
         AccountDAO adbc = new AccountDAO();
 //        adbc.insertAccount(new Account("tienvd", "he153313", "tienvdhe153313@fpt.edu.vn", "0983563147", "Vu Duc Tien", new Date(2001, 7, 2), "Ha Noi"));
-//        Account a = adbc.getAccount("admin", "admin");
-//        System.out.println(a.toString());
+        Account a = adbc.getAccount("admin", "admin");
+        a.display();
 //        Account a = new Account();
 //        a.setId(1);
 //        a.setUsername("admin");

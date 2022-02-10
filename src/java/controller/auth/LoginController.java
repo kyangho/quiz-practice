@@ -56,7 +56,7 @@ public class LoginController extends HttpServlet {
         Account account = adbc.getAccount(username, password);
         if (account == null) {
             request.setAttribute("isFail", true);
-            request.getRequestDispatcher("view/home/register.jsp").forward(request, response);
+            request.getRequestDispatcher("view/home/login.jsp").forward(request, response);
         } else {
             HttpSession session = request.getSession();
             session.setAttribute("account", account);

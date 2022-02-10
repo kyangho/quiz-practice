@@ -22,13 +22,13 @@ public class Account {
     private String fullname;
     private String address;
     private boolean gender;
-    private boolean status;
+    private String status;
     private ArrayList<Role> role = new ArrayList<>();
 
     public Account() {
     }
 
-    public Account(int id, String username, String password, String email, String phone, String fullname, String address, boolean gender, boolean status, ArrayList<Role> role) {
+    public Account(int id, String username, String password, String email, String phone, String fullname, String address, boolean gender, String status, ArrayList<Role> role) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -105,11 +105,11 @@ public class Account {
         this.gender = gender;
     }
 
-    public boolean isStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(boolean status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 
