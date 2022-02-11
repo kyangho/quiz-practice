@@ -8,9 +8,7 @@ package controller.director;
 import dal.AccountDAO;
 import dal.RoleDAO;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.regex.Pattern;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -61,12 +59,13 @@ public class AddNewUserController extends HttpServlet {
         boolean gender = request.getParameter("gender").equalsIgnoreCase("male");
         String status = request.getParameter("status");
         String[] roleIDs = request.getParameterValues("roleID");
+        String avatar = "";
         ArrayList<Role> roles = new ArrayList<>();
         for (String roleID : roleIDs) {
             roles.add(new Role(Integer.parseInt(roleID), ""));
         }
 
-        Account account = new Account(-1, username, phone, email, phone, fullname, address, gender, status, roles);
+        Account account = new Account(-1, username, phone, email, phone, fullname, address, gender, status, roles, avatar);
 
         AccountDAO adbc = new AccountDAO();
         if (adbc.isExistAccountForAdd(phone, email, username) != null) {
