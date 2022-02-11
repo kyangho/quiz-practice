@@ -80,7 +80,7 @@
                                         </c:if>    
                                     </form>
                                     <div style="margin: -2% 0 1% 90%"; >
-                                        <a href="${pageContext.request.contextPath}/view/director/setting/newsubject.jsp">
+                                        <a href="../subject/newsubject">
                                             <button class="btn btn-sm btn-default" style="color: #fdfdfd;font-weight: bolder;background-color: #00a6ff;" type="submit">Add new subject</button>
                                         </a>
                                     </div>

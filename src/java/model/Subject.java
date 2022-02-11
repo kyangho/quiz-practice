@@ -18,7 +18,11 @@ public class Subject {
 
     public Subject() {
     }
-
+    public Subject( String subject_title, String subject_author, String subject_status) {
+        this.subject_title = subject_title;
+        this.subject_author = subject_author;
+        this.subject_status = subject_status;
+    }
     public Subject(int subject_id, String subject_title, String subject_author, String subject_status) {
         this.subject_id = subject_id;
         this.subject_title = subject_title;

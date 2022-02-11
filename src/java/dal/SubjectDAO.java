@@ -116,9 +116,23 @@ public class SubjectDAO extends DBContext {
         return null;
     }
 
+    public void inserSubject(Subject subject) {
+        try {
+            String sql = "INSERT INTO `quiz_practice_db`.`subject` (`subject_title`, `subject_author`, `subject_status`) VALUES (?,?, ?);";
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setString(1, subject.getSubject_title());
+            ps.setString(2, subject.getSubject_author());
+            ps.setString(3, subject.getSubject_status());
+
+            ps.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(SubjectDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
 //    public static void main(String[] args) {
 //        SubjectDAO s = new SubjectDAO();
-//        Subject sub = s.getSubjectDetail("5");
-//        System.out.println(sub.getSubject_title() + "-" + sub.getSubject_author());
+//        Subject sub = new Subject("Thi", "Ham", "Unpublished");
+//        s.inserSubject(sub);
 //    }
 }

@@ -35,7 +35,7 @@
                             <div class="col-xs-12">
                                 <div class="panel">
                                     <div class="panel-heading" style="display: flex;">
-                                        <div style="margin-right: 74%;"> List of settings</div>
+                                        <div style="margin-right: 74%;"> List of subjects</div>
                                         <div>
                                             <a href="add">Add new subject </a>
                                         </div>
@@ -75,10 +75,10 @@
                                         </c:if>    
                                     </form>
                                     <div style="margin: 0 0 1% 80%"; >
-                                        <a href="../subject/newsubject">
+                                        <a href="#">
                                             <button class="btn btn-sm btn-default" style="color: #fdfdfd;font-weight: bolder;background-color: #00a6ff;" type="submit">Edit</button>
                                         </a>
-                                        <a href="#">
+                                        <a href="../subject/newsubject">
                                             <button class="btn btn-sm btn-default" style="color: #fdfdfd;font-weight: bolder;background-color: #00a6ff;" type="submit">Add new subject</button>
                                         </a>
                                     </div>
