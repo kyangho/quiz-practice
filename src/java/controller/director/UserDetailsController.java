@@ -20,7 +20,7 @@ import model.Role;
  *
  * @author conmu
  */
-public class AddNewUserController extends HttpServlet {
+public class UserDetailsController extends HttpServlet {
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -34,10 +34,15 @@ public class AddNewUserController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        String id = request.getParameter("id");
+        AccountDAO dAO = new AccountDAO();
+        Account acc = dAO.getAccountById(Integer.parseInt(id));
+        request.setAttribute("account", acc);
         RoleDAO rdao = new RoleDAO();
         ArrayList<Role> roles = rdao.getRoles();
         request.setAttribute("roles", roles);
-        request.getRequestDispatcher("../../view/director/user/adduser.jsp").forward(request, response);
+        request.getRequestDispatcher("../../view/director/user/userdetails.jsp").forward(request, response);
+
     }
 
     /**
@@ -51,6 +56,7 @@ public class AddNewUserController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        String id = request.getParameter("id");
         String username = request.getParameter("username");
         String fullname = request.getParameter("fullname");
         String email = request.getParameter("email");
@@ -59,33 +65,32 @@ public class AddNewUserController extends HttpServlet {
         boolean gender = request.getParameter("gender").equalsIgnoreCase("male");
         String status = request.getParameter("status");
         String[] roleIDs = request.getParameterValues("roleID");
-        String avatar = "";
+        String avatar = null;
         ArrayList<Role> roles = new ArrayList<>();
         for (String roleID : roleIDs) {
             roles.add(new Role(Integer.parseInt(roleID), ""));
         }
 
-        Account account = new Account(-1, username, phone, email, phone, fullname, address, gender, status, roles, avatar);
+        Account account = new Account(Integer.parseInt(id), username, phone, email, phone, fullname, address, gender, status, roles, avatar);
 
         AccountDAO adbc = new AccountDAO();
-        if (adbc.isExistAccountForAdd(phone, email, username) != null) {
+        RoleDAO rdao = new RoleDAO();
+        ArrayList<Role> rolesa = rdao.getRoles();
+        request.setAttribute("roles", rolesa);
+        String tag = "";
+        Account a = adbc.isExistAccountForAdd(null, email, null);
+        if (!a.getUsername().equalsIgnoreCase(username)) {
+            tag = "email";
             request.setAttribute("account", account);
-            RoleDAO rdao = new RoleDAO();
-            ArrayList<Role> rolesa = rdao.getRoles();
-            request.setAttribute("roles", rolesa);
-            String tag = "";
-            if (adbc.isExistAccountForAdd(phone, email, username).getUsername().equalsIgnoreCase(username)) {
-                tag = "username";
-            } else if (adbc.isExistAccountForAdd(phone, email, username).getEmail().equalsIgnoreCase(email)) {
-                tag = "email";
-            }
             request.setAttribute("tag", tag);
-            request.getRequestDispatcher("../../view/director/user/adduser.jsp").forward(request, response);
+            request.getRequestDispatcher("../../view/director/user/userdetails.jsp").forward(request, response);
         } else {
-            adbc.insertAccount(account);
-            response.sendRedirect("userlist");
+            adbc.updateAccount(account);
+            tag = "done";
+            request.setAttribute("tag", tag);
+            request.setAttribute("account", adbc.getAccountById(Integer.parseInt(id)));
+            request.getRequestDispatcher("../../view/director/user/userdetails.jsp").forward(request, response);
         }
-
     }
 
     /**

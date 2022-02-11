@@ -65,6 +65,10 @@
         <servlet-name>EditSubjectController</servlet-name>
         <servlet-class>controller.director.EditSubjectController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>UserDetailsController</servlet-name>
+        <servlet-class>controller.director.UserDetailsController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>HomePageController</servlet-name>
         <url-pattern>/home</url-pattern>
@@ -132,6 +136,10 @@
     <servlet-mapping>
         <servlet-name>AddNewUserController</servlet-name>
         <url-pattern>/director/user/adduser</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UserDetailsController</servlet-name>
+        <url-pattern>/director/user/userdetails</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>EditSubjectController</servlet-name>

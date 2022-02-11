@@ -109,7 +109,7 @@
                                                             </c:forEach>
                                                         </td>
                                                         <td>${a.status}</td>
-                                                        <td><button class="label label-info"><a style="color: white;" href="#">Details</a></button></td>
+                                                        <td><button class="label label-info"><a style="color: white;" href="userdetails?id=${a.id}">Details</a></button></td>
                                                         <td><button 
                                                                 onclick="changeStatus(${a.id}, '${a.status}', 'changestatusforuser')" 
                                                                 type="button" class="label 

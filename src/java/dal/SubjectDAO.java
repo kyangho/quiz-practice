@@ -129,9 +129,28 @@ public class SubjectDAO extends DBContext {
             Logger.getLogger(SubjectDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
+    public void editSubject(Subject sub) {
+        try {
+            String sql = "UPDATE `quiz_practice_db`.`subject`\n"
+                    + "SET\n"
+                    + "`subject_title` =?,\n"
+                    + "`subject_author` =?,\n"
+                    + "`subject_status` = ?\n"
+                    + "WHERE `subject_id` =?;";
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setString(1, sub.getSubject_title());
+            ps.setString(2, sub.getSubject_author());
+            ps.setString(3, sub.getSubject_status());
+            ps.setInt(4, sub.getSubject_id());
+            ps.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(SubjectDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 //    public static void main(String[] args) {
 //        SubjectDAO s = new SubjectDAO();
-//        Subject sub = new Subject("Thi", "Ham", "Unpublished");
-//        s.inserSubject(sub);
+//        Subject sub = new Subject(3, "Thi", "Ham", "Unpublished");
+//        s.editSubject(sub);
 //    }
 }

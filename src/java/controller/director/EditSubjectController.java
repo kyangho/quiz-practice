@@ -19,7 +19,7 @@ import model.Subject;
  * @author Yankee
  */
 public class EditSubjectController extends HttpServlet {
-
+    
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -29,13 +29,21 @@ public class EditSubjectController extends HttpServlet {
         request.setAttribute("subject", sub);
         request.getRequestDispatcher("../../view/director/setting/editsubject.jsp").forward(request, response);
     }
-
+    
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+        request.setCharacterEncoding("UTF-8");
+        SubjectDAO sdao = new SubjectDAO();
+        Subject sub = new Subject();
+        sub.setSubject_id(Integer.parseInt(request.getParameter("subject_id")));
+        sub.setSubject_title(request.getParameter("subjectName"));
+        sub.setSubject_author(request.getParameter("subjectAuthor"));
+        sub.setSubject_status(request.getParameter("subjectStatus"));
+        sdao.editSubject(sub);
+        response.sendRedirect("subjectlist");
     }
-
+    
     @Override
     public String getServletInfo() {
         return "Short description";

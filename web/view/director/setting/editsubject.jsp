@@ -27,7 +27,7 @@
                                                 Edit subject
                                             </header>
                                             <div class="panel-body">
-                                                <form action="newsubject" method="POST" class="form-horizontal tasi-form">
+                                                <form action="editsubject" method="POST" class="form-horizontal tasi-form">
                                                     <div class="form-group">
                                                         <label class="col-sm-2 col-sm-2 control-label">Subject ID:</label>
                                                         <div class="col-sm-10" style="padding-top: 7px;">
@@ -85,7 +85,7 @@
                                                         </button>
                                                     </div>
                                                     <div class="col-sm-2">
-                                                        <button type="submit" class="btn btn-info center-block col-sm-10">Undate subject</button>
+                                                        <button type="submit" class="btn btn-info center-block col-sm-10">Update subject</button>
                                                     </div>
                                                 </div>
                                             </form>
