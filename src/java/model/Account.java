@@ -138,7 +138,6 @@ public class Account {
     public void setAvatar(String avatar) {
         this.avatar = avatar;
     }
-
     
     public void display() {
         System.out.print("Account{" + "id=" + id + ", username=" + username + ", password=" + password + ", email=" + email + ", phone=" + phone + ", fullname=" + fullname + ", address=" + address + ", gender=" + gender + ", status=" + status + ", avatar=" + avatar);
