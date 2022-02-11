@@ -23,27 +23,27 @@
                             Add new user
                         </header>
                         <div class="panel-body">
-                            <form class="form-horizontal tasi-form add-form">
+                            <form class="form-horizontal tasi-form add-form" action="adduser" method="POST">
                                 <div class="form-group">
-                                    <label class="col-sm-2 col-sm-2 control-label">Username:</label>
+                                    <label class="col-sm-2 col-sm-2 control-label">Username *:</label>
                                     <div class="col-sm-10">
                                         <input type="text" name="username" class="form-control" required placeholder="username">
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-sm-2 col-sm-2 control-label">Full Name:</label>
+                                    <label class="col-sm-2 col-sm-2 control-label">Full Name *:</label>
                                     <div class="col-sm-10">
                                         <input type="text" name="fullname" class="form-control" required placeholder="Full Name">
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-sm-2 col-sm-2 control-label">Email:</label>
+                                    <label class="col-sm-2 col-sm-2 control-label">Email *:</label>
                                     <div class="col-sm-10">
                                         <input type="text" name="email" class="form-control" required placeholder="Email">
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-sm-2 col-sm-2 control-label">Phone:</label>
+                                    <label class="col-sm-2 col-sm-2 control-label">Phone *:</label>
                                     <div class="col-sm-10">
                                         <input type="text" name="phone" class="form-control" required placeholder="Phone Number">
                                     </div>
@@ -55,63 +55,63 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-sm-2 col-sm-2 control-label">Gender:</label>
+                                    <label class="col-sm-2 col-sm-2 control-label">Gender *:</label>
                                     <div class="col-sm-10" style="display: flex;">
                                         <div class="radio">
                                             <label>
-                                                <input type="radio" required name="gender" value="male" checked="checked"> Male
+                                                <input type="radio" name="gender" value="male" checked="checked"> Male
                                             </label>
                                         </div>
                                         <div class="radio">
                                             <label>
-                                                <input type="radio" required name="Gender" value="femail"> Female
+                                                <input type="radio" name="Gender" value="femail"> Female
                                             </label>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-sm-2 col-sm-2 control-label">Status:</label>
+                                    <label class="col-sm-2 col-sm-2 control-label">Status *:</label>
                                     <div class="col-sm-10" style="display: flex;">
                                         <div class="radio">
                                             <label>
-                                                <input type="radio" required name="status" value="Active" checked="checked"> Active
+                                                <input type="radio" name="status" value="Active" checked="checked"> Active
                                             </label>
                                         </div>
                                         <div class="radio">
                                             <label>
-                                                <input type="radio" required name="status" value="deactive"> Deactive
+                                                <input type="radio" name="status" value="deactive"> Deactive
                                             </label>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-sm-2 col-sm-2 control-label">Role: </label>
-                                    <div class="radio">
+                                    <label class="col-sm-2 col-sm-2 control-label">Role *: </label>
+                                    <div class="col-sm-10" style="display: flex;">
                                     <c:forEach items="${requestScope.roles}" var="r">
-                                        <input type="checkbox" required name="roleID" value="${r.id}"
-                                               <c:if test="${r.roleName eq 'Student'}">checked="checked"</c:if>>${r.roleName}
+                                        <div class="radio" style="margin-left: -19px;">
+                                            <input type="checkbox" name="roleID" value="${r.id}"
+                                                   <c:if test="${r.roleName eq 'Student'}">checked="checked"</c:if>>${r.roleName}
+                                            </div>
                                     </c:forEach>
                                 </div>
                             </div>
-                    </div>
-                    <div class="col-sm-12">
-                        <div class="notification-add col-sm-6 center-block">
-                        </div>
-                    </div>
-                    <div class="col-sm-12">
-                        <div class="col-sm-4">
-                        </div>
-                        <div class="col-sm-2">
-                            <button type="button" class="btn btn-danger center-block col-sm-10"
-                                    onclick="location.href = 'userlist'">
-                                Discard
-                            </button>
-                        </div>
-                        <div class="col-sm-2">
-                            <button type="submit" class="btn btn-info center-block col-sm-10">Add</button>
-                        </div>
-                    </div>
-                    </form>
+                            <div class="col-sm-12" style="color: red; margin-left: 10%;">
+                                Note: (*) is required.
+                            </div>
+                            <div class="col-sm-12">
+                                <div class="col-sm-4">
+                                </div>
+                                <div class="col-sm-2">
+                                    <button type="button" class="btn btn-danger center-block col-sm-10"
+                                            onclick="location.href = 'userlist'">
+                                        Discard
+                                    </button>
+                                </div>
+                                <div class="col-sm-2">
+                                    <button type="submit" class="btn btn-info center-block col-sm-10">Add</button>
+                                </div>
+                            </div>
+                        </form>
                     </div>
                 </section>
             </aside>
