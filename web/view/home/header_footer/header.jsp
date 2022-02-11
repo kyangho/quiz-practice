@@ -68,18 +68,22 @@
                     </div>
                 </div>
                 <a href="contact.html" class="nav-item nav-link">Contact</a>
-                <c:if test="${sessionScope.account.username == 'admin'}">
-                    <a href="${pageContext.request.contextPath}/profile" class="nav-item nav-link">List User</a>
-                </c:if>
-                <c:if test="${sessionScope.account.username == 'admin'}">
-                    <a href="${pageContext.request.contextPath}/director/setting/settinglist" class="nav-item nav-link">For Director</a>
-                </c:if>
+                <c:forEach items="${sessionScope.account.role}" var="r">
+                    <c:if test="${r.roleName == 'Admin'}">
+                        <a href="${pageContext.request.contextPath}/profile" class="nav-item nav-link">List User</a>
+                    </c:if>
+                </c:forEach>
+                <c:forEach items="${sessionScope.account.role}" var="r">
+                    <c:if test="${r.roleName == 'Admin'}">
+                        <a href="${pageContext.request.contextPath}/director/setting/settinglist" class="nav-item nav-link">For Director</a>
+                    </c:if>
+                </c:forEach>
                 <c:if test="${sessionScope.account == null}"> 
                     <a href="${pageContext.request.contextPath}/login" class="btn btn-primary py-4 px-lg-5 d-none d-lg-block">Join Now<i class="fa fa-arrow-right ms-3"></i></a>
                     </c:if>
                     <c:if test="${sessionScope.account != null}">             
                     <div class="inf button nav-item nav-link" style="padding: 18px 0 0 0;"><img src="https://th.bing.com/th/id/OIP.CPCyt52dUDhWIhy1K3guLAHaHa?pid=ImgDet&rs=1"
-                           style="width: 35px; height: 35px ; margin-right: 4px; border-radius: 50%;">
+                                                                                                style="width: 35px; height: 35px ; margin-right: 4px; border-radius: 50%;">
                         <a href="#popup1" style="    padding-top: 7px;">${sessionScope.account.fullname}</a>
                     </div>
 

@@ -5,6 +5,7 @@
  */
 package dal;
 
+import at.favre.lib.crypto.bcrypt.BCrypt;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -35,26 +36,50 @@ public class AccountDAO extends DBContext {
 
     public Account getAccount(String username, String password) {
         try {
-            String sql = "SELECT a.account_id, a.username, a.password,\n"
-                    + "ap.account_email, ap.account_phone,\n"
-                    + "ap.account_fullname, ap.address\n"
+            String sql1 = "SELECT a.account_id, a.username, a.password, a.account_status,\n"
+                    + "ap.account_email, ap.account_phone, ap.account_fullname, ap.account_address, ap.account_gender\n"
                     + "FROM account as a\n"
                     + "JOIN account_profile as ap on a.account_id = ap.account_id\n"
-                    + "WHERE a.username = ? and a.password = ?";
-            PreparedStatement stm = connection.prepareStatement(sql);
-            stm.setString(1, username);
-            stm.setString(2, password);
-            ResultSet rs = stm.executeQuery();
-            if (rs.next()) {
+                    + "JOIN account_role as ar on a.account_id = ar.account_id\n"
+                    + "JOIN role as r on r.role_id = ar.role_id\n"
+                    + "WHERE a.username = ?";
+            PreparedStatement stm1 = connection.prepareStatement(sql1);
+            stm1.setString(1, username);
+            ResultSet rs1 = stm1.executeQuery();
+            String sql2 = "SELECT r.role_id, r.role_name\n"
+                    + "FROM account as a\n"
+                    + "JOIN account_role as ar on a.account_id = ar.account_id\n"
+                    + "JOIN role as r on r.role_id = ar.role_id\n"
+                    + "WHERE username = ?";
+            PreparedStatement stm2 = connection.prepareStatement(sql2);
+            stm2.setString(1, username);
+            ResultSet rs2 = stm2.executeQuery();
+            if (rs1.next()) {
                 Account account = new Account();
-                account.setId(rs.getInt(1));
-                account.setUsername(rs.getString(2));
-                account.setPassword(rs.getString(3));
-                account.setEmail(rs.getString(4));
-                account.setPhone(rs.getString(5));
-                account.setFullname(rs.getString(6));
-                account.setAddress(rs.getString(7));
-                return account;
+                account.setId(rs1.getInt(1));
+                account.setUsername(rs1.getString(2));
+                account.setPassword(rs1.getString(3));
+                account.setStatus(rs1.getString(4));
+                account.setEmail(rs1.getString(5));
+                account.setPhone(rs1.getString(6));
+                account.setFullname(rs1.getString(7));
+                account.setAddress(rs1.getString(8));
+                account.setGender(rs1.getBoolean(9));
+                
+                ArrayList<Role> roles = new ArrayList<>();
+                while(rs2.next()){
+                    Role r = new Role();
+                    r.setId(rs2.getInt(1));
+                    r.setRoleName(rs2.getString(2));
+                    roles.add(r);
+                }
+                account.setRole(roles);
+                
+                if (BCrypt.verifyer().verify(password.toCharArray(), account.getPassword()).verified == true) {
+                    return account;
+                } else {
+                    return null;
+                }
             }
         } catch (SQLException ex) {
             Logger.getLogger(AccountDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -95,10 +120,9 @@ public class AccountDAO extends DBContext {
                     + "`account_email`,\n"
                     + "`account_phone`,\n"
                     + "`account_fullname`,\n"
-                    + "`address`,"
-                    + "`status`,"
-                    + "`gender`)\n"
-                    + "VALUES(?,?,?,?,?,?,?);";
+                    + "`account_address`,\n"
+                    + "`account_gender`)\n"
+                    + "VALUES(?,?,?,?,?,?);";
             PreparedStatement stm1 = connection.prepareStatement(sql1);
             stm1.setString(1, account.getUsername());
             stm1.setString(2, account.getPassword());
@@ -116,8 +140,7 @@ public class AccountDAO extends DBContext {
             stm2.setString(3, account.getPhone());
             stm2.setString(4, account.getFullname());
             stm2.setString(5, account.getAddress());
-            stm2.setString(6, account.getStatus());
-            stm2.setBoolean(7, account.isGender());
+            stm2.setBoolean(6, account.isGender());
             stm2.executeUpdate();
             connection.commit();
         } catch (SQLException ex) {
@@ -463,7 +486,7 @@ public class AccountDAO extends DBContext {
             Logger.getLogger(AccountDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     public void DeActiveStatus(int id) {
         try {
             String sql = "UPDATE `quiz_practice_db`.`account`\n"
@@ -482,7 +505,8 @@ public class AccountDAO extends DBContext {
     public static void main(String[] args) {
         AccountDAO adbc = new AccountDAO();
 //        adbc.insertAccount(new Account("tienvd", "he153313", "tienvdhe153313@fpt.edu.vn", "0983563147", "Vu Duc Tien", new Date(2001, 7, 2), "Ha Noi"));
-//        Account a = adbc.getAccount("admin", "admin");
+        Account a = adbc.getAccount("admin", "admin123");
+        a.display();
 //        System.out.println(a.toString());
 //        Account a = new Account();
 //        a.setId(1);
@@ -491,10 +515,10 @@ public class AccountDAO extends DBContext {
 //        adbc.changePassword(a);
 //        System.out.println(adbc.isExistAccount("", "", ""));
 //        adbc.getAllAccountsByFilter(id, fullname, email, phone, roleID, status, keySearch)
-        for (Account account : adbc.getAllAccountsByFilter(1, 2, null, null, null, null, null, null, null)) {
-            account.display();
-        }
-
-        System.out.println(adbc.totalRowsByAccountInfor(null, null, null, null, null, null, null));
+//        for (Account account : adbc.getAllAccountsByFilter(1, 2, null, null, null, null, null, null, null)) {
+//            account.display();
+//        }
+//
+//        System.out.println(adbc.totalRowsByAccountInfor(null, null, null, null, null, null, null));
     }
 }

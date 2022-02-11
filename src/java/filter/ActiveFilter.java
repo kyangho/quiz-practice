@@ -116,7 +116,7 @@ public class ActiveFilter implements Filter {
                 if(account.getStatus().equalsIgnoreCase("active")){
                     chain.doFilter(request, response);
                 }else{
-                    res.sendRedirect(req.getContextPath() + "home");
+                    res.sendRedirect(req.getContextPath() + "unknown");
                 }
             }else{
                 res.sendRedirect(req.getContextPath() + "/login");

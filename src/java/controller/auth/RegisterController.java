@@ -5,6 +5,7 @@
  */
 package controller.auth;
 
+import at.favre.lib.crypto.bcrypt.BCrypt;
 import dal.AccountDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -62,7 +63,7 @@ public class RegisterController extends HttpServlet {
             request.getRequestDispatcher("view/home/register.jsp").forward(request, response);
         } else {
             account.setUsername(username);
-            account.setPassword(request.getParameter("register_password"));
+            account.setPassword(BCrypt.withDefaults().hashToString(12, request.getParameter("register_password").toCharArray()));
             account.setEmail(email);
             account.setPhone(phone);
             account.setFullname(request.getParameter("register_fullname"));
@@ -72,7 +73,6 @@ public class RegisterController extends HttpServlet {
             adbc.insertAccount(account);
             response.sendRedirect("home");
         }
-
     }
 
     /**

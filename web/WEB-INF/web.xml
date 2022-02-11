@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
-    <!--    <filter>
+        <filter>
         <filter-name>AdminFilter</filter-name>
         <filter-class>filter.AdminFilter</filter-class>
     </filter>
@@ -16,7 +16,7 @@
     <filter-mapping>
         <filter-name>AdminFilter</filter-name>
         <url-pattern>/director/*</url-pattern>
-    </filter-mapping>-->
+    </filter-mapping>
     <servlet>
         <servlet-name>HomePageController</servlet-name>
         <servlet-class>controller.homepage.HomePageController</servlet-class>
@@ -44,6 +44,10 @@
     <servlet>
         <servlet-name>ChangeStatusForUserController</servlet-name>
         <servlet-class>controller.director.ChangeStatusForUserController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>To404PageController</servlet-name>
+        <servlet-class>controller.homepage.To404PageController</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>HomePageController</servlet-name>
@@ -96,6 +100,10 @@
     <servlet-mapping>
         <servlet-name>ChangeStatusForUserController</servlet-name>
         <url-pattern>/director/user/changestatusforuser</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>To404PageController</servlet-name>
+        <url-pattern>/unknown</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>
