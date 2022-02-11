@@ -37,7 +37,7 @@
                                     <div class="panel-heading" style="display: flex;">
                                         <div style="margin-right: 74%;"> List of settings</div>
                                         <div>
-                                            <a href="add">Add new subject </a>
+                                            <a href="../subject/newsubject">Add new subject </a>
                                         </div>
                                     </div>
 
@@ -79,7 +79,7 @@
                                             </table>
                                         </c:if>    
                                     </form>
-                                    <div style="margin: -2% 0 1% 90%"; >
+                                    <div style="margin: 0 0 1% 90%"; >
                                         <a href="../subject/newsubject">
                                             <button class="btn btn-sm btn-default" style="color: #fdfdfd;font-weight: bolder;background-color: #00a6ff;" type="submit">Add new subject</button>
                                         </a>

@@ -21,7 +21,17 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Settings List</title>
         <jsp:include page="../header/linkcss.jsp"></jsp:include>
-
+            <script>
+                function doUpdate(id) {
+                    window.location.href = "../subject/editsubject?subject_id=" + id;
+                }
+                function doDelete(id) {
+                    var cf = confirm("Are you sure delete this book ?");
+                    if (cf) {
+                        window.location.href = "deleteBook?id=" + id;
+                    }
+                }
+            </script>
         </head>
 
         <body class="skin-black">
@@ -37,7 +47,7 @@
                                     <div class="panel-heading" style="display: flex;">
                                         <div style="margin-right: 74%;"> List of subjects</div>
                                         <div>
-                                            <a href="add">Add new subject </a>
+                                            <a href="../subject/newsubject">Add new subject </a>
                                         </div>
                                     </div>
 
@@ -75,18 +85,18 @@
                                         </c:if>    
                                     </form>
                                     <div style="margin: 0 0 1% 80%"; >
-                                        <a href="#">
-                                            <button class="btn btn-sm btn-default" style="color: #fdfdfd;font-weight: bolder;background-color: #00a6ff;" type="submit">Edit</button>
-                                        </a>
+                                        <!--<a href="../subject/editsubject">-->
+                                            <button onclick="doUpdate(${requestScope.subject.subject_id});" class="btn btn-sm btn-default" style="color: #fdfdfd;font-weight: bolder;background-color: #00a6ff;" type="submit">Edit</button>
+                                        <!--</a>-->
                                         <a href="../subject/newsubject">
                                             <button class="btn btn-sm btn-default" style="color: #fdfdfd;font-weight: bolder;background-color: #00a6ff;" type="submit">Add new subject</button>
                                         </a>
                                     </div>
-<!--                                    <div style="margin: -2% 0 1% 70%"; >
-                                        <a href="#">
-                                            <button class="btn btn-sm btn-default" style="color: #fdfdfd;font-weight: bolder;background-color: #00a6ff;" type="submit">Edit</button>
-                                        </a>
-                                    </div>-->
+                                    <!--                                    <div style="margin: -2% 0 1% 70%"; >
+                                                                            <a href="#">
+                                                                                <button class="btn btn-sm btn-default" style="color: #fdfdfd;font-weight: bolder;background-color: #00a6ff;" type="submit">Edit</button>
+                                                                            </a>
+                                                                        </div>-->
                                     <div id="paggingBottom" class="pageLine" style=" margin: 1%; float: right;">
                                     </div>
                                 </div>

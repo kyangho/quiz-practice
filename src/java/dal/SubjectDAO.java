@@ -129,7 +129,6 @@ public class SubjectDAO extends DBContext {
             Logger.getLogger(SubjectDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
 //    public static void main(String[] args) {
 //        SubjectDAO s = new SubjectDAO();
 //        Subject sub = new Subject("Thi", "Ham", "Unpublished");

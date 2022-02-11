@@ -61,6 +61,10 @@
         <servlet-name>AddSubjectController</servlet-name>
         <servlet-class>controller.director.AddSubjectController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>EditSubjectController</servlet-name>
+        <servlet-class>controller.director.EditSubjectController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>HomePageController</servlet-name>
         <url-pattern>/home</url-pattern>
@@ -129,7 +133,10 @@
         <servlet-name>AddNewUserController</servlet-name>
         <url-pattern>/director/user/adduser</url-pattern>
     </servlet-mapping>
-
+    <servlet-mapping>
+        <servlet-name>EditSubjectController</servlet-name>
+        <url-pattern>/director/subject/editsubject</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>
     </session-config>
@@ -139,5 +146,4 @@
     <error-page>
         <location>/view/404.jsp</location>
     </error-page>
-        
 </web-app>
