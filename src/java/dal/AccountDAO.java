@@ -185,37 +185,6 @@ public class AccountDAO extends DBContext {
         }
     }
 
-    public void updateProfile(Account account) {
-        try {
-            connection.setAutoCommit(false);
-            String sql = "UPDATE `quiz_practice_db`.`account_profile`\n"
-                    + "SET\n"
-                    + "`account_email` = ?,\n"
-                    + "`account_phone` = ?,\n"
-                    + "`account_fullname` = ?,\n"
-                    + "`address` = ?\n"
-                    + "WHERE `account_id` = ?;";
-            PreparedStatement stm = connection.prepareStatement(sql);
-            stm.setString(1, account.getPassword());
-            stm.setInt(2, account.getId());
-            stm.execute();
-            connection.commit();
-        } catch (SQLException ex) {
-            Logger.getLogger(AccountDAO.class.getName()).log(Level.SEVERE, null, ex);
-            try {
-                connection.rollback();
-            } catch (SQLException ex1) {
-                Logger.getLogger(AccountDAO.class.getName()).log(Level.SEVERE, null, ex1);
-            }
-        } finally {
-            try {
-                connection.setAutoCommit(true);
-            } catch (SQLException ex) {
-                Logger.getLogger(AccountDAO.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-    }
-
     public void updateAccount(Account account) {
         try {
             connection.setAutoCommit(false);
@@ -341,69 +310,53 @@ public class AccountDAO extends DBContext {
             if (!roleID.equalsIgnoreCase("all") && !status.equalsIgnoreCase("all")) {
                 sql += "        AND a.account_status = " + flag + " AND r.role_id = " + roleID + "\n";
             }
-
             if (!roleID.equalsIgnoreCase("all") && status.equalsIgnoreCase("all")) {
                 sql += "        AND r.role_id = " + roleID + "\n";
             }
-
             if (roleID.equalsIgnoreCase("all") && !status.equalsIgnoreCase("all")) {
                 sql += "        AND a.account_status = " + flag + "\n";
             }
-
             if (!id.equalsIgnoreCase("all") && !fullname.equalsIgnoreCase("all") && !email.equalsIgnoreCase("all") && !phone.equalsIgnoreCase("all")) {
                 sql += "        order by a.account_id " + id + ", ap.account_fullname " + fullname + " ,ap.account_email " + email + ",ap.account_phone " + phone + "\n";
             }
-
             if (!id.equalsIgnoreCase("all") && !fullname.equalsIgnoreCase("all") && !email.equalsIgnoreCase("all") && phone.equalsIgnoreCase("all")) {
                 sql += "        order by a.account_id " + id + ", ap.account_fullname " + fullname + " ,ap.account_email " + email + "\n";
             }
-
             if (!id.equalsIgnoreCase("all") && !fullname.equalsIgnoreCase("all") && email.equalsIgnoreCase("all") && phone.equalsIgnoreCase("all")) {
                 sql += "        order by a.account_id " + id + ", ap.account_fullname " + fullname + "\n";
             }
-
             if (!id.equalsIgnoreCase("all") && fullname.equalsIgnoreCase("all") && email.equalsIgnoreCase("all") && phone.equalsIgnoreCase("all")) {
                 sql += "        order by a.account_id " + id + "\n";
             }
-
             if (id.equalsIgnoreCase("all") && !fullname.equalsIgnoreCase("all") && !email.equalsIgnoreCase("all") && !phone.equalsIgnoreCase("all")) {
                 sql += "        order by ap.account_fullname " + fullname + " ,ap.account_email " + email + " ,ap.account_phone " + phone + "\n";
             }
-
             if (id.equalsIgnoreCase("all") && !fullname.equalsIgnoreCase("all") && !email.equalsIgnoreCase("all") && phone.equalsIgnoreCase("all")) {
                 sql += "        order by ap.account_fullname " + fullname + " ,ap.account_email " + email + "\n";
             }
-
             if (id.equalsIgnoreCase("all") && !fullname.equalsIgnoreCase("all") && email.equalsIgnoreCase("all") && !phone.equalsIgnoreCase("all")) {
                 sql += "        order by ap.account_fullname " + fullname + " ,ap.account_phone " + phone + "\n";
             }
-
             if (id.equalsIgnoreCase("all") && !fullname.equalsIgnoreCase("all") && email.equalsIgnoreCase("all") && phone.equalsIgnoreCase("all")) {
                 sql += "        order by ap.account_fullname " + fullname + "\n";
             }
-
             if (id.equalsIgnoreCase("all") && fullname.equalsIgnoreCase("all") && !email.equalsIgnoreCase("all") && !phone.equalsIgnoreCase("all")) {
                 sql += "        order by ap.account_email " + email + " ,ap.account_phone " + phone + "\n";
             }
-
             if (id.equalsIgnoreCase("all") && fullname.equalsIgnoreCase("all") && !email.equalsIgnoreCase("all") && phone.equalsIgnoreCase("all")) {
                 sql += "        order by ap.account_email " + email + "\n";
             }
-
             if (id.equalsIgnoreCase("all") && fullname.equalsIgnoreCase("all") && email.equalsIgnoreCase("all") && !phone.equalsIgnoreCase("all")) {
                 sql += "        order by ap.account_phone " + phone + "\n";
             }
         }
-
         if (keySearch != null) {
             sql += "    and (ap.account_email like '%" + keySearch + "%' or ap.account_fullname like '%" + keySearch + "%' "
                     + " or ap.account_phone like '%" + keySearch + "%')";
         }
-
         sql += ") as acc\n"
                 + "where acc.stt >= (? - 1)*? + 1 AND acc.stt <= ? * ?;";
 //        System.out.println(sql);
-
         try {
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setInt(1, pageindex);
@@ -460,60 +413,46 @@ public class AccountDAO extends DBContext {
             if (!roleID.equalsIgnoreCase("all") && !status.equalsIgnoreCase("all")) {
                 sql += "        AND a.account_status = " + flag + " AND r.role_id = " + roleID + "\n";
             }
-
             if (!roleID.equalsIgnoreCase("all") && status.equalsIgnoreCase("all")) {
                 sql += "        AND r.role_id = " + roleID + "\n";
             }
-
             if (roleID.equalsIgnoreCase("all") && !status.equalsIgnoreCase("all")) {
                 sql += "        AND a.account_status = " + flag + "\n";
             }
-
             if (!id.equalsIgnoreCase("all") && !fullname.equalsIgnoreCase("all") && !email.equalsIgnoreCase("all") && !phone.equalsIgnoreCase("all")) {
                 sql += "        order by a.account_id " + id + ", ap.account_fullname " + fullname + " ,ap.account_email " + email + ",ap.account_phone " + phone + "\n";
             }
-
             if (!id.equalsIgnoreCase("all") && !fullname.equalsIgnoreCase("all") && !email.equalsIgnoreCase("all") && phone.equalsIgnoreCase("all")) {
                 sql += "        order by a.account_id " + id + ", ap.account_fullname " + fullname + " ,ap.account_email " + email + "\n";
             }
-
             if (!id.equalsIgnoreCase("all") && !fullname.equalsIgnoreCase("all") && email.equalsIgnoreCase("all") && phone.equalsIgnoreCase("all")) {
                 sql += "        order by a.account_id " + id + ", ap.account_fullname " + fullname + "\n";
             }
-
             if (!id.equalsIgnoreCase("all") && fullname.equalsIgnoreCase("all") && email.equalsIgnoreCase("all") && phone.equalsIgnoreCase("all")) {
                 sql += "        order by a.account_id " + id + "\n";
             }
-
             if (id.equalsIgnoreCase("all") && !fullname.equalsIgnoreCase("all") && !email.equalsIgnoreCase("all") && !phone.equalsIgnoreCase("all")) {
                 sql += "        order by ap.account_fullname " + fullname + " ,ap.account_email " + email + " ,ap.account_phone " + phone + "\n";
             }
-
             if (id.equalsIgnoreCase("all") && !fullname.equalsIgnoreCase("all") && !email.equalsIgnoreCase("all") && phone.equalsIgnoreCase("all")) {
                 sql += "        order by ap.account_fullname " + fullname + " ,ap.account_email " + email + "\n";
             }
-
             if (id.equalsIgnoreCase("all") && !fullname.equalsIgnoreCase("all") && email.equalsIgnoreCase("all") && !phone.equalsIgnoreCase("all")) {
                 sql += "        order by ap.account_fullname " + fullname + " ,ap.account_phone " + phone + "\n";
             }
-
             if (id.equalsIgnoreCase("all") && !fullname.equalsIgnoreCase("all") && email.equalsIgnoreCase("all") && phone.equalsIgnoreCase("all")) {
                 sql += "        order by ap.account_fullname " + fullname + "\n";
             }
-
             if (id.equalsIgnoreCase("all") && fullname.equalsIgnoreCase("all") && !email.equalsIgnoreCase("all") && !phone.equalsIgnoreCase("all")) {
                 sql += "        order by ap.account_email " + email + " ,ap.account_phone " + phone + "\n";
             }
-
             if (id.equalsIgnoreCase("all") && fullname.equalsIgnoreCase("all") && !email.equalsIgnoreCase("all") && phone.equalsIgnoreCase("all")) {
                 sql += "        order by ap.account_email " + email + "\n";
             }
-
             if (id.equalsIgnoreCase("all") && fullname.equalsIgnoreCase("all") && email.equalsIgnoreCase("all") && !phone.equalsIgnoreCase("all")) {
                 sql += "        order by ap.account_phone " + phone + "\n";
             }
         }
-
         if (keySearch != null) {
             sql += "    and (ap.account_email like '%" + keySearch + "%' or ap.account_fullname like '%" + keySearch + "%' "
                     + " or ap.account_phone like '%" + keySearch + "%')";
