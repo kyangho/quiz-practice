@@ -24,6 +24,18 @@
         <servlet-name>UserListController</servlet-name>
         <servlet-class>controller.director.UserListController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>SubjectListController</servlet-name>
+        <servlet-class>controller.director.SubjectListController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>SubjectDetailController</servlet-name>
+        <servlet-class>controller.director.SubjectDetailController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AddSubjectController</servlet-name>
+        <servlet-class>controller.director.AddSubjectController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>HomePageController</servlet-name>
         <url-pattern>/home</url-pattern>
@@ -71,6 +83,18 @@
     <servlet-mapping>
         <servlet-name>UserListController</servlet-name>
         <url-pattern>/director/user/userlist</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SubjectListController</servlet-name>
+        <url-pattern>/director/subject/subjectlist</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SubjectDetailController</servlet-name>
+        <url-pattern>/director/subject/subjectdetail</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddSubjectController</servlet-name>
+        <url-pattern>/director/subject/newsubject</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>
