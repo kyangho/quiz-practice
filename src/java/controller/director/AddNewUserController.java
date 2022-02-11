@@ -9,10 +9,12 @@ import dal.RoleDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.regex.Pattern;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import model.Account;
 import model.Role;
 
 /**
@@ -38,7 +40,6 @@ public class AddNewUserController extends HttpServlet {
         request.setAttribute("roles", roles);
         request.getRequestDispatcher("../../view/director/user/adduser.jsp").forward(request, response);
     }
-    
 
     /**
      * Handles the HTTP <code>POST</code> method.
@@ -51,6 +52,19 @@ public class AddNewUserController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        Account account = new Account();
+        String username = request.getParameter("username");
+        String fullname = request.getParameter("fullname");
+        String email = request.getParameter("email");
+        String phone = request.getParameter("phone");
+        String address = request.getParameter("address");
+        boolean gender = request.getParameter("gender").equalsIgnoreCase("male");
+        String status = request.getParameter("status");
+        String[] roleIDs = request.getParameterValues("roleID");
+    }
+
+    public void checkValidInfor(String username, String fullname, String email, String phone) {
+        Pattern p = Pattern.compile("^[a-zA-Z0-9]([._](?![._])|[a-zA-Z0-9]){6,18}[a-zA-Z0-9]$");
     }
 
     /**

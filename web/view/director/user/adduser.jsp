@@ -27,31 +27,39 @@
                                 <div class="form-group">
                                     <label class="col-sm-2 col-sm-2 control-label">Username *:</label>
                                     <div class="col-sm-10">
-                                        <input type="text" name="username" class="form-control" required placeholder="username">
+                                        <input type="text" name="username" class="form-control"
+                                               pattern="^[a-zA-Z0-9](([._]?)|[a-zA-Z0-9]){6,18}[a-zA-Z0-9]$"
+                                               title="username must match format 'user_user12'"
+                                               required placeholder="username">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="col-sm-2 col-sm-2 control-label">Full Name *:</label>
                                     <div class="col-sm-10">
-                                        <input type="text" name="fullname" class="form-control" required placeholder="Full Name">
+                                        <input type="text" name="fullname" class="form-control" 
+                                               pattern="^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z ]*)*$" 
+                                               title="Fullname cannot contain special characters!" 
+                                               required placeholder="Full Name">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="col-sm-2 col-sm-2 control-label">Email *:</label>
                                     <div class="col-sm-10">
-                                        <input type="text" name="email" class="form-control" required placeholder="Email">
+                                        <input type="email" name="email" class="form-control" required placeholder="Email">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="col-sm-2 col-sm-2 control-label">Phone *:</label>
                                     <div class="col-sm-10">
-                                        <input type="text" name="phone" class="form-control" required placeholder="Phone Number">
+                                        <input type="text" name="phone" class="form-control"
+                                               pattern="^[0-9]{9,20}$" title="Phone number must be number and have length from 9 to 20 characters!" 
+                                               required placeholder="Phone Number">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="col-sm-2 col-sm-2 control-label">Address: </label>
                                     <div class="col-sm-10">
-                                        <input type="text" name="address" class="form-control" required placeholder="Address">
+                                        <input type="text" name="address" class="form-control" placeholder="Address">
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -64,7 +72,7 @@
                                         </div>
                                         <div class="radio">
                                             <label>
-                                                <input type="radio" name="Gender" value="femail"> Female
+                                                <input type="radio" name="gender" value="femail"> Female
                                             </label>
                                         </div>
                                     </div>
@@ -79,7 +87,7 @@
                                         </div>
                                         <div class="radio">
                                             <label>
-                                                <input type="radio" name="status" value="deactive"> Deactive
+                                                <input type="radio" name="status" value="Deactive"> Deactive
                                             </label>
                                         </div>
                                     </div>
