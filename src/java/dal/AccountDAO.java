@@ -96,12 +96,16 @@ public class AccountDAO extends DBContext {
                     + "`account_phone`,\n"
                     + "`account_fullname`,\n"
                     + "`address`,"
-                    + "`status`,"
                     + "`gender`)\n"
                     + "VALUES(?,?,?,?,?,?,?);";
+
             PreparedStatement stm1 = connection.prepareStatement(sql1);
             stm1.setString(1, account.getUsername());
-            stm1.setString(2, account.getPassword());
+            if (account.getRole().size() > 0) {
+                stm1.setString(2, account.getEmail());
+            } else {
+                stm1.setString(2, account.getPassword());
+            }
             stm1.setString(3, "ACTIVE");
             stm1.executeUpdate();
 
@@ -116,9 +120,24 @@ public class AccountDAO extends DBContext {
             stm2.setString(3, account.getPhone());
             stm2.setString(4, account.getFullname());
             stm2.setString(5, account.getAddress());
-            stm2.setString(6, account.getStatus());
-            stm2.setBoolean(7, account.isGender());
+            stm2.setBoolean(6, account.isGender());
             stm2.executeUpdate();
+
+            if (account.getRole().size() > 0) {
+                String sql4 = "INSERT INTO `quiz_practice_db`.`account_role`\n"
+                        + "(`account_id`,\n"
+                        + "`role_id`)\n"
+                        + "VALUES\n"
+                        + "(?,\n"
+                        + "?);";
+                PreparedStatement stm4 = connection.prepareStatement(sql4);
+                for (Role role : account.getRole()) {
+                    stm4.setInt(1, account.getId());
+                    stm4.setInt(2, role.getId());
+                    stm4.executeUpdate();
+                }
+            }
+
             connection.commit();
         } catch (SQLException ex) {
             Logger.getLogger(AccountDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -463,7 +482,7 @@ public class AccountDAO extends DBContext {
             Logger.getLogger(AccountDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     public void DeActiveStatus(int id) {
         try {
             String sql = "UPDATE `quiz_practice_db`.`account`\n"
