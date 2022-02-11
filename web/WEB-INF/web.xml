@@ -1,5 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
+    <!--    <filter>
+        <filter-name>AdminFilter</filter-name>
+        <filter-class>filter.AdminFilter</filter-class>
+    </filter>
+    <filter>
+        <filter-name>ActiveFilter</filter-name>
+        <filter-class>filter.ActiveFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>ActiveFilter</filter-name>
+        <url-pattern>/director/*</url-pattern>
+        <url-pattern>/profile</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>AdminFilter</filter-name>
+        <url-pattern>/director/*</url-pattern>
+    </filter-mapping>-->
     <servlet>
         <servlet-name>HomePageController</servlet-name>
         <servlet-class>controller.homepage.HomePageController</servlet-class>
@@ -13,8 +30,8 @@
         <servlet-class>controller.director.HomeDirectorController</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>ChangeStatusController</servlet-name>
-        <servlet-class>controller.director.ChangeStatusController</servlet-class>
+        <servlet-name>ChangeStatusForSettingController</servlet-name>
+        <servlet-class>controller.director.ChangeStatusForSettingController</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>ProfileController</servlet-name>
@@ -23,6 +40,14 @@
     <servlet>
         <servlet-name>UserListController</servlet-name>
         <servlet-class>controller.director.UserListController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ChangeStatusForUserController</servlet-name>
+        <servlet-class>controller.director.ChangeStatusForUserController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AddNewUserController</servlet-name>
+        <servlet-class>controller.director.AddNewUserController</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>SubjectListController</servlet-name>
@@ -65,8 +90,8 @@
         <url-pattern>/register</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>ChangeStatusController</servlet-name>
-        <url-pattern>/director/setting/changestatus</url-pattern>
+        <servlet-name>ChangeStatusForSettingController</servlet-name>
+        <url-pattern>/director/setting/changestatusforsetting</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>ProfileController</servlet-name>
@@ -96,6 +121,15 @@
         <servlet-name>AddSubjectController</servlet-name>
         <url-pattern>/director/subject/newsubject</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ChangeStatusForUserController</servlet-name>
+        <url-pattern>/director/user/changestatusforuser</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddNewUserController</servlet-name>
+        <url-pattern>/director/user/adduser</url-pattern>
+    </servlet-mapping>
+
     <session-config>
         <session-timeout>30</session-timeout>
     </session-config>
@@ -105,4 +139,5 @@
     <error-page>
         <location>/view/404.jsp</location>
     </error-page>
+        
 </web-app>

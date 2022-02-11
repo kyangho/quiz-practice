@@ -3,10 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package controller.auth;
+package controller.director;
 
+import dal.AccountDAO;
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -14,9 +14,9 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  *
- * @author Tebellum
+ * @author conmu
  */
-public class LogoutController extends HttpServlet {
+public class ChangeStatusForUserController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -29,13 +29,18 @@ public class LogoutController extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        if (request.getSession().getAttribute("account") != null) {
-            request.getSession().removeAttribute("account");
-            response.sendRedirect("home");
+        String accountID = request.getParameter("id");
+        String status = request.getParameter("status");
+        AccountDAO adao = new AccountDAO();
+        if (status.equalsIgnoreCase("deactive")) {
+            adao.ActiveStatus(Integer.parseInt(accountID));
         }else{
-            response.sendRedirect("home");
+            adao.DeActiveStatus(Integer.parseInt(accountID));
         }
-
+        
+        response.sendRedirect("userlist");
+        
+        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
