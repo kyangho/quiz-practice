@@ -5,6 +5,7 @@
  */
 package controller.director;
 
+import dal.AccountDAO;
 import dal.RoleDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -52,7 +53,6 @@ public class AddNewUserController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        Account account = new Account();
         String username = request.getParameter("username");
         String fullname = request.getParameter("fullname");
         String email = request.getParameter("email");
@@ -61,10 +61,32 @@ public class AddNewUserController extends HttpServlet {
         boolean gender = request.getParameter("gender").equalsIgnoreCase("male");
         String status = request.getParameter("status");
         String[] roleIDs = request.getParameterValues("roleID");
-    }
+        ArrayList<Role> roles = new ArrayList<>();
+        for (String roleID : roleIDs) {
+            roles.add(new Role(Integer.parseInt(roleID), ""));
+        }
 
-    public void checkValidInfor(String username, String fullname, String email, String phone) {
-        Pattern p = Pattern.compile("^[a-zA-Z0-9]([._](?![._])|[a-zA-Z0-9]){6,18}[a-zA-Z0-9]$");
+        Account account = new Account(-1, username, phone, email, phone, fullname, address, gender, status, roles);
+
+        AccountDAO adbc = new AccountDAO();
+        if (adbc.isExistAccountForAdd(phone, email, username) != null) {
+            request.setAttribute("account", account);
+            RoleDAO rdao = new RoleDAO();
+            ArrayList<Role> rolesa = rdao.getRoles();
+            request.setAttribute("roles", rolesa);
+            String tag = "";
+            if (adbc.isExistAccountForAdd(phone, email, username).getUsername().equalsIgnoreCase(username)) {
+                tag = "username";
+            } else if (adbc.isExistAccountForAdd(phone, email, username).getEmail().equalsIgnoreCase(email)) {
+                tag = "email";
+            }
+            request.setAttribute("tag", tag);
+            request.getRequestDispatcher("../../view/director/user/adduser.jsp").forward(request, response);
+        } else {
+            adbc.insertAccount(account);
+            response.sendRedirect("userlist");
+        }
+
     }
 
     /**

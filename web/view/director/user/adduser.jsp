@@ -30,49 +30,63 @@
                                         <input type="text" name="username" class="form-control"
                                                pattern="^[a-zA-Z0-9](([._]?)|[a-zA-Z0-9]){6,18}[a-zA-Z0-9]$"
                                                title="username must match format 'user_user12'"
-                                               required placeholder="username">
-                                    </div>
+                                               value="${requestScope.account.username}"
+                                        required placeholder="username">
                                 </div>
-                                <div class="form-group">
-                                    <label class="col-sm-2 col-sm-2 control-label">Full Name *:</label>
-                                    <div class="col-sm-10">
-                                        <input type="text" name="fullname" class="form-control" 
-                                               pattern="^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z ]*)*$" 
-                                               title="Fullname cannot contain special characters!" 
-                                               required placeholder="Full Name">
-                                    </div>
+                                <c:if test="${requestScope.tag eq 'username'}">
+                                    <p style="color: red; margin: 0.5% 9.5%;">Username existed! Please choose other username!</p>
+                                </c:if>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 col-sm-2 control-label">Full Name *:</label>
+                                <div class="col-sm-10">
+                                    <input type="text" name="fullname" class="form-control" 
+                                           pattern="^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z ]*)*$" 
+                                           title="Fullname cannot contain special characters!" 
+                                           value="${requestScope.account.fullname}"
+                                           required placeholder="Full Name">
                                 </div>
-                                <div class="form-group">
-                                    <label class="col-sm-2 col-sm-2 control-label">Email *:</label>
-                                    <div class="col-sm-10">
-                                        <input type="email" name="email" class="form-control" required placeholder="Email">
-                                    </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 col-sm-2 control-label">Email *:</label>
+                                <div class="col-sm-10">
+                                    <input type="email" name="email" class="form-control" 
+                                           value="${requestScope.account.email}"
+                                           required placeholder="Email">
                                 </div>
-                                <div class="form-group">
-                                    <label class="col-sm-2 col-sm-2 control-label">Phone *:</label>
-                                    <div class="col-sm-10">
-                                        <input type="text" name="phone" class="form-control"
-                                               pattern="^[0-9]{9,20}$" title="Phone number must be number and have length from 9 to 20 characters!" 
-                                               required placeholder="Phone Number">
-                                    </div>
+                                <c:if test="${requestScope.tag eq 'email'}">
+                                    <p style="color: red; margin: 0.5% 11.9%;">Email has been registered by another person. Please select another email!</p>
+                                </c:if>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 col-sm-2 control-label">Phone *:</label>
+                                <div class="col-sm-10">
+                                    <input type="text" name="phone" class="form-control"
+                                           pattern="^[0-9]{9,20}$" title="Phone number must be number and have length from 9 to 20 characters!" 
+                                           value="${requestScope.account.phone}"
+                                           required placeholder="Phone Number">
                                 </div>
-                                <div class="form-group">
-                                    <label class="col-sm-2 col-sm-2 control-label">Address: </label>
-                                    <div class="col-sm-10">
-                                        <input type="text" name="address" class="form-control" placeholder="Address">
-                                    </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 col-sm-2 control-label">Address: </label>
+                                <div class="col-sm-10">
+                                    <input type="text" name="address" class="form-control"
+                                           value="${requestScope.account.address}"
+                                           placeholder="Address">
                                 </div>
-                                <div class="form-group">
-                                    <label class="col-sm-2 col-sm-2 control-label">Gender *:</label>
-                                    <div class="col-sm-10" style="display: flex;">
-                                        <div class="radio">
-                                            <label>
-                                                <input type="radio" name="gender" value="male" checked="checked"> Male
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 col-sm-2 control-label">Gender *:</label>
+                                <div class="col-sm-10" style="display: flex;">
+                                    <div class="radio">
+                                        <label>
+                                            <input type="radio" name="gender" value="male" 
+                                                   <c:if test="${requestScope.account.gender}">checked="checked"</c:if> > Male
                                             </label>
                                         </div>
                                         <div class="radio">
                                             <label>
-                                                <input type="radio" name="gender" value="femail"> Female
+                                                <input type="radio" name="gender"  <c:if test="${!requestScope.account.gender}">checked="checked"</c:if> value="femail"> Female
                                             </label>
                                         </div>
                                     </div>
@@ -82,12 +96,15 @@
                                     <div class="col-sm-10" style="display: flex;">
                                         <div class="radio">
                                             <label>
-                                                <input type="radio" name="status" value="Active" checked="checked"> Active
+                                                <input type="radio" name="status" value="Active" 
+                                                <c:if test="${requestScope.account eq null}">checked="checked"</c:if> 
+                                                <c:if test="${requestScope.account != null && requestScope.account.status eq 'Active'}">checked="checked"</c:if>> Active
                                             </label>
                                         </div>
                                         <div class="radio">
                                             <label>
-                                                <input type="radio" name="status" value="Deactive"> Deactive
+                                                <input type="radio" name="status" 
+                                                <c:if test="${requestScope.account.status eq 'Deacctive'}">checked="checked"</c:if> value="Deactive"> Deactive
                                             </label>
                                         </div>
                                     </div>
@@ -98,7 +115,8 @@
                                     <c:forEach items="${requestScope.roles}" var="r">
                                         <div class="radio" style="margin-left: -19px;">
                                             <input type="checkbox" name="roleID" value="${r.id}"
-                                                   <c:if test="${r.roleName eq 'Student'}">checked="checked"</c:if>>${r.roleName}
+                                                   <c:if test="${requestScope.account.checkRoleEqual(r)}">checked="checked"</c:if>
+                                                   <c:if test="${r.roleName eq 'Student' && requestScope.account eq null}"> checked="checked"</c:if>>${r.roleName}
                                             </div>
                                     </c:forEach>
                                 </div>

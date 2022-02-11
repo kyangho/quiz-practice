@@ -34,8 +34,8 @@ public class UserListController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-        int pageSize = 2;
+        
+        int pageSize = 10;
 
         String pageindex_raw = request.getParameter("pageindex");
         int pageindex;
@@ -60,13 +60,12 @@ public class UserListController extends HttpServlet {
             String status = request.getParameter("status");
             accounts = new ArrayList<>();
 
-            if (id == null && fullname == null && email == null && phone == null && roleID == null && status == null) {
+            if (fullname == null && email == null && phone == null && roleID == null && status == null && id == null) {
                 accounts = adbc.getAllAccountsByFilter(pageindex, pageSize, null, null, null, null, null, null, null);
                 totalRows = adbc.totalRowsByAccountInfor(null, null, null, null, null, null, null);
                 url = "userlist?pageindex=";
             } else {
                 accounts = adbc.getAllAccountsByFilter(pageindex, pageSize, id, fullname, email, phone, roleID, status, null);
-
                 totalRows = adbc.totalRowsByAccountInfor(id, fullname, email, phone, roleID, status, null);
                 url = "userlist?id=" + id + "&fullname=" + fullname + "&email=" + email
                         + "&phone=" + phone + "&roleID=" + roleID + "&status=" + status + "&pageindex=";
@@ -108,7 +107,7 @@ public class UserListController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        int pageSize = 2;
+        int pageSize = 10;
         int totalRows;
         int totalPage;
 

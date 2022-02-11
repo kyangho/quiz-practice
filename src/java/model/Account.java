@@ -121,11 +121,20 @@ public class Account {
         this.role = role;
     }
 
+    public boolean checkRoleEqual(Role ro) {
+        for (Role r : this.role) {
+            if (r.getId() == ro.getId() || r.getRoleName().equalsIgnoreCase(ro.getRoleName())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public void display() {
         System.out.print("Account{" + "id=" + id + ", username=" + username + ", password=" + password + ", email=" + email + ", phone=" + phone + ", fullname=" + fullname + ", address=" + address + ", gender=" + gender + ", status=" + status);
         System.out.print(", Role: ");
         for (Role r : role) {
-            System.out.print("rID: " + r.getId() + ", rName: " + r.getRoleName() +", ");
+            System.out.print("rID: " + r.getId() + ", rName: " + r.getRoleName() + ", ");
         }
         System.out.println("\b\b");
     }
