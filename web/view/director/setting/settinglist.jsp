@@ -28,7 +28,7 @@
                     <section class="content">
                         <div class="row">
                             <div class="col-xs-12">
-                                <div class="panel">
+                                <div class="panel"> 
                                     <div class="panel-heading" style="display: flex;">
                                         <div style="margin-right: 74%;"> List of settings</div>
                                         <div>
@@ -104,7 +104,6 @@
                                                         </td>
                                                     </tr>
                                                 </c:forEach>
-                                                </tr>
                                             </table>
                                             <div style="margin: -2% 0 1% 93%;">
                                                 <button class="btn btn-sm btn-default" style="color: black;font-weight: bolder;" type="submit">Apply</button>

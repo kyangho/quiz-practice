@@ -49,6 +49,30 @@
         <servlet-name>To404PageController</servlet-name>
         <servlet-class>controller.homepage.To404PageController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AddNewUserController</servlet-name>
+        <servlet-class>controller.director.AddNewUserController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>SubjectListController</servlet-name>
+        <servlet-class>controller.director.SubjectListController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>SubjectDetailController</servlet-name>
+        <servlet-class>controller.director.SubjectDetailController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AddSubjectController</servlet-name>
+        <servlet-class>controller.director.AddSubjectController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>EditSubjectController</servlet-name>
+        <servlet-class>controller.director.EditSubjectController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UserDetailsController</servlet-name>
+        <servlet-class>controller.director.UserDetailsController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>HomePageController</servlet-name>
         <url-pattern>/home</url-pattern>
@@ -98,12 +122,36 @@
         <url-pattern>/director/user/userlist</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
+        <servlet-name>SubjectListController</servlet-name>
+        <url-pattern>/director/subject/subjectlist</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SubjectDetailController</servlet-name>
+        <url-pattern>/director/subject/subjectdetail</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddSubjectController</servlet-name>
+        <url-pattern>/director/subject/newsubject</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
         <servlet-name>ChangeStatusForUserController</servlet-name>
         <url-pattern>/director/user/changestatusforuser</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>To404PageController</servlet-name>
         <url-pattern>/unknown</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddNewUserController</servlet-name>
+        <url-pattern>/director/user/adduser</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UserDetailsController</servlet-name>
+        <url-pattern>/director/user/userdetails</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>EditSubjectController</servlet-name>
+        <url-pattern>/director/subject/editsubject</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>

@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <!-- Left side column. contains the logo and sidebar -->
 <aside class="left-side sidebar-offcanvas">
     <!-- sidebar: style can be found in sidebar.less -->
@@ -37,14 +38,18 @@
                     <i class="glyphicon glyphicon-cog"></i> <span>Settings List</span>
                 </a>
             </li>
-
             <li
                 <c:if test="${tag eq 'userlist'}">class="active"</c:if>  >
                 <a href="${pageContext.request.contextPath}/director/user/userlist">
                     <i class="fa fa-user"></i> <span>Users List</span>
                 </a>
             </li>
-
+            <li
+                <c:if test="${tag eq 'subjectlist'}">class="active"</c:if>  >
+                <a href="${pageContext.request.contextPath}/director/subject/subjectlist">
+                    <i class="far fa-list-alt"></i> <span style="padding-left: 5px;s">Subject List</span>
+                </a>
+            </li>
         </ul>
     </section>
     <!-- /.sidebar -->

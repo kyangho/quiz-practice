@@ -5,7 +5,6 @@
  */
 package model;
 
-import java.sql.Date;
 import java.util.ArrayList;
 
 /**
@@ -23,12 +22,13 @@ public class Account {
     private String fullname;
     private String address;
     private boolean gender;
+    private String avatar;
     private ArrayList<Role> role = new ArrayList<>();
 
     public Account() {
     }
 
-    public Account(int id, String username, String password, String email, String phone, String fullname, String address, boolean gender, String status, ArrayList<Role> role) {
+    public Account(int id, String username, String password, String email, String phone, String fullname, String address, boolean gender, String status, ArrayList<Role> role, String avatar) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -39,6 +39,7 @@ public class Account {
         this.gender = gender;
         this.status = status;
         this.role = role;
+        this.avatar = avatar;
     }
 
     public int getId() {
@@ -121,11 +122,28 @@ public class Account {
         this.role = role;
     }
 
+    public boolean checkRoleEqual(Role ro) {
+        for (Role r : this.role) {
+            if (r.getId() == ro.getId() || r.getRoleName().equalsIgnoreCase(ro.getRoleName())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+    
     public void display() {
-        System.out.print("Account{" + "id=" + id + ", username=" + username + ", password=" + password + ", email=" + email + ", phone=" + phone + ", fullname=" + fullname + ", address=" + address + ", gender=" + gender + ", status=" + status);
+        System.out.print("Account{" + "id=" + id + ", username=" + username + ", password=" + password + ", email=" + email + ", phone=" + phone + ", fullname=" + fullname + ", address=" + address + ", gender=" + gender + ", status=" + status + ", avatar=" + avatar);
         System.out.print(", Role: ");
         for (Role r : role) {
-            System.out.print("rID: " + r.getId() + ", rName: " + r.getRoleName() +", ");
+            System.out.print("rID: " + r.getId() + ", rName: " + r.getRoleName() + ", ");
         }
         System.out.println("\b\b");
     }

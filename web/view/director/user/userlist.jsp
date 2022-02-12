@@ -32,7 +32,7 @@
                                     <div class="panel-heading" style="display: flex;">
                                         <div style="margin-right: 74%;"> List of users</div>
                                         <div>
-                                            <a href="add">Add new user </a>
+                                            <a href="adduser">Add new user </a>
                                         </div>
                                     </div>
 
@@ -109,7 +109,7 @@
                                                             </c:forEach>
                                                         </td>
                                                         <td>${a.status}</td>
-                                                        <td><button class="label label-info"><a style="color: white;" href="#">Details</a></button></td>
+                                                        <td><button class="label label-info"><a style="color: white;" href="userdetails?id=${a.id}">Details</a></button></td>
                                                         <td><button 
                                                                 onclick="changeStatus(${a.id}, '${a.status}', 'changestatusforuser')" 
                                                                 type="button" class="label 

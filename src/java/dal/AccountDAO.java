@@ -120,13 +120,20 @@ public class AccountDAO extends DBContext {
                     + "`account_email`,\n"
                     + "`account_phone`,\n"
                     + "`account_fullname`,\n"
-                    + "`account_address`,\n"
-                    + "`account_gender`)\n"
-                    + "VALUES(?,?,?,?,?,?);";
+                    + "`address`,\n"
+                    + "`gender`,\n"
+                    + "`avatar`)\n"
+                    + "VALUES\n"
+                    + "(?,?,?,?,?,?,?);";
+
             PreparedStatement stm1 = connection.prepareStatement(sql1);
             stm1.setString(1, account.getUsername());
-            stm1.setString(2, account.getPassword());
-            stm1.setString(3, "ACTIVE");
+            if (account.getRole().size() > 0) {
+                stm1.setString(2, account.getEmail());
+            } else {
+                stm1.setString(2, account.getPassword());
+            }
+            stm1.setString(3, "Active");
             stm1.executeUpdate();
 
             String sql3 = "SELECT LAST_INSERT_ID();";
@@ -141,7 +148,23 @@ public class AccountDAO extends DBContext {
             stm2.setString(4, account.getFullname());
             stm2.setString(5, account.getAddress());
             stm2.setBoolean(6, account.isGender());
+            stm2.setString(7, account.getAvatar());
             stm2.executeUpdate();
+
+            if (account.getRole().size() > 0) {
+                String sql4 = "INSERT INTO `quiz_practice_db`.`account_role`\n"
+                        + "(`account_id`,\n"
+                        + "`role_id`)\n"
+                        + "VALUES\n"
+                        + "(?,\n"
+                        + "?);";
+                PreparedStatement stm4 = connection.prepareStatement(sql4);
+                for (Role role : account.getRole()) {
+                    stm4.setInt(1, id);
+                    stm4.setInt(2, role.getId());
+                    stm4.executeUpdate();
+                }
+            }
             connection.commit();
         } catch (SQLException ex) {
             Logger.getLogger(AccountDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -187,20 +210,54 @@ public class AccountDAO extends DBContext {
         }
     }
 
-    public void updateProfile(Account account) {
+    public void updateAccount(Account account) {
         try {
             connection.setAutoCommit(false);
-            String sql = "UPDATE `quiz_practice_db`.`account_profile`\n"
+            String sql1 = "UPDATE `quiz_practice_db`.`account`\n"
+                    + "SET\n"
+                    + "`account_status` = ?\n"
+                    + "WHERE `account_id` = ?;";
+            PreparedStatement stm1 = connection.prepareStatement(sql1);
+            stm1.setString(1, account.getStatus());
+            stm1.setInt(2, account.getId());
+            stm1.executeUpdate();
+
+            String sql2 = "UPDATE `quiz_practice_db`.`account_profile`\n"
                     + "SET\n"
                     + "`account_email` = ?,\n"
                     + "`account_phone` = ?,\n"
                     + "`account_fullname` = ?,\n"
-                    + "`address` = ?\n"
+                    + "`address` = ?,\n"
+                    + "`gender` = ?,\n"
+                    + "`avatar` = ?\n"
                     + "WHERE `account_id` = ?;";
-            PreparedStatement stm = connection.prepareStatement(sql);
-            stm.setString(1, account.getPassword());
-            stm.setInt(2, account.getId());
-            stm.execute();
+            PreparedStatement stm2 = connection.prepareStatement(sql2);
+            stm2.setString(1, account.getEmail());
+            stm2.setString(2, account.getPhone());
+            stm2.setString(3, account.getFullname());
+            stm2.setString(4, account.getAddress());
+            stm2.setBoolean(5, account.isGender());
+            stm2.setString(6, account.getAvatar());
+            stm2.setInt(7, account.getId());
+            stm2.executeUpdate();
+            String sql3 = "DELETE FROM `quiz_practice_db`.`account_role`\n"
+                    + "WHERE account_id = ?;";
+            PreparedStatement stm3 = connection.prepareStatement(sql3);
+            stm3.setInt(1, account.getId());
+            stm3.executeUpdate();
+
+            String sql4 = "INSERT INTO `quiz_practice_db`.`account_role`\n"
+                    + "(`account_id`,\n"
+                    + "`role_id`)\n"
+                    + "VALUES\n"
+                    + "(?,\n"
+                    + "?);";
+            PreparedStatement stm4 = connection.prepareStatement(sql4);
+            for (Role role : account.getRole()) {
+                stm4.setInt(1, account.getId());
+                stm4.setInt(2, role.getId());
+                stm4.executeUpdate();
+            }
             connection.commit();
         } catch (SQLException ex) {
             Logger.getLogger(AccountDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -219,31 +276,42 @@ public class AccountDAO extends DBContext {
     }
 
     public Account getAccountById(int id) {
+        Account account = null;
         try {
-            String sql = "SELECT a.account_id, a.username, a.password,\n"
-                    + "ap.account_email, ap.account_phone,\n"
-                    + "ap.account_fullname, ap.address\n"
-                    + "FROM account as a\n"
-                    + "JOIN account_profile as ap on a.account_id = ap.account_id\n"
-                    + "WHERE a.account_id = ?";
+            String sql = "select  a.account_id, a.username ,ap.account_fullname, \n"
+                    + "		ap.account_email, ap.account_phone, ap.address, a.account_status,\n"
+                    + "		ap.gender, r.role_id, r.role_name, ap.avatar  \n"
+                    + "	from quiz_practice_db.`account` as a\n"
+                    + "	join quiz_practice_db.account_profile as ap on a.account_id = ap.account_id\n"
+                    + "	left join quiz_practice_db.account_role as ar on ar.account_id = ap.account_id\n"
+                    + "	left join quiz_practice_db.`role` as r on ar.role_id = r.role_id\n"
+                    + "	where a.account_id = ?;";
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setInt(1, id);
             ResultSet rs = stm.executeQuery();
-            if (rs.next()) {
-                Account account = new Account();
-                account.setId(rs.getInt(1));
-                account.setUsername(rs.getString(2));
-                account.setPassword(rs.getString(3));
-                account.setEmail(rs.getString(4));
-                account.setPhone(rs.getString(5));
-                account.setFullname(rs.getString(6));
-                account.setAddress(rs.getString(7));
-                return account;
+            while (rs.next()) {
+                if (account == null) {
+
+                    account = new Account();
+                    account.setId(rs.getInt(1));
+                    account.setUsername(rs.getString(2));
+                    account.setFullname(rs.getString(3));
+                    account.setEmail(rs.getString(4));
+                    account.setPhone(rs.getString(5));
+                    account.setAddress(rs.getString(6));
+                    account.setStatus(rs.getString(7));
+                    account.setGender(rs.getBoolean(8));
+                    account.getRole().add(new Role(rs.getInt(9), rs.getString(10)));
+                    account.setAvatar(rs.getString(11));
+                } else {
+                    account.getRole().add(new Role(rs.getInt(9), rs.getString(10)));
+                }
             }
+
         } catch (SQLException ex) {
             Logger.getLogger(AccountDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return null;
+        return account;
     }
 
     public ArrayList<Account> getAllAccountsByFilter(int pageindex, int pageSize, String id, String fullname, String email, String phone, String roleID, String status, String keySearch) {
@@ -251,9 +319,9 @@ public class AccountDAO extends DBContext {
 
         String sql = "select * \n"
                 + "from (\n"
-                + "	select row_number() over (order by a.account_id ) as stt, a.account_id, ap.account_fullname, \n"
+                + "	select row_number() over (order by a.account_id ) as stt,  a.account_id, a.username ,ap.account_fullname, \n"
                 + "		ap.account_email, ap.account_phone, ap.address, a.account_status,\n"
-                + "		ap.gender, r.role_id, r.role_name  \n"
+                + "		ap.gender, r.role_id, r.role_name, ap.avatar\n"
                 + "	from quiz_practice_db.`account` as a\n"
                 + "	join quiz_practice_db.account_profile as ap on a.account_id = ap.account_id\n"
                 + "	left join quiz_practice_db.account_role as ar on ar.account_id = ap.account_id\n"
@@ -267,69 +335,53 @@ public class AccountDAO extends DBContext {
             if (!roleID.equalsIgnoreCase("all") && !status.equalsIgnoreCase("all")) {
                 sql += "        AND a.account_status = " + flag + " AND r.role_id = " + roleID + "\n";
             }
-
             if (!roleID.equalsIgnoreCase("all") && status.equalsIgnoreCase("all")) {
                 sql += "        AND r.role_id = " + roleID + "\n";
             }
-
             if (roleID.equalsIgnoreCase("all") && !status.equalsIgnoreCase("all")) {
                 sql += "        AND a.account_status = " + flag + "\n";
             }
-
             if (!id.equalsIgnoreCase("all") && !fullname.equalsIgnoreCase("all") && !email.equalsIgnoreCase("all") && !phone.equalsIgnoreCase("all")) {
                 sql += "        order by a.account_id " + id + ", ap.account_fullname " + fullname + " ,ap.account_email " + email + ",ap.account_phone " + phone + "\n";
             }
-
             if (!id.equalsIgnoreCase("all") && !fullname.equalsIgnoreCase("all") && !email.equalsIgnoreCase("all") && phone.equalsIgnoreCase("all")) {
                 sql += "        order by a.account_id " + id + ", ap.account_fullname " + fullname + " ,ap.account_email " + email + "\n";
             }
-
             if (!id.equalsIgnoreCase("all") && !fullname.equalsIgnoreCase("all") && email.equalsIgnoreCase("all") && phone.equalsIgnoreCase("all")) {
                 sql += "        order by a.account_id " + id + ", ap.account_fullname " + fullname + "\n";
             }
-
             if (!id.equalsIgnoreCase("all") && fullname.equalsIgnoreCase("all") && email.equalsIgnoreCase("all") && phone.equalsIgnoreCase("all")) {
                 sql += "        order by a.account_id " + id + "\n";
             }
-
             if (id.equalsIgnoreCase("all") && !fullname.equalsIgnoreCase("all") && !email.equalsIgnoreCase("all") && !phone.equalsIgnoreCase("all")) {
                 sql += "        order by ap.account_fullname " + fullname + " ,ap.account_email " + email + " ,ap.account_phone " + phone + "\n";
             }
-
             if (id.equalsIgnoreCase("all") && !fullname.equalsIgnoreCase("all") && !email.equalsIgnoreCase("all") && phone.equalsIgnoreCase("all")) {
                 sql += "        order by ap.account_fullname " + fullname + " ,ap.account_email " + email + "\n";
             }
-
             if (id.equalsIgnoreCase("all") && !fullname.equalsIgnoreCase("all") && email.equalsIgnoreCase("all") && !phone.equalsIgnoreCase("all")) {
                 sql += "        order by ap.account_fullname " + fullname + " ,ap.account_phone " + phone + "\n";
             }
-
             if (id.equalsIgnoreCase("all") && !fullname.equalsIgnoreCase("all") && email.equalsIgnoreCase("all") && phone.equalsIgnoreCase("all")) {
                 sql += "        order by ap.account_fullname " + fullname + "\n";
             }
-
             if (id.equalsIgnoreCase("all") && fullname.equalsIgnoreCase("all") && !email.equalsIgnoreCase("all") && !phone.equalsIgnoreCase("all")) {
                 sql += "        order by ap.account_email " + email + " ,ap.account_phone " + phone + "\n";
             }
-
             if (id.equalsIgnoreCase("all") && fullname.equalsIgnoreCase("all") && !email.equalsIgnoreCase("all") && phone.equalsIgnoreCase("all")) {
                 sql += "        order by ap.account_email " + email + "\n";
             }
-
             if (id.equalsIgnoreCase("all") && fullname.equalsIgnoreCase("all") && email.equalsIgnoreCase("all") && !phone.equalsIgnoreCase("all")) {
                 sql += "        order by ap.account_phone " + phone + "\n";
             }
         }
-
         if (keySearch != null) {
             sql += "    and (ap.account_email like '%" + keySearch + "%' or ap.account_fullname like '%" + keySearch + "%' "
                     + " or ap.account_phone like '%" + keySearch + "%')";
         }
-
         sql += ") as acc\n"
                 + "where acc.stt >= (? - 1)*? + 1 AND acc.stt <= ? * ?;";
 //        System.out.println(sql);
-
         try {
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setInt(1, pageindex);
@@ -339,20 +391,25 @@ public class AccountDAO extends DBContext {
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
                 Account a = new Account();
+//                select row_number() over (order by a.account_id ) as stt,  a.account_id, a.username ,ap.account_fullname, \n"
+//                + "		ap.account_email, ap.account_phone, ap.address, a.account_status,\n"
+//                + "		ap.gender, r.role_id, r.role_name, ap.avatar\n
                 a.setId(rs.getInt(2));
                 if (!checkAccountIsExist(a, accounts)) {
-                    a.setFullname(rs.getString(3));
-                    a.setEmail(rs.getString(4));
-                    a.setPhone(rs.getString(5));
-                    a.setAddress(rs.getString(6));
-                    a.setStatus(rs.getString(7));
-                    a.setGender(rs.getBoolean(8));
-                    a.getRole().add(new Role(rs.getInt(9), rs.getString(10)));
+                    a.setUsername(rs.getString(3));
+                    a.setFullname(rs.getString(4));
+                    a.setEmail(rs.getString(5));
+                    a.setPhone(rs.getString(6));
+                    a.setAddress(rs.getString(7));
+                    a.setStatus(rs.getString(8));
+                    a.setGender(rs.getBoolean(9));
+                    a.getRole().add(new Role(rs.getInt(10), rs.getString(11)));
+                    a.setAvatar(rs.getString(12));
                     accounts.add(a);
                 } else {
                     for (Account account : accounts) {
                         if (account.getId() == a.getId()) {
-                            account.getRole().add(new Role(rs.getInt(9), rs.getString(10)));
+                            account.getRole().add(new Role(rs.getInt(10), rs.getString(11)));
                             break;
                         }
                     }
@@ -366,10 +423,8 @@ public class AccountDAO extends DBContext {
 
     public int totalRowsByAccountInfor(String id, String fullname, String email, String phone, String roleID, String status, String keySearch) {
         ArrayList<Account> accounts = new ArrayList<>();
-        String sql = "select  a.account_id, ap.account_fullname, \n"
-                + "		ap.account_email, ap.account_phone, ap.address, a.account_status,\n"
-                + "		ap.gender, r.role_id, r.role_name  \n"
-                + "     from quiz_practice_db.`account` as a\n"
+        String sql = "select count(*) as total \n"
+                + "	from quiz_practice_db.`account` as a\n"
                 + "	join quiz_practice_db.account_profile as ap on a.account_id = ap.account_id\n"
                 + "	left join quiz_practice_db.account_role as ar on ar.account_id = ap.account_id\n"
                 + "	left join quiz_practice_db.`role` as r on ar.role_id = r.role_id\n"
@@ -383,93 +438,106 @@ public class AccountDAO extends DBContext {
             if (!roleID.equalsIgnoreCase("all") && !status.equalsIgnoreCase("all")) {
                 sql += "        AND a.account_status = " + flag + " AND r.role_id = " + roleID + "\n";
             }
-
             if (!roleID.equalsIgnoreCase("all") && status.equalsIgnoreCase("all")) {
                 sql += "        AND r.role_id = " + roleID + "\n";
             }
-
             if (roleID.equalsIgnoreCase("all") && !status.equalsIgnoreCase("all")) {
                 sql += "        AND a.account_status = " + flag + "\n";
             }
-
             if (!id.equalsIgnoreCase("all") && !fullname.equalsIgnoreCase("all") && !email.equalsIgnoreCase("all") && !phone.equalsIgnoreCase("all")) {
                 sql += "        order by a.account_id " + id + ", ap.account_fullname " + fullname + " ,ap.account_email " + email + ",ap.account_phone " + phone + "\n";
             }
-
             if (!id.equalsIgnoreCase("all") && !fullname.equalsIgnoreCase("all") && !email.equalsIgnoreCase("all") && phone.equalsIgnoreCase("all")) {
                 sql += "        order by a.account_id " + id + ", ap.account_fullname " + fullname + " ,ap.account_email " + email + "\n";
             }
-
             if (!id.equalsIgnoreCase("all") && !fullname.equalsIgnoreCase("all") && email.equalsIgnoreCase("all") && phone.equalsIgnoreCase("all")) {
                 sql += "        order by a.account_id " + id + ", ap.account_fullname " + fullname + "\n";
             }
-
             if (!id.equalsIgnoreCase("all") && fullname.equalsIgnoreCase("all") && email.equalsIgnoreCase("all") && phone.equalsIgnoreCase("all")) {
                 sql += "        order by a.account_id " + id + "\n";
             }
-
             if (id.equalsIgnoreCase("all") && !fullname.equalsIgnoreCase("all") && !email.equalsIgnoreCase("all") && !phone.equalsIgnoreCase("all")) {
                 sql += "        order by ap.account_fullname " + fullname + " ,ap.account_email " + email + " ,ap.account_phone " + phone + "\n";
             }
-
             if (id.equalsIgnoreCase("all") && !fullname.equalsIgnoreCase("all") && !email.equalsIgnoreCase("all") && phone.equalsIgnoreCase("all")) {
                 sql += "        order by ap.account_fullname " + fullname + " ,ap.account_email " + email + "\n";
             }
-
             if (id.equalsIgnoreCase("all") && !fullname.equalsIgnoreCase("all") && email.equalsIgnoreCase("all") && !phone.equalsIgnoreCase("all")) {
                 sql += "        order by ap.account_fullname " + fullname + " ,ap.account_phone " + phone + "\n";
             }
-
             if (id.equalsIgnoreCase("all") && !fullname.equalsIgnoreCase("all") && email.equalsIgnoreCase("all") && phone.equalsIgnoreCase("all")) {
                 sql += "        order by ap.account_fullname " + fullname + "\n";
             }
-
             if (id.equalsIgnoreCase("all") && fullname.equalsIgnoreCase("all") && !email.equalsIgnoreCase("all") && !phone.equalsIgnoreCase("all")) {
                 sql += "        order by ap.account_email " + email + " ,ap.account_phone " + phone + "\n";
             }
-
             if (id.equalsIgnoreCase("all") && fullname.equalsIgnoreCase("all") && !email.equalsIgnoreCase("all") && phone.equalsIgnoreCase("all")) {
                 sql += "        order by ap.account_email " + email + "\n";
             }
-
             if (id.equalsIgnoreCase("all") && fullname.equalsIgnoreCase("all") && email.equalsIgnoreCase("all") && !phone.equalsIgnoreCase("all")) {
                 sql += "        order by ap.account_phone " + phone + "\n";
             }
         }
-
         if (keySearch != null) {
             sql += "    and (ap.account_email like '%" + keySearch + "%' or ap.account_fullname like '%" + keySearch + "%' "
                     + " or ap.account_phone like '%" + keySearch + "%')";
         }
-
+        System.out.println(sql);
         try {
             PreparedStatement stm = connection.prepareStatement(sql);
             ResultSet rs = stm.executeQuery();
-            while (rs.next()) {
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+//            while (rs.next()) {
+//                Account a = new Account();
+//                a.setId(rs.getInt(1));
+//                if (!checkAccountIsExist(a, accounts)) {
+//                    a.setFullname(rs.getString(2));
+//                    a.setEmail(rs.getString(3));
+//                    a.setPhone(rs.getString(4));
+//                    a.setAddress(rs.getString(5));
+//                    a.setStatus(rs.getString(6));
+//                    a.setGender(rs.getBoolean(7));
+//                    a.getRole().add(new Role(rs.getInt(8), rs.getString(9)));
+//                    accounts.add(a);
+//                } else {
+//                    for (Account account : accounts) {
+//                        if (account.getId() == a.getId()) {
+//                            account.getRole().add(new Role(rs.getInt(8), rs.getString(9)));
+//                            break;
+//                        }
+//                    }
+//                }
+//            }
+        } catch (SQLException ex) {
+            Logger.getLogger(AccountDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+//        return accounts.size();
+        return 0;
+    }
+
+    public Account isExistAccountForAdd(String phone, String email, String username) {
+        try {
+            String sql = "SELECT a.username, ap.account_phone, ap.account_email FROM account_profile as ap\n"
+                    + "JOIN account as a on ap.account_id = a.account_id\n"
+                    + "WHERE ap.account_phone = ? OR ap.account_email = ? OR a.username = ?";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setString(1, phone);
+            stm.setString(2, email);
+            stm.setString(3, username);
+            ResultSet rs = stm.executeQuery();
+            if (rs.next()) {
                 Account a = new Account();
-                a.setId(rs.getInt(1));
-                if (!checkAccountIsExist(a, accounts)) {
-                    a.setFullname(rs.getString(2));
-                    a.setEmail(rs.getString(3));
-                    a.setPhone(rs.getString(4));
-                    a.setAddress(rs.getString(5));
-                    a.setStatus(rs.getString(6));
-                    a.setGender(rs.getBoolean(7));
-                    a.getRole().add(new Role(rs.getInt(8), rs.getString(9)));
-                    accounts.add(a);
-                } else {
-                    for (Account account : accounts) {
-                        if (account.getId() == a.getId()) {
-                            account.getRole().add(new Role(rs.getInt(8), rs.getString(9)));
-                            break;
-                        }
-                    }
-                }
+                a.setUsername(rs.getString(1));
+                a.setPhone(rs.getString(2));
+                a.setEmail(rs.getString(3));
+                return a;
             }
         } catch (SQLException ex) {
             Logger.getLogger(AccountDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return accounts.size();
+        return null;
     }
 
     public void ActiveStatus(int id) {
@@ -504,21 +572,8 @@ public class AccountDAO extends DBContext {
 
     public static void main(String[] args) {
         AccountDAO adbc = new AccountDAO();
-//        adbc.insertAccount(new Account("tienvd", "he153313", "tienvdhe153313@fpt.edu.vn", "0983563147", "Vu Duc Tien", new Date(2001, 7, 2), "Ha Noi"));
-        Account a = adbc.getAccount("admin", "admin123");
-        a.display();
-//        System.out.println(a.toString());
-//        Account a = new Account();
-//        a.setId(1);
-//        a.setUsername("admin");
-//        a.setPassword("admin");
-//        adbc.changePassword(a);
-//        System.out.println(adbc.isExistAccount("", "", ""));
-//        adbc.getAllAccountsByFilter(id, fullname, email, phone, roleID, status, keySearch)
-//        for (Account account : adbc.getAllAccountsByFilter(1, 2, null, null, null, null, null, null, null)) {
-//            account.display();
-//        }
-//
+        adbc.isExistAccountForAdd(null, "user@user.com", null).display();
+//        adbc.getAccountById(2).display();
 //        System.out.println(adbc.totalRowsByAccountInfor(null, null, null, null, null, null, null));
     }
 }
