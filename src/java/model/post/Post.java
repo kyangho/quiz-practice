@@ -1,9 +1,9 @@
-/*
+    /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package model;
+package model.post;
 
 import java.sql.Blob;
 import java.sql.Date;
@@ -17,16 +17,24 @@ public class Post {
     private int id;
     private Blob thumbnail;
     private String title;
+    private String brief;
     private String content;
-    private String category;
     private String author;
     private Date dateCreated;
     private Date dateModified;
     private boolean featuring;
     private String status;
     private ArrayList<PostFile> postFiles;
-
+    private ArrayList<PostCategory> categories;
     public Post() {
+    }
+
+    public String getBrief() {
+        return brief;
+    }
+
+    public void setBrief(String brief) {
+        this.brief = brief;
     }
 
     public int getId() {
@@ -59,14 +67,6 @@ public class Post {
 
     public void setContent(String content) {
         this.content = content;
-    }
-
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
     }
 
     public String getAuthor() {
@@ -115,6 +115,14 @@ public class Post {
 
     public void setPostFiles(ArrayList<PostFile> postFiles) {
         this.postFiles = postFiles;
+    }
+
+    public ArrayList<PostCategory> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(ArrayList<PostCategory> categories) {
+        this.categories = categories;
     }
     
     

@@ -12,4 +12,12 @@
         <id>3</id>
         <name>Category</name>
     </type>
+    <type>
+        <id>4</id>
+        <name>Test Category</name>
+    </type>
+    <type>
+        <id>5</id>
+        <name>Post Category</name>
+    </type>
 </types>

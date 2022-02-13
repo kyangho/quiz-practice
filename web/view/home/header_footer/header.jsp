@@ -31,8 +31,8 @@
     <link href="${pageContext.request.contextPath}/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
 
     <!-- Customized Bootstrap Stylesheet -->
-    <link href="${pageContext.request.contextPath}/css/bootstrap.min.css" rel="stylesheet">
-
+    <link href="${pageContext.request.contextPath}/css/bootstrap.min.css?v=5" rel="stylesheet">
+    
     <!-- Template Stylesheet -->
     <link href="${pageContext.request.contextPath}/css/style.css" rel="stylesheet">
     <link href="${pageContext.request.contextPath}/css/popup.css" rel="stylesheet">
@@ -58,7 +58,7 @@
             <div class="navbar-nav ms-auto p-4 p-lg-0">
                 <a href="${pageContext.request.contextPath}/home" class="nav-item nav-link active">Home</a>
                 <a href="about.html" class="nav-item nav-link">About</a>
-                <a href="courses.html" class="nav-item nav-link">Courses</a>
+                <a href="${pageContext.request.contextPath}/post/list" class="nav-item nav-link">Posts</a>
                 <div class="nav-item dropdown">
                     <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
                     <div class="dropdown-menu fade-down m-0">
@@ -70,7 +70,7 @@
                 <a href="contact.html" class="nav-item nav-link">Contact</a>
                 <a href="${pageContext.request.contextPath}/profile" class="nav-item nav-link">List User</a>
                 <c:if test="${sessionScope.account.username == 'admin'}">
-                    <a href="${pageContext.request.contextPath}/director/setting/settinglist" class="nav-item nav-link">For Director</a>
+                    <a href="${pageContext.request.contextPath}/director" class="nav-item nav-link">For Director</a>
                 </c:if>
                 <c:if test="${sessionScope.account == null}"> 
                     <a href="${pageContext.request.contextPath}/login" class="btn btn-primary py-4 px-lg-5 d-none d-lg-block">Join Now<i class="fa fa-arrow-right ms-3"></i></a>

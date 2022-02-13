@@ -3,21 +3,24 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package model;
-
-import java.sql.Blob;
+package model.post;
 
 /**
  *
  * @author ducky
  */
-public class PostFile {
+public class PostCategory {
     private int id;
     private String name;
-    private String type;
-    private Blob fileBlob;
+    private String value;
 
-    public PostFile() {
+    public PostCategory() {
+    }
+
+    public PostCategory(int id, String name, String value) {
+        this.id = id;
+        this.name = name;
+        this.value = value;
     }
 
     public int getId() {
@@ -36,20 +39,12 @@ public class PostFile {
         this.name = name;
     }
 
-    public String getType() {
-        return type;
+    public String getValue() {
+        return value;
     }
 
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public Blob getFileBlob() {
-        return fileBlob;
-    }
-
-    public void setFileBlob(Blob fileBlob) {
-        this.fileBlob = fileBlob;
+    public void setValue(String value) {
+        this.value = value;
     }
     
     

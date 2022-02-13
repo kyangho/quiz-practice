@@ -164,7 +164,7 @@ public class SettingDAO extends DBContext {
         }
         return true;
     }
-
+    
     public ArrayList<Setting> getALLSetting(int pageSize, int pageIndex, String type, String status, String setting_name) {
         String sql_get = "select * from\n"
                 + "	(select row_number() over (order by setting_id ) as stt,\n"
