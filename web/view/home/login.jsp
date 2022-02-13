@@ -4,6 +4,7 @@
     Author     : Vu Duc Tien
 --%>
 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <jsp:include page="header_footer/header.jsp"></jsp:include>
     <div class="container-fluid bg-registration py-5" style="margin: 3rem 0;">
@@ -40,6 +41,9 @@
                             <div>
                                 <button class="btn btn-dark btn-block border-0 py-3" type="submit">Sign In</button>
                             </div>
+                            <c:if test="${requestScope.isFail == true}" >
+                                <p>Wrong username or password</p>
+                            </c:if>
                         </form>
                     </div>
                 </div>

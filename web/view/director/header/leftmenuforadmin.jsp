@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <!-- Left side column. contains the logo and sidebar -->
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/setting.css">
 
@@ -6,9 +7,9 @@
     <!-- sidebar: style can be found in sidebar.less -->
     <section class="sidebar">
         <!-- Sidebar user panel -->
-        <div class="user-panel">
+        <div class="user-panel" style="    display: flex;">
             <div class="pull-left image">
-                <img src="${pageContext.request.contextPath}/bootstrap_for_admin/img/avatar3.png" class="img-circle" alt="User Image" />
+                <img src="https://th.bing.com/th/id/OIP.CPCyt52dUDhWIhy1K3guLAHaHa?pid=ImgDet&rs=1" class="img-circle" alt="User Image" />
             </div>
             <div class="pull-left info">
                 <p>Hello, ${sessionScope.account.fullname}</p>
@@ -51,14 +52,18 @@
                 <input type="hidden" name="search_param" value="all" id="search_param">
 
             </li>
-
             <li
                 <c:if test="${tag eq 'userlist'}">class="active"</c:if>  >
                 <a href="${pageContext.request.contextPath}/director/user/userlist">
-                    <i class="glyphicon glyphicon-cog"></i> <span>Users List</span>
+                    <i class="fa fa-user"></i> <span>Users List</span>
                 </a>
             </li>
-
+            <li
+                <c:if test="${tag eq 'subjectlist'}">class="active"</c:if>  >
+                <a href="${pageContext.request.contextPath}/director/subject/subjectlist">
+                    <i class="far fa-list-alt"></i> <span style="padding-left: 5px;s">Subject List</span>
+                </a>
+            </li>
         </ul>
     </section>
     <!-- /.sidebar -->

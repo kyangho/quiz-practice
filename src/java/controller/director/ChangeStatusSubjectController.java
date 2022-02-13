@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package controller.auth;
+package controller.director;
 
+import dal.SubjectDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -14,9 +15,9 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  *
- * @author Tebellum
+ * @author Yankee
  */
-public class LogoutController extends HttpServlet {
+public class ChangeStatusSubjectController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -29,13 +30,15 @@ public class LogoutController extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        if (request.getSession().getAttribute("account") != null) {
-            request.getSession().removeAttribute("account");
-            response.sendRedirect("home");
-        }else{
-            response.sendRedirect("home");
+        SubjectDAO sdao = new SubjectDAO();
+        String subject_id = request.getParameter("subject_id");
+        String subject_status = request.getParameter("subject_status");
+        if (subject_status.equalsIgnoreCase("Published")) {
+            sdao.unpublishedSubject(Integer.parseInt(subject_id));
+        } else {
+            sdao.publishedSubject(Integer.parseInt(subject_id));
         }
-
+        response.sendRedirect("../subject/subjectlist");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

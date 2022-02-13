@@ -6,6 +6,7 @@
 package controller.director;
 
 import dal.AccountDAO;
+import dal.RoleDAO;
 import java.io.IOException;
 import java.util.ArrayList;
 import javax.servlet.ServletException;
@@ -13,6 +14,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import model.Account;
+import model.Role;
 
 /**
  *
@@ -32,10 +34,65 @@ public class UserListController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
+        int pageSize = 10;
+
+        String pageindex_raw = request.getParameter("pageindex");
+        int pageindex;
         AccountDAO adbc = new AccountDAO();
-        ArrayList<Account> allAccounts = adbc.getAllAccounts();
-        request.setAttribute("accounts", allAccounts);
+
+        if (pageindex_raw == null) {
+            pageindex = 1;
+        } else {
+            pageindex = Integer.parseInt(pageindex_raw);
+        }
+        int totalRows;
+        int totalPage;
+        String keySearch = request.getParameter("keySearch");
+        ArrayList<Account> accounts = null;
+        String url;
+        if (keySearch == null) {
+            String id = request.getParameter("id");
+            String fullname = request.getParameter("fullname");
+            String email = request.getParameter("email");
+            String phone = request.getParameter("phone");
+            String roleID = request.getParameter("roleID");
+            String status = request.getParameter("status");
+            accounts = new ArrayList<>();
+
+            if (fullname == null && email == null && phone == null && roleID == null && status == null && id == null) {
+                accounts = adbc.getAllAccountsByFilter(pageindex, pageSize, null, null, null, null, null, null, null);
+                totalRows = adbc.totalRowsByAccountInfor(null, null, null, null, null, null, null);
+                url = "userlist?pageindex=";
+            } else {
+                accounts = adbc.getAllAccountsByFilter(pageindex, pageSize, id, fullname, email, phone, roleID, status, null);
+                totalRows = adbc.totalRowsByAccountInfor(id, fullname, email, phone, roleID, status, null);
+                url = "userlist?id=" + id + "&fullname=" + fullname + "&email=" + email
+                        + "&phone=" + phone + "&roleID=" + roleID + "&status=" + status + "&pageindex=";
+
+                request.setAttribute("id", id);
+                request.setAttribute("fullname", fullname);
+                request.setAttribute("email", email);
+                request.setAttribute("phone", phone);
+                request.setAttribute("roleID", roleID);
+                request.setAttribute("status", status);
+            }
+        } else {
+            accounts = new ArrayList<>();
+            accounts = adbc.getAllAccountsByFilter(pageindex, pageSize, null, null, null, null, null, null, keySearch);
+            request.setAttribute("valueSearch", keySearch);
+            url = "userlist?keySearch=" + keySearch + "&pageindex=";
+            totalRows = adbc.totalRowsByAccountInfor(null, null, null, null, null, null, keySearch);
+        }
+        totalPage = (totalRows % pageSize == 0) ? totalRows / pageSize : totalRows / pageSize + 1;
+        request.setAttribute("totalPage", totalPage);
+        request.setAttribute("pageindex", pageindex);
+        request.setAttribute("accounts", accounts);
         request.setAttribute("tag", "userlist");
+        request.setAttribute("url", url);
+        RoleDAO rdb = new RoleDAO();
+        ArrayList<Role> roles = rdb.getRoles();
+        request.setAttribute("roles", roles);
         request.getRequestDispatcher("../../view/director/user/userlist.jsp").forward(request, response);
     }
 
@@ -50,7 +107,52 @@ public class UserListController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-//        processRequest(request, response);
+        int pageSize = 10;
+        int totalRows;
+        int totalPage;
+
+        String keySearch = request.getParameter("keySearch");
+        AccountDAO adbc = new AccountDAO();
+        ArrayList<Account> accounts = null;
+        String url;
+        if (keySearch == null) {
+            String id = request.getParameter("id");
+            String fullname = request.getParameter("fullname");
+            String email = request.getParameter("email");
+            String phone = request.getParameter("phone");
+            String roleID = request.getParameter("roleID");
+            String status = request.getParameter("status");
+            accounts = new ArrayList<>();
+            accounts = adbc.getAllAccountsByFilter(1, pageSize, id, fullname, email, phone, roleID, status, null);
+
+            totalRows = adbc.totalRowsByAccountInfor(id, fullname, email, phone, roleID, status, null);
+            url = "userlist?id=" + id + "&fullname=" + fullname + "&email=" + email
+                    + "&phone=" + phone + "&roleID=" + roleID + "&status=" + status + "&pageindex=";
+
+            request.setAttribute("id", id);
+            request.setAttribute("fullname", fullname);
+            request.setAttribute("email", email);
+            request.setAttribute("phone", phone);
+            request.setAttribute("roleID", roleID);
+            request.setAttribute("status", status);
+        } else {
+            accounts = new ArrayList<>();
+            accounts = adbc.getAllAccountsByFilter(1, pageSize, null, null, null, null, null, null, keySearch);
+            request.setAttribute("valueSearch", keySearch);
+            url = "userlist?keySearch=" + keySearch + "&pageindex=";
+            totalRows = adbc.totalRowsByAccountInfor(null, null, null, null, null, null, keySearch);
+        }
+        totalPage = (totalRows % pageSize == 0) ? totalRows / pageSize : totalRows / pageSize + 1;
+        request.setAttribute("totalPage", totalPage);
+        request.setAttribute("pageindex", 1);
+        request.setAttribute("accounts", accounts);
+        request.setAttribute("tag", "userlist");
+        request.setAttribute("url", url);
+        RoleDAO rdb = new RoleDAO();
+        ArrayList<Role> roles = rdb.getRoles();
+        request.setAttribute("roles", roles);
+//                response.getWriter().print("page size: " + pageSize + ", total page: " + totalPage);
+        request.getRequestDispatcher("../../view/director/user/userlist.jsp").forward(request, response);
     }
 
     /**

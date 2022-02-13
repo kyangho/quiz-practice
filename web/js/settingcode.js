@@ -5,9 +5,9 @@
  */
 
 
-function changeStatus(id, status, pageindex) {
+function changeStatus(id, status, url) {
     var c = confirm("Do you sure that change status?");
     if (c) {
-        window.location.href = "changestatus?setting_id=" + id + "&status=" + status + "&pageindex=" + pageindex;
+        window.location.href = url + "?id=" + id + "&status=" + status;
     }
 }
