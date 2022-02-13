@@ -34,7 +34,7 @@ public class UserListController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
         int pageSize = 10;
 
         String pageindex_raw = request.getParameter("pageindex");
@@ -142,7 +142,7 @@ public class UserListController extends HttpServlet {
             url = "userlist?keySearch=" + keySearch + "&pageindex=";
             totalRows = adbc.totalRowsByAccountInfor(null, null, null, null, null, null, keySearch);
         }
-        totalPage = (totalRows % pageSize == 0) ? totalRows / pageSize : totalRows / pageSize;
+        totalPage = (totalRows % pageSize == 0) ? totalRows / pageSize : totalRows / pageSize + 1;
         request.setAttribute("totalPage", totalPage);
         request.setAttribute("pageindex", 1);
         request.setAttribute("accounts", accounts);
@@ -151,6 +151,7 @@ public class UserListController extends HttpServlet {
         RoleDAO rdb = new RoleDAO();
         ArrayList<Role> roles = rdb.getRoles();
         request.setAttribute("roles", roles);
+//                response.getWriter().print("page size: " + pageSize + ", total page: " + totalPage);
         request.getRequestDispatcher("../../view/director/user/userlist.jsp").forward(request, response);
     }
 

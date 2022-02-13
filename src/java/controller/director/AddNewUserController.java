@@ -59,7 +59,7 @@ public class AddNewUserController extends HttpServlet {
         boolean gender = request.getParameter("gender").equalsIgnoreCase("male");
         String status = request.getParameter("status");
         String[] roleIDs = request.getParameterValues("roleID");
-        String avatar = "";
+        String avatar = null;
         ArrayList<Role> roles = new ArrayList<>();
         for (String roleID : roleIDs) {
             roles.add(new Role(Integer.parseInt(roleID), ""));

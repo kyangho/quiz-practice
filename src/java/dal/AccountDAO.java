@@ -286,8 +286,8 @@ public class AccountDAO extends DBContext {
         Account account = null;
         try {
             String sql = "select  a.account_id, a.username ,ap.account_fullname, \n"
-                    + "		ap.account_email, ap.account_phone, ap.address, a.account_status,\n"
-                    + "		ap.gender, r.role_id, r.role_name, ap.avatar  \n"
+                    + "		ap.account_email, ap.account_phone, ap.account_address, a.account_status,\n"
+                    + "		ap.account_gender, r.role_id, r.role_name, ap.account_avatar  \n"
                     + "	from quiz_practice_db.`account` as a\n"
                     + "	join quiz_practice_db.account_profile as ap on a.account_id = ap.account_id\n"
                     + "	left join quiz_practice_db.account_role as ar on ar.account_id = ap.account_id\n"
@@ -326,9 +326,9 @@ public class AccountDAO extends DBContext {
 
         String sql = "select * \n"
                 + "from (\n"
-                + "	select row_number() over (order by a.account_id ) as stt,  a.account_id, a.username ,ap.account_fullname, \n"
-                + "		ap.account_email, ap.account_phone, ap.address, a.account_status,\n"
-                + "		ap.gender, r.role_id, r.role_name, ap.avatar\n"
+                + "	select row_number() over (order by a.account_id ) as stt, a.account_id, a.username ,ap.account_fullname, \n"
+                + "		ap.account_email, ap.account_phone, ap.account_address, a.account_status,\n"
+                + "		ap.account_gender, r.role_id, r.role_name, ap.account_avatar  \n"
                 + "	from quiz_practice_db.`account` as a\n"
                 + "	join quiz_practice_db.account_profile as ap on a.account_id = ap.account_id\n"
                 + "	left join quiz_practice_db.account_role as ar on ar.account_id = ap.account_id\n"
@@ -383,18 +383,19 @@ public class AccountDAO extends DBContext {
             }
         }
         if (keySearch != null) {
-            sql += "    and (ap.account_email like '%" + keySearch + "%' or ap.account_fullname like '%" + keySearch + "%' "
+            sql += "    and (ap.account_email like '%" + keySearch + "%' or ap.account_fullname like '%" + keySearch + "%'"
                     + " or ap.account_phone like '%" + keySearch + "%')";
         }
-        sql += ") as acc\n"
-                + "where acc.stt >= (? - 1)*? + 1 AND acc.stt <= ? * ?;";
-//        System.out.println(sql);
+        int start = (pageindex - 1) * pageSize;
+        sql += "\n) as acc limit " + start + "," + pageSize + ";";
+//                + "where acc.stt >= (? - 1)*? + 1 AND acc.stt <= ? * ?;";
+        System.out.println(sql);
         try {
             PreparedStatement stm = connection.prepareStatement(sql);
-            stm.setInt(1, pageindex);
-            stm.setInt(2, pageSize);
-            stm.setInt(3, pageindex);
-            stm.setInt(4, pageSize);
+//            stm.setInt(1, pageindex);
+//            stm.setInt(2, pageSize);
+//            stm.setInt(3, pageindex);
+//            stm.setInt(4, pageSize);
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
                 Account a = new Account();
