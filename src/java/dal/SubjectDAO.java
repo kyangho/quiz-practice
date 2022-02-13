@@ -19,7 +19,7 @@ import model.Subject;
  */
 public class SubjectDAO extends DBContext {
 
-    public ArrayList<Subject> getAllSetting_1(int pageIndex) {
+    public ArrayList<Subject> getAllSubject_1(int pageIndex) {
         String sql = "select * from (select row_number() over (order by subject_id ) as stt,\n"
                 + "subject_id, subject_title, subject_author, subject_status\n"
                 + "from quiz_practice_db.`subject` ) as t\n"
@@ -48,11 +48,19 @@ public class SubjectDAO extends DBContext {
         return subjects;
     }
 
-    public ArrayList<Subject> getAllSetting_2(int pageSize, int pageIndex) {
+    public ArrayList<Subject> getAllSubject_2(int pageSize, int pageIndex, String status, String subject_title) {
         String sql = "select * from (select row_number() over (order by subject_id ) as stt,\n"
                 + "subject_id, subject_title, subject_author, subject_status\n"
-                + "from quiz_practice_db.`subject` ) as t\n"
-                + "where  t.stt >= (? - 1)*? + 1 AND t.stt <= ? * ?";
+                + "from quiz_practice_db.`subject`";
+        if (status != null) {
+            if (!status.equals("all")) {
+                sql += " where subject_status = '" + status + "'";
+            }
+        }
+        if (subject_title != null) {
+            sql += " where subject_title like '%" + subject_title + "%'";
+        }
+        sql += " ) as t where  t.stt >= (? - 1)*? + 1 AND t.stt <= ? * ?";
         ArrayList<Subject> subjects = new ArrayList<>();
         try {
             PreparedStatement stm = connection.prepareStatement(sql);
@@ -77,15 +85,25 @@ public class SubjectDAO extends DBContext {
         return subjects;
     }
 
-    public int getRowcount() {
+    public int getRowcount(String status, String subject_title) {
         try {
-            String sql = " select count(*) as total From  quiz_practice_db.subject";
+            String sql = "select count(*) as total From  quiz_practice_db.subject";
+            if (status != null) {
+                if (!status.equals("all")) {
+                    sql += " where subject_status = '" + status + "'";
+                }
+            }
+            if (subject_title != null) {
+                sql += " where subject_title like '%" + subject_title + "%'";
+            }
+//            System.out.println(sql);
             PreparedStatement ps = connection.prepareCall(sql);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
                 return rs.getInt("total");
             }
         } catch (SQLException e) {
+            Logger.getLogger(SubjectDAO.class.getName()).log(Level.SEVERE, null, e);
         }
         return -1;
     }
@@ -148,9 +166,40 @@ public class SubjectDAO extends DBContext {
             Logger.getLogger(SubjectDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
+    public boolean unpublishedSubject(int subjectId) {
+        try {
+            String sql = "UPDATE `quiz_practice_db`.`subject` SET `subject_status` = ?"
+                    + " WHERE (`subject_id` = ?);";
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setString(1, "Unpublished");
+            ps.setInt(2, subjectId);
+            ps.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(SubjectDAO.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }
+        return true;
+    }
+
+    public boolean publishedSubject(int subjectId) {
+        try {
+            String sql = "UPDATE `quiz_practice_db`.`subject` SET `subject_status` = ?"
+                    + " WHERE (`subject_id` = ?);";
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setString(1, "Published");
+            ps.setInt(2, subjectId);
+            ps.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(SubjectDAO.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }
+        return true;
+    }
 //    public static void main(String[] args) {
 //        SubjectDAO s = new SubjectDAO();
-//        Subject sub = new Subject(3, "Thi", "Ham", "Unpublished");
-//        s.editSubject(sub);
+//        int sid = 3;
+//        s.publishedSubject(sid);
+//        
 //    }
 }

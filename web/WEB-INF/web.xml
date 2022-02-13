@@ -69,6 +69,10 @@
         <servlet-name>UserDetailsController</servlet-name>
         <servlet-class>controller.director.UserDetailsController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ChangeStatusSubjectController</servlet-name>
+        <servlet-class>controller.director.ChangeStatusSubjectController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>HomePageController</servlet-name>
         <url-pattern>/home</url-pattern>
@@ -144,6 +148,10 @@
     <servlet-mapping>
         <servlet-name>EditSubjectController</servlet-name>
         <url-pattern>/director/subject/editsubject</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ChangeStatusSubjectController</servlet-name>
+        <url-pattern>/director/subject/ChangeStatusSubject</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>
