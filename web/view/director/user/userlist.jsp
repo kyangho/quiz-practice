@@ -32,7 +32,7 @@
                                     <div class="panel-heading" style="display: flex;">
                                         <div style="margin-right: 74%;"> List of users</div>
                                         <div>
-                                            <a href="adduser">Add new user </a>
+                                            <a class="btn label-danger center-block col-sm-10" style="width: 100%;margin-left: 68%;" href="adduser">Add new user </a>
                                         </div>
                                     </div>
 
@@ -113,13 +113,13 @@
                                                         <td><button 
                                                                 onclick="changeStatus(${a.id}, '${a.status}', 'changestatusforuser')" 
                                                                 type="button" class="label 
-                                                                 <c:if test="${a.status == 'Active'}">
-                                                                        label-danger
-                                                                    </c:if>
-                                                                    <c:if test="${a.status eq 'Deactive'}">
-                                                                        label-success
-                                                                    </c:if>
-                                                                    ">
+                                                                <c:if test="${a.status == 'Active'}">
+                                                                    label-danger
+                                                                </c:if>
+                                                                <c:if test="${a.status eq 'Deactive'}">
+                                                                    label-success
+                                                                </c:if>
+                                                                ">
                                                                 <c:if test="${a.status eq 'Active'}">
                                                                     DEACTIVE
                                                                 </c:if>
@@ -132,7 +132,7 @@
                                                 </c:forEach>
                                             </table>
                                             <div style="margin: -2% 0 1% 93%;">
-                                                <button class="btn btn-sm btn-default" style="color: black;font-weight: bolder;" type="submit">Apply</button>
+                                                <button class="btn btn-info center-block col-sm-10" type="submit">Apply</button>
                                             </div>
                                         </c:if>
                                     </form>
