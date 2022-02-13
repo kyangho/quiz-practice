@@ -21,13 +21,6 @@ import javax.mail.internet.MimeMessage;
  */
 public class SendEmail {
 
-    //generate vrification code
-    public String getRandom() {
-        Random rnd = new Random();
-        int number = rnd.nextInt(999999);
-        return String.format("%06d", number);
-    }
-
     public String generatePassword() {
         String AlphaNumericString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
                 + "0123456789"
@@ -92,14 +85,5 @@ public class SendEmail {
         }
 
         return test;
-    }
-
-    public static void main(String[] args) {
-        SendEmail sm = new SendEmail();
-        String subject = "Test";
-        String message = "New pass:" + sm.getRandom();
-        sm.send("thunderfalcon2001@gmail.com", subject, message);
-        //vd Ä‘á»ƒ gá»­i email tá»›i "dich@gmail.com" báº±ng email "nguon@gmail.com" pass "123456"
-//        SendMail.send("dich@gmail.com", subject, message, "nguon@gmail.com", "123456");
     }
 }
