@@ -18,8 +18,9 @@ import model.Account;
  *
  * @author Vu Duc Tien
  */
-public class RegisterController extends HttpServlet {
+public class ForgotPasswordController extends HttpServlet {
 
+    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -34,7 +35,7 @@ public class RegisterController extends HttpServlet {
         if (request.getSession().getAttribute("account") != null) {
             response.sendRedirect(request.getContextPath() + "/home");
         } else {
-            request.getRequestDispatcher("view/home/register.jsp").forward(request, response);
+            request.getRequestDispatcher("view/home/forgotpassword.jsp").forward(request, response);
         }
     }
 
@@ -49,28 +50,25 @@ public class RegisterController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.setCharacterEncoding("UTF-8");
+        String username = request.getParameter("username");
+        String email = request.getParameter("email");
+        String phone = request.getParameter("phone");
+
         AccountDAO adbc = new AccountDAO();
+        Account account = adbc.isExistAccount(phone, email, username, "AND");
 
-        Account account = new Account();
-        String phone = request.getParameter("register_phone");
-        String email = request.getParameter("register_email");
-        String username = request.getParameter("register_username");
-
-        if (adbc.isExistAccount(phone, email, username, "OR") != null) {
+        if (account == null) {
             request.setAttribute("isFail", true);
-            request.getRequestDispatcher("view/home/register.jsp").forward(request, response);
+            request.getRequestDispatcher("view/home/forgotpassword.jsp").forward(request, response);
         } else {
-            account.setUsername(username);
-            account.setPassword(BCrypt.withDefaults().hashToString(12, request.getParameter("register_password").toCharArray()));
-            account.setEmail(email);
-            account.setPhone(phone);
-            account.setFullname(request.getParameter("register_fullname"));
-            account.setAddress(request.getParameter("register_address"));
-            account.setStatus("ACTIVE");
-            account.setGender(request.getParameter("gender").equalsIgnoreCase("male"));
-            adbc.insertAccount(account);
-            response.sendRedirect(request.getContextPath() + "/home");
+            SendEmail sm = new SendEmail();
+            String password = sm.generatePassword();
+            account.setPassword(BCrypt.withDefaults().hashToString(12, password.toCharArray()));
+            String subject = "Reset your password";
+            String message = "Your new password:" + password;
+            sm.send(email, subject, message);
+            adbc.changePassword(account);
+            response.sendRedirect(request.getContextPath() + "/login");
         }
     }
 
