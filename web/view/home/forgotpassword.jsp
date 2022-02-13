@@ -1,6 +1,6 @@
 <%-- 
-    Document   : login
-    Created on : Jan 14, 2022, 4:54:19 PM
+    Document   : forgotpassword
+    Created on : Feb 13, 2022, 1:35:07 AM
     Author     : Vu Duc Tien
 --%>
 
@@ -31,19 +31,21 @@
                         <div class="form-header"><a href="${pageContext.request.contextPath}/register"><h1 class="m-0">Sign Up</h1></a></div>
                     </div>
                     <div class="card-body rounded-bottom bg-primary p-5">
-                        <form action="${pageContext.request.contextPath}/login" method="POST">
+                        <form action="${pageContext.request.contextPath}/forgotpassword" method="POST">
                             <div class="form-group">
                                 <input name="username" type="text" class="form-control border-0 p-4" placeholder="Username" required="required" />
                             </div>
                             <div class="form-group">
-                                <input name="password" type="password" class="form-control border-0 p-4" placeholder="Password" required="required" />
+                                <input name="email" type="email" class="form-control border-0 p-4" placeholder="Email" required="required" />
                             </div>
-                            <a class="forget_password" href="${pageContext.request.contextPath}/forgotpassword">Forgot password</a>
+                            <div class="form-group">
+                                <input name="phone" type="text" class="form-control border-0 p-4" placeholder="Phone number" required="required" />
+                            </div>
                             <div>
-                                <button class="btn btn-dark btn-block border-0 py-3" type="submit">Sign In</button>
+                                <button class="btn btn-dark btn-block border-0 py-3" type="submit">Reset password</button>
                             </div>
                             <c:if test="${requestScope.isFail == true}" >
-                                <p>Wrong username or password</p>
+                                <p>Wrong username, email or phone number</p>
                             </c:if>
                         </form>
                     </div>

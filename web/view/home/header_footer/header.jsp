@@ -99,15 +99,18 @@
                             <ul style="font-weight: 600; padding-left: 0rem;">
                                 <li>ID: ${sessionScope.account.id}</li>
                                 <li>Full name: ${sessionScope.account.fullname} </li>
+                                <li>Gender: <c:if test="${sessionScope.account.gender == true}">Male</c:if>
+                                    <c:if test="${sessionScope.account.gender == false}">Female</c:if></li>
                                 <li>Username:  ${sessionScope.account.username}</li>
-                                <li>Password:  ${sessionScope.account.password}</li>
                                 <li>Email:  ${sessionScope.account.email}</li>
                                 <li>Phone number: ${sessionScope.account.phone}</li>
                                 <li>Address: ${sessionScope.account.address}</li>
+
                             </ul>
                         </div>
                         <div class="img">
-                            <img src="https://th.bing.com/th/id/OIP.CPCyt52dUDhWIhy1K3guLAHaHa?pid=ImgDet&rs=1">
+                            <!--<img src="https://th.bing.com/th/id/OIP.CPCyt52dUDhWIhy1K3guLAHaHa?pid=ImgDet&rs=1">-->
+                            <img src="${sessionScope.account.avatar}"> 
                         </div>
                     </div>
                 </div>

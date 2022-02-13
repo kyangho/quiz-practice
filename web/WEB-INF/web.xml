@@ -74,6 +74,14 @@
         <servlet-class>controller.director.UserDetailsController</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>SendEmailController</servlet-name>
+        <servlet-class>controller.auth.SendEmailController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ForgotPasswordController</servlet-name>
+        <servlet-class>controller.auth.ForgotPasswordController</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>ChangeStatusSubjectController</servlet-name>
         <servlet-class>controller.director.ChangeStatusSubjectController</servlet-class>
     </servlet>
@@ -156,6 +164,14 @@
     <servlet-mapping>
         <servlet-name>EditSubjectController</servlet-name>
         <url-pattern>/director/subject/editsubject</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SendEmailController</servlet-name>
+        <url-pattern>/sendmail</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ForgotPasswordController</servlet-name>
+        <url-pattern>/forgotpassword</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>ChangeStatusSubjectController</servlet-name>

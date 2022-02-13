@@ -6,7 +6,6 @@
 package controller.auth;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -31,9 +30,9 @@ public class LogoutController extends HttpServlet {
             throws ServletException, IOException {
         if (request.getSession().getAttribute("account") != null) {
             request.getSession().removeAttribute("account");
-            response.sendRedirect("home");
+            response.sendRedirect(request.getContextPath() + "/home");
         }else{
-            response.sendRedirect("home");
+            response.sendRedirect(request.getContextPath() + "/home");
         }
 
     }

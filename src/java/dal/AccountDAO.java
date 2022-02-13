@@ -37,7 +37,7 @@ public class AccountDAO extends DBContext {
     public Account getAccount(String username, String password) {
         try {
             String sql1 = "SELECT a.account_id, a.username, a.password, a.account_status,\n"
-                    + "ap.account_email, ap.account_phone, ap.account_fullname, ap.account_address, ap.account_gender\n"
+                    + "ap.account_email, ap.account_phone, ap.account_fullname, ap.account_address, ap.account_gender, ap.account_avatar\n"
                     + "FROM account as a\n"
                     + "JOIN account_profile as ap on a.account_id = ap.account_id\n"
                     + "JOIN account_role as ar on a.account_id = ar.account_id\n"
@@ -65,7 +65,8 @@ public class AccountDAO extends DBContext {
                 account.setFullname(rs1.getString(7));
                 account.setAddress(rs1.getString(8));
                 account.setGender(rs1.getBoolean(9));
-
+                account.setAvatar(rs1.getString(10));
+                
                 ArrayList<Role> roles = new ArrayList<>();
                 while (rs2.next()) {
                     Role r = new Role();
@@ -74,9 +75,8 @@ public class AccountDAO extends DBContext {
                     roles.add(r);
                 }
                 account.setRole(roles);
-                if (password.equals(account.getPassword())) {
-                    return account;
-                } else if (BCrypt.verifyer().verify(password.toCharArray(), account.getPassword()).verified == true) {
+
+                if (BCrypt.verifyer().verify(password.toCharArray(), account.getPassword()).verified == true) {
                     return account;
                 } else {
                     return null;
@@ -88,23 +88,29 @@ public class AccountDAO extends DBContext {
         return null;
     }
 
-    public boolean isExistAccount(String phone, String email, String username) {
+    public Account isExistAccount(String phone, String email, String username, String condition) {
         try {
-            String sql = "SELECT a.username, ap.account_phone, ap.account_email FROM account_profile as ap\n"
-                    + "JOIN account as a on ap.account_id = a.account_id\n"
-                    + "WHERE ap.account_phone = ? OR ap.account_email = ? OR a.username = ?";
+            String sql = "SELECT a.account_id, a.username, ap.account_email, ap.account_phone\n"
+                    + "FROM account as a\n"
+                    + "JOIN account_profile as ap on a.account_id = ap.account_id\n"
+                    + "WHERE ap.account_phone = ? " + condition + " ap.account_email = ? " + condition + " a.username = ?";
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setString(1, phone);
             stm.setString(2, email);
             stm.setString(3, username);
             ResultSet rs = stm.executeQuery();
             if (rs.next()) {
-                return true;
+                Account account = new Account();
+                account.setId(rs.getInt(1));
+                account.setUsername(rs.getString(2));
+                account.setEmail(rs.getString(3));
+                account.setPhone(rs.getString(4));
+                return account;
             }
         } catch (SQLException ex) {
             Logger.getLogger(AccountDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return false;
+        return null;
     }
 
     public void insertAccount(Account account) {
@@ -575,12 +581,9 @@ public class AccountDAO extends DBContext {
     public static void main(String[] args) {
         AccountDAO adbc = new AccountDAO();
 //        adbc.isExistAccountForAdd(null, "user@user.com", null).display();
-//        for (Account a : adbc.getAllAccountsByFilter(2, 10, "desc", "all", "all", "all", "all", "all", null)) {
-//            a.display();
-//        }
-//        adbc.getAllAccountsByFilter(0, 0, id, fullname, email, phone, roleID, status, keySearch)
 //        adbc.getAccountById(2).display();
-//        System.out.println(adbc.totalRowsByAccountInfor("desc", "all", "all", "all", "all", "all", null));
-        adbc.getAccount("admin", "admin@admin.com").display();
+//        System.out.println(adbc.totalRowsByAccountInfor(null, null, null, null, null, null, null));
+        Account a = adbc.getAccount("tienvdhe153313", "02072001");
+        a.display();
     }
 }
