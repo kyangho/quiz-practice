@@ -3953,8 +3953,9 @@ ul.online-users {
 .avatar {
     position: relative;
     display: block;
-    border-radius: 500px;
     white-space: nowrap;
+    box-shadow: 0 0 5px 2px;
+    margin-top: 12%;
 }
 
 .avatar img {

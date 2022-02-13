@@ -16,12 +16,12 @@ public class Account {
     private int id;
     private String username;
     private String password;
+    private String status;
     private String email;
     private String phone;
     private String fullname;
     private String address;
     private boolean gender;
-    private String status;
     private String avatar;
     private ArrayList<Role> role = new ArrayList<>();
 

@@ -24,9 +24,16 @@
                         </header>
                         <div style="display: flex;">
                             <div class="col-lg-4">
-                                <div class="avatar">
-                                    <img style="    border-radius: 50%; width: 73%; margin: 3% 18%" src="${pageContext.request.contextPath}/img/about.jpg" alt=""/>
-
+                                <div class="avatar" style="box-shadow: 0 0 5px 2px;margin-top: 12%;">
+                                <c:if test="${account.avatar eq null && account.gender}">
+                                    <img style="    border-radius: 50%; width: 73%; margin: 3% 11%;" src="https://anhdep123.com/wp-content/uploads/2021/05/avatar-trang-dep.jpg" alt=""/>
+                                </c:if>
+                                <c:if test="${account.avatar eq null && !account.gender}">
+                                    <img style="    border-radius: 50%; width: 73%; margin: 3% 11%;" src="https://anhdep123.com/wp-content/uploads/2021/05/hinh-avatar-trang.jpg" alt=""/>
+                                </c:if>
+                                <c:if test="${account.avatar != null}">
+                                    <img style="    border-radius: 50%; width: 73%; margin: 3% 11%" src="${account.avatar}" alt=""/>
+                                </c:if>
                             </div>
                         </div>
                         <div class="panel-body col-lg-8">
@@ -126,7 +133,7 @@
                                 </div>
                                 <c:if test="${tag eq 'done'}">
                                     <div class="col-sm-12" style="color: green; margin: 1% 38% 2% 38%;">
-                                       Update successful.
+                                        Update successful.
                                     </div>
                                 </c:if>
                                 <div class="col-sm-12">
@@ -139,7 +146,7 @@
                                         </button>
                                     </div>
                                     <div class="col-sm-2">
-                                        <button type="submit" class="btn btn-info center-block col-sm-10">Add</button>
+                                        <button type="submit" class="btn btn-info center-block col-sm-10">Save</button>
                                     </div>
                                 </div>
                             </form>

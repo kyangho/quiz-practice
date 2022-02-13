@@ -31,18 +31,23 @@
                         <div class="form-header"><a href="${pageContext.request.contextPath}/register"><h1 class="m-0">Sign Up</h1></a></div>
                     </div>
                     <div class="card-body rounded-bottom bg-primary p-5">
-                        <form action="${pageContext.request.contextPath}/register" method="post">
+                        <form id="register_form" action="${pageContext.request.contextPath}/register" method="post">
                             <div class="form-group">
                                 <input name="register_username" type="text" class="form-control border-0 p-4" placeholder="Username" required="required" />
                             </div>
                             <div class="form-group">
-                                <input name="register_password" type="password" class="form-control border-0 p-4" placeholder="Password" required="required" />
+                                <input id="password" name="register_password" type="password" class="form-control border-0 p-4" placeholder="Password" required="required" />
                             </div>
+                            <div class="form-group">
+                                <input id="re_password" name="re_password" type="password" class="form-control border-0 p-4" placeholder="Re-password" required="required" />
+                            </div>
+                            <div id="password_alert" style="color: white;"></div>
                             <div class="form-group">
                                 <input name="register_fullname" type="text" class="form-control border-0 p-4" placeholder="Fullname" required="required" />
                             </div>
-                            <div class="form-group">
+                            <div class="form-group" style="color: white;">
                                 <input name="gender" type="radio" value="male" required="required"/>Male
+                                <span style="margin: 0 5%;"></span>
                                 <input name="gender" type="radio" value="female"/>Female
                             </div>
                             <div class="form-group">
@@ -55,12 +60,29 @@
                                 <input name="register_address" type="text" class="form-control border-0 p-4" placeholder="Address" required="required" />
                             </div>
                             <div>
-                                <button class="btn btn-dark btn-block border-0 py-3" type="submit">Register</button>
+                                <button class="btn btn-dark btn-block border-0 py-3" type="button" onclick="checkRePassword()">Register</button>
                             </div>
                             <c:if test="${requestScope.isFail == true}" >
-                                <p>Username, email or phone number already in use</p>
+                                <p style="color: white;">Username, email or phone number already in use</p>
                             </c:if>
                         </form>
+                            <script>
+                                function checkRePassword(){
+                                    var password = document.getElementById("password").value;
+                                    var re_password = document.getElementById("re_password").value;
+                                    if(password === re_password){
+                                        document.getElementById("register_form").onsubmit = function(){
+                                            return true;
+                                        }
+                                    }else{
+                                        console.log("not")
+                                        document.getElementById("password_alert").innerHTML+="<p>Password and Re-password not match</p>";
+                                        document.getElementById("register_form").onsubmit = function(){
+                                            return false;
+                                        }
+                                    }
+                                }
+                            </script>
                     </div>
                 </div>
             </div>
