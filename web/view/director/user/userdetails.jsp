@@ -32,7 +32,7 @@
                                     <img style="    border-radius: 50%; width: 73%; margin: 3% 11%;" src="https://anhdep123.com/wp-content/uploads/2021/05/hinh-avatar-trang.jpg" alt=""/>
                                 </c:if>
                                 <c:if test="${account.avatar != null}">
-                                    <img style="    border-radius: 50%; width: 73%; margin: 3% 11%" src="${pageContext.request.contextPath}/img/about.jpg" alt=""/>
+                                    <img style="    border-radius: 50%; width: 73%; margin: 3% 11%" src="${account.avatar}" alt=""/>
                                 </c:if>
                             </div>
                         </div>
