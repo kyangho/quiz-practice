@@ -5,9 +5,9 @@
     <!-- sidebar: style can be found in sidebar.less -->
     <section class="sidebar">
         <!-- Sidebar user panel -->
-        <div class="user-panel">
+        <div class="user-panel" style="    display: flex;">
             <div class="pull-left image">
-                <img src="${pageContext.request.contextPath}/bootstrap_for_admin/img/avatar3.png" class="img-circle" alt="User Image" />
+                <img src="https://th.bing.com/th/id/OIP.CPCyt52dUDhWIhy1K3guLAHaHa?pid=ImgDet&rs=1" class="img-circle" alt="User Image" />
             </div>
             <div class="pull-left info">
                 <p>Hello, ${sessionScope.account.fullname}</p>
