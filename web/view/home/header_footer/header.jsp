@@ -31,8 +31,8 @@
     <link href="${pageContext.request.contextPath}/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
 
     <!-- Customized Bootstrap Stylesheet -->
-    <link href="${pageContext.request.contextPath}/css/bootstrap.min.css" rel="stylesheet">
-
+    <link href="${pageContext.request.contextPath}/css/bootstrap.min.css?v=5" rel="stylesheet">
+    
     <!-- Template Stylesheet -->
     <link href="${pageContext.request.contextPath}/css/style.css" rel="stylesheet">
     <link href="${pageContext.request.contextPath}/css/popup.css" rel="stylesheet">
@@ -58,7 +58,7 @@
             <div class="navbar-nav ms-auto p-4 p-lg-0">
                 <a href="${pageContext.request.contextPath}/home" class="nav-item nav-link active">Home</a>
                 <a href="about.html" class="nav-item nav-link">About</a>
-                <a href="courses.html" class="nav-item nav-link">Courses</a>
+                <a href="${pageContext.request.contextPath}/post/list" class="nav-item nav-link">Posts</a>
                 <div class="nav-item dropdown">
                     <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
                     <div class="dropdown-menu fade-down m-0">

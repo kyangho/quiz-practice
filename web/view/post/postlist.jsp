@@ -3,180 +3,207 @@
     Created on : Jan 29, 2022, 4:00:11 PM
     Author     : ducky
 --%>
-
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<link href="${pageContext.request.contextPath}/css/bootstrap.min.css" rel="stylesheet">
 <link href="${pageContext.request.contextPath}/css/font-awesome.min.css" rel="stylesheet">
-<link href="${pageContext.request.contextPath}/css/prettyPhoto.css" rel="stylesheet">
 <link href="${pageContext.request.contextPath}/css/price-range.css" rel="stylesheet">
-<link href="${pageContext.request.contextPath}/css/animate.css" rel="stylesheet">
-<link href="${pageContext.request.contextPath}/css/main.css" rel="stylesheet">
-<link href="${pageContext.request.contextPath}/css/responsive.css" rel="stylesheet">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/css/login_popup.css">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/css/profile_popup.css">
+<link href="${pageContext.request.contextPath}/css/post.css?v=1" rel="stylesheet">
+
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
-      integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<style>
+    .blog-post-area 
+    .post-meta ul li {
+        background: #F0F0E9;
+        float: left;
+        margin-right: 10px;
+        padding: 0 5px;
+        font-size: 11px;
+        color: #393b3b;
+        position: relative;
+    }
+    ul li {
+        list-style: none;
 
-<div class="container">
-    <div class="row">
-        <div class="col-sm-3">
-            <div class="left-sidebar">
-                <h2>Category</h2>
-                <div class="panel-group category-products" id="accordian"><!--category-productsr-->
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h4 class="panel-title">
-                                <a data-toggle="collapse" data-parent="#accordian" href="#sportswear">
-                                    <span class="badge pull-right"><i class="fa fa-plus"></i></span>
-                                    Sportswear
-                                </a>
-                            </h4>
-                        </div>
-                        <div id="sportswear" class="panel-collapse collapse">
-                            <div class="panel-body">
-                                <ul>
-                                    <li><a href="">Nike </a></li>
-                                    <li><a href="">Under Armour </a></li>
-                                    <li><a href="">Adidas </a></li>
-                                    <li><a href="">Puma</a></li>
-                                    <li><a href="">ASICS </a></li>
-                                </ul>
+    }
+    .row {
+        display: flex;
+        flex-wrap: wrap;
+    }
+    .blog-post-area 
+    .post-meta ul li i {
+        background: #FE980F;
+        color: #FFFFFF;
+        margin-left: -4px;
+        margin-right: 7px;
+        padding: 4px 7px;
+    }
+    .fa, .fas {
+        font-weight: 900;
+    }
+    .fa, .far, .fas {
+        font-family: "Font Awesome 5 Free";
+    }
+    .fa, .fab, .fad, .fal, .far, .fas {
+        -moz-osx-font-smoothing: grayscale;
+        -webkit-font-smoothing: antialiased;
+        display: inline-block;
+        font-style: normal;
+        font-variant: normal;
+        text-rendering: auto;
+        line-height: 1;
+    }
+    .blog-post-area 
+    .single-blog-post h3 {
+        color: #696763;
+        font-size: 16px;
+        font-family: 'Roboto',sans-serif;
+        text-transform: uppercase;
+        font-weight: 500;
+        margin-bottom: 17px;
+    }
+    h2.title {
+        color: #FE980F;
+        font-family: 'Roboto', sans-serif;
+        font-size: 18px;
+        font-weight: 700;
+        margin: 0 15px;
+        text-transform: uppercase;
+        margin-bottom: 30px;
+        position: relative;
+    }
+    .text-center {
+        text-align: center !important;
+    }
+    .panel-group {
+        margin-bottom: 20px;
+    }
+    .category-products {
+        border: 1px solid #F7F7F0;
+        margin-bottom: 35px;
+        padding-bottom: 20px;
+        padding-top: 15px;
+    }
+
+    /* Style to create scroll bar in dropdown */ 
+    .scrollable-dropdown{
+        height: auto;
+        max-height:320px;  /* Increase / Decrease value as per your need */
+        overflow-x: hidden;
+    }
+</style>
+
+<script src="${pageContext.request.contextPath}/js/jquery.min.js"></script>
+<script src="${pageContext.request.contextPath}/ajax/postajax.js?v=3" type="text/javascript"></script>
+<!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+<jsp:include page="../home/header_footer/header.jsp"></jsp:include>
+
+    <div class="container col-sm-12">
+        <div class="">
+            <a class="btn btn-success pull-right" href="new">Write new post</a>
+        </div>
+        <div class="row col-sm-12">
+            <div class="col-sm-3">
+                <h1>Filter</h1>
+                <div class="left-sidebar">
+                    <div class="input-group col-sm-12">
+                        <!--                        <div class="input-group-btn search-panel col-sm-3">
+                                                    <button class="btn btn-secondary dropdown-toggle overflow-hidden col-sm-12" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                        <span id="search_concept">All</span> <span class="caret"></span>
+                                                    </button>
+                                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                        <a class="dropdown-item" href="#Action">Action</a>
+                                                        <a class="dropdown-item" href="#Action">Something else here</a>
+                                                    </div>
+                                                </div>
+                                                <input type="hidden" name="search_param" value="all" id="search_param">-->
+                        <input type="text" class="form-control" required name="postSearch" id="search" placeholder="Search">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default btn-search" type="button">
+                                <span class="glyphicon glyphicon-search"></span>
+                            </button>
+                        </span>
+                        <div class="col-sm-12"> 
+                            <fieldset class="sort-border">
+                                <legend class="sort-border">Category</legend>
+                                <legend class="sort-border hidden">Category</legend>
+                                <div class="control-group">
+                                    <select class="select select-initialized col-sm-12 select-category" id="filter-sort-select">
+                                        <option value="" disabled="" selected="">${requestScope.currentCategory == null ? "All categories" : requestScope.currentCategory.value}</option>
+                                    <c:if test="${requestScope.currentCategory != null}">
+                                        <option class="category-select" value="">All categories</option>
+                                    </c:if>
+
+                                    <c:forEach items="${requestScope.categories}" var="category">
+                                        <option class="category-select" value="${category.name}">${category.value}</option>
+                                    </c:forEach>
+                                </select>
                             </div>
-                        </div>
+                        </fieldset>
                     </div>
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h4 class="panel-title">
-                                <a data-toggle="collapse" data-parent="#accordian" href="#mens">
-                                    <span class="badge pull-right"><i class="fa fa-plus"></i></span>
-                                    Mens
-                                </a>
-                            </h4>
-                        </div>
-                        <div id="mens" class="panel-collapse collapse">
-                            <div class="panel-body">
-                                <ul>
-                                    <li><a href="">Fendi</a></li>
-                                    <li><a href="">Guess</a></li>
-                                    <li><a href="">Valentino</a></li>
-                                    <li><a href="">Dior</a></li>
-                                    <li><a href="">Versace</a></li>
-                                    <li><a href="">Armani</a></li>
-                                    <li><a href="">Prada</a></li>
-                                    <li><a href="">Dolce and Gabbana</a></li>
-                                    <li><a href="">Chanel</a></li>
-                                    <li><a href="">Gucci</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h4 class="panel-title">
-                                <a data-toggle="collapse" data-parent="#accordian" href="#womens">
-                                    <span class="badge pull-right"><i class="fa fa-plus"></i></span>
-                                    Womens
-                                </a>
-                            </h4>
-                        </div>
-                        <div id="womens" class="panel-collapse collapse">
-                            <div class="panel-body">
-                                <ul>
-                                    <li><a href="">Fendi</a></li>
-                                    <li><a href="">Guess</a></li>
-                                    <li><a href="">Valentino</a></li>
-                                    <li><a href="">Dior</a></li>
-                                    <li><a href="">Versace</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h4 class="panel-title"><a href="#">Kids</a></h4>
-                        </div>
-                    </div>
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h4 class="panel-title"><a href="#">Fashion</a></h4>
-                        </div>
-                    </div>
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h4 class="panel-title"><a href="#">Households</a></h4>
-                        </div>
-                    </div>
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h4 class="panel-title"><a href="#">Interiors</a></h4>
-                        </div>
-                    </div>
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h4 class="panel-title"><a href="#">Clothing</a></h4>
-                        </div>
-                    </div>
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h4 class="panel-title"><a href="#">Bags</a></h4>
-                        </div>
-                    </div>
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h4 class="panel-title"><a href="#">Shoes</a></h4>
-                        </div>
-                    </div>
-                </div><!--/category-products-->
-
-                <div class="brands_products"><!--brands_products-->
-                    <h2>Brands</h2>
-                    <div class="brands-name">
-                        <ul class="nav nav-pills nav-stacked">
-                            <li><a href=""> <span class="pull-right">(50)</span>Acne</a></li>
-                            <li><a href=""> <span class="pull-right">(56)</span>Grüne Erde</a></li>
-                            <li><a href=""> <span class="pull-right">(27)</span>Albiro</a></li>
-                            <li><a href=""> <span class="pull-right">(32)</span>Ronhill</a></li>
-                            <li><a href=""> <span class="pull-right">(5)</span>Oddmolly</a></li>
-                            <li><a href=""> <span class="pull-right">(9)</span>Boudestijn</a></li>
-                            <li><a href=""> <span class="pull-right">(4)</span>Rösch creative culture</a></li>
-                        </ul>
-                    </div>
-                </div><!--/brands_products-->
-
-                <div class="price-range"><!--price-range-->
-                    <h2>Price Range</h2>
-                    <div class="well">
-                        <div class="slider slider-horizontal" style="width: 182px;"><div class="slider-track"><div class="slider-selection" style="left: 41.6667%; width: 33.3333%;"></div><div class="slider-handle round left-round" style="left: 41.6667%;"></div><div class="slider-handle round" style="left: 75%;"></div></div><div class="tooltip top" style="top: -30px; left: 73.1667px;"><div class="tooltip-arrow"></div><div class="tooltip-inner">250 : 450</div></div><input type="text" class="span2" value="" data-slider-min="0" data-slider-max="600" data-slider-step="5" data-slider-value="[250,450]" id="sl2" style=""></div><br>
-                        <b>$ 0</b> <b class="pull-right">$ 600</b>
-                    </div>
-                </div><!--/price-range-->
-
+                </div>
                 <div class="shipping text-center"><!--shipping-->
                     <img src="/images/home/shipping.jpg" alt="">
                 </div><!--/shipping-->
             </div>
         </div>
         <div class="col-sm-9">
-            <div class="blog-post-area">
-                <h2 class="title text-center">Latest From our Blog</h2>
-                <div class="single-blog-post">
-                    <h3>Girls Pink T Shirt arrived in store</h3>
-                    <div class="post-meta">
-                        <ul>
-                            <li><i class="fa fa-user"></i> Mac Doe</li>
-                            <li><i class="fa fa-clock-o"></i> 1:33 pm</li>
-                            <li><i class="fa fa-calendar"></i> DEC 5, 2013</li>
-                        </ul>
+            <h1 class="text-center">Posts                
+            </h1>   
+
+
+            <c:if test="${requestScope.posts.isEmpty()}">
+                <h2 class="title text-center">Hiện tại không có post nào.</h2>
+            </c:if>
+            <c:if test="${!requestScope.posts.isEmpty()}">
+                <c:forEach items="${requestScope.posts}" var="post">
+                    <div class="blog-post-area wow fadeIn" data-wow-delay="0.1s">
+                        <h2 class="title text-center">${post.title}</h2>
+                        <div class="single-blog-post">
+                            <h3>${post.brief}</h3>
+                            <div class="post-meta">
+                                <ul>
+                                    <li><i class="fa fa-user"></i><a href="list?author=${post.author}">${post.author}</a></li>
+                                    <li>
+                                        <i class="fa fa-clock-o"></i>
+                                        <fmt:formatDate value="${post.dateCreated}" type = "time" timeStyle = "short"></fmt:formatDate>
+                                        </li>
+                                        <li>
+                                            <i class="fa fa-calendar"></i>                                     
+                                        <fmt:formatDate value="${post.dateCreated}" type = "date" timeStyle = "short"></fmt:formatDate>
+                                        </li>
+                                    <c:forEach items="${post.categories}" var="category">
+                                        <li class="category-label">
+                                            <a class="label label-info btn" href="list?category=${category.name}" >${category.value}</a>
+                                        </li>
+                                    </c:forEach>
+                                </ul>
+                            </div>
+                            <a href="detail?id=${post.id}" class="col-sm-12">
+                                <img  class="col-sm-12" src="${pageContext.request.contextPath}/post/image?id=${post.id}" alt="">
+                            </a>
+                            <p>${post.content}</p>.
+                            <a class="btn btn-primary" href="detail?id=${post.id}">Read More</a>
+                            <c:if test="${post.author == sessionScope.account.username}">
+                                <a class="btn btn-danger" href="update?id=${post.id}">Edit</a>
+                            </c:if>
+                        </div>
                     </div>
-                    <a href="">
-                        <img src="${pageContext.request.contextPath}/images/blog/blog-one.jpg" alt="">
-                    </a>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
-                    <a class="btn btn-primary" href="">Read More</a>
-                </div>
-            </div>
+                </c:forEach>            
+            </c:if>
+            <ul class="pager">
+                <c:if test="${requestScope.pageIndex > 1}">
+                    <li><a href="list?pageIndex=${requestScope.pageIndex - 1}">Previous</a></li>
+                    </c:if>
+                    <c:if test="${requestScope.posts.size() >= requestScope.pageSize}">
+                    <li><a href="list?pageIndex=${requestScope.pageIndex + 1}">Next</a></li>
+                    </c:if>
+            </ul>
         </div>
     </div>
 </div>
+</div>
+<jsp:include page="../home/header_footer/footer.jsp"></jsp:include>

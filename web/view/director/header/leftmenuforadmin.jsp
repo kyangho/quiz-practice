@@ -1,6 +1,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <!-- Left side column. contains the logo and sidebar -->
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/setting.css">
+
 <aside class="left-side sidebar-offcanvas">
     <!-- sidebar: style can be found in sidebar.less -->
     <section class="sidebar">
@@ -34,9 +36,21 @@
             </li>
 
             <li <c:if test="${tag eq 'settinglist'}">class="active"</c:if>  >
-                <a href="${pageContext.request.contextPath}/director/setting/settinglist">
-                    <i class="glyphicon glyphicon-cog"></i> <span>Settings List</span>
-                </a>
+                    <a class="btn btn-primary" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+                        <i class="glyphicon glyphicon-cog"></i><span>Setting</span>
+                    </a>
+                    <!--<a href="${pageContext.request.contextPath}/director/setting/settinglist">-->
+
+                <div class="collapse" id="collapseExample">
+                    <a href="${pageContext.request.contextPath}/director/setting/settinglist">
+                        <i class="fa fa-gavel"></i> <span>Setting List</span>
+                    </a>
+                    <a href="${pageContext.request.contextPath}/director/setting/post">
+                        <i class="fa fa-gavel"></i> <span>Post Categories</span>
+                    </a>
+                </div>
+                <input type="hidden" name="search_param" value="all" id="search_param">
+
             </li>
             <li
                 <c:if test="${tag eq 'userlist'}">class="active"</c:if>  >

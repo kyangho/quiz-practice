@@ -20,3 +20,4 @@
 <link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
 <!-- CSS -->
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/styleforsettinglist.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/setting.css">

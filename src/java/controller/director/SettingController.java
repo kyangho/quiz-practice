@@ -166,6 +166,9 @@ public class SettingController extends HomeDirectorController {
         String name = request.getParameter("settingName");
         String description = request.getParameter("settingDescription");
         String type = request.getParameter("settingType");
+        
+        
+        
         String status = request.getParameter("settingStatus");
         String value = request.getParameter("settingValue");
         SettingDAO sdb = new SettingDAO();

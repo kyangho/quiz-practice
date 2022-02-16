@@ -5,6 +5,7 @@
  */
 package controller.director;
 
+import controller.TypeConfigController;
 import dal.SettingDAO;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -13,6 +14,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import model.Setting;
+import model.Type;
 
 /**
  *
@@ -76,6 +78,12 @@ public class SettingListController extends HttpServlet {
         request.setAttribute("url", url);
         request.setAttribute("pageindex", pageIndex);
         request.setAttribute("tag", "settinglist");
+        
+        //ducky
+        TypeConfigController tcc = new TypeConfigController();
+        ArrayList<Type> types =  tcc.getTypesList();
+        request.setAttribute("types", types);
+        
         request.getRequestDispatcher("../../view/director/setting/settinglist.jsp").forward(request, response);
     }
 
@@ -121,6 +129,9 @@ public class SettingListController extends HttpServlet {
         request.setAttribute("url", url);
         request.setAttribute("pageindex", 1);
         request.setAttribute("tag", "settinglist");
+        TypeConfigController tcc = new TypeConfigController();
+        ArrayList<Type> types =  tcc.getTypesList();
+        request.setAttribute("types", types);
         request.getRequestDispatcher("../../view/director/setting/settinglist.jsp").forward(request, response);
     }
 
