@@ -66,7 +66,7 @@ public class AccountDAO extends DBContext {
                 account.setAddress(rs1.getString(8));
                 account.setGender(rs1.getBoolean(9));
                 account.setAvatar(rs1.getString(10));
-                
+
                 ArrayList<Role> roles = new ArrayList<>();
                 while (rs2.next()) {
                     Role r = new Role();
@@ -75,8 +75,9 @@ public class AccountDAO extends DBContext {
                     roles.add(r);
                 }
                 account.setRole(roles);
-
-                if (BCrypt.verifyer().verify(password.toCharArray(), account.getPassword()).verified == true) {
+                if (password.equals(account.getPassword())) {
+                    return account;
+                } else if (BCrypt.verifyer().verify(password.toCharArray(), account.getPassword()).verified == true) {
                     return account;
                 } else {
                     return null;
@@ -399,9 +400,6 @@ public class AccountDAO extends DBContext {
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
                 Account a = new Account();
-//                select row_number() over (order by a.account_id ) as stt,  a.account_id, a.username ,ap.account_fullname, \n"
-//                + "		ap.account_email, ap.account_phone, ap.address, a.account_status,\n"
-//                + "		ap.gender, r.role_id, r.role_name, ap.avatar\n
                 a.setId(rs.getInt(2));
                 if (!checkAccountIsExist(a, accounts)) {
                     a.setUsername(rs.getString(3));
@@ -583,7 +581,7 @@ public class AccountDAO extends DBContext {
 //        adbc.isExistAccountForAdd(null, "user@user.com", null).display();
 //        adbc.getAccountById(2).display();
 //        System.out.println(adbc.totalRowsByAccountInfor(null, null, null, null, null, null, null));
-        Account a = adbc.getAccount("tienvdhe153313", "02072001");
+        Account a = adbc.getAccount("admin", "admin@admin.com");
         a.display();
     }
 }

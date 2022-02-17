@@ -129,6 +129,9 @@ public class SettingListController extends HttpServlet {
         request.setAttribute("url", url);
         request.setAttribute("pageindex", 1);
         request.setAttribute("tag", "settinglist");
+        TypeConfigController tcc = new TypeConfigController();
+        ArrayList<Type> types =  tcc.getTypesList();
+        request.setAttribute("types", types);
         request.getRequestDispatcher("../../view/director/setting/settinglist.jsp").forward(request, response);
     }
 

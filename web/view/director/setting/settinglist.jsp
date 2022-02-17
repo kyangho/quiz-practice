@@ -59,10 +59,10 @@
                                                     <th>
                                                         Type:
                                                         <select name="type" class=" input-sm">
-                                                            <option value="all">All</option>
+                                                            <option  ${requestScope.type eq "all" ? "selected=\"selected\"" : ""} value="all">All</option>
 
                                                             <c:forEach items="${requestScope.types}" var="type">
-                                                                <option value="${type.name}">${type.name}</option>
+                                                                <option  ${requestScope.type eq type.name ? "selected=\"selected\"" : ""} value="${type.name}">${type.name}</option>
                                                             </c:forEach>
                                                         </select>
                                                         <!--<button class="btn btn-sm btn-default" style="color: black;font-weight: bolder;" type="submit">Apply</button>-->
