@@ -35,14 +35,14 @@
                 </a>
             </li>
 
-            <li <c:if test="${tag eq 'settinglist'}">class="active"</c:if>  >
-                    <a class="btn btn-primary" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+            <li>
+                    <a class="btn btn-primary" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample" data-toggle="collapse">
                         <i class="glyphicon glyphicon-cog"></i><span>Setting</span>
                     </a>
                     <!--<a href="${pageContext.request.contextPath}/director/setting/settinglist">-->
 
                 <div class="collapse" id="collapseExample">
-                    <a href="${pageContext.request.contextPath}/director/setting/settinglist">
+                    <a <c:if test="${tag eq 'settinglist'}">class="active"</c:if> href="${pageContext.request.contextPath}/director/setting/settinglist">
                         <i class="fa fa-gavel"></i> <span>Setting List</span>
                     </a>
                     <a href="${pageContext.request.contextPath}/director/setting/post">

@@ -128,9 +128,9 @@ public class AccountDAO extends DBContext {
                     + "`account_email`,\n"
                     + "`account_phone`,\n"
                     + "`account_fullname`,\n"
-                    + "`address`,\n"
-                    + "`gender`,\n"
-                    + "`avatar`)\n"
+                    + "`account_address`,\n"
+                    + "`account_gender`,\n"
+                    + "`account_avatar`)\n"
                     + "VALUES\n"
                     + "(?,?,?,?,?,?,?);";
 
@@ -235,9 +235,9 @@ public class AccountDAO extends DBContext {
                     + "`account_email` = ?,\n"
                     + "`account_phone` = ?,\n"
                     + "`account_fullname` = ?,\n"
-                    + "`address` = ?,\n"
-                    + "`gender` = ?,\n"
-                    + "`avatar` = ?\n"
+                    + "`account_address` = ?,\n"
+                    + "`account_gender` = ?,\n"
+                    + "`account_avatar` = ?\n"
                     + "WHERE `account_id` = ?;";
             PreparedStatement stm2 = connection.prepareStatement(sql2);
             stm2.setString(1, account.getEmail());

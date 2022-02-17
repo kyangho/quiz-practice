@@ -32,7 +32,7 @@
                                     <div class="panel-heading" style="display: flex;">
                                         <div style="margin-right: 74%;"> List of settings</div>
                                         <div>
-                                            <a href="add">Add new setting </a>
+                                            <a class="btn label-danger center-block col-sm-10" style="width: 100%;margin-left: 36%;" href="add">Add new setting </a>
                                         </div>
                                     </div>
 
@@ -106,7 +106,7 @@
                                                 </c:forEach>
                                             </table>
                                             <div style="margin: -2% 0 1% 93%;">
-                                                <button class="btn btn-sm btn-default" style="color: black;font-weight: bolder;" type="submit">Apply</button>
+                                                <button class="btn btn-info center-block col-sm-10" type="submit">Apply</button>
                                             </div>
                                         </c:if>    
                                     </form>

@@ -50,7 +50,7 @@
                                     <label class="col-sm-2 col-sm-2 control-label">Full Name *:</label>
                                     <div class="col-sm-10">
                                         <input type="text" name="fullname" class="form-control" 
-                                               pattern="^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z ]*)*$" 
+                                               pattern="^[a-zA-ZaAàÀảẢãÃáÁạẠăĂằẰẳẲẵẴắẮặẶâÂầẦẩẨẫẪấẤậẬbBcCdDđĐeEèÈẻẺẽẼéÉẹẸêÊềỀểỂễỄếẾệỆfFgGhHiIìÌỉỈĩĨíÍịỊjJkKlLmMnNoOòÒỏỎõÕóÓọỌôÔồỒổỔỗỖốỐộỘơƠờỜởỞỡỠớỚợỢpPqQrRsStTuUùÙủỦũŨúÚụỤưƯừỪửỬữỮứỨựỰvVwWxXyYỳỲỷỶỹỸýÝỵỴ\s]+$" 
                                                title="Fullname cannot contain special characters!" 
                                                value="${requestScope.account.fullname}"
                                                required placeholder="Full Name">
