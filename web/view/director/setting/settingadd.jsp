@@ -16,22 +16,22 @@
         <div class="panel-body">
             <form class="form-horizontal tasi-form add-form">
                 <div class="form-group">
-                    <label class="col-sm-2 col-sm-2 control-label">Setting name:</label>
+                    <label class="col-sm-2 col-sm-2 control-label">Setting name<p class="text-danger" style="display: inline"> *</p>:</label>
                     <div class="col-sm-10">
                         <input type="text" name="settingName" class="form-control" 
                                value="${requestScope.setting.name}" required placeholder="Setting name">
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 col-sm-2 control-label">Description:</label>
+                    <label class="col-sm-2 col-sm-2 control-label">Description<p class="text-danger" style="display: inline"> *</p>:</label>
                     <div class="col-sm-10">
-                        <input type="text" name="settingDescription" class="form-control" 
-                               value="${requestScope.setting.description}"
-                               required placeholder="Setting description">
+                        <textarea class="form-control rounded-2" name="settingDescription" 
+                                  id="settingDescription" placeholder="Write description here" 
+                                  rows="10" required></textarea>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 col-sm-2 control-label">Type</label>
+                    <label class="col-sm-2 col-sm-2 control-label">Type<p class="text-danger" style="display: inline"> *</p></label>
                     <div class="col-sm-10">
                         <select name="settingType" class="form-control m-b-10">
                             <c:forEach items="${requestScope.types}" var="type">
@@ -41,7 +41,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 col-sm-2 control-label">Value: </label>
+                    <label class="col-sm-2 col-sm-2 control-label">Value<p class="text-danger" style="display: inline"> *</p>: </label>
                     <div class="col-sm-10">
                         <input type="text" name="settingValue" class="form-control" 
                                value="${requestScope.setting.value}"
@@ -54,8 +54,8 @@
                         <div class="radio">
                             <label>
                                 <input type="radio" required name="settingStatus" id="setting-status" value="ACTIVE" 
-                                       ${requestScope.setting.status == "ACTIVE" ? "checked" : ""}>
-                                Active
+                                       checked>
+                                       Active
                             </label>
                         </div>
                         <label class="col-sm-2 col-sm-2 control-label"></label>

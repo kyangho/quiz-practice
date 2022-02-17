@@ -11,87 +11,6 @@
 <link href="${pageContext.request.contextPath}/css/post.css?v=1" rel="stylesheet">
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-<style>
-    .blog-post-area 
-    .post-meta ul li {
-        background: #F0F0E9;
-        float: left;
-        margin-right: 10px;
-        padding: 0 5px;
-        font-size: 11px;
-        color: #393b3b;
-        position: relative;
-    }
-    ul li {
-        list-style: none;
-
-    }
-    .row {
-        display: flex;
-        flex-wrap: wrap;
-    }
-    .blog-post-area 
-    .post-meta ul li i {
-        background: #FE980F;
-        color: #FFFFFF;
-        margin-left: -4px;
-        margin-right: 7px;
-        padding: 4px 7px;
-    }
-    .fa, .fas {
-        font-weight: 900;
-    }
-    .fa, .far, .fas {
-        font-family: "Font Awesome 5 Free";
-    }
-    .fa, .fab, .fad, .fal, .far, .fas {
-        -moz-osx-font-smoothing: grayscale;
-        -webkit-font-smoothing: antialiased;
-        display: inline-block;
-        font-style: normal;
-        font-variant: normal;
-        text-rendering: auto;
-        line-height: 1;
-    }
-    .blog-post-area 
-    .single-blog-post h3 {
-        color: #696763;
-        font-size: 16px;
-        font-family: 'Roboto',sans-serif;
-        text-transform: uppercase;
-        font-weight: 500;
-        margin-bottom: 17px;
-    }
-    h2.title {
-        color: #FE980F;
-        font-family: 'Roboto', sans-serif;
-        font-size: 18px;
-        font-weight: 700;
-        margin: 0 15px;
-        text-transform: uppercase;
-        margin-bottom: 30px;
-        position: relative;
-    }
-    .text-center {
-        text-align: center !important;
-    }
-    .panel-group {
-        margin-bottom: 20px;
-    }
-    .category-products {
-        border: 1px solid #F7F7F0;
-        margin-bottom: 35px;
-        padding-bottom: 20px;
-        padding-top: 15px;
-    }
-
-    /* Style to create scroll bar in dropdown */ 
-    .scrollable-dropdown{
-        height: auto;
-        max-height:320px;  /* Increase / Decrease value as per your need */
-        overflow-x: hidden;
-    }
-</style>
 
 <script src="${pageContext.request.contextPath}/js/jquery.min.js"></script>
 <script src="${pageContext.request.contextPath}/ajax/postajax.js?v=3" type="text/javascript"></script>
@@ -102,37 +21,39 @@
 <jsp:include page="../home/header_footer/header.jsp"></jsp:include>
 
     <div class="container col-sm-12">
-        <div class="">
-            <a class="btn btn-success pull-right" href="new">Write new post</a>
+    <c:if test="${sessionScope.account != null}">
+        <div class="col-sm-12">
+            <a class="btn btn-success col-sm-2" style="float: right;" href="new">Write new post</a>
         </div>
-        <div class="row col-sm-12">
-            <div class="col-sm-3">
-                <h1>Filter</h1>
-                <div class="left-sidebar">
-                    <div class="input-group col-sm-12">
-                        <!--                        <div class="input-group-btn search-panel col-sm-3">
-                                                    <button class="btn btn-secondary dropdown-toggle overflow-hidden col-sm-12" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                        <span id="search_concept">All</span> <span class="caret"></span>
-                                                    </button>
-                                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                                        <a class="dropdown-item" href="#Action">Action</a>
-                                                        <a class="dropdown-item" href="#Action">Something else here</a>
-                                                    </div>
+    </c:if>
+    <div class="row col-sm-12">
+        <div class="col-sm-3">
+            <h1>Filter</h1>
+            <div class="left-sidebar">
+                <div class="input-group col-sm-12">
+                    <!--                        <div class="input-group-btn search-panel col-sm-3">
+                                                <button class="btn btn-secondary dropdown-toggle overflow-hidden col-sm-12" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    <span id="search_concept">All</span> <span class="caret"></span>
+                                                </button>
+                                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                    <a class="dropdown-item" href="#Action">Action</a>
+                                                    <a class="dropdown-item" href="#Action">Something else here</a>
                                                 </div>
-                                                <input type="hidden" name="search_param" value="all" id="search_param">-->
-                        <input type="text" class="form-control" required name="postSearch" id="search" placeholder="Search">
-                        <span class="input-group-btn">
-                            <button class="btn btn-default btn-search" type="button">
-                                <span class="glyphicon glyphicon-search"></span>
-                            </button>
-                        </span>
-                        <div class="col-sm-12"> 
-                            <fieldset class="sort-border">
-                                <legend class="sort-border">Category</legend>
-                                <legend class="sort-border hidden">Category</legend>
-                                <div class="control-group">
-                                    <select class="select select-initialized col-sm-12 select-category" id="filter-sort-select">
-                                        <option value="" disabled="" selected="">${requestScope.currentCategory == null ? "All categories" : requestScope.currentCategory.value}</option>
+                                            </div>
+                                            <input type="hidden" name="search_param" value="all" id="search_param">-->
+                    <input type="text" class="form-control" required name="postSearch" id="search" placeholder="Search">
+                    <span class="input-group-btn">
+                        <button class="btn btn-default btn-search" type="button">
+                            <span class="glyphicon glyphicon-search"></span>
+                        </button>
+                    </span>
+                    <div class="col-sm-12"> 
+                        <fieldset class="sort-border">
+                            <legend class="sort-border">Category</legend>
+                            <legend class="sort-border hidden">Category</legend>
+                            <div class="control-group">
+                                <select class="select select-initialized col-sm-12 select-category" id="filter-sort-select">
+                                    <option value="" disabled="" selected="">${requestScope.currentCategory == null ? "All categories" : requestScope.currentCategory.value}</option>
                                     <c:if test="${requestScope.currentCategory != null}">
                                         <option class="category-select" value="">All categories</option>
                                     </c:if>
@@ -185,7 +106,13 @@
                             <a href="detail?id=${post.id}" class="col-sm-12">
                                 <img  class="col-sm-12" src="${pageContext.request.contextPath}/post/image?id=${post.id}" alt="">
                             </a>
-                            <p>${post.content}</p>.
+                            <c:if test="${post.content.length() > 100}">
+                                <c:set var="shortDesc" value="${post.content.substring(0, 100)}" />
+                                <p>${shortDesc} ...</p>.
+                            </c:if>
+                            <c:if test="${post.content.length() < 100}">
+                                <p>${post.content}</p>.
+                            </c:if>
                             <a class="btn btn-primary" href="detail?id=${post.id}">Read More</a>
                             <c:if test="${post.author == sessionScope.account.username}">
                                 <a class="btn btn-danger" href="update?id=${post.id}">Edit</a>
@@ -196,14 +123,34 @@
             </c:if>
             <ul class="pager">
                 <c:if test="${requestScope.pageIndex > 1}">
-                    <li><a href="list?pageIndex=${requestScope.pageIndex - 1}">Previous</a></li>
+                    <li><a  onclick="pagging(this, ${requestScope.pageIndex - 1}, 1000)">Previous</a></li>
                     </c:if>
                     <c:if test="${requestScope.posts.size() >= requestScope.pageSize}">
-                    <li><a href="list?pageIndex=${requestScope.pageIndex + 1}">Next</a></li>
+                    <li><a  onclick="pagging(this, ${requestScope.pageIndex + 1}, 1000)">Next</a></li>
                     </c:if>
             </ul>
         </div>
     </div>
 </div>
-</div>
+
+<script language='javascript'>
+    function pagging(a, index, timeout) {
+        console.log(window.location.href);
+        var uri = window.location.href;
+        if (uri.indexOf("&pageIndex=") != -1) {
+            uri = uri.split("&pageIndex=")[0];
+            uri = uri + '&';
+        } else if (uri.indexOf("?pageIndex=") != -1) {
+            uri = uri.split("?pageIndex=")[0];
+            uri = uri + '?';
+        } else if (uri.indexOf("list?") == -1) {
+            uri = uri + '?';
+        } else if (uri.indexOf("&pageIndex=") == -1) {
+            uri = uri + '&';
+        }
+
+        window.location.href = uri + 'pageIndex=' + index;
+        console.log(window.location.href);
+    }
+</script>
 <jsp:include page="../home/header_footer/footer.jsp"></jsp:include>
