@@ -108,6 +108,7 @@
                                     <li>Address: <input name="address" type="text" value="${sessionScope.account.address}"/></li>
 
                                 </ul>
+                                    <a href="changepassword" class="btn btn-primary">Reset password</a>
                             </div>
                             <div class="img">
                                 <!--<img src="https://th.bing.com/th/id/OIP.CPCyt52dUDhWIhy1K3guLAHaHa?pid=ImgDet&rs=1">-->
