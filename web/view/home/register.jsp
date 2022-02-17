@@ -43,7 +43,9 @@
                             </div>
                             <div id="password_alert" style="color: white;"></div>
                             <div class="form-group">
-                                <input name="register_fullname" type="text" class="form-control border-0 p-4" placeholder="Fullname" required="required" pattern="[^\d~`!@#$%^&*()<>?,.|\/]" title="Name must't contain number and special characters"/>
+                                <input name="register_fullname" type="text" class="form-control border-0 p-4" placeholder="Fullname" required="required"
+                                       pattern="[àáãạảăắằẳẵặâấầẩẫậèéẹẻẽêềếểễệđìíĩỉịòóõọỏôốồổỗộơớờởỡợùúũụủưứừửữựỳỵỷỹýÀÁÃẠẢĂẮẰẲẴẶÂẤẦẨẪẬÈÉẸẺẼÊỀẾỂỄỆĐÌÍĨỈỊÒÓÕỌỎÔỐỒỔỖỘƠỚỜỞỠỢÙÚŨỤỦƯỨỪỬỮỰỲỴỶỸÝ\w]+"
+                                       title="Name must't contain number and special characters"/>
                             </div>
                             <div class="form-group" style="color: white;">
                                 <input name="gender" type="radio" value="male" required="required"/>Male

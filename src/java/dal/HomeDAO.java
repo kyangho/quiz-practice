@@ -34,7 +34,7 @@ public class HomeDAO extends DBContext {
                             a.setEmail(rs.getString("account_email"));
                             a.setPhone(rs.getString("account_phone"));
                             a.setFullname(rs.getString("account_fullname"));
-                            a.setAddress(rs.getString("address"));
+                            a.setAddress(rs.getString("account_address"));
 
                             acc.add(a);
                      }

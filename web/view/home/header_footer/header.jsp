@@ -32,7 +32,7 @@
 
     <!-- Customized Bootstrap Stylesheet -->
     <link href="${pageContext.request.contextPath}/css/bootstrap.min.css?v=5" rel="stylesheet">
-    
+
     <!-- Template Stylesheet -->
     <link href="${pageContext.request.contextPath}/css/style.css" rel="stylesheet">
     <link href="${pageContext.request.contextPath}/css/popup.css" rel="stylesheet">
@@ -82,7 +82,7 @@
                     <a href="${pageContext.request.contextPath}/login" class="btn btn-primary py-4 px-lg-5 d-none d-lg-block">Join Now<i class="fa fa-arrow-right ms-3"></i></a>
                     </c:if>
                     <c:if test="${sessionScope.account != null}">             
-                    <div class="inf button nav-item nav-link" style="padding: 18px 0 0 0;"><img src="https://th.bing.com/th/id/OIP.CPCyt52dUDhWIhy1K3guLAHaHa?pid=ImgDet&rs=1"
+                    <div class="inf button nav-item nav-link" style="padding: 18px 0 0 0;"><img src="${sessionScope.account.avatar}"
                                                                                                 style="width: 35px; height: 35px ; margin-right: 4px; border-radius: 50%;">
                         <a href="#popup1" style="    padding-top: 7px;">${sessionScope.account.fullname}</a>
                     </div>
@@ -92,29 +92,28 @@
             </div>
             <div id="popup1" class="overlay">
                 <div class="popup">
-                    <form>
-                        <h2 style="border-bottom: 1px solid black;">Information</h2>
-                        <a class="close" href="#">&times;</a>
-                        <div class="flex">
-                            <div class="content">
-                                <ul style="font-weight: 600; padding-left: 0rem;">
-                                    <li>ID: ${sessionScope.account.id}</li>
-                                    <li>Username: ${sessionScope.account.username}</li>
-                                    <li>Full name: <input name="fullname" type="text" value="${sessionScope.account.fullname}"/></li>
-                                    <li>Gender: <c:if test="${sessionScope.account.gender == true}">Male</c:if>
-                                        <c:if test="${sessionScope.account.gender == false}">Female</c:if></li>
-                                    <li>Email:  ${sessionScope.account.email}</li>
-                                    <li>Phone number: ${sessionScope.account.phone}</li>
-                                    <li>Address: <input name="address" type="text" value="${sessionScope.account.address}"/></li>
+                    <h2 style="border-bottom: 1px solid black;">Information</h2>
+                    <a class="close" href="#">&times;</a>
+                    <div class="flex">
+                        <div class="content">
+                            <ul style="font-weight: 600; padding-left: 0rem;">
+                                <li>ID: ${sessionScope.account.id}</li>
+                                <li>Username: ${sessionScope.account.username}</li>
+                                <li>Full name: ${sessionScope.account.fullname}"</li>
+                                <li>Gender: <c:if test="${sessionScope.account.gender == true}">Male</c:if>
+                                    <c:if test="${sessionScope.account.gender == false}">Female</c:if></li>
+                                <li>Email:  ${sessionScope.account.email}</li>
+                                <li>Phone number: ${sessionScope.account.phone}</li>
+                                <li>Address: ${sessionScope.account.address}</li>
 
-                                </ul>
-                            </div>
-                            <div class="img">
-                                <!--<img src="https://th.bing.com/th/id/OIP.CPCyt52dUDhWIhy1K3guLAHaHa?pid=ImgDet&rs=1">-->
-                                <img src="${sessionScope.account.avatar}"> 
-                            </div>
+                            </ul>
                         </div>
-                    </form>
+                        <div class="img">
+                            <!--<img src="https://th.bing.com/th/id/OIP.CPCyt52dUDhWIhy1K3guLAHaHa?pid=ImgDet&rs=1">-->
+                            <img src="${sessionScope.account.avatar}"> 
+                        </div>
+                    </div>
+                        <button type="button" class="btn btn-primary" onclick="window.location.href = 'changeprofile'">Change profile</button>
                 </div>
             </div>
         </div>
