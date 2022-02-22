@@ -44,7 +44,7 @@
                             <div id="password_alert" style="color: white;"></div>
                             <div class="form-group">
                                 <input name="register_fullname" type="text" class="form-control border-0 p-4" placeholder="Fullname" required="required"
-                                       pattern="[àáãạảăắằẳẵặâấầẩẫậèéẹẻẽêềếểễệđìíĩỉịòóõọỏôốồổỗộơớờởỡợùúũụủưứừửữựỳỵỷỹýÀÁÃẠẢĂẮẰẲẴẶÂẤẦẨẪẬÈÉẸẺẼÊỀẾỂỄỆĐÌÍĨỈỊÒÓÕỌỎÔỐỒỔỖỘƠỚỜỞỠỢÙÚŨỤỦƯỨỪỬỮỰỲỴỶỸÝ\w]+"
+                                       pattern="^[a-zA-ZaAàÀảẢãÃáÁạẠăĂằẰẳẲẵẴắẮặẶâÂầẦẩẨẫẪấẤậẬbBcCdDđĐeEèÈẻẺẽẼéÉẹẸêÊềỀểỂễỄếẾệỆfFgGhHiIìÌỉỈĩĨíÍịỊjJkKlLmMnNoOòÒỏỎõÕóÓọỌôÔồỒổỔỗỖốỐộỘơƠờỜởỞỡỠớỚợỢpPqQrRsStTuUùÙủỦũŨúÚụỤưƯừỪửỬữỮứỨựỰvVwWxXyYỳỲỷỶỹỸýÝỵỴ\s]+$"
                                        title="Name must't contain number and special characters"/>
                             </div>
                             <div class="form-group" style="color: white;">
@@ -77,7 +77,6 @@
                                             return true;
                                         }
                                     }else{
-                                        console.log("not")
                                         document.getElementById("password_alert").innerHTML+="<p>Password and Re-password not match</p>";
                                         document.getElementById("register_form").onsubmit = function(){
                                             return false;

@@ -99,7 +99,7 @@
                             <ul style="font-weight: 600; padding-left: 0rem;">
                                 <li>ID: ${sessionScope.account.id}</li>
                                 <li>Username: ${sessionScope.account.username}</li>
-                                <li>Full name: ${sessionScope.account.fullname}"</li>
+                                <li>Full name: ${sessionScope.account.fullname}</li>
                                 <li>Gender: <c:if test="${sessionScope.account.gender == true}">Male</c:if>
                                     <c:if test="${sessionScope.account.gender == false}">Female</c:if></li>
                                 <li>Email:  ${sessionScope.account.email}</li>
