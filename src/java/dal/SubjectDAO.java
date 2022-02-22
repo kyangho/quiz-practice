@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import model.Account;
 import model.Subject;
 
 /**
@@ -19,39 +20,12 @@ import model.Subject;
  */
 public class SubjectDAO extends DBContext {
 
-    public ArrayList<Subject> getAllSubject_1(int pageIndex) {
-        String sql = "select * from (select row_number() over (order by subject_id ) as stt,\n"
-                + "subject_id, subject_title, subject_author, subject_status\n"
-                + "from quiz_practice_db.`subject` ) as t\n"
-                + "where stt between ?*3-2 and ?*3";
-        ArrayList<Subject> subjects = new ArrayList<>();
-        try {
-            PreparedStatement ps = connection.prepareStatement(sql);
-            ps.setInt(1, pageIndex);
-            ps.setInt(2, pageIndex);
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                Subject subject = new Subject();
-                subject.setSubject_id(rs.getInt("subject_id"));
-                subject.setSubject_title(rs.getString("subject_title"));
-                subject.setSubject_author(rs.getString("subject_author"));
-                subject.setSubject_status(rs.getString("subject_status"));
-
-                subjects.add(subject);
-
-            }
-
-        } catch (SQLException ex) {
-            Logger.getLogger(SettingDAO.class.getName()).log(Level.SEVERE, null, ex);
-            return null;
-        }
-        return subjects;
-    }
-
     public ArrayList<Subject> getAllSubject_2(int pageSize, int pageIndex, String status, String subject_title) {
+//        String s = "SELECT * FROM quiz_practice_db.`subject` as s join quiz_practice_db.`user` on s.user_id = `user`.user_id";
         String sql = "select * from (select row_number() over (order by subject_id ) as stt,\n"
-                + "subject_id, subject_title, subject_author, subject_status\n"
-                + "from quiz_practice_db.`subject`";
+                + "subject_id, subject_title, subject_status, subject_author, ap.account_fullname, ap.account_id FROM quiz_practice_db.`subject` \n"
+                + "as s join quiz_practice_db.`account` on s.subject_author = `account`.account_id \n"
+                + "join quiz_practice_db.account_profile as ap on `account`.account_id = ap.account_id";
         if (status != null) {
             if (!status.equals("all")) {
                 sql += " where subject_status = '" + status + "'";
@@ -73,9 +47,10 @@ public class SubjectDAO extends DBContext {
                 Subject subject = new Subject();
                 subject.setSubject_id(rs.getInt("subject_id"));
                 subject.setSubject_title(rs.getString("subject_title"));
-                subject.setSubject_author(rs.getString("subject_author"));
                 subject.setSubject_status(rs.getString("subject_status"));
-
+                Account u = new Account();
+                u.setFullname(rs.getString("account_fullname"));
+                subject.setSubject_Author(u);
                 subjects.add(subject);
             }
         } catch (SQLException ex) {
@@ -110,8 +85,11 @@ public class SubjectDAO extends DBContext {
 
     public Subject getSubjectDetail(String subject_id) {
         try {
-            String sql = "select s.subject_id,s.subject_title, s.subject_author, s.subject_status\n"
-                    + " from quiz_practice_db.subject s where s.subject_id = ?";
+            String sql = "select s.subject_id,s.subject_title, ap.account_fullname, s.subject_status\n"
+                    + "FROM quiz_practice_db.`subject` \n"
+                    + "as s join quiz_practice_db.`account` on s.subject_author = `account`.account_id \n"
+                    + "join quiz_practice_db.account_profile as ap on `account`.account_id = ap.account_id\n"
+                    + " where s.subject_id = ?";
             PreparedStatement ps = connection.prepareStatement(sql);
             ps.setString(1, subject_id);
             ResultSet rs = ps.executeQuery();
@@ -121,9 +99,11 @@ public class SubjectDAO extends DBContext {
                     sub = new Subject();
                     sub.setSubject_id(rs.getInt("subject_id"));
                     sub.setSubject_title(rs.getString("subject_title"));
-                    sub.setSubject_author(rs.getString("subject_author"));
                     sub.setSubject_status(rs.getString("subject_status"));
 
+                    Account acc = new Account();
+                    acc.setFullname(rs.getString("account_fullname"));
+                    sub.setSubject_Author(acc);
                 }
             }
             return sub;
@@ -139,7 +119,7 @@ public class SubjectDAO extends DBContext {
             String sql = "INSERT INTO `quiz_practice_db`.`subject` (`subject_title`, `subject_author`, `subject_status`) VALUES (?,?, ?);";
             PreparedStatement ps = connection.prepareStatement(sql);
             ps.setString(1, subject.getSubject_title());
-            ps.setString(2, subject.getSubject_author());
+            ps.setInt(2, subject.getSubject_Author().getId());
             ps.setString(3, subject.getSubject_status());
 
             ps.executeUpdate();
@@ -158,7 +138,7 @@ public class SubjectDAO extends DBContext {
                     + "WHERE `subject_id` =?;";
             PreparedStatement ps = connection.prepareStatement(sql);
             ps.setString(1, sub.getSubject_title());
-            ps.setString(2, sub.getSubject_author());
+            ps.setInt(2, sub.getSubject_Author().getId());
             ps.setString(3, sub.getSubject_status());
             ps.setInt(4, sub.getSubject_id());
             ps.executeUpdate();
@@ -196,8 +176,8 @@ public class SubjectDAO extends DBContext {
         }
         return true;
     }
-    
-     public void deleteSubject(int id) {
+
+    public void deleteSubject(int id) {
         try {
             String sql = "delete from quiz_practice_db.`subject` where `subject`.subject_id = ?";
             PreparedStatement ps = connection.prepareStatement(sql);
@@ -214,3 +194,32 @@ public class SubjectDAO extends DBContext {
 //        
 //    }
 }
+
+//    public ArrayList<Subject> getAllSubject_1(int pageIndex) {
+//        String sql = "select * from (select row_number() over (order by subject_id ) as stt,\n"
+//                + "subject_id, subject_title, subject_author, subject_status\n"
+//                + "from quiz_practice_db.`subject` ) as t\n"
+//                + "where stt between ?*3-2 and ?*3";
+//        ArrayList<Subject> subjects = new ArrayList<>();
+//        try {
+//            PreparedStatement ps = connection.prepareStatement(sql);
+//            ps.setInt(1, pageIndex);
+//            ps.setInt(2, pageIndex);
+//            ResultSet rs = ps.executeQuery();
+//            while (rs.next()) {
+//                Subject subject = new Subject();
+//                subject.setSubject_id(rs.getInt("subject_id"));
+//                subject.setSubject_title(rs.getString("subject_title"));
+//                subject.setSubject_author(rs.getString("subject_author"));
+//                subject.setSubject_status(rs.getString("subject_status"));
+//
+//                subjects.add(subject);
+//
+//            }
+//
+//        } catch (SQLException ex) {
+//            Logger.getLogger(SettingDAO.class.getName()).log(Level.SEVERE, null, ex);
+//            return null;
+//        }
+//        return subjects;
+//    }

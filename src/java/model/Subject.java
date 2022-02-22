@@ -13,20 +13,20 @@ public class Subject {
 
     private int subject_id;
     private String subject_title;
-    private String subject_author;
+    private Account subject_Author;
     private String subject_status;
 
     public Subject() {
     }
-    public Subject( String subject_title, String subject_author, String subject_status) {
+
+    public Subject(String subject_title, String subject_status) {
         this.subject_title = subject_title;
-        this.subject_author = subject_author;
         this.subject_status = subject_status;
     }
-    public Subject(int subject_id, String subject_title, String subject_author, String subject_status) {
+
+    public Subject(int subject_id, String subject_title, String subject_status) {
         this.subject_id = subject_id;
         this.subject_title = subject_title;
-        this.subject_author = subject_author;
         this.subject_status = subject_status;
     }
 
@@ -46,12 +46,12 @@ public class Subject {
         this.subject_title = subject_title;
     }
 
-    public String getSubject_author() {
-        return subject_author;
+    public Account getSubject_Author() {
+        return subject_Author;
     }
 
-    public void setSubject_author(String subject_author) {
-        this.subject_author = subject_author;
+    public void setSubject_Author(Account subject_Author) {
+        this.subject_Author = subject_Author;
     }
 
     public String getSubject_status() {
@@ -61,7 +61,5 @@ public class Subject {
     public void setSubject_status(String subject_status) {
         this.subject_status = subject_status;
     }
-
-
 
 }

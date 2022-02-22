@@ -77,7 +77,7 @@
                                                 <tr>
                                                     <td>${requestScope.subject.subject_id}</td>
                                                     <td>${requestScope.subject.subject_title}</td>
-                                                    <td>${requestScope.subject.subject_author}</td>
+                                                    <td>${requestScope.subject.subject_Author.fullname}</td>
                                                     <td>${requestScope.subject.subject_status}</td>
                                                 </tr>
                                                 </tr>
@@ -85,8 +85,8 @@
                                         </c:if>    
                                     </form>
                                     <div style="margin: 0 0 1% 80%"; >
-                                            <button onclick="doUpdate(${requestScope.subject.subject_id});" class="btn btn-sm btn-default" style="color: #fdfdfd;font-weight: bolder;background-color: #00a6ff;" type="submit">Edit</button>
-                                            <button onclick="doDelete(${requestScope.subject.subject_id});" class="btn btn-sm btn-default" style="color: #fdfdfd;font-weight: bolder;background-color: #00a6ff;" type="submit">Delete</button>
+                                        <button onclick="doUpdate(${requestScope.subject.subject_id});" class="btn btn-sm btn-default" style="color: #fdfdfd;font-weight: bolder;background-color: #00a6ff;" type="submit">Edit</button>
+                                        <button onclick="doDelete(${requestScope.subject.subject_id});" class="btn btn-sm btn-default" style="color: #fdfdfd;font-weight: bolder;background-color: #00a6ff;" type="submit">Delete</button>
                                         <a href="../subject/newsubject">
                                             <button class="btn btn-sm btn-default" style="color: #fdfdfd;font-weight: bolder;background-color: #00a6ff;" type="submit">Add new subject</button>
                                         </a>

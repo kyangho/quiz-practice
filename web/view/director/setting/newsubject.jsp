@@ -31,15 +31,19 @@
                                                         <label class="col-sm-2 col-sm-2 control-label">Subject name:</label>
                                                         <div class="col-sm-10">
                                                             <input type="text" name="subjectName" class="form-control" 
-                                                                   value="${requestScope.setting.name}" required placeholder="Setting name">
+                                                                   value="${requestScope.setting.name}" required placeholder="Subject title">
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
                                                     <label class="col-sm-2 col-sm-2 control-label">Subject author</label>
                                                     <div class="col-sm-10">
-                                                        <input type="text" name="subjectAuthor" class="form-control" 
-                                                               value="${requestScope.setting.description}"
-                                                               required placeholder="Setting description">
+                                                        <select name="subjectAuthor">
+                                                            <c:forEach items="${requestScope.user_author}" var="au">
+                                                                <option value="${au.id}">${au.fullname}</option>
+                                                            </c:forEach>
+                                                        </select>
+
+
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
@@ -47,7 +51,7 @@
                                                     <div class="col-sm-10">
                                                         <div class="radio">
                                                             <label>
-                                                                <input type="radio" required name="subjectStatus" id="setting-status" value="Published" 
+                                                                <input type="radio" required name="subjectStatus" id="setting-status" checked value="Published" 
                                                                        ${requestScope.setting.status == "Published" ? "checked" : ""}>
                                                                 Published
                                                             </label>

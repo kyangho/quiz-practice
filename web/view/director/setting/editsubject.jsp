@@ -46,9 +46,16 @@
                                                 <div class="form-group">
                                                     <label class="col-sm-2 col-sm-2 control-label">Subject author</label>
                                                     <div class="col-sm-10">
-                                                        <input type="text" name="subjectAuthor" class="form-control" 
-                                                               value="${requestScope.subject.subject_author}"
-                                                               required placeholder="Setting description">
+                                                        <select name="subjectAuthor">
+                                                            <c:forEach items="${requestScope.subject_author}" var="au">
+                                                                <option 
+                                                                    <c:if test="${au.fullname eq requestScope.subject.subject_Author.fullname}">
+                                                                        selected="selected"
+                                                                    </c:if> value="${au.id}">
+                                                                    ${au.fullname}
+                                                                </option>
+                                                            </c:forEach>
+                                                        </select>
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
