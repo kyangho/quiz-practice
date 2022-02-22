@@ -579,9 +579,10 @@ public class AccountDAO extends DBContext {
     public static void main(String[] args) {
         AccountDAO adbc = new AccountDAO();
 //        adbc.isExistAccountForAdd(null, "user@user.com", null).display();
-//        adbc.getAccountById(2).display();
+        boolean empty = adbc.getAccountById(2).getRole().isEmpty();
+        System.out.println(empty);
 //        System.out.println(adbc.totalRowsByAccountInfor(null, null, null, null, null, null, null));
-        Account a = adbc.getAccount("admin", "admin@admin.com");
-        a.display();
+//        Account a = adbc.getAccount("admin", "admin@admin.com");
+        adbc.getAccountById(2).display();
     }
 }

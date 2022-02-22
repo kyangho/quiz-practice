@@ -26,53 +26,55 @@
             <div class="single-blog-post">
                 <form class="add-form" action="new" method="POST" enctype="multipart/form-data">
                     <div class="form-group row">
-                        <label for="postTitle" class="col-sm-2 col-form-label">Title</label>
+                        <label for="postTitle" class="col-sm-2 col-form-label">Title<p class="text-danger" style="display: inline"> *</p></label>
                         <div class="col-sm-10">
-                            <input type="text" name="postTitle" class="form-control" id="postTitle" placeholder="Title">
+                            <input type="text" name="postTitle" class="form-control" 
+                                   id="postTitle" placeholder="Title" required="">
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="postBrief" class="col-sm-2 col-form-label">Brief</label>
+                        <label for="postBrief" class="col-sm-2 col-form-label">Brief<p class="text-danger" style="display: inline"> *</p></label>
                         <div class="col-sm-10">
-                            <input type="text" name="postBrief" class="form-control" id="postBrief" placeholder="Brief information for post">
+                            <input type="text" name="postBrief" class="form-control" 
+                                   id="postBrief" placeholder="Brief information for post" required="">
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="postContent" class="col-sm-2 col-form-label">Content</label>
+                        <label for="postContent" class="col-sm-2 col-form-label">Content<p class="text-danger" style="display: inline"> *</p></label>
                         <div class="col-sm-10">
-                            <textarea class="form-control rounded-2" name="postContent" id="postContent" placeholder="Write content here" rows="10"></textarea>
+                            <textarea class="form-control rounded-2" name="postContent" 
+                                      id="postContent" placeholder="Write content here" rows="10" required=""></textarea>
                         </div>
                     </div>
                     <div class="form-group row">
-                        <div class="col-sm-2">Category</div>
+                        <div class="col-sm-2">Category<p class="text-danger" style="display: inline"> *</p></div>
                         <div class="col-sm-10">
                         <c:forEach items="${requestScope.categories}" var="category">
                             <div class="form-check">
-                                <input name="categories" class="form-check-input" type="checkbox" id="${category.name}" value="${category.id}">
+                                <input name="categories" class="form-check-input" type="checkbox" 
+                                       id="${category.name}" value="${category.id}">
                                 <label class="form-check-label" for="${category.name}">
                                     ${category.value}
                                 </label>
                             </div>
                         </c:forEach>
-
-
                     </div>
                 </div>
                 <div class="form-group row">
-                    <div class="col-sm-2">Update thumbnail</div>
+                    <div class="col-sm-2">Thumbnail<p class="text-danger" style="display: inline"> *</p></div>
                     <div class="col-sm-5">
-                        <input class="form-control" type="file" name="thumbnail"  />
+                        <input class="form-control" id="file-thumbnail" type="file" name="thumbnail" accept="image/*" required="" />
                     </div>
                 </div>
                 <div class="form-group row">
                     <div class="col-sm-2">Attach files</div>
                     <div class="col-sm-5">
-                        <input class="form-control" type="file" name="files"  />
+                        <input class="form-control" id="file-attach" type="file" name="files"  />
                     </div>
                 </div>
                 <div class="form-group row">
                     <div class="col-sm-10">
-                        <button type="submit" class="btn btn-primary update-btn">Sign in</button>
+                        <button type="submit" class="btn btn-primary update-btn">Submit</button>
                     </div>
                 </div>
             </form>

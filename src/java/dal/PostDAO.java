@@ -9,7 +9,9 @@ import java.io.InputStream;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.Account;
@@ -45,15 +47,15 @@ public class PostDAO extends DBContext {
 
     public ArrayList<Post> getPostsList(String title, String category, String author, String status, int pageSize, int pageIndex) {
         ArrayList<Post> resPosts = new ArrayList<>();
-        String sql = 
-                "select * from\n"
+        String sql
+                = "select * from\n"
                 + "	(select row_number() over (order by post_time_created DESC ) as stt,\n"
                 + "    p.post_id,\n"
-                + "    p.post_title,\n"
-                + "    p.post_author,\n"
-                + "    p.post_time_created,\n"
-                + "    p.post_status,\n"
-                + "    c.category_name\n"
+                + "p.post_title,\n"
+                + "p.post_author,\n"
+                + "p.post_time_created,\n"
+                + "p.post_status,\n"
+                + "group_concat(c.category_name) as \"category_name\" \n"
                 + "FROM post as p\n"
                 + "LEFT JOIN post_category AS pc ON p.post_id = pc.post_id\n"
                 + "LEFT JOIN category AS c ON pc.category_id = c.category_id\n";
@@ -68,8 +70,10 @@ public class PostDAO extends DBContext {
             sql += author + " AND ";
             sql += status;
         }
+        sql += "group by p.post_id";
+
         sql += "        ) as t\n"
-        + " where  t.stt >= (? - 1) * ? AND t.stt <= ? * ?;";
+                + " where  t.stt >= (? - 1) * ? + 1 AND t.stt <= ? * ?;";
         try {
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setInt(1, pageIndex);
@@ -117,8 +121,8 @@ public class PostDAO extends DBContext {
                 resPost.setThumbnail(rs.getBlob("post_thumbnail"));
                 resPost.setTitle(rs.getString("post_title"));
                 resPost.setContent(rs.getString("post_content"));
-                resPost.setDateCreated(rs.getDate("post_time_created"));
-                resPost.setDateModified(rs.getDate("post_time_modified"));
+                resPost.setDateCreated(new Date(rs.getTimestamp("post_time_created").getTime()));
+                resPost.setDateModified(new Date(rs.getTimestamp("post_time_modified").getTime()));
                 resPost.setFeaturing(rs.getBoolean("post_isFeaturing"));
                 resPost.setStatus(rs.getString("post_status"));
                 resPost.setAuthor(rs.getString("post_author"));
@@ -227,9 +231,8 @@ public class PostDAO extends DBContext {
 
         return categories;
     }
-    
-    //</editor-fold>
 
+    //</editor-fold>
     // <editor-fold defaultstate="collapsed" desc="Insert post SQL. Click on the + sign on the left to edit the code.">
 //======================== INSERT SQL ==============================
     public String insertPost(Post inputPost, InputStream isThumbnail) {
@@ -253,8 +256,8 @@ public class PostDAO extends DBContext {
             stm.setString(2, inputPost.getTitle());
             stm.setString(3, inputPost.getContent());
             stm.setString(4, inputPost.getAuthor());
-            stm.setDate(5, inputPost.getDateCreated());
-            stm.setDate(6, inputPost.getDateModified());
+            stm.setTimestamp(5, new Timestamp(inputPost.getDateCreated().getTime()));
+            stm.setTimestamp(6, new Timestamp(inputPost.getDateModified().getTime()));
             stm.setBoolean(7, false);
             stm.setString(8, inputPost.getStatus());
             stm.setString(9, inputPost.getBrief());
@@ -295,8 +298,8 @@ public class PostDAO extends DBContext {
             stm.setString(1, inputPost.getTitle());
             stm.setString(2, inputPost.getContent());
             stm.setString(3, inputPost.getAuthor());
-            stm.setDate(4, inputPost.getDateCreated());
-            stm.setDate(5, inputPost.getDateModified());
+            stm.setTimestamp(4, new Timestamp(inputPost.getDateCreated().getTime()));
+            stm.setTimestamp(5, new Timestamp(inputPost.getDateModified().getTime()));
             stm.setBoolean(6, false);
             stm.setString(7, inputPost.getStatus());
             stm.setString(8, inputPost.getBrief());
@@ -399,8 +402,8 @@ public class PostDAO extends DBContext {
             stm.setString(2, inputPost.getTitle());
             stm.setString(3, inputPost.getContent());
             stm.setString(4, inputPost.getAuthor());
-            stm.setDate(5, inputPost.getDateCreated());
-            stm.setDate(6, inputPost.getDateModified());
+            stm.setTimestamp(5, new Timestamp(inputPost.getDateCreated().getTime()));
+            stm.setTimestamp(6, new Timestamp(inputPost.getDateModified().getTime()));
             stm.setBoolean(7, false);
             stm.setString(8, inputPost.getStatus());
             stm.setString(9, inputPost.getBrief());
@@ -435,8 +438,8 @@ public class PostDAO extends DBContext {
             stm.setString(1, inputPost.getTitle());
             stm.setString(2, inputPost.getContent());
             stm.setString(3, inputPost.getAuthor());
-            stm.setDate(4, inputPost.getDateCreated());
-            stm.setDate(5, inputPost.getDateModified());
+            stm.setTimestamp(4, new Timestamp(inputPost.getDateCreated().getTime()));
+            stm.setTimestamp(5, new Timestamp(inputPost.getDateModified().getTime()));
             stm.setBoolean(6, false);
             stm.setString(7, inputPost.getStatus());
             stm.setString(8, inputPost.getBrief());
@@ -475,6 +478,29 @@ public class PostDAO extends DBContext {
             return false;
         }
 
+        return true;
+    }
+
+    public boolean updatePostFile(int postId, String fileName, String fileType, InputStream fileContent) {
+        String sql = "UPDATE `quiz_practice_db`.`post_has_file` as phf\n"
+                + "LEFT JOIN post_file as pf on pf.file_id = phf.file_id\n"
+                + "SET\n"
+                + "pf.file_name = ?,\n"
+                + "pf.file_type = ?,\n"
+                + "pf.file_blob = ?\n"
+                + "WHERE `post_id` = ?;";
+        try {
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setString(1, fileName);
+            stm.setString(2, fileType);
+            stm.setBinaryStream(3, fileContent);
+            stm.setInt(4, postId);
+
+            stm.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(PostDAO.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }
         return true;
     }
 //</editor-fold>

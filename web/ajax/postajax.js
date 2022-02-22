@@ -37,15 +37,15 @@ $(document).ready(function () {
             }
         }
     });
-    
-    $(".select-category").on("change", function(e){
+
+    $(".select-category").on("change", function (e) {
         console.log("a");
         window.location.href = "list?category=" + $(this).val();
     });
     $("form[class*='update-forma']").on('submit', function (e) {
         e.preventDefault();
         console.log('a');
-        
+
         var formdata = $(this).serialize();
 
         $.ajax({
@@ -71,7 +71,7 @@ $(document).ready(function () {
     $("form[class*='upload-thumbnail-form']").on('submit', function (e) {
         e.preventDefault();
         console.log('a');
-        
+
         var formdata = $(this).serialize();
 
         $.ajax({
@@ -91,7 +91,57 @@ $(document).ready(function () {
             }
         });
     });
-    $(".pagination a").on("click", function(e){
-        console.log(window.location.href)
+    $(".pagination a").on("click", function (e) {
+        console.log(window.location.href);
+    })
+
+    $("#file-thumbnail").on("change", function (e) {
+        var name = e.target.files[0].name;
+        var type = e.target.files[0].type;
+        var newForm = new FormData();
+        var id = $('.update-form').children('input').val();
+        newForm.append('thumbnail', e.target.files[0]);
+        newForm.append('id', id);
+        if (type.toString().startsWith('image')) {
+            $.ajax({
+                url: 'thumbnail',
+                type: 'post',
+                data: newForm,
+                mimeType: "multipart/form-data",
+                contentType: false,
+                cache: false,
+                processData: false,
+                success: function (response) {
+                    console.log(response)
+                },
+                timeout: 100000
+            });
+        }
+        $("label.file-thumbnail")[0].innerHTML = name;
+//        $("#image-thumbnail")[0].src = "/QuizPractice/post/image?id=" + id + "&" + new Date().getTime();
+        console.log($('#image-thumbnail'));
+    })
+
+    $("#file-attach").on("change", function (e) {
+        var name = e.target.files[0].name;
+        var type = e.target.files[0].type;
+        var newForm = new FormData();
+        var id = $('.update-form').children('input').val();
+        newForm.append('file', e.target.files[0]);
+        newForm.append('type', type);
+        newForm.append('id', id);
+        $.ajax({
+            url: 'file',
+            type: 'post',
+            data: newForm,
+            mimeType: "multipart/form-data",
+            contentType: false,
+            cache: false,
+            processData: false,
+            success: function (response) {
+                console.log(response)
+            }
+        });
+        $("a.file-href")[0].innerHTML = name;
     })
 });

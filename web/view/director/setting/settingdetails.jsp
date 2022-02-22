@@ -19,7 +19,7 @@
                 <input type="hidden" name="settingId" class="form-control" 
                        value="${requestScope.setting.id}">
                 <div class="form-group">
-                    <label class="col-sm-2 col-sm-2 control-label">Setting name:</label>
+                    <label class="col-sm-2 col-sm-2 control-label">Setting name<p class="text-danger" style="display: inline"> *</p>:</label>
                     <div class="col-sm-10">
                         <input type="text" name="settingName" class="form-control" 
                                value="${requestScope.setting.name}"
@@ -27,15 +27,15 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 col-sm-2 control-label">Description:</label>
+                    <label class="col-sm-2 col-sm-2 control-label">Description<p class="text-danger" style="display: inline"> *</p>:</label>
                     <div class="col-sm-10">
-                        <input type="text" name="settingDescription" class="form-control" 
-                               value="${requestScope.setting.description}"
-                               required placeholder="Setting name">
+                        <textarea class="form-control rounded-2" name="settingDescription" 
+                                  id="settingDescription" placeholder="Write description here" 
+                                  rows="10" required>${requestScope.setting.description}</textarea>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 col-sm-2 control-label">Type</label>
+                    <label class="col-sm-2 col-sm-2 control-label">Type<p class="text-danger" style="display: inline"> *</p></label>
                     <div class="col-sm-10">
                         <select name="settingType" class="form-control m-b-10">
                             <option value="${requestScope.setting.type}">${requestScope.setting.type}</option>
@@ -46,7 +46,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 col-sm-2 control-label">Value: </label>
+                    <label class="col-sm-2 col-sm-2 control-label">Value<p class="text-danger" style="display: inline"> *</p>: </label>
                     <div class="col-sm-10">
                         <input type="text" name="settingValue" class="form-control" 
                                value="${requestScope.setting.value}"

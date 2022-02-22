@@ -120,12 +120,21 @@
                                     <div class="form-group">
                                         <label class="col-sm-2 col-sm-2 control-label">Role *: </label>
                                         <div class="col-sm-10" style="display: flex;">
-                                        <c:forEach items="${requestScope.roles}" var="r">
-                                            <div class="radio" style="margin-left: -19px;">
-                                                <input type="checkbox" name="roleID" value="${r.id}"
-                                                       <c:if test="${requestScope.account.checkRoleEqual(r)}"> checked="checked"</c:if>>${r.roleName}
+                                        <c:if test="${requestScope.account.role[0].id == 0}">
+                                            <c:forEach items="${requestScope.roles}" var="r">
+                                                <div class="radio" style="margin-left: -19px;">
+                                                    <input type="checkbox" name="roleID" value="${r.id}">${r.roleName}
                                                 </div>
-                                        </c:forEach>
+                                            </c:forEach>
+                                        </c:if>
+                                        <c:if test="${requestScope.account.role[0].id != 0}">
+                                            <c:forEach items="${requestScope.roles}" var="r">
+                                                <div class="radio" style="margin-left: -19px;">
+                                                    <input type="checkbox" name="roleID" value="${r.id}"
+                                                           <c:if test="${requestScope.account.checkRoleEqual(r)}"> checked="checked"</c:if>>${r.roleName}
+                                                    </div>
+                                            </c:forEach>
+                                        </c:if>
                                     </div>
                                 </div>
                                 <div class="col-sm-12" style="color: red; margin-left: 10%;">

@@ -11,87 +11,6 @@
 <link href="${pageContext.request.contextPath}/css/post.css?v=1" rel="stylesheet">
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-<style>
-    .blog-post-area 
-    .post-meta ul li {
-        background: #F0F0E9;
-        float: left;
-        margin-right: 10px;
-        padding: 0 5px;
-        font-size: 11px;
-        color: #393b3b;
-        position: relative;
-    }
-    ul li {
-        list-style: none;
-
-    }
-    .row {
-        display: flex;
-        flex-wrap: wrap;
-    }
-    .blog-post-area 
-    .post-meta ul li i {
-        background: #FE980F;
-        color: #FFFFFF;
-        margin-left: -4px;
-        margin-right: 7px;
-        padding: 4px 7px;
-    }
-    .fa, .fas {
-        font-weight: 900;
-    }
-    .fa, .far, .fas {
-        font-family: "Font Awesome 5 Free";
-    }
-    .fa, .fab, .fad, .fal, .far, .fas {
-        -moz-osx-font-smoothing: grayscale;
-        -webkit-font-smoothing: antialiased;
-        display: inline-block;
-        font-style: normal;
-        font-variant: normal;
-        text-rendering: auto;
-        line-height: 1;
-    }
-    .blog-post-area 
-    .single-blog-post h3 {
-        color: #696763;
-        font-size: 16px;
-        font-family: 'Roboto',sans-serif;
-        text-transform: uppercase;
-        font-weight: 500;
-        margin-bottom: 17px;
-    }
-    h2.title {
-        color: #FE980F;
-        font-family: 'Roboto', sans-serif;
-        font-size: 18px;
-        font-weight: 700;
-        margin: 0 15px;
-        text-transform: uppercase;
-        margin-bottom: 30px;
-        position: relative;
-    }
-    .text-center {
-        text-align: center !important;
-    }
-    .panel-group {
-        margin-bottom: 20px;
-    }
-    .category-products {
-        border: 1px solid #F7F7F0;
-        margin-bottom: 35px;
-        padding-bottom: 20px;
-        padding-top: 15px;
-    }
-
-    /* Style to create scroll bar in dropdown */ 
-    .scrollable-dropdown{
-        height: auto;
-        max-height:320px;  /* Increase / Decrease value as per your need */
-        overflow-x: hidden;
-    }
-</style>
 
 <script src="${pageContext.request.contextPath}/js/jquery.min.js"></script>
 <script src="${pageContext.request.contextPath}/ajax/postajax.js?v=3" type="text/javascript"></script>
@@ -145,14 +64,16 @@
                         <a href="">
                             <img  class="col-sm-12" src="${pageContext.request.contextPath}/post/image?id=${post.id}" alt="">
                         </a>
-                        <p>${post.content}</p>.
+                        <div style="white-space: pre-line;">
+                            ${post.content}
+                        </div>
                         <c:if test="${post.author == sessionScope.account.username}">
                             <a class="btn btn-danger" href="update?id=${post.id}">Edit</a>
                         </c:if>
-                            <div>
-                                <h6>Attach file:</h6>
-                                <a href="file?id=${requestScope.post.id}">${requestScope.fileName}</a>
-                            </div>
+                        <div>
+                            <h6>Attach file:</h6>
+                            <a href="file?id=${requestScope.post.id}">${requestScope.fileName}</a>
+                        </div>
                     </div>
                 </div>
             </c:if>

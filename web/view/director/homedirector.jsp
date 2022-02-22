@@ -28,21 +28,6 @@
                         <jsp:include page="${requestScope.contentPageIncluded}"></jsp:include>
                     </c:if>
                 </section>
-                aaaaahahahahahahahahahahahhahahahahahahhahahahahaahhahahahahahah
-                <div class="col-md-8 my-5">
-
-                    <fieldset class="sort-border">
-                        <legend class="sort-border">Sort</legend>
-                        <div class="control-group">
-                            <select class="select select-initialized" id="filter-sort-select">
-                                <option value="" disabled="" selected="">Choose category</option>
-                                <option value="1">Product name ascending</option>
-                                <option value="2">Product name descending</option>
-                                <option value="3">Highest price</option>
-                                <option value="4">Lowest price</option>
-                            </select>
-                        </div>
-                    </fieldset>
             </aside>
         </div>
 
