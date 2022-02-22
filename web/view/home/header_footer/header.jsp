@@ -106,7 +106,13 @@
                                 <li>Phone number: ${sessionScope.account.phone}</li>
                                 <li>Address: ${sessionScope.account.address}</li>
 
-                            </ul>
+                                </ul>
+                                    <a href="changepassword" class="btn btn-primary">Reset password</a>
+                            </div>
+                            <div class="img">
+                                <!--<img src="https://th.bing.com/th/id/OIP.CPCyt52dUDhWIhy1K3guLAHaHa?pid=ImgDet&rs=1">-->
+                                <img src="${sessionScope.account.avatar}"> 
+                            </div>
                         </div>
                         <div class="img">
                             <!--<img src="https://th.bing.com/th/id/OIP.CPCyt52dUDhWIhy1K3guLAHaHa?pid=ImgDet&rs=1">-->

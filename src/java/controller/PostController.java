@@ -63,22 +63,24 @@ public class PostController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String URI = request.getRequestURI().replaceFirst("/\\w+", "");
+        Account account = (Account) request.getSession().getAttribute("account");
         ArrayList<Post> posts = new ArrayList<>();
-
         if (URI.contains(postListPath)) {
             doGetPostList(request, response);
         } else if (URI.contains(postDetailPath)) {
             doGetPostDetail(request, response);
-        } else if (URI.contains(postUpdatePath)) {
+        } else if (URI.contains(postUpdatePath) && account != null) {
             doGetUpdatePost(request, response);
         } else if (URI.contains(postImagePath)) {
             doGetPostThumbnail(request, response);
-        } else if (URI.contains(postNewPath)) {
+        } else if (URI.contains(postNewPath) && account != null) {
             doGetNewPost(request, response);
         } else if (URI.contains("/post/thumbnail")) {
             request.getRequestDispatcher("/view/post/postthumbnail.jsp").forward(request, response);
         } else if (URI.contains(postRetrievePath)) {
             doGetFileRetrieve(request, response);
+        } else {
+            response.sendRedirect(request.getContextPath() + "/home");
         }
     }
 
@@ -94,12 +96,18 @@ public class PostController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String URI = request.getRequestURI().replaceFirst("/\\w+", "");
-        if (URI.contains(postNewPath)) {
+        Account account = (Account) request.getSession().getAttribute("account");
+
+        if (URI.contains(postNewPath) && account != null) {
             doPostNewPost(request, response);
-        } else if (URI.contains(postUpdatePath)) {
+        } else if (URI.contains(postUpdatePath) && account != null) {
             doPostUpdatePost(request, response);
         } else if (URI.contains("/post/thumbnail")) {
             doPostPostThumbnail(request, response);
+        } else if (URI.contains("/post/file")) {
+            doPostUploadFile(request, response);
+        } else {
+            response.sendRedirect(request.getContextPath() + "/home");
         }
     }
 
@@ -159,16 +167,16 @@ public class PostController extends HttpServlet {
         PostDAO postDAO = new PostDAO();
 
         Part thumbnailPart = request.getPart("thumbnail"); // Retrieves <input type="file" name="thumbnail">
-        InputStream fileContent = thumbnailPart.getInputStream();
+        InputStream fileThumbnail = thumbnailPart.getInputStream();
 
-        String id = postDAO.insertPost(p, fileContent);
+        String id = postDAO.insertPost(p, fileThumbnail);
 
-        Part filesPart = request.getPart("thumbnail"); // Retrieves <input type="file" name="files">
+        Part filesPart = request.getPart("files"); // Retrieves <input type="file" name="files">
         String fileName = Paths.get(filesPart.getSubmittedFileName()).getFileName().toString(); // MSIE fix.
-        fileContent = filesPart.getInputStream();
-
-        postDAO.insertPostFile(Integer.parseInt(id), fileName, "", fileContent);
-
+        InputStream fileContent = filesPart.getInputStream();
+        if (filesPart.getSize() > 0) {
+            postDAO.insertPostFile(Integer.parseInt(id), fileName, "", fileContent);
+        }
         response.sendRedirect("list");
     }
 
@@ -185,6 +193,11 @@ public class PostController extends HttpServlet {
         ArrayList<PostCategory> categories = pd.getPostCategories("", "");
         request.setAttribute("categories", categories);
 
+        try {
+            request.setAttribute("fileName", pd.getPostFileListWithId(post.getId()).get(0).getName());
+        } catch (Exception e) {
+
+        }
         request.setAttribute("post", post);
         request.getRequestDispatcher("/view/post/postupdate.jsp").forward(request, response);
     }
@@ -216,13 +229,17 @@ public class PostController extends HttpServlet {
 
         Part thumbnailPart = request.getPart("thumbnail"); // Retrieves <input type="file" name="thumbnail">
         InputStream fileContent = thumbnailPart.getInputStream();
-
-        postDAO.updatetPost(p, fileContent);
-
-        Part filesPart = request.getPart("thumbnail"); // Retrieves <input type="file" name="files">
+        if (thumbnailPart.getSize() > 0) {
+            postDAO.updatetPost(p, fileContent);
+        } else {
+            postDAO.updatetPost(p);
+        }
+        Part filesPart = request.getPart("files"); // Retrieves <input type="file" name="files">
         String fileName = Paths.get(filesPart.getSubmittedFileName()).getFileName().toString(); // MSIE fix.
         fileContent = filesPart.getInputStream();
-
+        if (filesPart.getSize() > 0) {
+            postDAO.updatePostFile(p.getId(), fileName, "", fileContent);
+        }
         response.sendRedirect("list");
     }
 
@@ -292,17 +309,24 @@ public class PostController extends HttpServlet {
 
     public void doPostPostThumbnail(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String description = request.getParameter("thumbnail"); // Retrieves <input type="text" name="description">
         Part filePart = request.getPart("thumbnail"); // Retrieves <input type="file" name="thumbnail">
         String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString(); // MSIE fix.
         InputStream fileContent = filePart.getInputStream();
         PostDAO postDAO = new PostDAO();
-        postDAO.updatePostThumbnail(4, fileContent);
+        int id = Integer.parseInt(request.getParameter("id"));
+        postDAO.updatePostThumbnail(id, fileContent);
     }
 
-    protected void doPostUploadFile(HttpServletRequest request, HttpServletResponse response, String partName)
+    protected void doPostUploadFile(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        Part filePart = request.getPart("file"); // Retrieves <input type="file" name="thumbnail">
+        String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString(); // MSIE fix.
+        InputStream fileContent = filePart.getInputStream();
+        PostDAO postDAO = new PostDAO();
+        int id = Integer.parseInt(request.getParameter("id"));
+        String type = request.getParameter("type");
 
+        postDAO.updatePostFile(id, fileName, type, fileContent);
     }
 
     public void doGetFileRetrieve(HttpServletRequest request, HttpServletResponse response)

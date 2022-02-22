@@ -196,6 +196,17 @@ public class SubjectDAO extends DBContext {
         }
         return true;
     }
+    
+     public void deleteSubject(int id) {
+        try {
+            String sql = "delete from quiz_practice_db.`subject` where `subject`.subject_id = ?";
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setInt(1, id);
+            ps.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(SubjectDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 //    public static void main(String[] args) {
 //        SubjectDAO s = new SubjectDAO();
 //        int sid = 3;

@@ -211,3 +211,13 @@ h2.title {
     max-height:320px;  /* Increase / Decrease value as per your need */
     overflow-x: hidden;
 }
+
+input.file{
+    width: 6.8rem !important;
+}   
+
+.pager a {
+    color: #06BBCC !important;
+    text-decoration: none !important;
+}
+
