@@ -7,217 +7,57 @@ and open the template in the editor.
     Created on : Feb 11, 2022, 10:43:24 PM
     Author     : ducky
 */
-
-#search{
-    border-radius: 10px;
-}
-
-.input-group-btn{
-    margin-top: 2px;
-}
-li.category-label{
-    background-color: #ffffff !important;
-    font-size: 13px !important;
-    margin-right: 0px !important;
-}
-
-img{
-    margin-top: 10px !important;
-}
-.container{
-    margin-top: 3rem;
-}
-h1{
-    text-align: center;
-    border-bottom: 1px solid #000;
-    margin-bottom: 5px
-}
-
-h2{
-    font-size: 25px !important;
-}
-fieldset {
-    display: block;
-    margin-inline-start: 2px;
-    margin-inline-end: 2px;
-    padding-block-start: 0.35em;
-    padding-inline-start: 0.75em;
-    padding-inline-end: 0.75em;
-    padding-block-end: 0.625em;
-    min-inline-size: min-content;
-    border-width: 2px;
-    border-style: groove;
-    border-color: threedface;
-    border-image: initial;
-}
-
-legend.sort-border.hidden {
-    position: absolute;
-    z-index: 1000;
-    background-color: white;
-}
-
-legend {
-    display: block;
-    width: 100%;
-    padding: 0;
-    margin-bottom: 20px;
-    font-size: 21px;
-    line-height: inherit;
-    color: #333;
-    border: 0;
-    border-bottom: 1px solid #e5e5e5;
-}
-
-fieldset.sort-border {
-    padding: 1em 1em 1em 0em !important;
-    -webkit-box-shadow:  0px 0px 0px 0px #000;
-    box-shadow:  0px 0px 0px 0px #000;
-}
-
-legend.sort-border {
-    font-size: 1em !important;
-    font-weight: bold !important;
-    text-align: left !important;
-    margin-left: 10px
-}
-
-legend.sort-border {
-    width:inherit; /* Or auto */
-    padding:0 10px; /* To give a bit of padding on the left and right */
-    border-bottom:none;
-    height: 19px;
-}
-
-legend{
-    margin-bottom: 6px !important; 
-}
-
-option {
-    padding-left: 3px
-}
-
-select{
-    padding: 5px 0px 2px 16px;
-    border-radius: 5px;
-    margin: -13px 0 0 0px !important;
-}
-
-.card {
-    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
-    transition: 0.3s;
-    width: 40%;
-}
-
-.card:hover {
-    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
-}
-
-.container {
-    padding: 2px 16px;
-}
-
-textarea.form-control{
-    height: auto !important;
-}
-.single-blog-post img{
-    width: inherit;
-    height: 400px;
-}
-.single-blog-post{
-    padding-bottom: 20px;
-    border-bottom: 1px solid gray;
-}
-.blog-post-area 
-.post-meta ul li {
-    background: #F0F0E9;
-    float: left;
-    margin-right: 10px;
-    padding: 0 5px;
-    font-size: 11px;
-    color: #393b3b;
-    position: relative;
-}
-ul li {
-    list-style: none;
-
-}
-
-.post-meta ul {
-    padding-left: 0px !important
-}
-.row {
-    display: flex;
-    flex-wrap: wrap;
-}
-.blog-post-area 
-.post-meta ul li i {
-    background: #FE980F;
-    color: #FFFFFF;
-    margin-left: -4px;
-    margin-right: 7px;
-    padding: 4px 7px;
-}
-.fa, .fas {
-    font-weight: 900;
-}
-.fa, .far, .fas {
-    font-family: "Font Awesome 5 Free";
-}
-.fa, .fab, .fad, .fal, .far, .fas {
-    -moz-osx-font-smoothing: grayscale;
-    -webkit-font-smoothing: antialiased;
-    display: inline-block;
-    font-style: normal;
-    font-variant: normal;
-    text-rendering: auto;
-    line-height: 1;
-}
-.blog-post-area 
-.single-blog-post h3 {
-    color: #696763;
-    font-size: 16px;
-    font-family: 'Roboto',sans-serif;
-    text-transform: uppercase;
-    font-weight: 500;
-    margin-bottom: 17px;
-}
-h2.title {
-    color: #FE980F;
-    font-family: 'Roboto', sans-serif;
-    font-size: 18px;
-    font-weight: 700;
-    margin: 0 15px;
-    text-transform: uppercase;
-    margin-bottom: 30px;
-    position: relative;
-}
-.text-center {
-    text-align: center !important;
-}
-.panel-group {
-    margin-bottom: 20px;
-}
-.category-products {
-    border: 1px solid #F7F7F0;
-    margin-bottom: 35px;
-    padding-bottom: 20px;
-    padding-top: 15px;
-}
-
-/* Style to create scroll bar in dropdown */ 
-.scrollable-dropdown{
-    height: auto;
-    max-height:320px;  /* Increase / Decrease value as per your need */
-    overflow-x: hidden;
-}
-
-input.file{
-    width: 6.8rem !important;
-}   
-
 .pager a {
     color: #06BBCC !important;
     text-decoration: none !important;
 }
 
+.mt-100 {
+    margin-top: 100px
+}
+
+.card {
+    box-shadow: 0 0.46875rem 2.1875rem rgba(4, 9, 20, 0.03), 0 0.9375rem 1.40625rem rgba(4, 9, 20, 0.03), 0 0.25rem 0.53125rem rgba(4, 9, 20, 0.05), 0 0.125rem 0.1875rem rgba(4, 9, 20, 0.03);
+    border-width: 0;
+    transition: all .2s
+}
+
+.card-header:first-child {
+    border-radius: calc(.25rem - 1px) calc(.25rem - 1px) 0 0
+}
+
+.card-header {
+    display: flex;
+    align-items: center;
+    border-bottom-width: 1px;
+    padding-top: 0;
+    padding-bottom: 0;
+    padding-right: .625rem;
+    height: 3.5rem;
+    background-color: #fff;
+    border-bottom: 1px solid rgba(26, 54, 126, 0.125)
+}
+
+.card-body {
+    flex: 1 1 auto;
+    padding: 1.25rem
+}
+
+.flex-truncate {
+    min-width: 0 !important
+}
+
+.d-block {
+    display: block !important
+}
+
+a {
+    color: #E91E63;
+    text-decoration: none !important;
+    background-color: transparent
+}
+
+.media img {
+    width: 40px;
+    height: auto
+}
