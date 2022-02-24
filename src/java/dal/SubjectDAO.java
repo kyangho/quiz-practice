@@ -187,12 +187,13 @@ public class SubjectDAO extends DBContext {
             Logger.getLogger(SubjectDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-//    public static void main(String[] args) {
-//        SubjectDAO s = new SubjectDAO();
-//        int sid = 3;
-//        s.publishedSubject(sid);
-//        
-//    }
+    public static void main(String[] args) {
+        SubjectDAO s = new SubjectDAO();
+        for (Subject dSubject : s.getAllSubject_2(1, 2, "all", null)) {
+            System.out.println(dSubject.getSubject_id());
+        }
+        
+    }
 }
 
 //    public ArrayList<Subject> getAllSubject_1(int pageIndex) {

@@ -62,9 +62,11 @@
                 <div class="col-lg-3 col-sm-6 wow fadeInUp" data-wow-delay="0.1s">
                     <div class="service-item text-center pt-3">
                         <div class="p-4">
-                            <i class="fa fa-3x fa-graduation-cap text-primary mb-4"></i>
-                            <h5 class="mb-3">Skilled Instructors</h5>
-                            <p>Diam elitr kasd sed at elitr sed ipsum justo dolor sed clita amet diam</p>
+                            <img class="img-fluid" src="${pageContext.request.contextPath}/img/quiz1.jpg" alt=""/>
+                            <h5 class="mb-3">Quiz Name</h5>
+                            <p>Author</p>
+                            <p>60Qs</p>
+                            <p style="background-color: red; border-radius: 10px; color: white;">Result</p>
                         </div>
                     </div>
                 </div>
