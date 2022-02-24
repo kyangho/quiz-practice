@@ -91,8 +91,8 @@
                                                     <th>Status
                                                         <select class=" input-sm" name="status">
                                                             <option ${requestScope.status eq "all" ? "selected=\"selected\"" : ""} value="all">ALL</option>
-                                                            <option ${requestScope.status eq "Active" ? "selected=\"selected\"" : ""} value="Active">Active</option>
-                                                            <option ${requestScope.status eq "Deactive" ? "selected=\"selected\"" : ""} value="Deactive">Deactive</option>
+                                                            <option ${requestScope.status eq "ACTIVE" ? "selected=\"selected\"" : ""} value="Active">Active</option>
+                                                            <option ${requestScope.status eq "DEACTIVE" ? "selected=\"selected\"" : ""} value="Deactive">Deactive</option>
                                                         </select>
                                                     </th>
                                                     <th>View</th>
@@ -113,17 +113,17 @@
                                                         <td><button 
                                                                 onclick="changeStatus(${a.id}, '${a.status}', 'changestatusforuser')" 
                                                                 type="button" class="label 
-                                                                <c:if test="${a.status == 'Active'}">
+                                                                <c:if test="${a.status == 'ACTIVE'}">
                                                                     label-danger
                                                                 </c:if>
-                                                                <c:if test="${a.status eq 'Deactive'}">
+                                                                <c:if test="${a.status eq 'DEACTIVE'}">
                                                                     label-success
                                                                 </c:if>
                                                                 ">
-                                                                <c:if test="${a.status eq 'Active'}">
+                                                                <c:if test="${a.status eq 'ACTIVE'}">
                                                                     DEACTIVE
                                                                 </c:if>
-                                                                <c:if test="${a.status eq 'Deactive'}">
+                                                                <c:if test="${a.status eq 'DEACTIVE'}">
                                                                     ACTIVE
                                                                 </c:if>
                                                             </button>

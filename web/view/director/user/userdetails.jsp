@@ -62,10 +62,11 @@
                                         <input type="email" name="email" class="form-control" 
                                                value="${requestScope.account.email}"
                                                required placeholder="Email">
+                                        <c:if test="${requestScope.tag eq 'email'}">
+                                            <p style="color: red;">Email has been registered by another person. Please select another email!</p>
+                                        </c:if>
                                     </div>
-                                    <c:if test="${requestScope.tag eq 'email'}">
-                                        <p style="color: red; margin: 0.5% 9.7%;">Email has been registered by another person. Please select another email!</p>
-                                    </c:if>
+
                                 </div>
                                 <div class="form-group">
                                     <label class="col-sm-2 col-sm-2 control-label">Phone *:</label>
@@ -106,13 +107,13 @@
                                             <div class="radio">
                                                 <label>
                                                     <input type="radio" name="status" value="Active" 
-                                                    <c:if test="${requestScope.account.status eq 'Active'}">checked="checked"</c:if>> Active
+                                                    <c:if test="${requestScope.account.status eq 'ACTIVE'}">checked="checked"</c:if>> Active
                                                 </label>
                                             </div>
                                             <div class="radio">
                                                 <label>
                                                     <input type="radio" name="status" 
-                                                    <c:if test="${requestScope.account.status eq 'Deactive'}">checked="checked"</c:if> value="Deactive"> Deactive
+                                                    <c:if test="${requestScope.account.status eq 'DEACTIVE'}">checked="checked"</c:if> value="Deactive"> Deactive
                                                 </label>
                                             </div>
                                         </div>
