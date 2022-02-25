@@ -35,7 +35,7 @@ public class HomePageController extends HttpServlet {
             ArrayList<Quiz> quizzes = qdb.getQuizzesPractice(account.getId(), 1, 4);
             request.setAttribute("quizs", quizzes);
         }
-
+        request.setAttribute("tag", "home");
         request.setAttribute("information", accounts);
         request.getRequestDispatcher("view/home/homepage.jsp").forward(request, response);
     }

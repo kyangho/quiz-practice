@@ -1,6 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<jsp:include page="header.jsp"></jsp:include>
+<jsp:include page="../home/header_footer/header.jsp"></jsp:include>
     <div class="row" style="margin: 2%;">
     <c:if test="${sessionScope.account!= null}">
         <div class="col-lg-4 col-sm-3">
@@ -132,4 +132,4 @@
         box-shadow: 0px 0px 4px 1px black;
     }
 </style>
-<jsp:include page="footer.jsp"></jsp:include>
+<jsp:include page="../home/header_footer/footer.jsp"></jsp:include>

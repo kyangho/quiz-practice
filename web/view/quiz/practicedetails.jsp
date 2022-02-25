@@ -1,5 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<jsp:include page="header.jsp"></jsp:include>
+<jsp:include page="../home/header_footer/header.jsp"></jsp:include>
     <div class="row" style="margin: 2%;">
         <div class="left col-lg-3 col-md-3">
         <c:if test="${sessionScope.account!= null}">
@@ -63,4 +63,4 @@
     </div>
 </div>
 
-<jsp:include page="footer.jsp"></jsp:include>
+<jsp:include page="../home/header_footer/footer.jsp"></jsp:include>

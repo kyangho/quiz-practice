@@ -32,7 +32,7 @@
 
     <!-- Customized Bootstrap Stylesheet -->
     <link href="${pageContext.request.contextPath}/css/bootstrap.min.css?v=5" rel="stylesheet">
-    
+
     <!-- Template Stylesheet -->
     <link href="${pageContext.request.contextPath}/css/style.css" rel="stylesheet">
     <link href="${pageContext.request.contextPath}/css/popup.css" rel="stylesheet">
@@ -56,13 +56,18 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <div class="navbar-nav ms-auto p-4 p-lg-0">
-                <a href="${pageContext.request.contextPath}/home" class="nav-item nav-link active">Home</a>
-                <a href="about.html" class="nav-item nav-link">About</a>
-                <a href="${pageContext.request.contextPath}/post/list" class="nav-item nav-link">Posts</a>
+                <a href="${pageContext.request.contextPath}/home"  class="nav-item nav-link <c:if test="${requestScope.tag eq 'home'}">active</c:if>">Home</a>
+                    <a href="about.html" class="nav-item nav-link">About</a>
+                    <a href="${pageContext.request.contextPath}/post/list" class="nav-item nav-link">Posts</a>
                 <div class="nav-item dropdown">
                     <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
                     <div class="dropdown-menu fade-down m-0">
-                        <a href="team.html" class="dropdown-item">Our Team</a>
+                        <c:if test="${sessionScope.account == null}">
+                            <a href="${pageContext.request.contextPath}/practice/details" class="dropdown-item <c:if test="${requestScope.tag eq 'details'}">active</c:if>">Quizses</a>
+                        </c:if>
+                        <c:if test="${sessionScope.account != null}">
+                            <a href="${pageContext.request.contextPath}/practice/list"class="dropdown-item <c:if test="${requestScope.tag eq 'list'}">active</c:if>">Practice List</a>
+                        </c:if>
                         <a href="testimonial.html" class="dropdown-item">Testimonial</a>
                         <a href="404.html" class="dropdown-item">404 Page</a>
                     </div>
@@ -108,7 +113,7 @@
                                     <li>Address: <input name="address" type="text" value="${sessionScope.account.address}"/></li>
 
                                 </ul>
-                                    <a href="changepassword" class="btn btn-primary">Reset password</a>
+                                <a href="changepassword" class="btn btn-primary">Reset password</a>
                             </div>
                             <div class="img">
                                 <!--<img src="https://th.bing.com/th/id/OIP.CPCyt52dUDhWIhy1K3guLAHaHa?pid=ImgDet&rs=1">-->

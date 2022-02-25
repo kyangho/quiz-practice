@@ -87,6 +87,7 @@ public class PracticeContoller extends HttpServlet {
         request.setAttribute("url", url);
         request.setAttribute("pageindex", pageindex);
         request.setAttribute("pagesize", pageSize);
+        request.setAttribute("tag", "list");
         request.getRequestDispatcher("../view/quiz/practicelist.jsp").forward(request, response);
     }
 
@@ -116,6 +117,7 @@ public class PracticeContoller extends HttpServlet {
                 ArrayList<Quiz> allQuiz = qdb.getAllQuiz(null, 0, 0);
                 request.setAttribute("quizs", allQuiz);
             }
+            request.setAttribute("tag", "details");
             request.getRequestDispatcher("../view/quiz/addpratice.jsp").forward(request, response);
         } else {
             Quiz quiz = qdb.getQuizById(Integer.parseInt(quizID));
@@ -125,6 +127,7 @@ public class PracticeContoller extends HttpServlet {
                 request.setAttribute("quizs", quizzesPractice);
             }
             request.setAttribute("quiz", quiz);
+            request.setAttribute("tag", "details");
             request.getRequestDispatcher("../view/quiz/practicedetails.jsp").forward(request, response);
         }
     }
@@ -143,6 +146,7 @@ public class PracticeContoller extends HttpServlet {
             request.setAttribute("pagesize", pageSize);
             String url = "details?keySearch=" + key + "&pageindex=";
             request.setAttribute("url", url);
+            request.setAttribute("tag", "details");
             request.getRequestDispatcher("../view/quiz/addpratice.jsp").forward(request, response);
         }
     }
