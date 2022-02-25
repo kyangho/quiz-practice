@@ -64,25 +64,27 @@
                 <c:forEach items="${requestScope.quizs}" var="q">
                     <div class="col-lg-3 col-sm-6 wow fadeInUp" data-wow-delay="0.1s">
                         <div class="service-item text-center pt-3">
-                            <div class="p-4" style="text-align: left;">
-                                <div class="img-responsive ImagePreviewLoader">
-                                    <img class="img-fluid" src="${pageContext.request.contextPath}/img/quiz1.jpg" alt=""/>
+                            <a href="practice/details?quizID=${q.id}">
+                                <div class="p-4" style="text-align: left;">
+                                    <div class="img-responsive ImagePreviewLoader">
+                                        <img class="img-fluid" src="${pageContext.request.contextPath}/img/quiz1.jpg" alt=""/>
+                                    </div>
+                                    <h5 class="mb-3">${q.title}</h5>
+                                    <p>By: ${q.author.fullname}</p>
+                                    <p class="quiz">${q.questions.size()} Qs</p>
+                                    <style>
+                                        .quiz{
+                                            width: 66px;
+                                            background-color: #999c9b;
+                                            color: white;
+                                            text-align: center;
+                                            border-radius: 11px;
+                                            box-shadow: 0px 0px 6px 2px #5a5757;
+                                        }
+                                    </style>
+                                    <p style="background-color: red; border-radius: 10px; color: white; text-align: center;">Result</p>
                                 </div>
-                                <h5 class="mb-3">${q.title}</h5>
-                                <p>By: ${q.author.fullname}</p>
-                                <p class="quiz">${q.questions.size()} Qs</p>
-                                <style>
-                                    .quiz{
-                                        width: 66px;
-                                        background-color: #999c9b;
-                                        color: white;
-                                        text-align: center;
-                                        border-radius: 11px;
-                                        box-shadow: 0px 0px 6px 2px #5a5757;
-                                    }
-                                </style>
-                                <p style="background-color: red; border-radius: 10px; color: white; text-align: center;">Result</p>
-                            </div>
+                            </a>
                         </div>
                     </div>
                 </c:forEach>

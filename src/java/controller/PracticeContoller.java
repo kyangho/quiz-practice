@@ -39,6 +39,8 @@ public class PracticeContoller extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        request.setCharacterEncoding("UTF-8");
+        response.setContentType("text/html;charset=UTF-8");
         String URI = request.getRequestURI().replaceFirst("/\\w+", "");
         if (URI.contains(practiceListPath)) {
             doGetPracticeList(request, response);
@@ -58,6 +60,8 @@ public class PracticeContoller extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        request.setCharacterEncoding("UTF-8");
+        response.setContentType("text/html;charset=UTF-8");
         String URI = request.getRequestURI().replaceFirst("/\\w+", "");
         if (URI.contains(practiceListPath)) {
             doGetPracticeList(request, response);
@@ -88,10 +92,39 @@ public class PracticeContoller extends HttpServlet {
 
     private void doGetPracticeDetail(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
         String quizID = request.getParameter("quizID");
+        QuizDAO qdb = new QuizDAO();
         if (quizID == null || quizID.length() == 0) {
+            String key = request.getParameter("keySearch");
+            if (key != null) {
+                String pageindex_raw = request.getParameter("pageindex");
+                int pageindex;
+                if (pageindex_raw == null || pageindex_raw.length() == 0) {
+                    pageindex = 1;
+                } else {
+                    pageindex = Integer.parseInt(pageindex_raw);
+                }
+                ArrayList<Quiz> allQuiz = qdb.getAllQuiz(key, pageindex, pageSize);
+                request.setAttribute("quizs", allQuiz);
+                request.setAttribute("pageindex", pageindex);
+                request.setAttribute("keySearch", key);
+                request.setAttribute("pagesize", pageSize);
+                String url = "details?keySearch=" + key + "&pageindex=";
+                request.setAttribute("url", url);
+            } else {
+                ArrayList<Quiz> allQuiz = qdb.getAllQuiz(null, 0, 0);
+                request.setAttribute("quizs", allQuiz);
+            }
             request.getRequestDispatcher("../view/quiz/addpratice.jsp").forward(request, response);
         } else {
+            Quiz quiz = qdb.getQuizById(Integer.parseInt(quizID));
+            Account acc = (Account) request.getSession().getAttribute("account");
+            if (acc != null) {
+                ArrayList<Quiz> quizzesPractice = qdb.getQuizzesPractice(acc.getId(), 0, 0);
+                request.setAttribute("quizs", quizzesPractice);
+            }
+            request.setAttribute("quiz", quiz);
             request.getRequestDispatcher("../view/quiz/practicedetails.jsp").forward(request, response);
         }
     }
@@ -99,7 +132,19 @@ public class PracticeContoller extends HttpServlet {
     private void doPostPracticeDetail(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String key = request.getParameter("keySearch");
-        response.getWriter().print(key);
+        QuizDAO qdb = new QuizDAO();
+        if (key == null || key.trim().length() == 0) {
+            response.sendRedirect("details");
+        } else {
+            ArrayList<Quiz> allQuiz = qdb.getAllQuiz(key, 1, pageSize);
+            request.setAttribute("quizs", allQuiz);
+            request.setAttribute("pageindex", 1);
+            request.setAttribute("keySearch", key);
+            request.setAttribute("pagesize", pageSize);
+            String url = "details?keySearch=" + key + "&pageindex=";
+            request.setAttribute("url", url);
+            request.getRequestDispatcher("../view/quiz/addpratice.jsp").forward(request, response);
+        }
     }
 
 }

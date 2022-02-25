@@ -5,7 +5,6 @@
  */
 package dal;
 
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -39,8 +38,11 @@ public class QuizDAO extends DBContext {
                     + "	where quiz_account.account_id = ?\n"
                     + "	order by quiz_time_start desc\n"
                     + ") as quizz\n";
-            int start = (pageindex - 1) * pagesize;
-            sql += "limit " + start + "," + pagesize + ";";
+            if (pageindex != 0 || pagesize != 0) {
+                int start = (pageindex - 1) * pagesize;
+                sql += "limit " + start + "," + pagesize + ";";
+            }
+//            System.out.println(sql);
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setInt(1, accountID);
             ResultSet rs = stm.executeQuery();
@@ -106,29 +108,105 @@ public class QuizDAO extends DBContext {
         return questions;
     }
 
-    public void getAllQuiz() {
-        String sql = "	select quiz.quiz_id, quiz_title, quiz_img, quiz_level \n"
-                + "		   , quiz_rate, quiz_time_end, quiz_time_start, quiz_type\n"
-                + "		   , account_fullname as author, subject_title\n"
-                + "	from quiz \n"
-                + "	join quiz_account on quiz_account.quiz_id = quiz.quiz_id\n"
-                + "	join `account` on `account`.account_id = quiz.account_id\n"
-                + "	join account_profile on account_profile.account_id = `account`.account_id\n"
-                + "	join `subject` on quiz.subject_id = `subject`.subject_id\n"
-                + "	order by quiz_time_start desc\n";
+    public ArrayList<Quiz> getAllQuiz(String key, int pageindex, int pagesize) {
+        ArrayList<Quiz> quizs = new ArrayList<>();
+        try {
+            String sql = "select * from (\n"
+                    + "	select row_number() over (order by quiz.quiz_id ) as stt, quiz.quiz_id, quiz_title, quiz_img, quiz_level \n"
+                    + "		   , quiz_rate, quiz_time_end, quiz_time_start, quiz_type\n"
+                    + "		   , account_fullname as author, subject_title\n"
+                    + "	from quiz \n"
+                    + "	join quiz_account on quiz_account.quiz_id = quiz.quiz_id\n"
+                    + "	join `account` on `account`.account_id = quiz.account_id\n"
+                    + "	join account_profile on account_profile.account_id = `account`.account_id\n"
+                    + "	join `subject` on quiz.subject_id = `subject`.subject_id\n"
+                    + "	where (1=1)\n";
+
+            if (key != null) {
+                sql += "        and quiz_title like '%" + key + "%'\n";
+            }
+            sql += "	order by quiz_time_start desc\n"
+                    + ") as quizz limit ";
+            if (key == null) {
+                sql += "0,12;";
+            } else {
+                int start = (pageindex - 1) * pagesize;
+                sql += start + "," + pagesize + ";";
+            }
+//            System.out.println(sql);
+            PreparedStatement stm = connection.prepareStatement(sql);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                Quiz q = new Quiz();
+                q.setId(rs.getInt(2));
+                q.setTitle(rs.getString(3));
+                q.setImg(rs.getString(4));
+                q.setLevel(rs.getString(5));
+                q.setRate(rs.getDouble(6));
+                q.setEndTime(rs.getDate(7));
+                q.setStartTime(rs.getDate(8));
+                q.setType(rs.getString(9));
+                Account a = new Account();
+                a.setFullname(rs.getString(10));
+                q.setAuthor(a);
+                Subject s = new Subject();
+                s.setSubject_title(rs.getString(11));
+                q.setSubject(s);
+                q.setQuestions(getQuestionOfQuiz(q.getId()));
+                quizs.add(q);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(QuizDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return quizs;
+    }
+
+    public Quiz getQuizById(int id) {
+        try {
+            String sql = "select quiz.quiz_id, quiz_title, quiz_img, quiz_level \n"
+                    + "		   , quiz_rate, quiz_time_end, quiz_time_start, quiz_type\n"
+                    + "		   , account_fullname as author, subject_title\n"
+                    + "	from quiz \n"
+                    + "	join quiz_account on quiz_account.quiz_id = quiz.quiz_id\n"
+                    + "	join `account` on `account`.account_id = quiz.account_id\n"
+                    + "	join account_profile on account_profile.account_id = `account`.account_id\n"
+                    + "	join `subject` on quiz.subject_id = `subject`.subject_id\n"
+                    + "	where quiz.quiz_id = ?\n";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setInt(1, id);
+            ResultSet rs = stm.executeQuery();
+            if (rs.next()) {
+                Quiz q = new Quiz();
+                q.setId(rs.getInt(1));
+                q.setTitle(rs.getString(2));
+                q.setImg(rs.getString(3));
+                q.setLevel(rs.getString(4));
+                q.setRate(rs.getDouble(5));
+                q.setEndTime(rs.getDate(6));
+                q.setStartTime(rs.getDate(7));
+                q.setType(rs.getString(8));
+                Account a = new Account();
+                a.setFullname(rs.getString(9));
+                q.setAuthor(a);
+                Subject s = new Subject();
+                s.setSubject_title(rs.getString(10));
+                q.setSubject(s);
+                q.setQuestions(getQuestionOfQuiz(q.getId()));
+                return q;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(QuizDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
 
     public static void main(String[] args) {
         QuizDAO qdb = new QuizDAO();
+        qdb.getQuizById(1).display();
 
-        for (Quiz q : qdb.getQuizzesPractice(3, 1, 4)) {
-            q.display();
+        for (Quiz quiz : qdb.getQuizzesPractice(3, 0, 0)) {
+            quiz.display();
         }
-//        for (Answer ans : qdb.getAnswerOfQues(1)) {
-//            System.out.println(ans.toString());
-//        }
-//        for (Question question : qdb.getQuestionOfQuiz(1)) {
-//            question.display();
-//        }
     }
 }
