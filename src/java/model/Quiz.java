@@ -145,9 +145,9 @@ public class Quiz {
     
     
     public void display(){
-        System.out.print("Quiz{" + "id=" + id + ", title=" + title + ", subject=" + subject + ", categoryId=" + categoryId + ", level=" + level + ", type=" + type + ", img=" + img + ", author=" + author + ", startTime=" + startTime + ", endTime=" + endTime + ", rate=" + rate + ", ");
+        System.out.print("Quiz{" + "id=" + id + ", title=" + title + ", subject=" + subject.getSubject_title() + ", categoryId=" + categoryId + ", level=" + level + ", type=" + type + ", img=" + img + ", author=" + author.getFullname() + ", startTime=" + startTime + ", endTime=" + endTime + ", rate=" + rate + ", ");
         questions.forEach((question) -> {
-            System.out.print(question.toString());
+            question.display();
         });
         System.out.println();
     }

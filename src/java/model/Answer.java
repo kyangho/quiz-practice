@@ -12,15 +12,13 @@ package model;
 public class Answer {
     private int id;
     private String content;
-    private String status;
 
     public Answer() {
     }
 
-    public Answer(int id, String content, String status) {
+    public Answer(int id, String content) {
         this.id = id;
         this.content = content;
-        this.status = status;
     }
 
     public int getId() {
@@ -39,16 +37,8 @@ public class Answer {
         this.content = content;
     }
 
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
     @Override
     public String toString() {
-        return "Answer{" + "id=" + id + ", content=" + content + ", status=" + status + '}';
+        return "Answer{" + "id=" + id + ", content=" + content + '}';
     }
 }

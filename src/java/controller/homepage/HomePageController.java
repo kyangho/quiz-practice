@@ -6,6 +6,7 @@
 package controller.homepage;
 
 import dal.HomeDAO;
+import dal.QuizDAO;
 import java.io.IOException;
 import java.util.ArrayList;
 import javax.servlet.ServletException;
@@ -13,6 +14,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import model.Account;
+import model.Quiz;
 
 /**
  *
@@ -28,6 +30,11 @@ public class HomePageController extends HttpServlet {
         String admin = "admin";
         Account account = (Account) request.getSession().getAttribute("account");
         request.setAttribute("IsAdmin", admin);
+        if (account != null) {
+            QuizDAO qdb = new QuizDAO();
+            ArrayList<Quiz> quizzes = qdb.getQuizzesPractice(account.getId(), 1, 4);
+            request.setAttribute("quizs", quizzes);
+        }
 
         request.setAttribute("information", accounts);
         request.getRequestDispatcher("view/home/homepage.jsp").forward(request, response);
