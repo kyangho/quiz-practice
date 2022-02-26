@@ -71,6 +71,7 @@
                                     </div>
                                     <h5 class="mb-3">${q.title}</h5>
                                     <p>By: ${q.author.fullname}</p>
+                                    <p>Start date: <fmt:formatDate pattern="dd-MM-yyyy" value="${q.startTime}"/> </p>
                                     <p class="quiz">${q.questions.size()} Qs</p>
                                     <style>
                                         .quiz{
@@ -82,7 +83,16 @@
                                             box-shadow: 0px 0px 6px 2px #5a5757;
                                         }
                                     </style>
-                                    <p style="background-color: red; border-radius: 10px; color: white; text-align: center;">Result</p>
+                                    <p style="<c:if test="${q.rate < 30}">
+                                                background-color: red;
+                                            </c:if>
+                                            <c:if test="${q.rate > 30 && q.rate < 75}">
+                                                background-color: #e09519;
+                                            </c:if>
+                                             <c:if test="${q.rate > 75}">
+                                                background-color: #086404;
+                                            </c:if>
+                                                border-radius: 10px; color: white; text-align: center;">${q.rate}%</p>
                                 </div>
                             </a>
                         </div>
