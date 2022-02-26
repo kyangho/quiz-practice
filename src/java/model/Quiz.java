@@ -13,6 +13,7 @@ import java.util.ArrayList;
  * @author conmu
  */
 public class Quiz {
+
     private int id;
     private String title;
     private Subject subject;
@@ -21,14 +22,18 @@ public class Quiz {
     private String type;
     private String img;
     private Account author;
+    private Category category;
     private Date startTime;
     private Date endTime;
+    private String status;
     private double rate;
     ArrayList<Question> questions = new ArrayList<>();
+    private Question ques;
+
     public Quiz() {
     }
 
-    public Quiz(int id, String title, Subject subject, int categoryId, String level, String type, String img, Account author, Date startTime, Date endTime, double rate) {
+    public Quiz(int id, String title, Subject subject, int categoryId, String level, String type, String img, Account author, Category category, Date startTime, Date endTime, String status, double rate) {
         this.id = id;
         this.title = title;
         this.subject = subject;
@@ -37,9 +42,27 @@ public class Quiz {
         this.type = type;
         this.img = img;
         this.author = author;
+        this.category = category;
         this.startTime = startTime;
         this.endTime = endTime;
+        this.status = status;
         this.rate = rate;
+    }
+
+    public Question getQues() {
+        return ques;
+    }
+
+    public void setQues(Question ques) {
+        this.ques = ques;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
     }
 
     public int getId() {
@@ -88,6 +111,14 @@ public class Quiz {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public String getImg() {
@@ -142,15 +173,13 @@ public class Quiz {
     public String toString() {
         return "Quiz{" + "id=" + id + ", title=" + title + ", subject=" + subject + ", categoryId=" + categoryId + ", level=" + level + ", type=" + type + ", img=" + img + ", author=" + author + ", startTime=" + startTime + ", endTime=" + endTime + ", rate=" + rate + '}';
     }
-    
-    
-    public void display(){
+
+    public void display() {
         System.out.print("Quiz{" + "id=" + id + ", title=" + title + ", subject=" + subject + ", categoryId=" + categoryId + ", level=" + level + ", type=" + type + ", img=" + img + ", author=" + author + ", startTime=" + startTime + ", endTime=" + endTime + ", rate=" + rate + ", ");
         questions.forEach((question) -> {
             System.out.print(question.toString());
         });
         System.out.println();
     }
-    
-    
+
 }
