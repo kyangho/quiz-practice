@@ -29,6 +29,7 @@ public class Quiz {
     private double rate;
     ArrayList<Question> questions = new ArrayList<>();
     private Question ques;
+    private boolean hasJoin;
 
     public Quiz() {
     }
@@ -47,6 +48,14 @@ public class Quiz {
         this.endTime = endTime;
         this.status = status;
         this.rate = rate;
+    }
+
+    public boolean isHasJoin() {
+        return hasJoin;
+    }
+
+    public void setHasJoin(boolean hasJoin) {
+        this.hasJoin = hasJoin;
     }
 
     public Question getQues() {

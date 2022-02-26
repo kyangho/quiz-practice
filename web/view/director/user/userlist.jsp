@@ -146,12 +146,12 @@
                                                 container.innerHTML += '<a href="' + url + '1">First</a>';
                                             for (var i = (pageIndex) - gap; i < pageIndex; i++) {
                                                 if (i > 0)
-                                                    container.innerHTML += '<a href="' + url.replace('>', '<') + i + '">' + i + '</a>';
+                                                    container.innerHTML += '<a href="' + url + i + '">' + i + '</a>';
                                             }
                                             container.innerHTML += '<span >' + pageIndex + '</span>';
                                             for (var i = (pageIndex) + 1; i <= pageIndex + gap; i++) {
                                                 if (i <= totalpage)
-                                                    container.innerHTML += '<a href="' + url.replace('<', '>') + i + '">' + i + '</a>';
+                                                    container.innerHTML += '<a href="' + url + i + '">' + i + '</a>';
                                             }
                                             if (pageIndex + gap < totalpage)
                                                 container.innerHTML += '<a href="' + url + totalpage + '">Last</a>';
