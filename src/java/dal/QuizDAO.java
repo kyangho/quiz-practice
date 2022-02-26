@@ -29,7 +29,7 @@ public class QuizDAO extends DBContext {
             String sql = "select * from (\n"
                     + "	select row_number() over (order by quiz.quiz_id ) as stt, quiz.quiz_id, quiz_title, quiz_img, quiz_level \n"
                     + "		   , quiz_rate, quiz_time_end, quiz_time_start, quiz_type\n"
-                    + "		   , account_fullname as author, subject_title\n"
+                    + "		   , account_fullname as author, subject_title, quiz.quiz_status\n"
                     + "	from quiz \n"
                     + "	join quiz_account on quiz_account.quiz_id = quiz.quiz_id\n"
                     + "	join `account` on `account`.account_id = quiz.account_id\n"
@@ -63,12 +63,41 @@ public class QuizDAO extends DBContext {
                 s.setSubject_title(rs.getString(11));
                 q.setSubject(s);
                 q.setQuestions(getQuestionOfQuiz(q.getId()));
+                q.setStatus(rs.getString(12));
                 quizs.add(q);
             }
         } catch (SQLException ex) {
             Logger.getLogger(QuizDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return quizs;
+    }
+
+    public int totalRowsForQuizPractice(int accountID) {
+        String sql = "select count(*) from (\n"
+                + "	select row_number() over (order by quiz.quiz_id ) as stt, quiz.quiz_id, quiz_title, quiz_img, quiz_level \n"
+                + "		   , quiz_rate, quiz_time_end, quiz_time_start, quiz_type\n"
+                + "		   , account_fullname as author, subject_title, quiz.quiz_status\n"
+                + "	from quiz \n"
+                + "	join quiz_account on quiz_account.quiz_id = quiz.quiz_id\n"
+                + "	join `account` on `account`.account_id = quiz.account_id\n"
+                + "	join account_profile on account_profile.account_id = `account`.account_id\n"
+                + "	join `subject` on quiz.subject_id = `subject`.subject_id\n"
+                + "	where quiz_account.account_id = ?\n"
+                + "	order by quiz_time_start desc\n"
+                + ") as quizz\n";
+//            System.out.println(sql);
+        try {
+           PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setInt(1, accountID);
+            ResultSet rs = stm.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(QuizDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return -1;
     }
 
     private ArrayList<Answer> getAnswerOfQues(int questionID) {
@@ -114,7 +143,7 @@ public class QuizDAO extends DBContext {
             String sql = "select * from (\n"
                     + "	select row_number() over (order by quiz.quiz_id ) as stt, quiz.quiz_id, quiz_title, quiz_img, quiz_level \n"
                     + "		   , quiz_rate, quiz_time_end, quiz_time_start, quiz_type\n"
-                    + "		   , account_fullname as author, subject_title\n"
+                    + "		   , account_fullname as author, subject_title, quiz.quiz_status\n"
                     + "	from quiz \n"
                     + "	join quiz_account on quiz_account.quiz_id = quiz.quiz_id\n"
                     + "	join `account` on `account`.account_id = quiz.account_id\n"
@@ -153,6 +182,7 @@ public class QuizDAO extends DBContext {
                 s.setSubject_title(rs.getString(11));
                 q.setSubject(s);
                 q.setQuestions(getQuestionOfQuiz(q.getId()));
+                q.setStatus(rs.getString(12));
                 quizs.add(q);
             }
         } catch (SQLException ex) {
@@ -166,7 +196,7 @@ public class QuizDAO extends DBContext {
         try {
             String sql = "select quiz.quiz_id, quiz_title, quiz_img, quiz_level \n"
                     + "		   , quiz_rate, quiz_time_end, quiz_time_start, quiz_type\n"
-                    + "		   , account_fullname as author, subject_title\n"
+                    + "		   , account_fullname as author, subject_title, quiz.quiz_status\n"
                     + "	from quiz \n"
                     + "	join quiz_account on quiz_account.quiz_id = quiz.quiz_id\n"
                     + "	join `account` on `account`.account_id = quiz.account_id\n"
@@ -193,6 +223,7 @@ public class QuizDAO extends DBContext {
                 s.setSubject_title(rs.getString(10));
                 q.setSubject(s);
                 q.setQuestions(getQuestionOfQuiz(q.getId()));
+                q.setStatus(rs.getString(11));
                 return q;
             }
         } catch (SQLException ex) {
@@ -201,12 +232,31 @@ public class QuizDAO extends DBContext {
         return null;
     }
 
+    public boolean checkHasJoin(int accountID, int quizID) {
+        try {
+            String sql = "select * from quiz_account\n"
+                    + "where account_id = ? and quiz_id = ?";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setInt(1, accountID);
+            stm.setInt(2, quizID);
+            ResultSet rs = stm.executeQuery();
+            if (rs.next()) {
+                return true;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(QuizDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+    }
+
     public static void main(String[] args) {
         QuizDAO qdb = new QuizDAO();
-        qdb.getQuizById(1).display();
-
-        for (Quiz quiz : qdb.getQuizzesPractice(3, 0, 0)) {
-            quiz.display();
-        }
+        System.out.println(qdb.totalRowsForQuizPractice(3));
+//        qdb.getQuizById(1).display();
+//
+//        for (Quiz quiz : qdb.getQuizzesPractice(3, 0, 0)) {
+//            quiz.display();
+//        }
+//        System.out.println(qdb.checkHasJoin(2, 4));
     }
 }

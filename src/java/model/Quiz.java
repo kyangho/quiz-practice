@@ -13,6 +13,7 @@ import java.util.ArrayList;
  * @author conmu
  */
 public class Quiz {
+
     private int id;
     private String title;
     private Subject subject;
@@ -24,11 +25,15 @@ public class Quiz {
     private Date startTime;
     private Date endTime;
     private double rate;
+    private String status;
+    private boolean hasJoin;
     ArrayList<Question> questions = new ArrayList<>();
+
     public Quiz() {
     }
 
-    public Quiz(int id, String title, Subject subject, int categoryId, String level, String type, String img, Account author, Date startTime, Date endTime, double rate) {
+    public Quiz(int id, String title, Subject subject, int categoryId, String level,
+            String type, String img, Account author, Date startTime, Date endTime, double rate, String status) {
         this.id = id;
         this.title = title;
         this.subject = subject;
@@ -40,6 +45,7 @@ public class Quiz {
         this.startTime = startTime;
         this.endTime = endTime;
         this.rate = rate;
+        this.status = status;
     }
 
     public int getId() {
@@ -140,17 +146,39 @@ public class Quiz {
 
     @Override
     public String toString() {
-        return "Quiz{" + "id=" + id + ", title=" + title + ", subject=" + subject + ", categoryId=" + categoryId + ", level=" + level + ", type=" + type + ", img=" + img + ", author=" + author + ", startTime=" + startTime + ", endTime=" + endTime + ", rate=" + rate + '}';
+        return "Quiz{" + "id=" + id + ", title=" + title + ", subject=" + subject 
+                + ", categoryId=" + categoryId + ", level=" + level + ", type=" + type 
+                + ", img=" + img + ", author=" + author + ", startTime=" + startTime +
+                ", endTime=" + endTime + ", rate=" + rate + ", status=" + status + '}';
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public boolean isHasJoin() {
+        return hasJoin;
+    }
+
+    public void setHasJoin(boolean hasJoin) {
+        this.hasJoin = hasJoin;
     }
     
     
-    public void display(){
-        System.out.print("Quiz{" + "id=" + id + ", title=" + title + ", subject=" + subject.getSubject_title() + ", categoryId=" + categoryId + ", level=" + level + ", type=" + type + ", img=" + img + ", author=" + author.getFullname() + ", startTime=" + startTime + ", endTime=" + endTime + ", rate=" + rate + ", ");
+
+    public void display() {
+        System.out.print("Quiz{" + "id=" + id + ", title=" + title + ", subject=" +
+                subject.getSubject_title() + ", categoryId=" + categoryId + ", level=" +
+                level + ", type=" + type + ", img=" + img + ", author=" + author.getFullname() 
+                + ", startTime=" + startTime + ", endTime=" + endTime + ", rate=" + rate + ", status=" + status + ", ");
         questions.forEach((question) -> {
             question.display();
         });
         System.out.println();
     }
-    
-    
+
 }

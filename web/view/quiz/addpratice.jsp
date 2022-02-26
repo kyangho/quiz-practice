@@ -46,7 +46,7 @@
                                                 <h5 class="mb-3">${q.title}</h5>
                                                 <p>By: ${q.author.fullname}</p>
                                                 <p class="quiz">${q.questions.size()} Qs</p>
-                                                <p style="background-color: red; border-radius: 10px; color: white; text-align: center;">Result</p>
+                                                <!--<p style="background-color: red; border-radius: 10px; color: white; text-align: center;">Result</p>-->
                                             </div>
                                         </a>
                                     </div>
@@ -69,7 +69,7 @@
                                                 <h5 class="mb-3">${q.title}</h5>
                                                 <p>By: ${q.author.fullname}</p>
                                                 <p class="quiz">${q.questions.size()} Qs</p>
-                                                <p style="background-color: red; border-radius: 10px; color: white; text-align: center;">Result</p>
+                                                <!--<p style="background-color: red; border-radius: 10px; color: white; text-align: center;">Result</p>-->
                                             </div>
                                         </a>
                                     </div>

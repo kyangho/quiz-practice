@@ -40,23 +40,38 @@
                     <p class="quiz">Number of question: ${requestScope.quiz.questions.size()} Qs</p>
                     <p>Subject: ${requestScope.quiz.subject.subject_title}</p>
                     <p>Level: ${requestScope.quiz.level}</p>
-                    <p>Type: ${requestScope.quiz.type}</p>
+                    <p>Status: ${requestScope.quiz.status}</p>
+                    <c:if test="${sessionScope.account != null && requestScope.quiz.hasJoin}">
+                        <p>Result: ${requestScope.quiz.rate}</p>
+                    </c:if>
                     <p>Sample questions:</p>
                     <div style="background-color: #47424233;margin:0 1%;padding: 1% 5%;color: gray;border-radius: 8px;">
                         <c:forEach items="${requestScope.quiz.questions}" var="q">
                             <p>${q.content}</p>
                         </c:forEach>
                     </div>
-                    <c:if test="${sessionScope.account != null}">
-                        <p>Result: ${requestScope.quiz.rate}</p>
-                    </c:if>
                 </div>
-                <div class="button" style="margin: 0 10%;">
-                    <button style="width: 300px; height: 66px; border-radius: 8px; font-size: 26px;" class="btn btn-success btn-circle">
-                        <a style="color: white;" href="#">Practice</a></button>
-                    <button style="width: 300px; height: 66px; border-radius: 8px; font-size: 26px;" class="btn btn-danger btn-circle">
-                        <a style="color: white;" href="#">Result</a></button>
-                </div>
+                <c:if test="${sessionScope.account != null && requestScope.quiz.hasJoin}">
+                    <div class="button" style="margin: 0 10%;">
+
+                        <button style="width: 300px; height: 66px; border-radius: 8px; font-size: 26px;" class="btn btn-success btn-circle a">
+                            <a style="color: white;" href="#">Practice</a></button>
+                        <button style="width: 300px; height: 66px; border-radius: 8px; font-size: 26px;" class="btn btn-danger btn-circle">
+                            <a style="color: white;" href="#">Result</a></button>
+                    </div>
+                </c:if>
+                <c:if test="${sessionScope.account != null && !requestScope.quiz.hasJoin}">
+                    <div class="button" style="margin: 0 30%;">
+                        <button style="width: 300px; height: 66px; border-radius: 8px; font-size: 26px;" class="btn btn-success btn-circle a">
+                            <a style="color: white;" href="#">Practice</a></button>
+                    </div>
+                </c:if>
+                <c:if test="${sessionScope.account == null}">
+                    <div class="button" style="margin: 0 30%;">
+                        <button style="width: 300px; height: 66px; border-radius: 8px; font-size: 26px;" class="btn btn-success btn-circle a">
+                            <a style="color: white;" onclick="location.href = '../login'">Practice</a></button>
+                    </div>
+                </c:if>
                 <br>
             </div>
         </div>

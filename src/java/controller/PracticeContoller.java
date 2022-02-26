@@ -82,11 +82,13 @@ public class PracticeContoller extends HttpServlet {
         Account account = (Account) request.getSession().getAttribute("account");
         QuizDAO qdb = new QuizDAO();
         ArrayList<Quiz> quizzes = qdb.getQuizzesPractice(account.getId(), pageindex, pageSize);
+        int totalRows = qdb.totalRowsForQuizPractice(account.getId());
+        int totalPage = (totalRows % pageSize == 0) ? totalRows / pageSize : totalRows / pageSize + 1;
         request.setAttribute("quizs", quizzes);
         String url = "list?pageindex=";
         request.setAttribute("url", url);
         request.setAttribute("pageindex", pageindex);
-        request.setAttribute("pagesize", pageSize);
+        request.setAttribute("totalPage", totalPage);
         request.setAttribute("tag", "list");
         request.getRequestDispatcher("../view/quiz/practicelist.jsp").forward(request, response);
     }
@@ -125,6 +127,7 @@ public class PracticeContoller extends HttpServlet {
             if (acc != null) {
                 ArrayList<Quiz> quizzesPractice = qdb.getQuizzesPractice(acc.getId(), 0, 0);
                 request.setAttribute("quizs", quizzesPractice);
+                quiz.setHasJoin(qdb.checkHasJoin(acc.getId(), quiz.getId()));
             }
             request.setAttribute("quiz", quiz);
             request.setAttribute("tag", "details");

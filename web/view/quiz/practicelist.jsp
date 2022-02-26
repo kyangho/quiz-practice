@@ -7,10 +7,10 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <jsp:include page="../home/header_footer/header.jsp"></jsp:include>
-    <div class="container-fluid">
+    <div class="container-fluid col-lg-10">
         <div class="row flex-nowrap">
         <jsp:include page="leftmenu.jsp"></jsp:include>
-            <div class="col py-3">
+            <div class="col py-3 col-lg-9">
                 <!-- Service Start -->
                 <div class="container-xxl py-5">
                     <div class="row" style="margin-bottom: 1%;">
@@ -40,18 +40,31 @@
                                 </div>
                             </div>
                         </c:forEach>
-                        <div class="paging">   
-                            <nav
-                                <ul class="pager">
-                                    <c:if test="${requestScope.pageindex > 1}">
-                                        <li class="page-item"><a style="background-color: #026407;" class="page" onclick="pagging(this, ${requestScope.pageindex - 1}, 1000)">Previous</a></li>
-                                        </c:if>
-                                        <c:if test="${requestScope.quizs.size() >= requestScope.pagesize}">
-                                        <li class="page-item"><a style="background-color: #026407;" class="page" onclick="pagging(this, ${requestScope.pageindex + 1}, 1000)">Next</a></li>
-                                        </c:if>
+                        <div>
+                            <nav aria-label="Page navigation example">
+                                <ul id="paggingBottom" class="pagination page">
                                 </ul>
                             </nav>
                         </div>
+                        <script>
+                            generatePagger('paggingBottom',${requestScope.pageindex},${requestScope.totalPage}, '${requestScope.url}', 1);
+                            function generatePagger(div, pageIndex, totalpage, url, gap) {
+                                var container = document.getElementById(div);
+                                if (pageIndex - gap > 0)
+                                    container.innerHTML += '<li class="page-item"><a class="page-link" href="' + url + (pageIndex - 1) + '">Previous</a></li>';
+                                for (var i = (pageIndex) - gap; i < pageIndex; i++) {
+                                    if (i > 0)
+                                        container.innerHTML += '<li class="page-item"><a class="page-link" href="' + url + i + '">' + i + '</a></li>';
+                                }
+                                container.innerHTML += '<li class="page-item active"><span class="page-link">' + pageIndex + '</span></li>';
+                                for (var i = (pageIndex) + 1; i <= pageIndex + gap; i++) {
+                                    if (i <= totalpage)
+                                        container.innerHTML += '<li class="page-item"><a class="page-link" href="' + url + i + '">' + i + '</a></li>';
+                                }
+                                if (pageIndex + gap < totalpage)
+                                    container.innerHTML += '<li class="page-item"><a class="page-link" href="' + url + (pageIndex + 1) + '">Next</a></li>';
+                            }
+                        </script>
                         <style>
                             .quiz{
                                 width: 66px;
@@ -63,32 +76,11 @@
                             }
 
                             .page{
-                                margin-left: 94%;
+                                /*margin-left: 94%;*/
                                 color: white;
                                 box-shadow: 0px 0px 4px 1px black;
                             }
                         </style>
-                        <script language='javascript'>
-                            function pagging(a, index, timeout) {
-                                console.log(window.location.href);
-                                var uri = window.location.href;
-                                if (uri.indexOf("&pageindex=") != -1) {
-                                    uri = uri.split("&pageIndex=")[0];
-                                    uri = uri + '&';
-                                } else if (uri.indexOf("?pageindex=") != -1) {
-                                    uri = uri.split("?pageindex=")[0];
-                                    uri = uri + '?';
-                                } else if (uri.indexOf("list?") == -1) {
-                                    uri = uri + '?';
-                                } else if (uri.indexOf("&pageindex=") == -1) {
-                                    uri = uri + '&';
-                                }
-
-                                window.location.href = uri + 'pageindex=' + index;
-                                console.log(window.location.href);
-                            }
-                        </script>
-
                     </div>
                 </div>
             </div>
