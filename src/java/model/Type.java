@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package model;
+
 import javax.xml.bind.annotation.*;
 
 /**
@@ -12,6 +13,7 @@ import javax.xml.bind.annotation.*;
  */
 @XmlRootElement
 public class Type {
+
     private int id;
     private String name;
 
@@ -23,8 +25,6 @@ public class Type {
         this.name = name;
     }
 
-    
-    
     public int getId() {
         return id;
     }
@@ -40,6 +40,5 @@ public class Type {
     public void setName(String name) {
         this.name = name;
     }
-    
-    
+
 }

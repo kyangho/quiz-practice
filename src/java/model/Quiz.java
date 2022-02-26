@@ -22,18 +22,19 @@ public class Quiz {
     private String type;
     private String img;
     private Account author;
+    private Category category;
     private Date startTime;
     private Date endTime;
-    private double rate;
     private String status;
-    private boolean hasJoin;
+    private double rate;
     ArrayList<Question> questions = new ArrayList<>();
+    private Question ques;
+    private boolean hasJoin;
 
     public Quiz() {
     }
 
-    public Quiz(int id, String title, Subject subject, int categoryId, String level,
-            String type, String img, Account author, Date startTime, Date endTime, double rate, String status) {
+    public Quiz(int id, String title, Subject subject, int categoryId, String level, String type, String img, Account author, Category category, Date startTime, Date endTime, String status, double rate) {
         this.id = id;
         this.title = title;
         this.subject = subject;
@@ -42,10 +43,35 @@ public class Quiz {
         this.type = type;
         this.img = img;
         this.author = author;
+        this.category = category;
         this.startTime = startTime;
         this.endTime = endTime;
-        this.rate = rate;
         this.status = status;
+        this.rate = rate;
+    }
+
+    public boolean isHasJoin() {
+        return hasJoin;
+    }
+
+    public void setHasJoin(boolean hasJoin) {
+        this.hasJoin = hasJoin;
+    }
+
+    public Question getQues() {
+        return ques;
+    }
+
+    public void setQues(Question ques) {
+        this.ques = ques;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
     }
 
     public int getId() {
@@ -94,6 +120,14 @@ public class Quiz {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public String getImg() {
@@ -146,37 +180,13 @@ public class Quiz {
 
     @Override
     public String toString() {
-        return "Quiz{" + "id=" + id + ", title=" + title + ", subject=" + subject 
-                + ", categoryId=" + categoryId + ", level=" + level + ", type=" + type 
-                + ", img=" + img + ", author=" + author + ", startTime=" + startTime +
-                ", endTime=" + endTime + ", rate=" + rate + ", status=" + status + '}';
+        return "Quiz{" + "id=" + id + ", title=" + title + ", subject=" + subject + ", categoryId=" + categoryId + ", level=" + level + ", type=" + type + ", img=" + img + ", author=" + author + ", startTime=" + startTime + ", endTime=" + endTime + ", rate=" + rate + '}';
     }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public boolean isHasJoin() {
-        return hasJoin;
-    }
-
-    public void setHasJoin(boolean hasJoin) {
-        this.hasJoin = hasJoin;
-    }
-    
-    
 
     public void display() {
-        System.out.print("Quiz{" + "id=" + id + ", title=" + title + ", subject=" +
-                subject.getSubject_title() + ", categoryId=" + categoryId + ", level=" +
-                level + ", type=" + type + ", img=" + img + ", author=" + author.getFullname() 
-                + ", startTime=" + startTime + ", endTime=" + endTime + ", rate=" + rate + ", status=" + status + ", ");
+        System.out.print("Quiz{" + "id=" + id + ", title=" + title + ", subject=" + subject + ", categoryId=" + categoryId + ", level=" + level + ", type=" + type + ", img=" + img + ", author=" + author + ", startTime=" + startTime + ", endTime=" + endTime + ", rate=" + rate + ", ");
         questions.forEach((question) -> {
-            question.display();
+            System.out.print(question.toString());
         });
         System.out.println();
     }
