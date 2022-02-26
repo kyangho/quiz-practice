@@ -161,60 +161,60 @@
                     <div data-v-8d3099dc="" class="completed-games-list">
                         <!--phan quiz-->
                         <c:forEach items="${requestScope.quiz}" var="q">
-                            <a href="detail?id=${q.id}">
-                                <div data-v-8d3099dc="" class="completed-game">
-                                    <div data-v-0a33e012="" data-v-8d3099dc="" class="game-card-container">
-                                        <div data-v-0a33e012="" class="route-loader-wrapper">
+                            <!--<a href="detail?id=${q.id}">-->
+                            <div data-v-8d3099dc="" class="completed-game">
+                                <div data-v-0a33e012="" data-v-8d3099dc="" class="game-card-container">
+                                    <div data-v-0a33e012="" class="route-loader-wrapper">
+                                    </div>
+                                    <div data-v-0a33e012="">
+                                        <div data-v-76782db8="" data-v-0a33e012="" class="curved-edge-container media-dimensions media-wrapper">
+                                            <div data-v-76782db8="" class="curve" style="width: 400%; padding-top: 400%; transform: translateX(-37.5%) translateY(-100%); top: 100%;">
+                                                <div data-v-76782db8="" class="content-container" style="width: calc(25.02%); left: calc(37.49%);">
+                                                    <div data-v-0a33e012="" data-v-76782db8="" role="img" aria-label="Quiz thumbnail" class="media-dimensions media" style="background-image: url(../../img_quiz.jpg);">                                                      
+                                                    </div>                                                     
+                                                </div>                                                
+                                            </div>
                                         </div>
-                                        <div data-v-0a33e012="">
-                                            <div data-v-76782db8="" data-v-0a33e012="" class="curved-edge-container media-dimensions media-wrapper">
-                                                <div data-v-76782db8="" class="curve" style="width: 400%; padding-top: 400%; transform: translateX(-37.5%) translateY(-100%); top: 100%;">
-                                                    <div data-v-76782db8="" class="content-container" style="width: calc(25.02%); left: calc(37.49%);">
-                                                        <div data-v-0a33e012="" data-v-76782db8="" role="img" aria-label="Quiz thumbnail" class="media-dimensions media" style="background-image: url(../../img_quiz.jpg);">                                                      
-                                                        </div>                                                     
-                                                    </div>                                                
-                                                </div>
+                                        <div data-v-0a33e012="" class="game-details">
+                                            <div data-v-0a33e012="" class="assignment-info">
+                                                <span data-v-0a33e012="" class="assigned-by-title">ID: ${q.id}</span>
+                                                <!--<span data-v-0a33e012="" class="assigned-by"></span>-->
                                             </div>
-                                            <div data-v-0a33e012="" class="game-details">
-                                                <div data-v-0a33e012="" class="assignment-info">
-                                                    <span data-v-0a33e012="" class="assigned-by-title">ID: ${q.id}</span>
-                                                    <!--<span data-v-0a33e012="" class="assigned-by"></span>-->
-                                                </div>
+                                        </div>
+                                        <div data-v-0a33e012="" class="game-type-info">
+                                            <span data-v-0a33e012="" class="game-type-icon"><i data-v-0a33e012="" class="icon-fas-chalkboard-teacher"></i></span>
+                                            &nbsp; ${q.subject.subject_title}
+                                        </div>
+                                        <div data-v-0a33e012="" class="quiz-info">
+                                            <div data-v-0a33e012="" class="questions-length">Level: ${q.level}</div>
+                                        </div>
+                                        <p data-v-0a33e012="" class="quiz-name" style="display: -webkit-box; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; -webkit-line-clamp: 2;">${q.title}</p>
+                                        <div data-v-0a33e012="" class="game-details">
+                                            <div data-v-0a33e012="" class="assignment-info">
+                                                <span data-v-0a33e012="" class="assigned-by-title">By: </span>
+                                                <span data-v-0a33e012="" class="assigned-by">${q.author.fullname}</span>
                                             </div>
-                                            <div data-v-0a33e012="" class="game-type-info">
-                                                <span data-v-0a33e012="" class="game-type-icon"><i data-v-0a33e012="" class="icon-fas-chalkboard-teacher"></i></span>
-                                                &nbsp; ${q.subject.subject_title}
+                                        </div>
+                                        <div data-v-0a33e012="" class="game-details">
+                                            <div data-v-0a33e012="" class="assignment-info">
+                                                <span data-v-0a33e012="" class="assigned-by-title">Type: </span>
+                                                <span data-v-0a33e012="" class="assigned-by">${q.type}</span>
                                             </div>
-                                            <div data-v-0a33e012="" class="quiz-info">
-                                                <div data-v-0a33e012="" class="questions-length">Level: ${q.level}</div>
+                                        </div>
+                                        <div data-v-0a33e012="" class="game-details">
+                                            <div data-v-0a33e012="" class="assignment-info">
+                                                <span data-v-0a33e012="" class="assigned-by-title">Category: </span>
+                                                <span data-v-0a33e012="" class="assigned-by">${q.category.category_name}</span>
                                             </div>
-                                            <p data-v-0a33e012="" class="quiz-name" style="display: -webkit-box; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; -webkit-line-clamp: 2;">${q.title}</p>
-                                            <div data-v-0a33e012="" class="game-details">
-                                                <div data-v-0a33e012="" class="assignment-info">
-                                                    <span data-v-0a33e012="" class="assigned-by-title">By: </span>
-                                                    <span data-v-0a33e012="" class="assigned-by">${q.author.fullname}</span>
-                                                </div>
-                                            </div>
-                                            <div data-v-0a33e012="" class="game-details">
-                                                <div data-v-0a33e012="" class="assignment-info">
-                                                    <span data-v-0a33e012="" class="assigned-by-title">Type: </span>
-                                                    <span data-v-0a33e012="" class="assigned-by">${q.type}</span>
-                                                </div>
-                                            </div>
-                                            <div data-v-0a33e012="" class="game-details">
-                                                <div data-v-0a33e012="" class="assignment-info">
-                                                    <span data-v-0a33e012="" class="assigned-by-title">Category: </span>
-                                                    <span data-v-0a33e012="" class="assigned-by">${q.category.category_name}</span>
-                                                </div>
-                                            </div>
-                                            <div data-v-0a33e012="" class="great accuracy-bar">
-                                                <span data-v-0a33e012="" class="accuracy-bar-text">95% accuracy</span>
-                                            </div>
+                                        </div>
+                                        <div data-v-0a33e012="" class="great accuracy-bar">
+                                            <span data-v-0a33e012="" class="accuracy-bar-text">95% accuracy</span>
+                                        </div>
 
-                                        </div>
                                     </div>
                                 </div>
-                            </a>
+                            </div>
+                            <!--</a>-->
                         </c:forEach>
                     </div>
                 </div>

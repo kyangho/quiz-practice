@@ -33,7 +33,7 @@ public class QuizDAO extends DBContext {
                 + "FROM quiz_practice_db.quiz as q \n"
                 + "join quiz_practice_db.subject as s on q.subject_id = s.subject_id \n"
                 + "join quiz_practice_db.category as c on q.category_id = c.category_id\n"
-                + "join quiz_practice_db.account_profile as ap on q.quiz_author = ap.account_id\n";
+                + "join quiz_practice_db.account_profile as ap on q.account_id = ap.account_id\n";
         if (subject != null && category != null && quiz_type != null) {
             if (!subject.equalsIgnoreCase("all") && !category.equalsIgnoreCase("all") && !quiz_type.equalsIgnoreCase("all")) {
                 sql += " where s.subject_title = '" + subject + "' and c.category_name = '" + category + "' and q.quiz_type = '" + quiz_type + "'; ";
