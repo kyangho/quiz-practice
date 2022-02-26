@@ -17,7 +17,6 @@ public class Quiz {
     private int id;
     private String title;
     private Subject subject;
-    private int categoryId;
     private String level;
     private String type;
     private String img;
@@ -28,17 +27,15 @@ public class Quiz {
     private String status;
     private double rate;
     ArrayList<Question> questions = new ArrayList<>();
-    private Question ques;
     private boolean hasJoin;
 
     public Quiz() {
     }
 
-    public Quiz(int id, String title, Subject subject, int categoryId, String level, String type, String img, Account author, Category category, Date startTime, Date endTime, String status, double rate) {
+    public Quiz(int id, String title, Subject subject, String level, String type, String img, Account author, Category category, Date startTime, Date endTime, String status, double rate) {
         this.id = id;
         this.title = title;
         this.subject = subject;
-        this.categoryId = categoryId;
         this.level = level;
         this.type = type;
         this.img = img;
@@ -56,14 +53,6 @@ public class Quiz {
 
     public void setHasJoin(boolean hasJoin) {
         this.hasJoin = hasJoin;
-    }
-
-    public Question getQues() {
-        return ques;
-    }
-
-    public void setQues(Question ques) {
-        this.ques = ques;
     }
 
     public Category getCategory() {
@@ -96,14 +85,6 @@ public class Quiz {
 
     public void setSubject(Subject subject) {
         this.subject = subject;
-    }
-
-    public int getCategoryId() {
-        return categoryId;
-    }
-
-    public void setCategoryId(int categoryId) {
-        this.categoryId = categoryId;
     }
 
     public String getLevel() {
@@ -180,11 +161,11 @@ public class Quiz {
 
     @Override
     public String toString() {
-        return "Quiz{" + "id=" + id + ", title=" + title + ", subject=" + subject + ", categoryId=" + categoryId + ", level=" + level + ", type=" + type + ", img=" + img + ", author=" + author + ", startTime=" + startTime + ", endTime=" + endTime + ", rate=" + rate + '}';
+        return "Quiz{" + "id=" + id + ", title=" + title + ", subject=" + subject + ", level=" + level + ", type=" + type + ", img=" + img + ", author=" + author + ", startTime=" + startTime + ", endTime=" + endTime + ", rate=" + rate + '}';
     }
 
     public void display() {
-        System.out.print("Quiz{" + "id=" + id + ", title=" + title + ", subject=" + subject + ", categoryId=" + categoryId + ", level=" + level + ", type=" + type + ", img=" + img + ", author=" + author + ", startTime=" + startTime + ", endTime=" + endTime + ", rate=" + rate + ", ");
+        System.out.print("Quiz{" + "id=" + id + ", title=" + title + ", subject=" + subject + ", level=" + level + ", type=" + type + ", img=" + img + ", author=" + author + ", startTime=" + startTime + ", endTime=" + endTime + ", rate=" + rate + ", ");
         questions.forEach((question) -> {
             System.out.print(question.toString());
         });
