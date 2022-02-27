@@ -151,6 +151,7 @@ public class QuizDAO extends DBContext {
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setInt(1, id);
             ResultSet rs = stm.executeQuery();
+            System.out.println(sql);
             if (rs.next()) {
                 Quiz q = new Quiz();
                 q.setId(rs.getInt("quiz_id"));
@@ -180,12 +181,12 @@ public class QuizDAO extends DBContext {
         }
         return null;
     }
-//    public static void main(String[] args) {
-//        QuizDAO q = new QuizDAO();
-//        int id = 2;
-//        Quiz qu = q.getQuizDetail(id);
-//        System.out.println(qu.getTitle());
-//    }
+    public static void main(String[] args) {
+        QuizDAO q = new QuizDAO();
+        int id = 3;
+        Quiz qu = q.getQuizDetail(id);
+        System.out.println(qu.getTitle());
+    }
     public ArrayList<Quiz> getQuizzesPractice(int accountID, int pageindex, int pagesize) {
         ArrayList<Quiz> quizs = new ArrayList<>();
         try {
