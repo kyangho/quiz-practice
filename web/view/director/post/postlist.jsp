@@ -47,9 +47,9 @@
                                             <table class="table table-hover table-condensed" id="post-table">
                                                 <thead>
                                                     <tr class="table-header">
-                                                        <th>ID</th>
-                                                        <th>Thumbnail</th>
-                                                        <th>
+                                                        <th style="width: 3%">ID</th>
+                                                        <th style="width: 15%">Thumbnail</th>
+                                                        <th style="width: 34%">
                                                             <div>
                                                                 <div>Title</div>
                                                                 <div class="sort-icon">
@@ -58,7 +58,7 @@
                                                                 </div>
                                                             </div>
                                                         </th>   
-                                                        <th>
+                                                        <th style="width: 10%">
                                                             <div>
                                                                 <div>Category</div>
                                                                 <div class="sort-icon">
@@ -67,7 +67,7 @@
                                                                 </div>
                                                             </div>
                                                         </th>
-                                                        <th>
+                                                        <th style="width: 10%">
                                                             <div>
                                                                 <div>Author</div>
                                                                 <div class="sort-icon">
@@ -76,7 +76,7 @@
                                                                 </div> 
                                                             </div>
                                                         </th>
-                                                        <th>
+                                                        <th style="width: 10%">
                                                             <div>
                                                                 <div>Featured</div>
                                                                 <div class="sort-icon">
@@ -85,13 +85,18 @@
                                                                 </div>
                                                             </div>
                                                         </th>
-                                                        <th>
+                                                        <th  style="width: 10%">
                                                             <div>
                                                                 <div>Status</div>
                                                                 <div class="sort-icon">
                                                                     <a href="list?status=asc&sort"><i class="fa fa-angle-up"></i></a> 
                                                                     <a href="list?status=desc&sort"><i class="fa fa-angle-down"></i></a> 
                                                                 </div> 
+                                                            </div>
+                                                        </th>
+                                                        <th style="width: 8%">
+                                                            <div>
+                                                                <div>Action</div>
                                                             </div>
                                                         </th>
                                                     </tr>
@@ -103,8 +108,14 @@
                                                     <td>${post.title}</td>
                                                     <td><c:forEach items="${post.categories}" var="category"><a href="list?category=${category.name}" class="label label-success">${category.value}</a></c:forEach></td>
                                                     <td>${post.author}</td>
-                                                    <td><a href="list?feature=${post.isFeature}" ${post.isFeature ? "class='label label-success'" : "class='label label-danger'"}>${post.isFeature}</a></td>
-                                                    <td>${post.status}</td>
+                                                    <td><a href="list?feature=${post.isFeature}" ${post.isFeature ? "class='label label-success'" : "class='label label-danger'"}>${post.isFeature}  </a>
+                                                        <a class="button-change-feature" value="${post.id}" feature="${post.isFeature}" style="padding: 5px"><i class="fa-solid fa-arrows-rotate" ></i></a></td>
+                                                    <td><a href="list?status=${post.status}" ${post.status == "PUBLISH" ? "class='label label-success'" : "class='label label-danger'"}>${post.status}</a></td>
+                                                    <td>
+                                                        <a href="view?id=${post.id}" class="label label-primary">View</a>
+                                                        <a href="update?id=${post.id}" class="label label-success">Update</a><br>
+                                                        <a class="button-show-post" value="${post.id}" status="${post.status}"><i ${post.status == "PUBLISH" ? "class='fa fa-eye'" : "class='fa fa-eye-slash'"}></i></a>
+                                                    </td>
                                                 </tr>
                                             </c:forEach>
                                         </table>

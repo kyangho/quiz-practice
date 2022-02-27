@@ -43,7 +43,7 @@ public class PostController extends HttpServlet {
     private static final String postUpdatePath = "/post/update";
     private static final String postRetrievePath = "/post/file";
 
-    private static final int PAGESIZE = 3;
+    private static final int PAGESIZE = 7;
 
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -63,14 +63,8 @@ public class PostController extends HttpServlet {
             doGetPostList(request, response);
         } else if (URI.contains(postDetailPath)) {
             doGetPostDetail(request, response);
-        } else if (URI.contains(postUpdatePath) && account != null) {
-            doGetUpdatePost(request, response);
         } else if (URI.contains(postImagePath)) {
             doGetPostThumbnail(request, response);
-        } else if (URI.contains(postNewPath) && account != null) {
-            doGetNewPost(request, response);
-        } else if (URI.contains("/post/thumbnail")) {
-            request.getRequestDispatcher("/view/post/postthumbnail.jsp").forward(request, response);
         } else if (URI.contains(postRetrievePath)) {
             doGetFileRetrieve(request, response);
         } else {
@@ -92,11 +86,7 @@ public class PostController extends HttpServlet {
         String URI = request.getRequestURI().replaceFirst("/\\w+", "");
         Account account = (Account) request.getSession().getAttribute("account");
 
-        if (URI.contains(postNewPath) && account != null) {
-            doPostNewPost(request, response);
-        } else if (URI.contains(postUpdatePath) && account != null) {
-            doPostUpdatePost(request, response);
-        } else if (URI.contains("/post/thumbnail")) {
+        if (URI.contains("/post/thumbnail")) {
             doPostPostThumbnail(request, response);
         } else if (URI.contains("/post/file")) {
             doPostUploadFile(request, response);
@@ -120,7 +110,11 @@ public class PostController extends HttpServlet {
         } catch (Exception e) {
 
         }
+        ArrayList<Post> featurePosts = pd.getPostsList("", "", "", "PUBLISH", true, 5, 1);
+        request.setAttribute("featurePosts", featurePosts);
+        ArrayList<PostCategory> categories = pd.getPostCategories("", "");
         request.setAttribute("post", post);
+        request.setAttribute("categories", categories);
         request.getRequestDispatcher("/view/post/postdetail.jsp").forward(request, response);
     }
 
@@ -268,7 +262,7 @@ public class PostController extends HttpServlet {
             String[] values = paraMap.get("status");
             status = values[0];
         }
-        posts = pd.getPostsList(search, category, author, status, null, PAGESIZE, pageIndex);
+        posts = pd.getPostsListSortByFeature(search, category, author, "PUBLISH", null, PAGESIZE, pageIndex);
         ArrayList<PostCategory> categories = pd.getPostCategories("", "");
         PostCategory currentCategory = null;
 //        for (int i = 0; i < categories.size(); i++) {
@@ -280,11 +274,8 @@ public class PostController extends HttpServlet {
 //        }
         int postTotal = pd.countTotalPostWithCondition(search, category, author, status, PAGESIZE, pageIndex);
         double pageTotal = Math.ceil((double)postTotal/ (double)PAGESIZE);
-        if (pageIndex < 1 || pageIndex > pageTotal) {
-            response.sendRedirect("list");
-            return;
-        }
-
+        ArrayList<Post> featurePosts = pd.getPostsList("", "", "", "PUBLISH", true, 5, 1);
+        request.setAttribute("featurePosts", featurePosts);
         request.setAttribute("pageTotal", pageTotal);
         request.setAttribute("pageSize", PAGESIZE);
         request.setAttribute("pageIndex", pageIndex);

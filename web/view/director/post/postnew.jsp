@@ -34,7 +34,6 @@
                                     </header>
                                     <div class="panel-body">
                                         <form class="form-horizontal tasi-form new-form" action="new" method="POST" enctype="multipart/form-data">
-                                            <input type="hidden" name="settingId" class="form-control">
                                             <div class="form-group">
                                                 <div class="col-sm-11">
                                                     Title<p class="text-danger text-bold" style="display: inline"> *</p>:

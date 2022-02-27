@@ -13,7 +13,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 
 <script src="${pageContext.request.contextPath}/js/jquery.min.js"></script>
-<script src="${pageContext.request.contextPath}/ajax/postajax.js?v=5" type="text/javascript"></script>
+<script src="${pageContext.request.contextPath}/ajax/postajax.js?v=6" type="text/javascript"></script>
 <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -28,7 +28,7 @@
         </c:if>
         <c:if test="${requestScope.post != null}">
             <div class="single-blog-post">
-                <form class="update-form" action="update" method="POST" enctype="multipart/form-data">
+                <form class="" action="update" method="POST" enctype="multipart/form-data">
                     <input type="text" name="id" hidden class="form-control" required value="${requestScope.post.id}">
                     <div class="form-group row">
                         <label for="postTitle" class="col-sm-2 col-form-label">Title<p class="text-danger" style="display: inline"> *</p></label>

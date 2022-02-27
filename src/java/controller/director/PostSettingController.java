@@ -5,22 +5,16 @@
  */
 package controller.director;
 
-import dal.AccountDAO;
 import dal.PostDAO;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.PrintWriter;
 import java.nio.file.Paths;
 import java.sql.Blob;
 import java.sql.Date;
 import java.sql.SQLException;
-import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Enumeration;
 import java.util.Map;
-import java.util.Set;
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.annotation.MultipartConfig;
@@ -43,12 +37,14 @@ import model.post.PostFile;
 public class PostSettingController extends HttpServlet {
 
     private static final String postListPath = "/director/post/list";
+    private static final String postDetailPath = "/director/post/view";
     private static final String postNewPath = "/director/post/new";
     private static final String postImagePath = "/director/post/image";
     private static final String postUpdatePath = "/director/post/update";
     private static final String postRetrievePath = "/director/post/file";
-
-    private static final int PAGESIZE = 3;
+    private static final String postChangeStatusPath = "/director/post/changestatus";
+    private static final String postChangeFeaturePath = "/director/post/changefeature";
+    private static final int PAGESIZE = 5;
 
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -66,6 +62,8 @@ public class PostSettingController extends HttpServlet {
         ArrayList<Post> posts = new ArrayList<>();
         if (URI.contains(postListPath)) {
             doGetPostList(request, response);
+        } else if (URI.contains(postDetailPath)) {
+            doGetPostDetail(request, response);
         } else if (URI.contains(postUpdatePath) && account != null) {
             doGetUpdatePost(request, response);
         } else if (URI.contains(postImagePath)) {
@@ -99,101 +97,19 @@ public class PostSettingController extends HttpServlet {
             doPostNewPost(request, response);
         } else if (URI.contains(postUpdatePath) && account != null) {
             doPostUpdatePost(request, response);
-        } else if (URI.contains("/post/thumbnail")) {
+        } else if (URI.contains("thumbnail")) {
             doPostPostThumbnail(request, response);
-        } else if (URI.contains("/post/file")) {
+        } else if (URI.contains("file")) {
             doPostUploadFile(request, response);
+        } else if (URI.contains(postChangeStatusPath)) {
+            doPostChangeStatus(request, response);
+        } else if (URI.contains(postChangeFeaturePath)) {
+            doPostChangeFeature(request, response);
         } else {
             response.sendRedirect(request.getContextPath() + "/home");
         }
     }
 
-    // <editor-fold defaultstate="collapsed" desc="Post list Servlet methods. Click on the + sign on the left to edit the code.">
-    protected void doGetPostList(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        PostDAO pd = new PostDAO();
-        ArrayList<Post> posts = new ArrayList<>();
-        Map<String, String[]> paraMap = request.getParameterMap();
-        String search = "";
-        String category = "";
-        String author = "";
-        String status = "";
-        String title = "";
-        String feature = "";
-        int pageIndex;
-        try {
-            pageIndex = Integer.parseInt(request.getParameter("pageIndex"));
-        } catch (Exception e) {
-            pageIndex = 1;
-        }
-        if (paraMap.containsKey("search")) {
-            String[] values = paraMap.get("search");
-            search = values[0];
-        }
-        if (paraMap.containsKey("title")) {
-            String[] values = paraMap.get("title");
-            title = values[0];
-        }
-        if (paraMap.containsKey("feature")) {
-            String[] values = paraMap.get("feature");
-            feature = values[0];
-        }
-        if (paraMap.containsKey("category")) {
-            String[] values = paraMap.get("category");
-            category = values[0];
-        }
-        if (paraMap.containsKey("author")) {
-            String[] values = paraMap.get("author");
-            author = values[0];
-        }
-        if (paraMap.containsKey("status")) {
-            String[] values = paraMap.get("status");
-            status = values[0];
-        }
-        if (paraMap.containsKey("sort")){
-            posts = pd.getPostsListSortBy(title, category, author, feature, status, PAGESIZE, pageIndex);
-        } else {
-            Boolean isFeature = null;
-            if (feature.compareToIgnoreCase("active") == 0) {
-                isFeature = true;
-            } else if (feature.compareToIgnoreCase("deactive") == 0) {
-                isFeature = false;
-            }
-            posts = pd.getPostsList(search, category, author, status, isFeature, PAGESIZE, pageIndex);
-        }
-        ArrayList<PostCategory> categories = pd.getPostCategories("", "");
-        PostCategory currentCategory = null;
-//        for (int i = 0; i < categories.size(); i++) {
-//            if (categories.get(i).getName().compareTo(category) == 0) {
-//                currentCategory = categories.get(i);
-//                categories.remove(i);
-//                break;
-//            }
-//        }
-
-        int postTotal = 0;
-        if (paraMap.containsKey("sort")){
-            postTotal = pd.countTotalPostWithCondition("", "", "", "", PAGESIZE, pageIndex);
-        }else{
-            postTotal = pd.countTotalPostWithCondition(search, category, author, status, PAGESIZE, pageIndex);
-        }
-        double pageTotal = Math.ceil((double) postTotal / (double) PAGESIZE);
-        if (pageIndex < 1 || pageIndex > pageTotal) {
-            response.sendRedirect("list");
-            return;
-        }
-
-        request.setAttribute("pageTotal", pageTotal);
-        request.setAttribute("pageSize", PAGESIZE);
-        request.setAttribute("pageIndex", pageIndex);
-        request.setAttribute("currentCategory", currentCategory);
-        request.setAttribute("categories", categories);
-        request.setAttribute("posts", posts);
-        request.getRequestDispatcher("/view/director/post/postlist.jsp").forward(request, response);
-    }
-    // </editor-fold>
-
-    // <editor-fold defaultstate="collapsed" desc="Post detail Servlet methods. Click on the + sign on the left to edit the code.">
     protected void doGetPostDetail(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         PostDAO pd = new PostDAO();
@@ -210,76 +126,9 @@ public class PostSettingController extends HttpServlet {
 
         }
         request.setAttribute("post", post);
-        request.getRequestDispatcher("/view/director/post/postdetail.jsp").forward(request, response);
-    }
-    // </editor-fold>
-
-    // <editor-fold defaultstate="collapsed" desc="Post update Servlet methods. Click on the + sign on the left to edit the code.">
-    protected void doGetUpdatePost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        PostDAO pd = new PostDAO();
-        Post post = null;
-        try {
-            String id = request.getParameter("id");
-            post = pd.getPostWithId(Integer.parseInt(id));
-        } catch (Exception e) {
-            post = null;
-        }
-        ArrayList<PostCategory> categories = pd.getPostCategories("", "");
-        request.setAttribute("categories", categories);
-
-        try {
-            request.setAttribute("fileName", pd.getPostFileListWithId(post.getId()).get(0).getName());
-        } catch (Exception e) {
-
-        }
-        request.setAttribute("post", post);
-        request.getRequestDispatcher("/view/director/post/postupdate.jsp").forward(request, response);
+        request.getRequestDispatcher("/view/director/post/postview.jsp").forward(request, response);
     }
 
-    protected void doPostUpdatePost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        Map<String, String[]> parasMap = request.getParameterMap();
-        String id = parasMap.get("id")[0];
-        String title = parasMap.get("postTitle")[0];
-        String brief = parasMap.get("postBrief")[0];
-        String content = parasMap.get("postContent")[0];
-        String[] categories = parasMap.get("categories");
-        PostDAO postDAO = new PostDAO();
-        Post p = postDAO.getPostWithId(Integer.parseInt(id));
-        ArrayList<PostCategory> categoryList = new ArrayList<>();
-        Date now = new Date(System.currentTimeMillis());
-
-        for (String s : categories) {
-            categoryList.add(new PostCategory(Integer.parseInt(s), "", ""));
-        }
-        Account account = (Account) request.getSession().getAttribute("account");
-        p.setTitle(title);
-        p.setContent(content);
-        p.setCategories(categoryList);
-        p.setDateModified(now);
-        p.setStatus("PUBLISH");
-        p.setIsFeature(false);
-        p.setBrief(brief);
-
-        Part thumbnailPart = request.getPart("thumbnail"); // Retrieves <input type="file" name="thumbnail">
-        InputStream fileContent = thumbnailPart.getInputStream();
-        if (thumbnailPart.getSize() > 0) {
-            postDAO.updatetPost(p, fileContent);
-        } else {
-            postDAO.updatetPost(p);
-        }
-        Part filesPart = request.getPart("files"); // Retrieves <input type="file" name="files">
-        String fileName = Paths.get(filesPart.getSubmittedFileName()).getFileName().toString(); // MSIE fix.
-        fileContent = filesPart.getInputStream();
-        if (filesPart.getSize() > 0) {
-            postDAO.updatePostFile(p.getId(), fileName, "", fileContent);
-        }
-        response.sendRedirect("list");
-    }
-    // </editor-fold>
-
-    // <editor-fold defaultstate="collapsed" desc="Post new Servlet methods. Click on the + sign on the left to edit the code.">
     protected void doGetNewPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         PostDAO pd = new PostDAO();
@@ -330,8 +179,153 @@ public class PostSettingController extends HttpServlet {
         response.sendRedirect("list");
     }
 
-    // </editor-fold>
-    // <editor-fold defaultstate="collapsed" desc="Extend Servlet methods. Click on the + sign on the left to edit the code.">
+    protected void doGetUpdatePost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        PostDAO pd = new PostDAO();
+        Post post = null;
+        try {
+            String id = request.getParameter("id");
+            post = pd.getPostWithId(Integer.parseInt(id));
+        } catch (Exception e) {
+            post = null;
+        }
+        ArrayList<PostCategory> categories = pd.getPostCategories("", "");
+        request.setAttribute("categories", categories);
+
+        try {
+            request.setAttribute("fileName", pd.getPostFileListWithId(post.getId()).get(0).getName());
+        } catch (Exception e) {
+
+        }
+        request.setAttribute("post", post);
+        request.getRequestDispatcher("/view/director/post/postupdate.jsp").forward(request, response);
+    }
+
+    protected void doPostUpdatePost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        Map<String, String[]> parasMap = request.getParameterMap();
+        String id = parasMap.get("id")[0];
+        String title = parasMap.get("postTitle")[0];
+        String brief = parasMap.get("postBrief")[0];
+        String content = parasMap.get("postContent")[0];
+        String feature = parasMap.get("feature")[0];
+        String[] categories = parasMap.get("categories");
+        PostDAO postDAO = new PostDAO();
+        Post p = postDAO.getPostWithId(Integer.parseInt(id));
+        ArrayList<PostCategory> categoryList = new ArrayList<>();
+        Date now = new Date(System.currentTimeMillis());
+
+        for (String s : categories) {
+            categoryList.add(new PostCategory(Integer.parseInt(s), "", ""));
+        }
+        Account account = (Account) request.getSession().getAttribute("account");
+        p.setTitle(title);
+        p.setContent(content);
+        p.setCategories(categoryList);
+        p.setDateModified(now);
+        p.setStatus("PUBLISH");
+        p.setIsFeature(Boolean.valueOf(feature));
+        p.setBrief(brief);
+
+        Part thumbnailPart = request.getPart("thumbnail"); // Retrieves <input type="file" name="thumbnail">
+        InputStream fileContent = thumbnailPart.getInputStream();
+        if (thumbnailPart.getSize() > 0) {
+            postDAO.updatetPost(p, fileContent);
+        } else {
+            postDAO.updatetPost(p);
+        }
+        Part filesPart = request.getPart("files"); // Retrieves <input type="file" name="files">
+        String fileName = Paths.get(filesPart.getSubmittedFileName()).getFileName().toString(); // MSIE fix.
+        fileContent = filesPart.getInputStream();
+        if (filesPart.getSize() > 0) {
+            postDAO.updatePostFile(p.getId(), fileName, "", fileContent);
+        }
+        response.sendRedirect("list");
+    }
+
+    protected void doGetPostList(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        PostDAO pd = new PostDAO();
+        ArrayList<Post> posts = new ArrayList<>();
+        Map<String, String[]> paraMap = request.getParameterMap();
+        String search = "";
+        String category = "";
+        String author = "";
+        String status = "";
+        String title = "";
+        String feature = "";
+        int pageIndex;
+        try {
+            pageIndex = Integer.parseInt(request.getParameter("pageIndex"));
+        } catch (Exception e) {
+            pageIndex = 1;
+        }
+        if (paraMap.containsKey("search")) {
+            String[] values = paraMap.get("search");
+            search = values[0];
+        }
+        if (paraMap.containsKey("title")) {
+            String[] values = paraMap.get("title");
+            title = values[0];
+        }
+        if (paraMap.containsKey("feature")) {
+            String[] values = paraMap.get("feature");
+            feature = values[0];
+        }
+        if (paraMap.containsKey("category")) {
+            String[] values = paraMap.get("category");
+            category = values[0];
+        }
+        if (paraMap.containsKey("author")) {
+            String[] values = paraMap.get("author");
+            author = values[0];
+        }
+        if (paraMap.containsKey("status")) {
+            String[] values = paraMap.get("status");
+            status = values[0];
+        }
+        if (paraMap.containsKey("sort")) {
+            posts = pd.getPostsListSortBy(title, category, author, feature, status, PAGESIZE, pageIndex);
+        } else {
+            Boolean isFeature = null;
+            if (feature.compareToIgnoreCase("true") == 0) {
+                isFeature = true;
+            } else if (feature.compareToIgnoreCase("false") == 0) {
+                isFeature = false;
+            }
+            posts = pd.getPostsList(search, category, author, status, isFeature, PAGESIZE, pageIndex);
+        }
+        ArrayList<PostCategory> categories = pd.getPostCategories("", "");
+        PostCategory currentCategory = null;
+//        for (int i = 0; i < categories.size(); i++) {
+//            if (categories.get(i).getName().compareTo(category) == 0) {
+//                currentCategory = categories.get(i);
+//                categories.remove(i);
+//                break;
+//            }
+//        }
+
+        int postTotal = 0;
+        if (paraMap.containsKey("sort")) {
+            postTotal = pd.countTotalPostWithCondition("", "", "", "", PAGESIZE, pageIndex);
+        } else {
+            postTotal = pd.countTotalPostWithCondition(search, category, author, status, PAGESIZE, pageIndex);
+        }
+        double pageTotal = Math.ceil((double) postTotal / (double) PAGESIZE);
+        if (pageIndex < 1 || pageIndex > pageTotal) {
+            response.sendRedirect("list");
+            return;
+        }
+
+        request.setAttribute("pageTotal", pageTotal);
+        request.setAttribute("pageSize", PAGESIZE);
+        request.setAttribute("pageIndex", pageIndex);
+        request.setAttribute("currentCategory", currentCategory);
+        request.setAttribute("categories", categories);
+        request.setAttribute("posts", posts);
+        request.getRequestDispatcher("/view/director/post/postlist.jsp").forward(request, response);
+    }
+
     public void doGetPostThumbnail(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         PostDAO postDAO = new PostDAO();
@@ -395,6 +389,26 @@ public class PostSettingController extends HttpServlet {
         } catch (SQLException ex) {
         }
     }
-// </editor-fold>
 
+    public void doPostChangeStatus(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String id = request.getParameter("id");
+        PostDAO postDAO = new PostDAO();
+        Post post = postDAO.getPostWithId(Integer.parseInt(id));
+        if (post.getStatus().compareToIgnoreCase("publish") == 0) {
+            post.setStatus("UNPUBLISH");
+        } else {
+            post.setStatus("PUBLISH");
+        }
+        boolean isSuccess = postDAO.updateStatus(Integer.parseInt(id), post.getStatus());
+    }
+    public void doPostChangeFeature(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String id = request.getParameter("id");
+        PostDAO postDAO = new PostDAO();
+        Post post = postDAO.getPostWithId(Integer.parseInt(id));
+        Date now = new Date(System.currentTimeMillis());
+        post.setIsFeature(!post.isIsFeature());
+        boolean isSuccess = postDAO.updateFeature(Integer.parseInt(id), post.isIsFeature());
+    }
 }
