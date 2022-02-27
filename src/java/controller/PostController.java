@@ -5,22 +5,16 @@
  */
 package controller;
 
-import dal.AccountDAO;
 import dal.PostDAO;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.PrintWriter;
 import java.nio.file.Paths;
 import java.sql.Blob;
 import java.sql.Date;
 import java.sql.SQLException;
-import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Enumeration;
 import java.util.Map;
-import java.util.Set;
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.annotation.MultipartConfig;
@@ -49,7 +43,7 @@ public class PostController extends HttpServlet {
     private static final String postUpdatePath = "/post/update";
     private static final String postRetrievePath = "/post/file";
 
-    private static final int PAGESIZE = 3;
+    private static final int PAGESIZE = 7;
 
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -69,14 +63,8 @@ public class PostController extends HttpServlet {
             doGetPostList(request, response);
         } else if (URI.contains(postDetailPath)) {
             doGetPostDetail(request, response);
-        } else if (URI.contains(postUpdatePath) && account != null) {
-            doGetUpdatePost(request, response);
         } else if (URI.contains(postImagePath)) {
             doGetPostThumbnail(request, response);
-        } else if (URI.contains(postNewPath) && account != null) {
-            doGetNewPost(request, response);
-        } else if (URI.contains("/post/thumbnail")) {
-            request.getRequestDispatcher("/view/post/postthumbnail.jsp").forward(request, response);
         } else if (URI.contains(postRetrievePath)) {
             doGetFileRetrieve(request, response);
         } else {
@@ -98,11 +86,7 @@ public class PostController extends HttpServlet {
         String URI = request.getRequestURI().replaceFirst("/\\w+", "");
         Account account = (Account) request.getSession().getAttribute("account");
 
-        if (URI.contains(postNewPath) && account != null) {
-            doPostNewPost(request, response);
-        } else if (URI.contains(postUpdatePath) && account != null) {
-            doPostUpdatePost(request, response);
-        } else if (URI.contains("/post/thumbnail")) {
+        if (URI.contains("/post/thumbnail")) {
             doPostPostThumbnail(request, response);
         } else if (URI.contains("/post/file")) {
             doPostUploadFile(request, response);
@@ -126,7 +110,11 @@ public class PostController extends HttpServlet {
         } catch (Exception e) {
 
         }
+        ArrayList<Post> featurePosts = pd.getPostsList("", "", "", "PUBLISH", true, 5, 1);
+        request.setAttribute("featurePosts", featurePosts);
+        ArrayList<PostCategory> categories = pd.getPostCategories("", "");
         request.setAttribute("post", post);
+        request.setAttribute("categories", categories);
         request.getRequestDispatcher("/view/post/postdetail.jsp").forward(request, response);
     }
 
@@ -161,7 +149,7 @@ public class PostController extends HttpServlet {
         p.setDateCreated(now);
         p.setDateModified(now);
         p.setStatus("PUBLISH");
-        p.setFeaturing(false);
+        p.setIsFeature(false);
         p.setAuthor(account.getUsername());
         p.setBrief(brief);
         PostDAO postDAO = new PostDAO();
@@ -224,7 +212,7 @@ public class PostController extends HttpServlet {
         p.setCategories(categoryList);
         p.setDateModified(now);
         p.setStatus("PUBLISH");
-        p.setFeaturing(false);
+        p.setIsFeature(false);
         p.setBrief(brief);
 
         Part thumbnailPart = request.getPart("thumbnail"); // Retrieves <input type="file" name="thumbnail">
@@ -251,6 +239,7 @@ public class PostController extends HttpServlet {
         String search = "";
         String category = "";
         String author = "";
+        String status = "";
         int pageIndex;
         try {
             pageIndex = Integer.parseInt(request.getParameter("pageIndex"));
@@ -269,16 +258,25 @@ public class PostController extends HttpServlet {
             String[] values = paraMap.get("author");
             author = values[0];
         }
-        posts = pd.getPostsList(search, category, author, "", PAGESIZE, pageIndex);
+        if (paraMap.containsKey("status")) {
+            String[] values = paraMap.get("status");
+            status = values[0];
+        }
+        posts = pd.getPostsListSortByFeature(search, category, author, "PUBLISH", null, PAGESIZE, pageIndex);
         ArrayList<PostCategory> categories = pd.getPostCategories("", "");
         PostCategory currentCategory = null;
-        for (int i = 0; i < categories.size(); i++) {
-            if (categories.get(i).getName().compareTo(category) == 0) {
-                currentCategory = categories.get(i);
-                categories.remove(i);
-                break;
-            }
-        }
+//        for (int i = 0; i < categories.size(); i++) {
+//            if (categories.get(i).getName().compareTo(category) == 0) {
+//                currentCategory = categories.get(i);
+//                categories.remove(i);
+//                break;
+//            }
+//        }
+        int postTotal = pd.countTotalPostWithCondition(search, category, author, status, PAGESIZE, pageIndex);
+        double pageTotal = Math.ceil((double)postTotal/ (double)PAGESIZE);
+        ArrayList<Post> featurePosts = pd.getPostsList("", "", "", "PUBLISH", true, 5, 1);
+        request.setAttribute("featurePosts", featurePosts);
+        request.setAttribute("pageTotal", pageTotal);
         request.setAttribute("pageSize", PAGESIZE);
         request.setAttribute("pageIndex", pageIndex);
         request.setAttribute("currentCategory", currentCategory);
@@ -298,7 +296,7 @@ public class PostController extends HttpServlet {
             response.reset();
             buffer = blob.getBytes(1, (int) blob.length());
             OutputStream os = response.getOutputStream();
-            response.setContentType("image/png");
+            response.setContentType("image/*");
             ServletOutputStream out = response.getOutputStream();
             out.write(buffer, 0, (int) blob.length());
             os.flush();

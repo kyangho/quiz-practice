@@ -50,7 +50,7 @@
                                     <label class="col-sm-2 col-sm-2 control-label">Full Name *:</label>
                                     <div class="col-sm-10">
                                         <input type="text" name="fullname" class="form-control" 
-                                               pattern="^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z ]*)*$" 
+                                               pattern="^[a-zA-ZaAàÀảẢãÃáÁạẠăĂằẰẳẲẵẴắẮặẶâÂầẦẩẨẫẪấẤậẬbBcCdDđĐeEèÈẻẺẽẼéÉẹẸêÊềỀểỂễỄếẾệỆfFgGhHiIìÌỉỈĩĨíÍịỊjJkKlLmMnNoOòÒỏỎõÕóÓọỌôÔồỒổỔỗỖốỐộỘơƠờỜởỞỡỠớỚợỢpPqQrRsStTuUùÙủỦũŨúÚụỤưƯừỪửỬữỮứỨựỰvVwWxXyYỳỲỷỶỹỸýÝỵỴ\s]+$" 
                                                title="Fullname cannot contain special characters!" 
                                                value="${requestScope.account.fullname}"
                                                required placeholder="Full Name">
@@ -62,10 +62,11 @@
                                         <input type="email" name="email" class="form-control" 
                                                value="${requestScope.account.email}"
                                                required placeholder="Email">
+                                        <c:if test="${requestScope.tag eq 'email'}">
+                                            <p style="color: red;">Email has been registered by another person. Please select another email!</p>
+                                        </c:if>
                                     </div>
-                                    <c:if test="${requestScope.tag eq 'email'}">
-                                        <p style="color: red; margin: 0.5% 9.7%;">Email has been registered by another person. Please select another email!</p>
-                                    </c:if>
+
                                 </div>
                                 <div class="form-group">
                                     <label class="col-sm-2 col-sm-2 control-label">Phone *:</label>
@@ -106,13 +107,13 @@
                                             <div class="radio">
                                                 <label>
                                                     <input type="radio" name="status" value="Active" 
-                                                    <c:if test="${requestScope.account.status eq 'Active'}">checked="checked"</c:if>> Active
+                                                    <c:if test="${requestScope.account.status eq 'ACTIVE'}">checked="checked"</c:if>> Active
                                                 </label>
                                             </div>
                                             <div class="radio">
                                                 <label>
                                                     <input type="radio" name="status" 
-                                                    <c:if test="${requestScope.account.status eq 'Deactive'}">checked="checked"</c:if> value="Deactive"> Deactive
+                                                    <c:if test="${requestScope.account.status eq 'DEACTIVE'}">checked="checked"</c:if> value="Deactive"> Deactive
                                                 </label>
                                             </div>
                                         </div>
@@ -120,12 +121,21 @@
                                     <div class="form-group">
                                         <label class="col-sm-2 col-sm-2 control-label">Role *: </label>
                                         <div class="col-sm-10" style="display: flex;">
-                                        <c:forEach items="${requestScope.roles}" var="r">
-                                            <div class="radio" style="margin-left: -19px;">
-                                                <input type="checkbox" name="roleID" value="${r.id}"
-                                                       <c:if test="${requestScope.account.checkRoleEqual(r)}"> checked="checked"</c:if>>${r.roleName}
+                                        <c:if test="${requestScope.account.role[0].id == 0}">
+                                            <c:forEach items="${requestScope.roles}" var="r">
+                                                <div class="radio" style="margin-left: -19px;">
+                                                    <input type="checkbox" name="roleID" value="${r.id}">${r.roleName}
                                                 </div>
-                                        </c:forEach>
+                                            </c:forEach>
+                                        </c:if>
+                                        <c:if test="${requestScope.account.role[0].id != 0}">
+                                            <c:forEach items="${requestScope.roles}" var="r">
+                                                <div class="radio" style="margin-left: -19px;">
+                                                    <input type="checkbox" name="roleID" value="${r.id}"
+                                                           <c:if test="${requestScope.account.checkRoleEqual(r)}"> checked="checked"</c:if>>${r.roleName}
+                                                    </div>
+                                            </c:forEach>
+                                        </c:if>
                                     </div>
                                 </div>
                                 <div class="col-sm-12" style="color: red; margin-left: 10%;">

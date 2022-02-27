@@ -19,7 +19,7 @@
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Settings List</title>
+        <title>Quizz</title>
         <jsp:include page="../header/linkcss.jsp"></jsp:include>
 
         </head>
@@ -35,7 +35,7 @@
                             <div class="col-xs-12">
                                 <div class="panel">
                                     <div class="panel-heading" style="display: flex;">
-                                        <div style="margin-right: 74%;"> List of settings</div>
+                                        <div style="margin-right: 74%;"> List of subjects</div>
                                         <div>
                                             <a href="../subject/newsubject">Add new subject </a>
                                         </div>
@@ -52,13 +52,13 @@
                                         </div>
                                     </div>
                                     <form action="subjectlist" method="POST">
-                                        <c:if test="${requestScope.subject.isEmpty()}">
+                                        <c:if test="${requestScope.subjects.isEmpty()}">
                                             <h3>Not Found Settings</h3>
                                         </c:if>
                                         <div style="margin: 0 0 1% 75%; ">
                                             <button class="btn btn-sm btn-default" style="color: white;font-weight: bolder;background-color: #94a8ff;width: 90px;" type="submit">Apply</button>
                                         </div>
-                                        <c:if test="${!requestScope.subject.isEmpty()}">
+                                        <c:if test="${!requestScope.subjects.isEmpty()}">
                                             <table class="table table-hover">
                                                 <tr>
                                                     <th>ID</th>
@@ -79,7 +79,7 @@
                                                     <tr>
                                                         <td>${s.subject_id}</td>
                                                         <td>${s.subject_title}</td>
-                                                        <td>${s.subject_author}</td>
+                                                        <td>${s.subject_Author.fullname}</td>
                                                         <td>${s.subject_status}</td>
                                                         <td>
                                                             <button class="label label-info"><a style="color:white;" href="../subject/subjectdetail?subject_id=${s.subject_id}">Details</a></button>
@@ -105,9 +105,6 @@
                                                 </c:forEach>
                                                 </tr>
                                             </table>
-                                            <!--                                            <div style="margin: 0 0 1% 75%; ">
-                                                                                            <button class="btn btn-sm btn-default" style="color: white;font-weight: bolder;background-color: #94a8ff;width: 90px;" type="submit">Apply</button>
-                                                                                        </div>-->
                                         </c:if>    
                                     </form>
                                     <div style="margin: 0 0 1% 90%"; >

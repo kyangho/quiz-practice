@@ -13,7 +13,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 
 <script src="${pageContext.request.contextPath}/js/jquery.min.js"></script>
-<script src="${pageContext.request.contextPath}/ajax/postajax.js?v=5" type="text/javascript"></script>
+<script src="${pageContext.request.contextPath}/ajax/postajax.js?v=6" type="text/javascript"></script>
 <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -28,12 +28,12 @@
         </c:if>
         <c:if test="${requestScope.post != null}">
             <div class="single-blog-post">
-                <form class="update-form" action="update" method="POST" enctype="multipart/form-data">
+                <form class="" action="update" method="POST" enctype="multipart/form-data">
                     <input type="text" name="id" hidden class="form-control" required value="${requestScope.post.id}">
                     <div class="form-group row">
                         <label for="postTitle" class="col-sm-2 col-form-label">Title<p class="text-danger" style="display: inline"> *</p></label>
                         <div class="col-sm-10">
-                            <input type="text" name="postTitle" class="form-control" 
+                            <input type="text" name="postTitle" class="form-control postTitle" 
                                    id="postTitle" placeholder="Title" 
                                    value="${requestScope.post.title}" required>
                         </div>
@@ -55,7 +55,8 @@
                         <div class="col-sm-10">
                             <input class="file thumbnail" id="file-thumbnail" accept="image/*" type="file" 
                                    name="thumbnail" style="color: transparent" value=""/>
-                            <label for="file-thumbnail" class="file-thumbnail">${requestScope.post.thumbnail == null ? "Select file" : requestScope.post.title}</label>
+                            <label for="file-thumbnail" class="file-thumbnail">
+                                ${requestScope.post.thumbnail == null ? "Select file" : requestScope.post.title}</label>
                         </div>
                     </div>
                     <div class="form-group row">

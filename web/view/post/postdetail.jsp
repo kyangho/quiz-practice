@@ -8,33 +8,72 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <link href="${pageContext.request.contextPath}/css/font-awesome.min.css" rel="stylesheet">
 <link href="${pageContext.request.contextPath}/css/price-range.css" rel="stylesheet">
-<link href="${pageContext.request.contextPath}/css/post.css?v=1" rel="stylesheet">
+<link href="${pageContext.request.contextPath}/css/post.css?v=4" rel="stylesheet"/>
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 
 <script src="${pageContext.request.contextPath}/js/jquery.min.js"></script>
-<script src="${pageContext.request.contextPath}/ajax/postajax.js?v=3" type="text/javascript"></script>
+<script src="${pageContext.request.contextPath}/ajax/documentAjax.js?v=3" type="text/javascript"></script>
 <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
 <jsp:include page="../home/header_footer/header.jsp"></jsp:include>
 
-    <div class="container col-sm-12">
+    <div class="container-fluid col-sm-11 pt-50 post-content">
         <div class="row">
             <div class="col-sm-3">
-                <h1>User</h1>
                 <div class="left-sidebar">
-                    <div class="card col-sm-12">
-                        <img src="img_avatar.png" alt="Avatar" style="width:100%">
-                        <div class="container">
-                            <h4><b>${requestScope.post.author}</b></h4> 
+                    <div class="row card col-sm-12" id="filterbar">
+                        <div id="search"> 
+                            <input id="input-search" placeholder="Search..." /> 
+                            <button><i class="fa fa-search"></i></button>
+                        </div>
+                        <div class="form-group text-center">
+                            <div class="btn-group" data-toggle="buttons"> 
+                                <label class="btn btn-success form-check-label"> 
+                                    <input class="form-check-input" type="radio"> Reset 
+                                </label> 
+                                <!--                                <label class="btn btn-success form-check-label active"> 
+                                                                    <input class="form-check-input" type="radio" checked=""> Apply 
+                                                                </label> -->
+                            </div>
+                        </div>
+                        <div class="box border-bottom">
+                            <div class="box-label text-uppercase d-flex align-items-center">Category <button class="btn ml-auto" type="button" data-toggle="collapse" data-target="#inner-box" aria-expanded="false" aria-controls="inner-box" id="out" onclick="outerFilter()"> <span class="fas fa-plus"></span> </button> </div>
+                            <div id="inner-box" class="collapse mt-2 mr-1">
+                            <c:forEach items="${requestScope.categories}" var="category">
+                                <div class="my-1 category-check"> 
+                                    <label class="tick">
+                                        ${category.value} 
+                                        <input type="radio" name="category" value="${category.name}"> 
+                                        <span class="check"></span> 
+                                    </label> 
+                                </div>
+                            </c:forEach>
+                        </div>
+                        <div>
+                            <c:forEach items="${requestScope.featurePosts}" var="featurePost">
+                                <div class="feature-post">
+                                    <img class="" src="image?id=${featurePost.id}" style="max-width: 100px">
+                                    <div style="text-align: left; padding-left: 5px">
+                                        <a href="detail?id=${featurePost.id}" >${featurePost.title}</a>
+                                    </div>
+                                </div>
+                            </c:forEach>
+                        </div>
                     </div>
+                    <!--                    <div class="box border-bottom">
+                                            <div class="box-label text-uppercase d-flex align-items-center">Status <button class="btn ml-auto" type="button" data-toggle="collapse" data-target="#inner-box-status" aria-expanded="false" aria-controls="inner-box-status" id="out" onclick="outerFilter()"> <span class="fas fa-plus"></span> </button> </div>
+                                            <div id="inner-box-status" class="collapse mt-2 mr-1">
+                                                <div class="my-1"> <label class="tick">Publish <input type="radio"  name="status" value="PUBLISH"> <span class="check"></span> </label> </div>
+                                                <div class="my-1"> <label class="tick">Private <input type="radio"  name="status" value="PRIVATE"> <span class="check"></span> </label> </div>
+                                            </div>    
+                                        </div>-->
                 </div>
             </div>
         </div>
         <div class="col-sm-9">
-            <h1>Content</h1>
             <c:if test="${requestScope.post == null}">
                 <h2 class="title text-center">Can not find post</h2>
             </c:if>
@@ -62,17 +101,19 @@
                             </ul>
                         </div>
                         <a href="">
-                            <img  class="col-sm-12" src="${pageContext.request.contextPath}/post/image?id=${post.id}" alt="">
+                            <img  class="col-sm-12 rounded img-fluid w-100 img-responsive pt-2" src="${pageContext.request.contextPath}/post/image?id=${post.id}" alt="">
                         </a>
                         <div style="white-space: pre-line;">
                             ${post.content}
                         </div>
-                        <c:if test="${post.author == sessionScope.account.username}">
-                            <a class="btn btn-danger" href="update?id=${post.id}">Edit</a>
-                        </c:if>
-                        <div>
+                        <div style="padding-top: 30px">
                             <h6>Attach file:</h6>
-                            <a href="file?id=${requestScope.post.id}">${requestScope.fileName}</a>
+                            <c:if test="${sessionScope.account == null}">
+                                <div>You must <a href="${pageContext.request.contextPath}/login">Login</a> or <a href="${pageContext.request.contextPath}/register">Register</a> to download this attach.</div>
+                            </c:if>
+                            <c:if test="${sessionScope.account != null}">
+                                <a href="file?id=${requestScope.post.id}">${requestScope.fileName}</a>
+                            </c:if>
                         </div>
                     </div>
                 </div>

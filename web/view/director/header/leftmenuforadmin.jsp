@@ -34,23 +34,15 @@
                     <i class="fa fa-gavel"></i> <span>General</span>
                 </a>
             </li>
-
-            <li <c:if test="${tag eq 'settinglist'}">class="active"</c:if>  >
-                    <a class="btn btn-primary" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
-                        <i class="glyphicon glyphicon-cog"></i><span>Setting</span>
-                    </a>
-                    <!--<a href="${pageContext.request.contextPath}/director/setting/settinglist">-->
-
-                <div class="collapse" id="collapseExample">
-                    <a href="${pageContext.request.contextPath}/director/setting/settinglist">
-                        <i class="fa fa-gavel"></i> <span>Setting List</span>
-                    </a>
-                    <a href="${pageContext.request.contextPath}/director/setting/post">
-                        <i class="fa fa-gavel"></i> <span>Post Categories</span>
-                    </a>
-                </div>
-                <input type="hidden" name="search_param" value="all" id="search_param">
-
+            <li ${pageContext.request.requestURI.contains("post") ? "class=\"active\"" : ""}>
+                <a  href="${pageContext.request.contextPath}/director/post/list">
+                    <i class="fa fa-book"></i> <span>Posts</span>
+                </a>
+            </li>
+            <li ${pageContext.request.requestURI.contains("settinglist") ? "class=\"active\"" : ""}>
+                <a  href="${pageContext.request.contextPath}/director/setting/settinglist">
+                    <i class="fa fa-wrench"></i> <span>Setting List</span>
+                </a>
             </li>
             <li
                 <c:if test="${tag eq 'userlist'}">class="active"</c:if>  >
@@ -61,7 +53,13 @@
             <li
                 <c:if test="${tag eq 'subjectlist'}">class="active"</c:if>  >
                 <a href="${pageContext.request.contextPath}/director/subject/subjectlist">
-                    <i class="far fa-list-alt"></i> <span style="padding-left: 5px;s">Subject List</span>
+                    <i class="far fa-list-alt"></i> <span style="padding-left: 5px;">Subject List</span>
+                </a>
+            </li>
+            <li
+                <c:if test="${tag eq 'classeslist'}">class="active"</c:if>  >
+                <a href="${pageContext.request.contextPath}/director/class/classeslist">
+                    <i class="far fa-chalkboard-teacher"></i> <span style="padding-left: 5px;">Class List</span>
                 </a>
             </li>
         </ul>

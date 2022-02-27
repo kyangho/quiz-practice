@@ -8,7 +8,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
-
     <head>
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -30,9 +29,6 @@
                 </section>
             </aside>
         </div>
-
-
-    </div>
-    <jsp:include page="header/linkjavascript.jsp"></jsp:include>
-</body>
+        <jsp:include page="header/linkjavascript.jsp"></jsp:include>
+    </body>
 </html>
