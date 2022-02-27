@@ -141,7 +141,7 @@ public class AccountDAO extends DBContext {
             } else {
                 stm1.setString(2, account.getPassword());
             }
-            stm1.setString(3, "Active");
+            stm1.setString(3, "ACTIVE");
             stm1.executeUpdate();
 
             String sql3 = "SELECT LAST_INSERT_ID();";
@@ -226,7 +226,7 @@ public class AccountDAO extends DBContext {
                     + "`account_status` = ?\n"
                     + "WHERE `account_id` = ?;";
             PreparedStatement stm1 = connection.prepareStatement(sql1);
-            stm1.setString(1, account.getStatus());
+            stm1.setString(1, account.getStatus().toUpperCase());
             stm1.setInt(2, account.getId());
             stm1.executeUpdate();
 
@@ -390,7 +390,7 @@ public class AccountDAO extends DBContext {
         int start = (pageindex - 1) * pageSize;
         sql += "\n) as acc limit " + start + "," + pageSize + ";";
 //                + "where acc.stt >= (? - 1)*? + 1 AND acc.stt <= ? * ?;";
-        System.out.println(sql);
+//        System.out.println(sql);
         try {
             PreparedStatement stm = connection.prepareStatement(sql);
 //            stm.setInt(1, pageindex);
@@ -553,7 +553,7 @@ public class AccountDAO extends DBContext {
                     + "`account_status` =?\n"
                     + "WHERE `account_id` = ?;";
             PreparedStatement stm = connection.prepareStatement(sql);
-            stm.setString(1, "Active");
+            stm.setString(1, "ACTIVE");
             stm.setInt(2, id);
             stm.executeUpdate();
         } catch (SQLException ex) {
@@ -568,7 +568,7 @@ public class AccountDAO extends DBContext {
                     + "`account_status` =?\n"
                     + "WHERE `account_id` = ?;";
             PreparedStatement stm = connection.prepareStatement(sql);
-            stm.setString(1, "Deactive");
+            stm.setString(1, "DEACTIVE");
             stm.setInt(2, id);
             stm.executeUpdate();
         } catch (SQLException ex) {

@@ -89,6 +89,14 @@
         <servlet-name>DeleteSubjectController</servlet-name>
         <servlet-class>controller.director.DeleteSubjectController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ListQuizController</servlet-name>
+        <servlet-class>controller.quiz.ListQuizController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>QuizDetailController</servlet-name>
+        <servlet-class>controller.quiz.QuizDetailController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>HomePageController</servlet-name>
         <url-pattern>/home</url-pattern>
@@ -184,6 +192,14 @@
     <servlet-mapping>
         <servlet-name>DeleteSubjectController</servlet-name>
         <url-pattern>/director/subject/deletesubject</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ListQuizController</servlet-name>
+        <url-pattern>/quiz/listquiz</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>QuizDetailController</servlet-name>
+        <url-pattern>/quiz/detail</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>

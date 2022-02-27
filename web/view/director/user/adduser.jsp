@@ -32,10 +32,11 @@
                                                title="username must match format 'user_user12'"
                                                value="${requestScope.account.username}"
                                         required placeholder="username">
+                                    <c:if test="${requestScope.tag eq 'username'}">
+                                        <p style="color: red;">Username existed! Please choose other username!</p>
+                                    </c:if>
                                 </div>
-                                <c:if test="${requestScope.tag eq 'username'}">
-                                    <p style="color: red; margin: 0.5% 9.5%;">Username existed! Please choose other username!</p>
-                                </c:if>
+
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-2 col-sm-2 control-label">Full Name *:</label>
@@ -53,10 +54,11 @@
                                     <input type="email" name="email" class="form-control" 
                                            value="${requestScope.account.email}"
                                            required placeholder="Email">
-                                </div>
-                                <c:if test="${requestScope.tag eq 'email'}">
-                                    <p style="color: red; margin: 0.5% 11.9%;">Email has been registered by another person. Please select another email!</p>
+                                     <c:if test="${requestScope.tag eq 'email'}">
+                                    <p style="color: red;">Email has been registered by another person. Please select another email!</p>
                                 </c:if>
+                                </div>
+                               
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-2 col-sm-2 control-label">Phone *:</label>
