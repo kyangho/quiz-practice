@@ -25,7 +25,8 @@ $(document).ready(function () {
         }
     });
 
-    $('input#search').keypress(function (e) {
+    $('#search').keypress(function (e) {
+        console.log('a')
         var keycode = (event.keyCode ? event.keyCode : event.which);
         if (keycode == '13') {
             var inputSearch = document.getElementById("search");
@@ -38,35 +39,27 @@ $(document).ready(function () {
         }
     });
 
+    $('input.postTitle').on("focus", function (e) {
+        var postTitle = document.getElementById("postTitle");
+        if (!postTitle.value.match("\\w+")) {
+            postTitle.setCustomValidity("Error!");
+            postTitle.reportValidity();
+            console.log(postTitle.value)
+        } else {
+        }
+    })
+
     $(".select-category").on("change", function (e) {
         console.log("a");
         window.location.href = "list?category=" + $(this).val();
     });
-    $("form[class*='update-forma']").on('submit', function (e) {
+    $("form[class='update-foraaam']").on('submit', function (e) {
         e.preventDefault();
         console.log('a');
 
         var formdata = $(this).serialize();
 
-        $.ajax({
-            type: 'post',
-            url: 'update',
-            data: formdata,
-            contentType: 'multipart/form-data',
-            success: function (responseText) {
-                var noti = $('.notification-add');
-                if (responseText == "success") {
-                    noti.prop("class", "notification-add text-center text-success");
-                    noti.text("Add successfully!");
-                    setTimeout(function () {
-                        window.location.href = "settinglist";
-                    }, 2000);
-                } else if (responseText == "fail") {
-                    noti.prop("class", "notification-add text-center text-danger");
-                    noti.text("Add fail!");
-                }
-            }
-        });
+
     });
     $("form[class*='upload-thumbnail-form']").on('submit', function (e) {
         e.preventDefault();
@@ -99,7 +92,7 @@ $(document).ready(function () {
         var name = e.target.files[0].name;
         var type = e.target.files[0].type;
         var newForm = new FormData();
-        var id = $('.update-form').children('input').val();
+        var id = $('.update-form').children('input')[0].value;
         newForm.append('thumbnail', e.target.files[0]);
         newForm.append('id', id);
         if (type.toString().startsWith('image')) {
@@ -144,4 +137,77 @@ $(document).ready(function () {
         });
         $("a.file-href")[0].innerHTML = name;
     })
+})
+
+
+$(document).ready(function () {
+    function GetURLParameter(sParam) {
+        var sPageURL = window.location.search.substring(1);
+        var sURLVariables = sPageURL.split('&');
+        for (var i = 0; i < sURLVariables.length; i++) {
+            var sParameterName = sURLVariables[i].split('=');
+            if (sParameterName[0] == sParam)
+            {
+                return sParameterName[1];
+            }
+        }
+    }
+    $('.sort-icon a').on('click', function () {
+
+
+    })
+    console.log('a')
+    console.log(GetURLParameter('title'));
+    if (GetURLParameter('title') === 'asc') {
+        $('.sort-icon a').not($('.sort-icon a')[0]).prop("style", "color: gray; opacity: 0.2");
+    } else if (GetURLParameter('title') === 'desc') {
+        $('.sort-icon a').not($('.sort-icon a')[1]).prop("style", "color: gray; opacity: 0.2");
+    } else if (GetURLParameter('category') === 'asc') {
+        $('.sort-icon a').not($('.sort-icon a')[2]).prop("style", "color: gray; opacity: 0.2");
+    } else if (GetURLParameter('category') === 'desc') {
+        $('.sort-icon a').not($('.sort-icon a')[3]).prop("style", "color: gray; opacity: 0.2");
+    } else if (GetURLParameter('author') === 'asc') {
+        $('.sort-icon a').not($('.sort-icon a')[4]).prop("style", "color: gray; opacity: 0.2");
+    } else if (GetURLParameter('author') === 'desc') {
+        $('.sort-icon a').not($('.sort-icon a')[5]).prop("style", "color: gray; opacity: 0.2");
+    } else if (GetURLParameter('feature') === 'asc') {
+        $('.sort-icon a').not($('.sort-icon a')[6]).prop("style", "color: gray; opacity: 0.2");
+    } else if (GetURLParameter('feature') === 'desc') {
+        $('.sort-icon a').not($('.sort-icon a')[7]).prop("style", "color: gray; opacity: 0.2");
+    } else if (GetURLParameter('status') === 'asc') {
+        $('.sort-icon a').not($('.sort-icon a')[8]).prop("style", "color: gray; opacity: 0.2");
+    } else if (GetURLParameter('status') === 'desc') {
+        $('.sort-icon a').not($('.sort-icon a')[9]).prop("style", "color: gray; opacity: 0.2");
+    } else {
+        $('.sort-icon a').prop("style", "color: gray; opacity: 0.2");
+    }
+
+    $('.button-show-post').on("click", function () {
+        var status = ($(this).attr("status") == "PUBLISH") ? "UNPUBLISH" : "PUBLISH";
+        if (confirm("Do you want change to " + status + "!")) {
+            $.ajax({
+                url: 'changestatus',
+                type: 'post',
+                data: {id: $(this).attr("value")},
+                success: function (response) {
+                    window.location.href = 'list';
+                }
+            });
+        } else {
+        }
+    });
+    $('.button-change-feature').on("click", function () {
+        var feature = ($(this).attr("feature") == "true") ? "off" : "on";
+        if (confirm("Do you want change turn " + feature + " feature this post!")) {
+            $.ajax({
+                url: 'changefeature',
+                type: 'post',
+                data: {id: $(this).attr("value")},
+                success: function (response) {
+                    window.location.href = 'list';
+                }
+            });
+        } else {
+        }
+    });
 });

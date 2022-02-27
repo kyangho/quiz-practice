@@ -7,28 +7,29 @@
 <%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<head>
-    <meta charset="utf-8">
-    <title>Quizz</title>
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <meta content="" name="keywords">
-    <meta content="" name="description">
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Quizz</title>
+        <meta content="width=device-width, initial-scale=1.0" name="viewport">
+        <meta content="" name="keywords">
+        <meta content="" name="description">
 
-    <!-- Favicon -->
-    <link href="img/favicon.ico" rel="icon">
+        <!-- Favicon -->
+        <link href="img/favicon.ico" rel="icon">
 
-    <!-- Google Web Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
+        <!-- Google Web Fonts -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
 
-    <!-- Icon Font Stylesheet -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+        <!-- Icon Font Stylesheet -->
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
 
-    <!-- Libraries Stylesheet -->
-    <link href="${pageContext.request.contextPath}/lib/animate/animate.min.css" rel="stylesheet">
-    <link href="${pageContext.request.contextPath}/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+        <!-- Libraries Stylesheet -->
+        <link href="${pageContext.request.contextPath}/lib/animate/animate.min.css" rel="stylesheet">
+        <link href="${pageContext.request.contextPath}/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
 
     <!-- Customized Bootstrap Stylesheet -->
     <link href="${pageContext.request.contextPath}/css/bootstrap.min.css?v=5" rel="stylesheet">
@@ -146,8 +147,58 @@
                                 <img src="${sessionScope.account.avatar}"> 
                             </div>
                         </div>
-                    </form>
+                    </div>
+                    <a href="contact.html" class="nav-item nav-link">Contact</a>
+                    <c:forEach items="${sessionScope.account.role}" var="r">
+                        <c:if test="${r.roleName == 'Admin'}">
+                            <a href="${pageContext.request.contextPath}/profile" class="nav-item nav-link">List User</a>
+                        </c:if>
+                    </c:forEach>
+                    <c:forEach items="${sessionScope.account.role}" var="r">
+                        <c:if test="${r.roleName == 'Admin'}">
+                            <a href="${pageContext.request.contextPath}/director/setting/settinglist" class="nav-item nav-link">For Director</a>
+                        </c:if>
+                    </c:forEach>
+                    <c:if test="${sessionScope.account == null}"> 
+                        <a href="${pageContext.request.contextPath}/login" class="btn btn-primary py-4 px-lg-5 d-none d-lg-block">Join Now<i class="fa fa-arrow-right ms-3"></i></a>
+                        </c:if>
+                        <c:if test="${sessionScope.account != null}">             
+                        <div class="inf button nav-item nav-link" style="padding: 18px 0 0 0;"><img src="https://th.bing.com/th/id/OIP.CPCyt52dUDhWIhy1K3guLAHaHa?pid=ImgDet&rs=1"
+                                                                                                    style="width: 35px; height: 35px ; margin-right: 4px; border-radius: 50%;">
+                            <a href="#popup1" style="    padding-top: 7px;">${sessionScope.account.fullname}</a>
+                        </div>
+
+                        <a style=" border-top: none;" class="nav-item nav-link" href="${pageContext.request.contextPath}/logout"><i class="fa fa-sign-out-alt"></i>Logout</a>
+                    </c:if>
+                </div>
+                <div id="popup1" class="overlay">
+                    <div class="popup">
+                        <form>
+                            <h2 style="border-bottom: 1px solid black;">Information</h2>
+                            <a class="close" href="#">&times;</a>
+                            <div class="flex">
+                                <div class="content">
+                                    <ul style="font-weight: 600; padding-left: 0rem;">
+                                        <li>ID: ${sessionScope.account.id}</li>
+                                        <li>Username: ${sessionScope.account.username}</li>
+                                        <li>Full name: <input name="fullname" type="text" value="${sessionScope.account.fullname}"/></li>
+                                        <li>Gender: <c:if test="${sessionScope.account.gender == true}">Male</c:if>
+                                            <c:if test="${sessionScope.account.gender == false}">Female</c:if></li>
+                                        <li>Email:  ${sessionScope.account.email}</li>
+                                        <li>Phone number: ${sessionScope.account.phone}</li>
+                                        <li>Address: <input name="address" type="text" value="${sessionScope.account.address}"/></li>
+
+                                    </ul>
+                                    <a href="changepassword" class="btn btn-primary">Reset password</a>
+                                </div>
+                                <div class="img">
+                                    <!--<img src="https://th.bing.com/th/id/OIP.CPCyt52dUDhWIhy1K3guLAHaHa?pid=ImgDet&rs=1">-->
+                                    <img src="${sessionScope.account.avatar}"> 
+                                </div>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
-        </div>
-    </nav>
+        </nav>
+    </header>

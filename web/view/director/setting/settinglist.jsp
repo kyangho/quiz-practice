@@ -30,7 +30,7 @@
                             <div class="col-xs-12">
                                 <div class="panel"> 
                                     <div class="panel-heading" style="display: flex;">
-                                        <div style="margin-right: 74%;"> List of settings</div>
+                                        <div style="margin-right: 70%;"> List of settings</div>
                                         <div>
                                             <a class="btn label-danger center-block col-sm-10" style="width: 100%;margin-left: 36%;" href="add">Add new setting </a>
                                         </div>

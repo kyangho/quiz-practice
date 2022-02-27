@@ -45,16 +45,17 @@ public class PostDAO extends DBContext {
         return resPosts;
     }
 
-    public ArrayList<Post> getPostsList(String title, String category, String author, String status, int pageSize, int pageIndex) {
+    public ArrayList<Post> getPostsList(String title, String category, String author, String status, Boolean isFeature, int pageSize, int pageIndex) {
         ArrayList<Post> resPosts = new ArrayList<>();
         String sql
                 = "select * from\n"
-                + "	(select row_number() over (order by post_time_created DESC ) as stt,\n"
+                + "	(select row_number() over (order by post_time_modified DESC ) as stt,\n"
                 + "    p.post_id,\n"
                 + "p.post_title,\n"
                 + "p.post_author,\n"
-                + "p.post_time_created,\n"
+                + "p.post_time_modified,\n"
                 + "p.post_status,\n"
+                + "p.post_isFeaturing,\n"
                 + "group_concat(c.category_name) as \"category_name\" \n"
                 + "FROM post as p\n"
                 + "LEFT JOIN post_category AS pc ON p.post_id = pc.post_id\n"
@@ -63,14 +64,24 @@ public class PostDAO extends DBContext {
         category = "category_name LIKE ('%" + category + "%')";
         author = "post_author LIKE ('%" + author + "%')";
         status = "post_status LIKE ('%" + status + "%')";
+        String featureSQL = "";
+        if (isFeature == null) {
+            featureSQL = "";
+        } else if (isFeature == true) {
+            featureSQL = "1";
+        } else if (isFeature == false) {
+            featureSQL = "0";
+        }
         if (!title.equals("") || !category.equals("") || !author.equals("") || !status.equals("")) {
             sql += "WHERE ";
             sql += title + " AND ";
             sql += category + " AND ";
             sql += author + " AND ";
+            if (isFeature != null)
+                sql += "post_isFeaturing = " + featureSQL + " AND ";
             sql += status;
         }
-        sql += "group by p.post_id";
+        sql += "\ngroup by p.post_id";
 
         sql += "        ) as t\n"
                 + " where  t.stt >= (? - 1) * ? + 1 AND t.stt <= ? * ?;";
@@ -96,6 +107,67 @@ public class PostDAO extends DBContext {
         return resPosts;
     }
 
+    public ArrayList<Post> getPostsListSortByFeature(String title, String category, String author, String status, Boolean isFeature, int pageSize, int pageIndex) {
+        ArrayList<Post> resPosts = new ArrayList<>();
+        String sql
+                = "select * from\n"
+                + "	(select row_number() over (order by post_time_modified DESC ) as stt,\n"
+                + "    p.post_id,\n"
+                + "p.post_title,\n"
+                + "p.post_author,\n"
+                + "p.post_time_modified,\n"
+                + "p.post_status,\n"
+                + "p.post_isFeaturing,\n"
+                + "group_concat(c.category_name) as \"category_name\" \n"
+                + "FROM post as p\n"
+                + "LEFT JOIN post_category AS pc ON p.post_id = pc.post_id\n"
+                + "LEFT JOIN category AS c ON pc.category_id = c.category_id\n";
+        title = "post_title LIKE ('%" + title + "%')";
+        category = "category_name LIKE ('%" + category + "%')";
+        author = "post_author LIKE ('%" + author + "%')";
+        status = "post_status LIKE ('%" + status + "%')";
+        String featureSQL = "";
+        if (isFeature == null) {
+            featureSQL = "";
+        } else if (isFeature == true) {
+            featureSQL = "1";
+        } else if (isFeature == false) {
+            featureSQL = "0";
+        }
+        if (!title.equals("") || !category.equals("") || !author.equals("") || !status.equals("")) {
+            sql += "WHERE ";
+            sql += title + " AND ";
+            sql += category + " AND ";
+            sql += author + " AND ";
+            sql += "post_isFeaturing LIKE ('%" + featureSQL + "%') AND ";
+            sql += status;
+        }
+        sql += "group by p.post_id";
+
+        sql += "\nORDER BY post_isFeaturing DESC) as t\n"
+                + " where  t.stt >= (? - 1) * ? + 1 AND t.stt <= ? * ?;";
+        try {
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setInt(1, pageIndex);
+            stm.setInt(2, pageSize);
+            stm.setInt(3, pageIndex);
+            stm.setInt(4, pageSize);
+            ResultSet rs = stm.executeQuery();
+            int lastId = -1;
+            while (rs.next()) {
+                if (lastId == rs.getInt("post_id")) {
+                    continue;
+                }
+                Post post = getPostWithId(rs.getInt("post_id"));
+                lastId = rs.getInt("post_id");
+                resPosts.add(post);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(PostDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return resPosts;
+    }
+    
     public Post getPostWithId(int id) {
         Post resPost = new Post();
         String sqlGetPostInfo = "SELECT \n"
@@ -123,7 +195,7 @@ public class PostDAO extends DBContext {
                 resPost.setContent(rs.getString("post_content"));
                 resPost.setDateCreated(new Date(rs.getTimestamp("post_time_created").getTime()));
                 resPost.setDateModified(new Date(rs.getTimestamp("post_time_modified").getTime()));
-                resPost.setFeaturing(rs.getBoolean("post_isFeaturing"));
+                resPost.setIsFeature(rs.getBoolean("post_isFeaturing"));
                 resPost.setStatus(rs.getString("post_status"));
                 resPost.setAuthor(rs.getString("post_author"));
                 resPost.setBrief(rs.getString("post_brief"));
@@ -230,6 +302,75 @@ public class PostDAO extends DBContext {
         }
 
         return categories;
+    }
+
+    /**
+     * Sort with input is asc for ascending and desc for descending
+     *
+     * @param title
+     * @param category
+     * @param author
+     * @param feature
+     * @param status
+     * @param pageSize
+     * @param pageIndex
+     * @return
+     */
+    public ArrayList<Post> getPostsListSortBy(String title, String category, String author, String feature, String status, int pageSize, int pageIndex) {
+        ArrayList<Post> resPosts = new ArrayList<>();
+        String sql
+                = "select * from\n"
+                + "	(select row_number() over ( ";
+        if (title.compareTo("") != 0) {
+            sql += "order by post_title " + title;
+        }
+        if (category.compareTo("") != 0) {
+            sql += "order by category_name " + category;
+        }
+        if (author.compareTo("") != 0) {
+            sql += "order by post_author " + author;
+        }
+        if (feature.compareTo("") != 0) {
+            sql += "order by post_isFeaturing " + feature;
+        }
+        if (status.compareTo("") != 0) {
+            sql += "order by post_status " + status;
+        }
+        sql += " ) as stt,\n"
+                + "    p.post_id,\n"
+                + "p.post_title,\n"
+                + "p.post_author,\n"
+                + "p.post_time_created,\n"
+                + "p.post_status,\n"
+                + "p.post_isFeaturing,\n"
+                + "group_concat(c.category_name) as \"category_name\" \n"
+                + "FROM post as p\n"
+                + "LEFT JOIN post_category AS pc ON p.post_id = pc.post_id\n"
+                + "LEFT JOIN category AS c ON pc.category_id = c.category_id\n";
+        sql += "group by p.post_id\n";
+        sql += "        ) as t\n"
+                + " where  t.stt >= (? - 1) * ? + 1 AND t.stt <= ? * ?\n";
+
+        try {
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setInt(1, pageIndex);
+            stm.setInt(2, pageSize);
+            stm.setInt(3, pageIndex);
+            stm.setInt(4, pageSize);
+            ResultSet rs = stm.executeQuery();
+            int lastId = -1;
+            while (rs.next()) {
+                if (lastId == rs.getInt("post_id")) {
+                    continue;
+                }
+                Post post = getPostWithId(rs.getInt("post_id"));
+                lastId = rs.getInt("post_id");
+                resPosts.add(post);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(PostDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return resPosts;
     }
 
     //</editor-fold>
@@ -503,6 +644,44 @@ public class PostDAO extends DBContext {
         }
         return true;
     }
+
+    public boolean updateStatus(int postId, String status) {
+        String sql = "UPDATE `quiz_practice_db`.`post`\n"
+                + "SET\n"
+                + "post_status = ?,\n"
+                + "post_date_modified = ?\n"
+                + "WHERE post_id = ?;";
+        try{
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setString(1, status);
+            stm.setTimestamp(2, new Timestamp(System.currentTimeMillis()));
+            stm.setInt(3, postId);
+            stm.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(PostDAO.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }
+        return true;
+    }
+    
+    public boolean updateFeature(int postId, boolean isFeature) {
+        String sql = "UPDATE `quiz_practice_db`.`post`\n"
+                + "SET\n"
+                + "post_isFeaturing = ?,\n"
+                + "post_time_modified = ?\n"
+                + "WHERE post_id = ?;";
+        try{
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setBoolean(1, isFeature);
+            stm.setTimestamp(2, new Timestamp(System.currentTimeMillis()));
+            stm.setInt(3, postId);
+            stm.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(PostDAO.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }
+        return true;
+    }
 //</editor-fold>
 
     public boolean deletePostPostCategory(int postId) {
@@ -518,10 +697,62 @@ public class PostDAO extends DBContext {
         }
         return true;
     }
-//    public static void main(String[] args) {
-//        PostDAO pDAO = new PostDAO();
-//        for (Post p : pDAO.getPostsList("m", "", "admin", "")){
-//            System.out.println(p.getId());
-//        }
-//    }
+
+    public int countTotalPost() {
+        String sql = "SELECT count(post_id) as total FROM quiz_practice_db.post;";
+        int count = 0;
+        try {
+            PreparedStatement stm = connection.prepareStatement(sql);
+            ResultSet rs = stm.executeQuery();
+            if (rs.next()) {
+                count = rs.getInt("total");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(PostDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return count;
+    }
+
+    public int countTotalPostWithCondition(String title, String category, String author, String status, int pageSize, int pageIndex) {
+        String sql
+                = "select *, max(stt) as postTotal from\n"
+                + "	(select row_number() over (order by post_time_created DESC ) as stt,\n"
+                + "    p.post_id,\n"
+                + "p.post_title,\n"
+                + "p.post_author,\n"
+                + "p.post_time_created,\n"
+                + "p.post_status,\n"
+                + "group_concat(c.category_name) as \"category_name\" \n"
+                + "FROM post as p\n"
+                + "LEFT JOIN post_category AS pc ON p.post_id = pc.post_id\n"
+                + "LEFT JOIN category AS c ON pc.category_id = c.category_id\n";
+        title = "post_title LIKE ('%" + title + "%')";
+        category = "category_name LIKE ('%" + category + "%')";
+        author = "post_author LIKE ('%" + author + "%')";
+        status = "post_status LIKE ('%" + status + "%')";
+        if (!title.equals("") || !category.equals("") || !author.equals("") || !status.equals("")) {
+            sql += "WHERE ";
+            sql += title + " AND ";
+            sql += category + " AND ";
+            sql += author + " AND ";
+            sql += status;
+        }
+        sql += "group by p.post_id";
+
+        sql += "        ) as t\n";
+
+        int count = 0;
+        try {
+            PreparedStatement stm = connection.prepareStatement(sql);
+            ResultSet rs = stm.executeQuery();
+            int lastId = -1;
+            while (rs.next()) {
+                count = rs.getInt("postTotal");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(PostDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return count;
+    }
+
 }
