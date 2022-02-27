@@ -20,7 +20,8 @@
     <![endif]-->
 <jsp:include page="../home/header_footer/header.jsp"></jsp:include>
 
-    <div class="container col-sm-12">
+    <div class="container-fluid col-sm-12 post-content">
+        
         <div class="row">
             <div class="col-sm-3">
                 <h1>User</h1>
@@ -34,7 +35,6 @@
             </div>
         </div>
         <div class="col-sm-9">
-            <h1>Content</h1>
             <c:if test="${requestScope.post == null}">
                 <h2 class="title text-center">Can not find post</h2>
             </c:if>
@@ -62,7 +62,7 @@
                             </ul>
                         </div>
                         <a href="">
-                            <img  class="col-sm-12" src="${pageContext.request.contextPath}/post/image?id=${post.id}" alt="">
+                            <img  class="col-sm-12 rounded img-fluid w-100 img-responsive pt-2" src="${pageContext.request.contextPath}/post/image?id=${post.id}" alt="">
                         </a>
                         <div style="white-space: pre-line;">
                             ${post.content}

@@ -33,7 +33,7 @@
                     <div class="form-group row">
                         <label for="postTitle" class="col-sm-2 col-form-label">Title<p class="text-danger" style="display: inline"> *</p></label>
                         <div class="col-sm-10">
-                            <input type="text" name="postTitle" class="form-control" 
+                            <input type="text" name="postTitle" class="form-control postTitle" 
                                    id="postTitle" placeholder="Title" 
                                    value="${requestScope.post.title}" required>
                         </div>
@@ -55,7 +55,8 @@
                         <div class="col-sm-10">
                             <input class="file thumbnail" id="file-thumbnail" accept="image/*" type="file" 
                                    name="thumbnail" style="color: transparent" value=""/>
-                            <label for="file-thumbnail" class="file-thumbnail">${requestScope.post.thumbnail == null ? "Select file" : requestScope.post.title}</label>
+                            <label for="file-thumbnail" class="file-thumbnail">
+                                ${requestScope.post.thumbnail == null ? "Select file" : requestScope.post.title}</label>
                         </div>
                     </div>
                     <div class="form-group row">

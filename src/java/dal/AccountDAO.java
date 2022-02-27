@@ -128,9 +128,9 @@ public class AccountDAO extends DBContext {
                     + "`account_email`,\n"
                     + "`account_phone`,\n"
                     + "`account_fullname`,\n"
-                    + "`address`,\n"
-                    + "`gender`,\n"
-                    + "`avatar`)\n"
+                    + "`account_address`,\n"
+                    + "`account_gender`,\n"
+                    + "`account_avatar`)\n"
                     + "VALUES\n"
                     + "(?,?,?,?,?,?,?);";
 
@@ -235,9 +235,9 @@ public class AccountDAO extends DBContext {
                     + "`account_email` = ?,\n"
                     + "`account_phone` = ?,\n"
                     + "`account_fullname` = ?,\n"
-                    + "`address` = ?,\n"
-                    + "`gender` = ?,\n"
-                    + "`avatar` = ?\n"
+                    + "`account_address` = ?,\n"
+                    + "`account_gender` = ?,\n"
+                    + "`account_avatar` = ?\n"
                     + "WHERE `account_id` = ?;";
             PreparedStatement stm2 = connection.prepareStatement(sql2);
             stm2.setString(1, account.getEmail());
@@ -579,9 +579,10 @@ public class AccountDAO extends DBContext {
     public static void main(String[] args) {
         AccountDAO adbc = new AccountDAO();
 //        adbc.isExistAccountForAdd(null, "user@user.com", null).display();
-//        adbc.getAccountById(2).display();
+        boolean empty = adbc.getAccountById(2).getRole().isEmpty();
+        System.out.println(empty);
 //        System.out.println(adbc.totalRowsByAccountInfor(null, null, null, null, null, null, null));
-        Account a = adbc.getAccount("admin", "admin@admin.com");
-        a.display();
+//        Account a = adbc.getAccount("admin", "admin@admin.com");
+        adbc.getAccountById(2).display();
     }
 }

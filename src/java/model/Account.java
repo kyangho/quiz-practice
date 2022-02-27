@@ -35,7 +35,7 @@ public class Account {
         this.email = email;
         this.phone = phone;
         this.fullname = fullname;
-        this.address = address;
+        this.address = address; 
         this.gender = gender;
         this.status = status;
         this.role = role;

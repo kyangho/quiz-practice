@@ -30,7 +30,6 @@ public class SettingController extends HomeDirectorController {
     private final String settingAddPath = "/director/setting/add";
     private final String settingDetailPath = "/director/setting/details";
     private final String settingUpdatePath = "/director/setting/update";
-    
     /**
      * Handles the HTTP <code>GET</code> method.
      *

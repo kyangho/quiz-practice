@@ -3,25 +3,33 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package controller.auth;
+package controller.director;
 
-import dal.AccountDAO;
+import dal.SubjectDAO;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import model.Account;
-import model.Role;
 
 /**
  *
- * @author Vu Duc Tien
+ * @author Yankee
  */
-public class LoginController extends HttpServlet {
+public class DeleteSubjectController extends HttpServlet {
 
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        String id = request.getParameter("subject_id");
+        SubjectDAO sdao = new SubjectDAO();
+        sdao.deleteSubject(Integer.parseInt(id));
+        response.sendRedirect("subjectlist");
+
+    }
+
+    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -33,11 +41,7 @@ public class LoginController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        if (request.getSession().getAttribute("account") != null) {
-            response.sendRedirect(request.getContextPath() + "/home");
-        } else {
-            request.getRequestDispatcher("view/home/login.jsp").forward(request, response);
-        }
+        processRequest(request, response);
     }
 
     /**
@@ -51,19 +55,7 @@ public class LoginController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
-        AccountDAO adbc = new AccountDAO();
-
-        Account account = adbc.getAccount(username, password);
-        if (account == null) {
-            request.setAttribute("isFail", true);
-            request.getRequestDispatcher("view/home/login.jsp").forward(request, response);
-        } else {
-            HttpSession session = request.getSession();
-            session.setAttribute("account", account);
-            response.sendRedirect(request.getContextPath() + "/home");
-        }
+        processRequest(request, response);
     }
 
     /**

@@ -556,17 +556,7 @@
     padding-bottom: 1rem !important;
 }
 
-.container-fluid{
-    width: 100%;
-    padding-right: 15px;
-    padding-left: 15px;
-    margin-right: auto;
-    margin-left: auto;
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
-}
+
 
 .bg-registration {
     background: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url(https://www.proprofs.com/quiz-school/images/description/computer/2.jpg), no-repeat center center;

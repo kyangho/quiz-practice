@@ -22,7 +22,7 @@ public class Post {
     private String author;
     private Date dateCreated;
     private Date dateModified;
-    private boolean featuring;
+    private boolean isFeature;
     private String status;
     private ArrayList<PostFile> postFiles;
     private ArrayList<PostCategory> categories;
@@ -93,12 +93,12 @@ public class Post {
         this.dateModified = dateModified;
     }
 
-    public boolean isFeaturing() {
-        return featuring;
+    public boolean isIsFeature() {
+        return isFeature;
     }
 
-    public void setFeaturing(boolean featuring) {
-        this.featuring = featuring;
+    public void setIsFeature(boolean isFeature) {
+        this.isFeature = isFeature;
     }
 
     public String getStatus() {
