@@ -3,42 +3,24 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package controller.director;
+package controller.account;
 
 import dal.AccountDAO;
 import java.io.IOException;
+import java.io.PrintWriter;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import model.Account;
 
 /**
  *
- * @author conmu
+ * @author Vu Duc Tien
  */
-public class ChangeStatusForUserController extends HttpServlet {
-
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        String accountID = request.getParameter("id");
-        String status = request.getParameter("status");
-        AccountDAO adao = new AccountDAO();
-        if (status.equalsIgnoreCase("deactive")) {
-            adao.ActiveStatus(Integer.parseInt(accountID));
-        }else{
-            adao.DeActiveStatus(Integer.parseInt(accountID));
-        }
-        response.sendRedirect("userlist");
-    }
+@WebServlet(name = "ChangeProfileController", urlPatterns = {"/changeprofile"})
+public class ChangeProfileController extends HttpServlet {
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -52,7 +34,11 @@ public class ChangeStatusForUserController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        if (request.getSession().getAttribute("account") == null) {
+            response.sendRedirect(request.getContextPath() + "/home");
+        } else {
+            request.getRequestDispatcher("view/account/changeprofile.jsp").forward(request, response);
+        }
     }
 
     /**
@@ -66,7 +52,21 @@ public class ChangeStatusForUserController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        String fullname = request.getParameter("fullname");
+        boolean gender = request.getParameter("gender").equalsIgnoreCase("male");
+        String phone = request.getParameter("phone");
+        String address = request.getParameter("address");
+        
+        Account account = (Account) request.getSession().getAttribute("account");
+        account.setAddress(address);
+        account.setGender(gender);
+        account.setFullname(fullname);
+        account.setPhone(phone);
+        
+        AccountDAO  adao = new AccountDAO();
+        adao.updateAccountProfile(account);
+        response.sendRedirect("changeprofile");
+        
     }
 
     /**

@@ -283,6 +283,44 @@ public class AccountDAO extends DBContext {
         }
     }
 
+    public void updateAccountProfile(Account account) {
+        try {
+            connection.setAutoCommit(false);
+            String sql = "UPDATE `quiz_practice_db`.`account_profile`\n"
+                    + "SET\n"
+                    + "`account_email` = ?,\n"
+                    + "`account_phone` = ?,\n"
+                    + "`account_fullname` = ?,\n"
+                    + "`account_address` = ?,\n"
+                    + "`account_gender` = ?,\n"
+                    + "`account_avatar` = ?\n"
+                    + "WHERE `account_id` = ?;";
+            PreparedStatement stm2 = connection.prepareStatement(sql);
+            stm2.setString(1, account.getEmail());
+            stm2.setString(2, account.getPhone());
+            stm2.setString(3, account.getFullname());
+            stm2.setString(4, account.getAddress());
+            stm2.setBoolean(5, account.isGender());
+            stm2.setString(6, account.getAvatar());
+            stm2.setInt(7, account.getId());
+            stm2.executeUpdate();
+            connection.commit();
+        } catch (SQLException ex) {
+            Logger.getLogger(AccountDAO.class.getName()).log(Level.SEVERE, null, ex);
+            try {
+                connection.rollback();
+            } catch (SQLException ex1) {
+                Logger.getLogger(AccountDAO.class.getName()).log(Level.SEVERE, null, ex1);
+            }
+        } finally {
+            try {
+                connection.setAutoCommit(true);
+            } catch (SQLException ex) {
+                Logger.getLogger(AccountDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+
     public Account getAccountById(int id) {
         Account account = null;
         try {
@@ -299,7 +337,6 @@ public class AccountDAO extends DBContext {
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
                 if (account == null) {
-
                     account = new Account();
                     account.setId(rs.getInt(1));
                     account.setUsername(rs.getString(2));
@@ -315,7 +352,6 @@ public class AccountDAO extends DBContext {
                     account.getRole().add(new Role(rs.getInt(9), rs.getString(10)));
                 }
             }
-
         } catch (SQLException ex) {
             Logger.getLogger(AccountDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -574,6 +610,25 @@ public class AccountDAO extends DBContext {
         } catch (SQLException ex) {
             Logger.getLogger(AccountDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    public ArrayList<Account> getTeacherOrStudent() {
+        ArrayList<Account> accounts = new ArrayList<>();
+        String sql = "SELECT account_id FROM quiz_practice_db.account_role ar\n"
+                + "join quiz_practice_db.role r on ar.role_id = r.role_id\n"
+                + "where r.role_name = 'Teacher' or r.role_name = 'Student'";
+        try {
+            PreparedStatement stm = connection.prepareStatement(sql);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                Account a = getAccountById(rs.getInt(1));
+                accounts.add(a);
+            }
+            return accounts;
+        } catch (SQLException ex) {
+            Logger.getLogger(AccountDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
 
     public static void main(String[] args) {

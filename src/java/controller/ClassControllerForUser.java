@@ -3,20 +3,22 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package controller.director;
+package controller;
 
-import dal.AccountDAO;
 import java.io.IOException;
+import java.io.PrintWriter;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
  *
- * @author conmu
+ * @author Vu Duc Tien
  */
-public class ChangeStatusForUserController extends HttpServlet {
+@WebServlet(name = "ClassControllerForUser", urlPatterns = {"/ClassControllerForUser"})
+public class ClassControllerForUser extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -29,15 +31,19 @@ public class ChangeStatusForUserController extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String accountID = request.getParameter("id");
-        String status = request.getParameter("status");
-        AccountDAO adao = new AccountDAO();
-        if (status.equalsIgnoreCase("deactive")) {
-            adao.ActiveStatus(Integer.parseInt(accountID));
-        }else{
-            adao.DeActiveStatus(Integer.parseInt(accountID));
+        response.setContentType("text/html;charset=UTF-8");
+        try (PrintWriter out = response.getWriter()) {
+            /* TODO output your page here. You may use following sample code. */
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet ClassControllerForUser</title>");            
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Servlet ClassControllerForUser at " + request.getContextPath() + "</h1>");
+            out.println("</body>");
+            out.println("</html>");
         }
-        response.sendRedirect("userlist");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
