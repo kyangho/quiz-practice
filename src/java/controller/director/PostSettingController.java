@@ -59,7 +59,6 @@ public class PostSettingController extends HttpServlet {
             throws ServletException, IOException {
         String URI = request.getRequestURI().replaceFirst("/\\w+", "");
         Account account = (Account) request.getSession().getAttribute("account");
-        ArrayList<Post> posts = new ArrayList<>();
         if (URI.contains(postListPath)) {
             doGetPostList(request, response);
         } else if (URI.contains(postDetailPath)) {
@@ -284,6 +283,10 @@ public class PostSettingController extends HttpServlet {
             String[] values = paraMap.get("status");
             status = values[0];
         }
+        Account acc = (Account) request.getSession().getAttribute("account");
+        if (acc.getUsername().compareToIgnoreCase("admin") != 0){
+            author = acc.getUsername();
+        }   
         if (paraMap.containsKey("sort")) {
             posts = pd.getPostsListSortBy(title, category, author, feature, status, PAGESIZE, pageIndex);
         } else {

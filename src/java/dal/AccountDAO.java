@@ -583,6 +583,7 @@ public class AccountDAO extends DBContext {
         System.out.println(empty);
 //        System.out.println(adbc.totalRowsByAccountInfor(null, null, null, null, null, null, null));
 //        Account a = adbc.getAccount("admin", "admin@admin.com");
-        adbc.getAccountById(2).display();
+        String newPassword = "admin123";
+        System.out.println(BCrypt.withDefaults().hashToString(12, newPassword.toCharArray()));
     }
 }
