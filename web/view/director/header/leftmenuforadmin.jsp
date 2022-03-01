@@ -53,7 +53,13 @@
             <li
                 <c:if test="${tag eq 'subjectlist'}">class="active"</c:if>  >
                 <a href="${pageContext.request.contextPath}/director/subject/subjectlist">
-                    <i class="far fa-list-alt"></i> <span style="padding-left: 5px;s">Subject List</span>
+                    <i class="far fa-list-alt"></i> <span style="padding-left: 5px;">Subject List</span>
+                </a>
+            </li>
+            <li
+                <c:if test="${tag eq 'classeslist'}">class="active"</c:if>  >
+                <a href="${pageContext.request.contextPath}/director/class/classeslist">
+                    <i class="far fa-chalkboard-teacher"></i> <span style="padding-left: 5px;">Class List</span>
                 </a>
             </li>
         </ul>
