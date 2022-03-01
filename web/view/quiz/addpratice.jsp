@@ -3,8 +3,9 @@
 <jsp:include page="../home/header_footer/header.jsp"></jsp:include>
     <div class="row" style="margin: 2%;">
     <c:if test="${sessionScope.account!= null}">
-        <div class="col-lg-4 col-sm-3">
-            <a class="btn btn-circle btn-success" href="list"><i class="bi bi-arrow-return-left"></i> Practice List</a>
+        <div class="col-lg-4 col-sm-3 row">
+            <a style="margin-bottom: 2%;" class="col-lg-7 btn btn-circle btn-success" href="list"><i class="bi bi-arrow-return-left"></i> Practice List</a>
+            <a class="col-lg-7  btn btn-circle btn-danger" href="#"><i class="bi bi-bookmark-plus"></i></i> Create new Quiz</a>
         </div>
     </c:if>
     <c:if test="${sessionScope.account == null}">

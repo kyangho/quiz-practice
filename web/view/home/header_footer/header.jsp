@@ -1,4 +1,8 @@
-<%-- Document : header Created on : Feb 1, 2022, 9:59:18 PM Author : Vu Duc Tien --%>
+<%-- 
+    Document   : header
+    Created on : Feb 1, 2022, 9:59:18 PM
+    Author     : Vu Duc Tien
+--%>
 
 <%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
@@ -10,6 +14,22 @@
         <meta content="width=device-width, initial-scale=1.0" name="viewport">
         <meta content="" name="keywords">
         <meta content="" name="description">
+
+        <!-- Favicon -->
+        <link href="img/favicon.ico" rel="icon">
+
+        <!-- Google Web Fonts -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
+
+        <!-- Icon Font Stylesheet -->
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+        <!-- Libraries Stylesheet -->
+        <link href="${pageContext.request.contextPath}/lib/animate/animate.min.css" rel="stylesheet">
+        <link href="${pageContext.request.contextPath}/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
 
     <!-- Customized Bootstrap Stylesheet -->
     <link href="${pageContext.request.contextPath}/css/bootstrap.min.css?v=5" rel="stylesheet">
@@ -68,9 +88,9 @@
                 <div class="nav-item dropdown">
                     <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
                     <div class="dropdown-menu fade-down m-0">
-                        <c:if test="${sessionScope.account == null}">
-                            <a href="${pageContext.request.contextPath}/practice/details" class="dropdown-item <c:if test="${requestScope.tag eq 'details'}">active</c:if>">Quizses</a>
-                        </c:if>
+                        <%--<c:if test="${sessionScope.account == null}">--%>
+                            <!--<a href="${pageContext.request.contextPath}/practice/details" class="dropdown-item <c:if test="${requestScope.tag eq 'details'}">active</c:if>">Quizses</a>-->
+                        <%--</c:if>--%>
                         <c:if test="${sessionScope.account != null}">
                             <a href="${pageContext.request.contextPath}/practice/list"class="dropdown-item <c:if test="${requestScope.tag eq 'list'}">active</c:if>">Practice List</a>
                         </c:if>
@@ -99,13 +119,12 @@
                         <a href="#popup1" style="    padding-top: 7px;">${sessionScope.account.fullname}</a>
                     </div>
 
-                        <a style=" border-top: none;" class="nav-item nav-link"
-                           href="${pageContext.request.contextPath}/logout"><i
-                                class="fa fa-sign-out-alt"></i>Logout</a>
-                        </c:if>
-                </div>
-                <div id="popup1" class="overlay">
-                    <div class="popup">
+                    <a style=" border-top: none;" class="nav-item nav-link" href="${pageContext.request.contextPath}/logout"><i class="fa fa-sign-out-alt"></i>Logout</a>
+                </c:if>
+            </div>
+            <div id="popup1" class="overlay">
+                <div class="popup">
+                    <form>
                         <h2 style="border-bottom: 1px solid black;">Information</h2>
                         <a class="close" href="#">&times;</a>
                         <div class="flex">
@@ -113,21 +132,19 @@
                                 <ul style="font-weight: 600; padding-left: 0rem;">
                                     <li>ID: ${sessionScope.account.id}</li>
                                     <li>Username: ${sessionScope.account.username}</li>
-                                    <li>Full name: ${sessionScope.account.fullname}</li>
-                                    <li>Gender: <c:if test="${sessionScope.account.gender == true}">Male
-                                        </c:if>
-                                        <c:if test="${sessionScope.account.gender == false}">Female</c:if>
-                                        </li>
-                                        <li>Email: ${sessionScope.account.email}</li>
+                                    <li>Full name: <input name="fullname" type="text" value="${sessionScope.account.fullname}"/></li>
+                                    <li>Gender: <c:if test="${sessionScope.account.gender == true}">Male</c:if>
+                                        <c:if test="${sessionScope.account.gender == false}">Female</c:if></li>
+                                    <li>Email:  ${sessionScope.account.email}</li>
                                     <li>Phone number: ${sessionScope.account.phone}</li>
-                                    <li>Address: ${sessionScope.account.address}</li>
+                                    <li>Address: <input name="address" type="text" value="${sessionScope.account.address}"/></li>
 
                                 </ul>
                                 <a href="changepassword" class="btn btn-primary">Reset password</a>
                             </div>
                             <div class="img">
                                 <!--<img src="https://th.bing.com/th/id/OIP.CPCyt52dUDhWIhy1K3guLAHaHa?pid=ImgDet&rs=1">-->
-                                <img src="${sessionScope.account.avatar}">
+                                <img src="${sessionScope.account.avatar}"> 
                             </div>
                         </div>
                     </div>
