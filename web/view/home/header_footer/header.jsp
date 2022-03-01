@@ -88,9 +88,9 @@
                 <div class="nav-item dropdown">
                     <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
                     <div class="dropdown-menu fade-down m-0">
-                        <c:if test="${sessionScope.account == null}">
-                            <a href="${pageContext.request.contextPath}/practice/details" class="dropdown-item <c:if test="${requestScope.tag eq 'details'}">active</c:if>">Quizses</a>
-                        </c:if>
+                        <%--<c:if test="${sessionScope.account == null}">--%>
+                            <!--<a href="${pageContext.request.contextPath}/practice/details" class="dropdown-item <c:if test="${requestScope.tag eq 'details'}">active</c:if>">Quizses</a>-->
+                        <%--</c:if>--%>
                         <c:if test="${sessionScope.account != null}">
                             <a href="${pageContext.request.contextPath}/practice/list"class="dropdown-item <c:if test="${requestScope.tag eq 'list'}">active</c:if>">Practice List</a>
                         </c:if>
