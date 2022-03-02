@@ -8,7 +8,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <jsp:include page="../home/header_footer/header.jsp"></jsp:include>
-    <div class="container-fluid col-lg-10">
+    <div class="container-fluid">
         <div class="row flex-nowrap">
         <jsp:include page="leftmenu.jsp"></jsp:include>
             <div class="col py-3 col-lg-9">
