@@ -34,7 +34,7 @@
                                     <label class="col-sm-2 col-sm-2 control-label">Author *:</label>
                                     <div class="col-sm-4">
                                         <select class="form-control" name="author" id="author">
-                                            <option value="-1">Choose teacher</option>
+                                            <option value="-1">Choose author</option>
                                         <c:forEach items="${requestScope.teachersOrStudents}" var="tos">
                                             <option value="${tos.id}">${tos.fullname}</option>
                                         </c:forEach>
