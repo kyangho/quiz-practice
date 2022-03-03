@@ -108,17 +108,23 @@
                 <div data-v-3f400e64="" class="completed-games">
                     <div data-v-8d3099dc="" data-v-3f400e64="" class="text-unselectable"><!---->
                         <!--search-->
-                        <div class="container">
-                            <div class="filter">
-                                <form style="border:none;width: 630px; padding-right: 30px" action="listquiz" method="POST">
-
-                                    <table style="margin: 0;" class="table table-hover">
-                                        <tbody style="display: flex">
-                                            <tr>
-                                                <th style="display: flex">
-                                                    Subject
-                                                    <select name="subject" class=" input-sm" style="border-radius: 7px; margin-left: 10px">
-                                                        <option ${requestScope.subject eq "all" ? "selected=\"selected\"" : ""} value="all">All</option>
+                        <div class="panel-heading" style="display: flex; margin-bottom: 21px;justify-content: space-around;">
+                            <div style="margin-right: 60%;"><h1>List of quiziz</h1> </div>
+                        <c:if test="${sessionScope.account != null}">
+                            <div>
+                                <a href="../quiz/newquiz">Add new quiziz </a>
+                            </div>
+                        </c:if>
+                    </div>                        <div class="container">
+                        <div class="filter">
+                            <form style="border:none;width: 630px; padding-right: 30px" action="listquiz" method="POST">
+                                <table style="margin: 0;" class="table table-hover">
+                                    <tbody style="display: flex">
+                                        <tr>
+                                            <th style="display: flex">
+                                                Subject
+                                                <select name="subject" class=" input-sm" style="border-radius: 7px; margin-left: 10px">
+                                                    <option ${requestScope.subject eq "all" ? "selected=\"selected\"" : ""} value="all">All</option>
                                                     <c:forEach items="${requestScope.subs}" var="s">
                                                         <option ${requestScope.subject eq s.subject_title ? "selected=\"selected\"" : ""} value="${s.subject_title}">${s.subject_title}</option>
                                                     </c:forEach>
@@ -170,7 +176,7 @@
                                             <div data-v-76782db8="" data-v-0a33e012="" class="curved-edge-container media-dimensions media-wrapper">
                                                 <div data-v-76782db8="" class="curve" style="width: 400%; padding-top: 400%; transform: translateX(-37.5%) translateY(-100%); top: 100%;">
                                                     <div data-v-76782db8="" class="content-container" style="width: calc(25.02%); left: calc(37.49%);">
-                                                        <div data-v-0a33e012="" data-v-76782db8="" role="img" aria-label="Quiz thumbnail" class="media-dimensions media" style="background-image: url(../../img_quiz.jpg);">                                                      
+                                                        <div data-v-0a33e012="" data-v-76782db8="" role="img" aria-label="Quiz thumbnail" class="media-dimensions media" style="background-image: url(${pageContext.request.contextPath}/img/quiz2.jpg);">                                                      
                                                         </div>                                                     
                                                     </div>                                                
                                                 </div>
@@ -188,7 +194,7 @@
                                             <div data-v-0a33e012="" class="quiz-info">
                                                 <div data-v-0a33e012="" class="questions-length">Level: ${q.level}</div>
                                             </div>
-                                            <p data-v-0a33e012="" class="quiz-name" style="display: -webkit-box; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; -webkit-line-clamp: 2;">${q.title}</p>
+                                            <p data-v-0a33e012="" class="quiz-name" style="display: -webkit-box; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; -webkit-line-clamp: 2;">Study: ${q.title}</p>
                                             <div data-v-0a33e012="" class="game-details">
                                                 <div data-v-0a33e012="" class="assignment-info">
                                                     <span data-v-0a33e012="" class="assigned-by-title">By: </span>

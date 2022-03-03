@@ -97,6 +97,18 @@
         <servlet-name>QuizDetailController</servlet-name>
         <servlet-class>controller.quiz.QuizDetailController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>EditQuizController</servlet-name>
+        <servlet-class>controller.quiz.EditQuizController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DeleteQuizController</servlet-name>
+        <servlet-class>controller.quiz.DeleteQuizController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>NewQuiz</servlet-name>
+        <servlet-class>controller.quiz.NewQuiz</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>HomePageController</servlet-name>
         <url-pattern>/home</url-pattern>
@@ -200,6 +212,18 @@
     <servlet-mapping>
         <servlet-name>QuizDetailController</servlet-name>
         <url-pattern>/quiz/detail</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>EditQuizController</servlet-name>
+        <url-pattern>/quiz/editquiz</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeleteQuizController</servlet-name>
+        <url-pattern>/quiz/deletequiz</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>NewQuiz</servlet-name>
+        <url-pattern>/quiz/newquiz</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>
