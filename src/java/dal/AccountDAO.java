@@ -51,9 +51,7 @@ public class AccountDAO extends DBContext {
                     + "JOIN account_role as ar on a.account_id = ar.account_id\n"
                     + "JOIN role as r on r.role_id = ar.role_id\n"
                     + "WHERE username = ?";
-            PreparedStatement stm2 = connection.prepareStatement(sql2);
-            stm2.setString(1, username);
-            ResultSet rs2 = stm2.executeQuery();
+
             if (rs1.next()) {
                 Account account = new Account();
                 account.setId(rs1.getInt(1));
@@ -68,6 +66,9 @@ public class AccountDAO extends DBContext {
                 account.setAvatar(rs1.getString(10));
 
                 ArrayList<Role> roles = new ArrayList<>();
+                PreparedStatement stm2 = connection.prepareStatement(sql2);
+                stm2.setString(1, username);
+                ResultSet rs2 = stm2.executeQuery();
                 while (rs2.next()) {
                     Role r = new Role();
                     r.setId(rs2.getInt(1));
@@ -85,6 +86,8 @@ public class AccountDAO extends DBContext {
             }
         } catch (SQLException ex) {
             Logger.getLogger(AccountDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception e) {
+            Logger.getLogger(AccountDAO.class.getName()).log(Level.SEVERE, null, e);
         }
         return null;
     }
@@ -638,7 +641,9 @@ public class AccountDAO extends DBContext {
         System.out.println(empty);
 //        System.out.println(adbc.totalRowsByAccountInfor(null, null, null, null, null, null, null));
 //        Account a = adbc.getAccount("admin", "admin@admin.com");
-        String newPassword = "admin123";
+        String newPassword = "ducky123";
+        String hashPass = "$2a$12$OS.8wHYDW4UvK1vLv3Qsvu46XUgQK4u/r5zVpan6VIflwm3Y4TojO";
         System.out.println(BCrypt.withDefaults().hashToString(12, newPassword.toCharArray()));
+        System.out.println(BCrypt.verifyer().verify(newPassword.toCharArray(), hashPass).verified == true);
     }
 }

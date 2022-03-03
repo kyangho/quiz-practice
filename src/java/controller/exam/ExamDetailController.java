@@ -13,7 +13,7 @@ import model.Exam;
  *
  * @author kienct
  */
-@WebServlet(name = "ExamDetailController", urlPatterns = {"/ExamDetail"})
+@WebServlet(name = "ExamDetailController", urlPatterns = {"/exam/detail"})
 public class ExamDetailController extends HttpServlet {
 
     @Override
@@ -23,7 +23,7 @@ public class ExamDetailController extends HttpServlet {
         ExamDAO dao = new ExamDAO();
         Exam exam = dao.getExamDetail(id);
         request.setAttribute("quiz", exam);
-        request.getRequestDispatcher("../view/exam/examdetail.jsp").forward(request, response);
+        request.getRequestDispatcher("/view/exam/examdetail.jsp").forward(request, response);
     }
 
     @Override

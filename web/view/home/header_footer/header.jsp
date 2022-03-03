@@ -106,8 +106,8 @@
                     </c:if>
                 </c:forEach>
                 <c:forEach items="${sessionScope.account.role}" var="r">
-                    <c:if test="${r.roleName == 'Admin'}">
-                        <a href="${pageContext.request.contextPath}/director/setting/settinglist" class="nav-item nav-link">For Director</a>
+                    <c:if test="${r.roleName == 'Admin' || r.roleName == 'Author'}">
+                        <a href="${pageContext.request.contextPath}/director" class="nav-item nav-link">For Director</a>
                     </c:if>
                 </c:forEach>
                 <c:if test="${sessionScope.account == null}"> 

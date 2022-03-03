@@ -115,7 +115,7 @@ public class AdminFilter implements Filter {
             Account account = (Account) req.getSession().getAttribute("account");
             if (account != null) {
                 for (Role role : account.getRole()) {
-                    if (role.equals("admin")) {
+                    if (role.equals("admin") || role.equals("author")) {
                         chain.doFilter(request, response);
                     } else {
                         continue;
