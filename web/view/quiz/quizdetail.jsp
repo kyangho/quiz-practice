@@ -29,9 +29,9 @@
                     <p>Level: ${requestScope.quiz.level}</p>
                     <p>Type quiz: ${requestScope.quiz.type}</p>
                     <p>Author: ${requestScope.quiz.author.fullname}</p>
-<!--                    <p>Time start: ${requestScope.quiz.startTime}</p>
+                    <p>Time start: ${requestScope.quiz.startTime}</p>
                     <p>Time end: ${requestScope.quiz.endTime}</p>
-                    <p>Rate: ${requestScope.quiz.rate}</p>-->
+                    <p>Rate: ${requestScope.quiz.rate}</p>
                     <p>Sample questions: </p> 
                     <div style="background-color: #47424233;margin:0 1%;padding: 1% 5%;color: gray;border-radius: 8px;">
                         <c:forEach items="${requestScope.quiz.questions}" var="q">

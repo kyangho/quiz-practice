@@ -115,7 +115,8 @@
                                 <a href="../quiz/newquiz">Add new quiziz </a>
                             </div>
                         </c:if>
-                    </div>                        <div class="container">
+                    </div>                        
+                    <div class="container">
                         <div class="filter">
                             <form style="border:none;width: 630px; padding-right: 30px" action="listquiz" method="POST">
                                 <table style="margin: 0;" class="table table-hover">
@@ -161,7 +162,6 @@
                             <input type="search" placeholder="Search quizzes by the title" name="search_quiz_title" value="${requestScope.search_quiz_title}">
                             <button type="submit">Search</button>
                         </form>
-
                     </div>
 
                     <div data-v-8d3099dc="" class="completed-games-list">

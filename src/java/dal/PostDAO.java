@@ -49,7 +49,7 @@ public class PostDAO extends DBContext {
         ArrayList<Post> resPosts = new ArrayList<>();
         String sql
                 = "select * from\n"
-                + "	(select row_number() over (order by post_time_modified DESC ) as stt,\n"
+                + "(select row_number() over (order by post_time_modified DESC ) as stt,\n"
                 + "    p.post_id,\n"
                 + "p.post_title,\n"
                 + "p.post_author,\n"
@@ -77,8 +77,9 @@ public class PostDAO extends DBContext {
             sql += title + " AND ";
             sql += category + " AND ";
             sql += author + " AND ";
-            if (isFeature != null)
+            if (isFeature != null) {
                 sql += "post_isFeaturing = " + featureSQL + " AND ";
+            }
             sql += status;
         }
         sql += "\ngroup by p.post_id";
@@ -167,7 +168,7 @@ public class PostDAO extends DBContext {
         }
         return resPosts;
     }
-    
+
     public Post getPostWithId(int id) {
         Post resPost = new Post();
         String sqlGetPostInfo = "SELECT \n"
@@ -651,7 +652,7 @@ public class PostDAO extends DBContext {
                 + "post_status = ?,\n"
                 + "post_date_modified = ?\n"
                 + "WHERE post_id = ?;";
-        try{
+        try {
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setString(1, status);
             stm.setTimestamp(2, new Timestamp(System.currentTimeMillis()));
@@ -663,14 +664,14 @@ public class PostDAO extends DBContext {
         }
         return true;
     }
-    
+
     public boolean updateFeature(int postId, boolean isFeature) {
         String sql = "UPDATE `quiz_practice_db`.`post`\n"
                 + "SET\n"
                 + "post_isFeaturing = ?,\n"
                 + "post_time_modified = ?\n"
                 + "WHERE post_id = ?;";
-        try{
+        try {
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setBoolean(1, isFeature);
             stm.setTimestamp(2, new Timestamp(System.currentTimeMillis()));
