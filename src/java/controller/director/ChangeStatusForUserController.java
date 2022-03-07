@@ -37,10 +37,7 @@ public class ChangeStatusForUserController extends HttpServlet {
         }else{
             adao.DeActiveStatus(Integer.parseInt(accountID));
         }
-        
         response.sendRedirect("userlist");
-        
-        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

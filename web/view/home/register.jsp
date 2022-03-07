@@ -43,7 +43,9 @@
                             </div>
                             <div id="password_alert" style="color: white;"></div>
                             <div class="form-group">
-                                <input name="register_fullname" type="text" class="form-control border-0 p-4" placeholder="Fullname" required="required" pattern="[^\d~`!@#$%^&*()<>?,.|\/]" title="Name must't contain number and special characters"/>
+                                <input name="register_fullname" type="text" class="form-control border-0 p-4" placeholder="Fullname" required="required"
+                                       pattern="^[a-zA-ZaAàÀảẢãÃáÁạẠăĂằẰẳẲẵẴắẮặẶâÂầẦẩẨẫẪấẤậẬbBcCdDđĐeEèÈẻẺẽẼéÉẹẸêÊềỀểỂễỄếẾệỆfFgGhHiIìÌỉỈĩĨíÍịỊjJkKlLmMnNoOòÒỏỎõÕóÓọỌôÔồỒổỔỗỖốỐộỘơƠờỜởỞỡỠớỚợỢpPqQrRsStTuUùÙủỦũŨúÚụỤưƯừỪửỬữỮứỨựỰvVwWxXyYỳỲỷỶỹỸýÝỵỴ\s]+$"
+                                       title="Name must't contain number and special characters"/>
                             </div>
                             <div class="form-group" style="color: white;">
                                 <input name="gender" type="radio" value="male" required="required"/>Male
@@ -75,7 +77,6 @@
                                             return true;
                                         }
                                     }else{
-                                        console.log("not")
                                         document.getElementById("password_alert").innerHTML+="<p>Password and Re-password not match</p>";
                                         document.getElementById("register_form").onsubmit = function(){
                                             return false;

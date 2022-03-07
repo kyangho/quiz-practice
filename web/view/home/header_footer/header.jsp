@@ -75,27 +75,77 @@
         <!-- Navbar Start -->
         <nav class="navbar navbar-expand-lg bg-white navbar-light shadow sticky-top p-0">
             <a href="${pageContext.request.contextPath}/home" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
-                <h2 class="m-0 text-primary"><i class="fa fa-book me-3"></i>Quizz</h2>
-            </a>
-            <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarCollapse">
-                <div class="navbar-nav ms-auto p-4 p-lg-0">
-                    <a href="${pageContext.request.contextPath}/home"  class="nav-item nav-link <c:if test="${requestScope.tag eq 'home'}">active</c:if>">Home</a>
-                        <a href="about.html" class="nav-item nav-link">About</a>
-                        <a href="${pageContext.request.contextPath}/post/list" class="nav-item nav-link">Posts</a>
-                    <div class="nav-item dropdown">
-                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
-                        <div class="dropdown-menu fade-down m-0">
-                            <c:if test="${sessionScope.account == null}">
-                                <a href="${pageContext.request.contextPath}/practice/details" class="dropdown-item <c:if test="${requestScope.tag eq 'details'}">active</c:if>">Quizses</a>
-                            </c:if>
-                            <c:if test="${sessionScope.account != null}">
-                                <a href="${pageContext.request.contextPath}/practice/list"class="dropdown-item <c:if test="${requestScope.tag eq 'list'}">active</c:if>">Practice List</a>
-                            </c:if>
-                            <a href="testimonial.html" class="dropdown-item">Testimonial</a>
-                            <a href="404.html" class="dropdown-item">404 Page</a>
+            <h2 class="m-0 text-primary"><i class="fa fa-book me-3"></i>Quizz</h2>
+        </a>
+        <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <div class="navbar-nav ms-auto p-4 p-lg-0">
+                <a href="${pageContext.request.contextPath}/home"  class="nav-item nav-link <c:if test="${requestScope.tag eq 'home'}">active</c:if>">Home</a>
+                    <a href="about.html" class="nav-item nav-link">About</a>
+                    <a href="${pageContext.request.contextPath}/post/list" class="nav-item nav-link">Posts</a>
+                <div class="nav-item dropdown">
+                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
+                    <div class="dropdown-menu fade-down m-0">
+                        <%--<c:if test="${sessionScope.account == null}">--%>
+                            <!--<a href="${pageContext.request.contextPath}/practice/details" class="dropdown-item <c:if test="${requestScope.tag eq 'details'}">active</c:if>">Quizses</a>-->
+                        <%--</c:if>--%>
+                        <c:if test="${sessionScope.account != null}">
+                            <a href="${pageContext.request.contextPath}/practice/list"class="dropdown-item <c:if test="${requestScope.tag eq 'list'}">active</c:if>">Practice List</a>
+                        </c:if>
+                        <a href="testimonial.html" class="dropdown-item">Testimonial</a>
+                        <a href="404.html" class="dropdown-item">404 Page</a>
+                    </div>
+                </div>
+                <a href="contact.html" class="nav-item nav-link">Contact</a>
+                <a href="${pageContext.request.contextPath}/quiz/listquiz" class="nav-item nav-link">List Quizzes</a>
+                <c:forEach items="${sessionScope.account.role}" var="r">
+                    <c:if test="${r.roleName == 'Admin'}">
+                        <a href="${pageContext.request.contextPath}/profile" class="nav-item nav-link">List User</a>
+                    </c:if>
+                </c:forEach>
+                <c:forEach items="${sessionScope.account.role}" var="r">
+                    <c:if test="${r.roleName == 'Admin' || r.roleName == 'Author'}">
+                        <a href="${pageContext.request.contextPath}/director" class="nav-item nav-link">For Director</a>
+                    </c:if>
+                </c:forEach>
+                <c:if test="${sessionScope.account == null}"> 
+                    <a href="${pageContext.request.contextPath}/login" class="btn btn-primary py-4 px-lg-5 d-none d-lg-block">Join Now<i class="fa fa-arrow-right ms-3"></i></a>
+                    </c:if>
+                    <c:if test="${sessionScope.account != null}">             
+                    <div class="inf button nav-item nav-link" style="padding: 18px 0 0 0;"><img src="https://th.bing.com/th/id/OIP.CPCyt52dUDhWIhy1K3guLAHaHa?pid=ImgDet&rs=1"
+                                                                                                style="width: 35px; height: 35px ; margin-right: 4px; border-radius: 50%;">
+                        <a href="#popup1" style="    padding-top: 7px;">${sessionScope.account.fullname}</a>
+                    </div>
+
+                    <a style=" border-top: none;" class="nav-item nav-link" href="${pageContext.request.contextPath}/logout"><i class="fa fa-sign-out-alt"></i>Logout</a>
+                </c:if>
+            </div>
+            <div id="popup1" class="overlay">
+                <div class="popup">
+                    <form>
+                        <h2 style="border-bottom: 1px solid black;">Information</h2>
+                        <a class="close" href="#">&times;</a>
+                        <div class="flex">
+                            <div class="content">
+                                <ul style="font-weight: 600; padding-left: 0rem;">
+                                    <li>ID: ${sessionScope.account.id}</li>
+                                    <li>Username: ${sessionScope.account.username}</li>
+                                    <li>Full name: <input name="fullname" type="text" value="${sessionScope.account.fullname}"/></li>
+                                    <li>Gender: <c:if test="${sessionScope.account.gender == true}">Male</c:if>
+                                        <c:if test="${sessionScope.account.gender == false}">Female</c:if></li>
+                                    <li>Email:  ${sessionScope.account.email}</li>
+                                    <li>Phone number: ${sessionScope.account.phone}</li>
+                                    <li>Address: <input name="address" type="text" value="${sessionScope.account.address}"/></li>
+
+                                </ul>
+                                <a href="changepassword" class="btn btn-primary">Reset password</a>
+                            </div>
+                            <div class="img">
+                                <!--<img src="https://th.bing.com/th/id/OIP.CPCyt52dUDhWIhy1K3guLAHaHa?pid=ImgDet&rs=1">-->
+                                <img src="${sessionScope.account.avatar}"> 
+                            </div>
                         </div>
                     </div>
                     <a href="contact.html" class="nav-item nav-link">Contact</a>

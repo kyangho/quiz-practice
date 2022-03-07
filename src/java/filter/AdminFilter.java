@@ -18,6 +18,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import model.Account;
+import model.Role;
 
 /**
  *
@@ -109,15 +110,20 @@ public class AdminFilter implements Filter {
         
         Throwable problem = null;
         try {
-//            HttpServletRequest req = (HttpServletRequest) request;
-//            HttpServletResponse res = (HttpServletResponse) response;
-//            Account account = (Account) req.getSession().getAttribute("account");
-//            if(account != null){
-//                chain.doFilter(request, response);
-//            }else{
-//                res.sendRedirect("../../login");
-//            }
-//            chain.doFilter(request, response);
+            HttpServletRequest req = (HttpServletRequest) request;
+            HttpServletResponse res = (HttpServletResponse) response;
+            Account account = (Account) req.getSession().getAttribute("account");
+            if (account != null) {
+                for (Role role : account.getRole()) {
+                    if (role.equals("admin") || role.equals("author")) {
+                        chain.doFilter(request, response);
+                    } else {
+                        continue;
+                    }
+                }
+            } else {
+                res.sendRedirect(req.getContextPath() + "/login");
+            }
         } catch (Throwable t) {
             // If an exception is thrown somewhere down the filter chain,
             // we still want to execute our after processing, and then

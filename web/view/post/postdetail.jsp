@@ -106,12 +106,18 @@
                         <div style="white-space: pre-line;">
                             ${post.content}
                         </div>
-                        <c:if test="${post.author == sessionScope.account.username}">
-                            <a class="btn btn-danger" href="update?id=${post.id}">Edit</a>
-                        </c:if>
-                        <div>
+                        <div style="padding-top: 30px">
                             <h6>Attach file:</h6>
-                            <a href="file?id=${requestScope.post.id}">${requestScope.fileName}</a>
+                            <c:if test="${sessionScope.account == null}">
+                                <c:if test="${requestScope.post.postFiles.size() != 0}">
+                                    <div>You must <a href="${pageContext.request.contextPath}/login">Login</a> or <a href="${pageContext.request.contextPath}/register">Register</a> to download this attach.</div>
+                                </c:if>
+                            </c:if>
+                            <c:if test="${sessionScope.account != null}">
+                                <c:if test="${requestScope.post.postFiles.size() != 0}">
+                                    <a href="file?id=${requestScope.post.id}">${requestScope.fileName}</a>
+                                </c:if>
+                            </c:if>
                         </div>
                     </div>
                 </div>

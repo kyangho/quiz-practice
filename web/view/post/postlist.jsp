@@ -23,14 +23,14 @@
 <jsp:include page="../home/header_footer/header.jsp"></jsp:include>
     <div class="container-fluid pt-50 post-list-container col-md-11 text-center ">
         <div class="d-flex flex-wrap justify-content-between mb-4">
-            <div> <button type="button" class="btn btn-shadow btn-wide btn-primary"> <span class="btn-icon-wrapper pr-2 opacity-7"> <i class="fa fa-plus fa-w-20"></i> </span> New thread </button> </div>
+            <!--<div> <button type="button" class="btn btn-shadow btn-wide btn-primary"> <span class="btn-icon-wrapper pr-2 opacity-7"> <i class="fa fa-plus fa-w-20"></i> </span> New thread </button> </div>-->
             <div class="col-12 col-md-3 p-0 mb-3">  </div>
         </div>
         <div class="row">
             <div class="col-sm-3">
                 <div class="left-sidebar">
                     <div class="row card col-sm-12" id="filterbar">
-                        <div id="search"> 
+                        <div id="search" style="margin-top: 20px"> 
                             <input id="input-search" placeholder="Search..." /> 
                             <button><i class="fa fa-search"></i></button>
                         </div>
