@@ -110,12 +110,10 @@
                             </tr>
                             </td>
                             </tr>
-                        </table>
-                        <input style="width: 70px" type="submit" value="Save"><br>
+                        </table> <br>
+                        <button style="border:none; margin-left: 48%;" onclick="add_child()"><i class="fas fa-plus-circle"></i></button>
+                        <br><input style="width: 70px" type="submit" value="Save"><br>
                     </form>
-
-                    <button style="border:none; margin-left: 48%;" onclick="add_child()"><i class="fas fa-plus-circle"></i></button>
-
                 </div>
                 <br>
             </div>
@@ -127,7 +125,7 @@
         var p = document.createElement("textarea");
         p.style.padding = "10px";
         p.style.color = "white";
-        p.style.width="501px";
+        p.style.width = "501px";
         p.style.margin = "10px 0 0 0";
         var div = document.getElementById("demo");
         div.appendChild(p);
