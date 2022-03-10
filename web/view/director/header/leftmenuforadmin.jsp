@@ -57,9 +57,27 @@
                 </a>
             </li>
             <li
+                <c:if test="${tag eq 'quizlist'}">class="active"</c:if>  >
+                <a href="${pageContext.request.contextPath}/quiz/listquiz">
+                    <i class="far fa-list-alt"></i> <span style="padding-left: 5px;">Quiz List</span>
+                </a>
+            </li>
+            <li
+                <c:if test="${tag eq 'question'}">class="active"</c:if>  >
+                <a href="${pageContext.request.contextPath}/question/list">
+                    <i class="far fa-question-circle"></i> <span style="padding-left: 5px;">Question List</span>
+                </a>
+            </li>
+            <li
                 <c:if test="${tag eq 'classeslist'}">class="active"</c:if>  >
                 <a href="${pageContext.request.contextPath}/director/class/classeslist">
                     <i class="far fa-chalkboard-teacher"></i> <span style="padding-left: 5px;">Class List</span>
+                </a>
+            </li>
+            <li
+                <c:if test="${tag eq 'slider'}">class="active"</c:if>  >
+                <a href="${pageContext.request.contextPath}/director/slider/list">
+                    <i class="far fa-chalkboard-teacher"></i> <span style="padding-left: 5px;">Slider</span>
                 </a>
             </li>
         </ul>

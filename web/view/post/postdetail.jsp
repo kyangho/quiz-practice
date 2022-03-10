@@ -109,10 +109,14 @@
                         <div style="padding-top: 30px">
                             <h6>Attach file:</h6>
                             <c:if test="${sessionScope.account == null}">
-                                <div>You must <a href="${pageContext.request.contextPath}/login">Login</a> or <a href="${pageContext.request.contextPath}/register">Register</a> to download this attach.</div>
+                                <c:if test="${requestScope.post.postFiles.size() != 0}">
+                                    <div>You must <a href="${pageContext.request.contextPath}/login">Login</a> or <a href="${pageContext.request.contextPath}/register">Register</a> to download this attach.</div>
+                                </c:if>
                             </c:if>
                             <c:if test="${sessionScope.account != null}">
-                                <a href="file?id=${requestScope.post.id}">${requestScope.fileName}</a>
+                                <c:if test="${requestScope.post.postFiles.size() != 0}">
+                                    <a href="file?id=${requestScope.post.id}">${requestScope.fileName}</a>
+                                </c:if>
                             </c:if>
                         </div>
                     </div>

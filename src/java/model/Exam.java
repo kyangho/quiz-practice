@@ -13,7 +13,7 @@ public class Exam {
     private Date updatedDate;
     private String title;
     private String thumbnail;
-    private int categoryId;
+    private String category;
     private String className;
     private String briefInfo;
     private String author;
@@ -62,12 +62,12 @@ public class Exam {
         this.thumbnail = thumbnail;
     }
 
-    public int getCategoryId() {
-        return categoryId;
+    public String getCategory() {
+        return category;
     }
 
-    public void setCategoryId(int categoryId) {
-        this.categoryId = categoryId;
+    public void setCategory(String category) {
+        this.category = category;
     }
 
     public String getClassName() {
@@ -104,6 +104,11 @@ public class Exam {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    @Override
+    public String toString() {
+        return "Exam{" + "id=" + id + ", isFree=" + isFree + ", updatedDate=" + updatedDate + ", title=" + title + ", thumbnail=" + thumbnail + ", category=" + category + ", className=" + className + ", briefInfo=" + briefInfo + ", author=" + author + ", content=" + content + '}';
     }
 
 }

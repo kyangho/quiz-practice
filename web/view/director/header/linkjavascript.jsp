@@ -1,4 +1,4 @@
-
+<script src="${pageContext.request.contextPath}/ckeditor/ckeditor.js" type="text/javascript"></script>
 <!-- jQuery 2.0.2 -->
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
 <script src="${pageContext.request.contextPath}/bootstrap_for_admin/js/jquery.min.js" type="text/javascript"></script>

@@ -18,7 +18,7 @@ import model.Subject;
  *
  * @author kienct
  */
-@WebServlet(name = "ExamListController", urlPatterns = {"/ExamList"})
+@WebServlet(name = "ExamListController", urlPatterns = {"/exam"})
 public class ExamListController extends HttpServlet {
     ExamDAO dao = new ExamDAO();
     QuizDAO q = new QuizDAO();
@@ -32,7 +32,7 @@ ArrayList<Exam> exams = dao.getExams();
         request.setAttribute("exams", exams);
         request.setAttribute("cates", cates);
         request.setAttribute("subs", subs);
-        request.getRequestDispatcher("../view/exam/examlist.jsp").forward(request, response);
+        request.getRequestDispatcher("/view/exam/examlist.jsp").forward(request, response);
     }
 
     @Override

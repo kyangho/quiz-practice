@@ -5,7 +5,7 @@
  */
 package model;
 
-import java.sql.Date;
+import java.sql.Time;
 import java.util.ArrayList;
 
 /**
@@ -16,14 +16,15 @@ public class Quiz {
 
     private int id;
     private String title;
+    private String name;
     private Subject subject;
     private String level;
     private String type;
     private String img;
     private Account author;
     private Category category;
-    private Date startTime;
-    private Date endTime;
+    private Time startTime;
+    private Time endTime;
     private String status;
     private double rate;
     ArrayList<Question> questions = new ArrayList<>();
@@ -32,7 +33,7 @@ public class Quiz {
     public Quiz() {
     }
 
-    public Quiz(int id, String title, Subject subject, String level, String type, String img, Account author, Category category, Date startTime, Date endTime, String status, double rate) {
+    public Quiz(int id, String title, Subject subject, String level, String type, String img, Account author, Category category, Time startTime, Time endTime, String status, double rate, boolean hasJoin) {
         this.id = id;
         this.title = title;
         this.subject = subject;
@@ -45,7 +46,18 @@ public class Quiz {
         this.endTime = endTime;
         this.status = status;
         this.rate = rate;
+        this.hasJoin = hasJoin;
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+    
+    
 
     public boolean isHasJoin() {
         return hasJoin;
@@ -127,19 +139,19 @@ public class Quiz {
         this.author = author;
     }
 
-    public Date getStartTime() {
+    public Time getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(Date startTime) {
+    public void setStartTime(Time startTime) {
         this.startTime = startTime;
     }
 
-    public Date getEndTime() {
+    public Time getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(Date endTime) {
+    public void setEndTime(Time endTime) {
         this.endTime = endTime;
     }
 
