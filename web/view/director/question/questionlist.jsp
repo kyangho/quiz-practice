@@ -32,7 +32,7 @@
                                     <div class="panel-heading" style="display: flex;">
                                         <div style="margin-right: 74%;"> List of questions</div>
                                         <div>
-                                            <a class="btn label-danger center-block col-sm-10" style="width: 100%;margin-left: 50%;" href="#">Import question </a>
+                                            <a class="btn label-danger center-block col-sm-10" style="width: 100%;margin-left: 6%;" href="#">Import question </a>
                                         </div>
                                     </div>
 
@@ -65,7 +65,7 @@
                                                             </c:forEach>
                                                         </select>
                                                     </th>
-                                                    <th>Category</th>
+                                                    <!--<th>Category</th>-->
                                                     <th>Sub category
                                                         <select class=" input-sm" style="border-radius: 7px; margin-left: 10px" name="subcategory">
                                                             <option ${requestScope.subcategory eq "all" ? "selected=\"selected\"" : ""} value="all">ALL</option>
@@ -97,7 +97,7 @@
                                                         <td>${q.id}</td>
                                                         <td>${q.content}</td>
                                                         <td>${q.subject.subject_title}</td>
-                                                        <td>${q.category.category_value}</td>
+                                                        <!--<td>${q.category.category_value}</td>-->
                                                         <td>${q.subCategory.name}</td>
                                                         <td>${q.level}</td>
                                                         <td>${q.status}</td>

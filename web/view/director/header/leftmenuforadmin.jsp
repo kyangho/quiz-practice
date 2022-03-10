@@ -74,6 +74,12 @@
                     <i class="far fa-chalkboard-teacher"></i> <span style="padding-left: 5px;">Class List</span>
                 </a>
             </li>
+            <li
+                <c:if test="${tag eq 'slider'}">class="active"</c:if>  >
+                <a href="${pageContext.request.contextPath}/director/slider/list">
+                    <i class="far fa-chalkboard-teacher"></i> <span style="padding-left: 5px;">Slider</span>
+                </a>
+            </li>
         </ul>
     </section>
     <!-- /.sidebar -->
