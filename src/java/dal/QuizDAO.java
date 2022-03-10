@@ -376,6 +376,7 @@ public class QuizDAO extends DBContext {
 
     public void editQuiz(Quiz q) {
         try {
+            connection.setAutoCommit(false);
             String sql = "UPDATE `quiz_practice_db`.`quiz` SET `quiz_title` = ?, `subject_id` = ?, `category_id` = ?, `quiz_level` = ?,\n"
                     + "`quiz_type` = ?\n"
                     + "WHERE (`quiz_id` = ?) ;";

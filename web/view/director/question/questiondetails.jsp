@@ -24,13 +24,13 @@
                         </header>
                         <div style="display: flex;">
                             <div class="panel-body col-lg-8">
-                                <form class="form-horizontal tasi-form add-form" action="#" method="POST">
+                                <form class="form-horizontal tasi-form add-form" enctype="multipart/form-data" action="details" method="POST">
                                     <div class="form-group">
                                         <label class="col-sm-2 col-sm-2 control-label">Quiz *:</label>
                                         <div class="col-sm-10">
                                             <select style="width: 100%;" name="quiz">
                                             <c:forEach items="${quizs}" var="q">
-                                                <option ${quizId == q.id ? "selected=\"selected\"" : ""} value="${q_id}">${q.name}</option>
+                                                <option ${quizId == q.id ? "selected=\"selected\"" : ""} value="${q.id}">${q.name}</option>
                                             </c:forEach>
                                         </select>
                                     </div>
@@ -39,7 +39,7 @@
                                     <label class="col-sm-2 control-label">Subject *:</label>
                                     <div class="col-sm-10">
                                         <input type="hidden" name="questionId" value="${requestScope.question.id}">
-                                        <select style="width: 100%;" name="subjects">
+                                        <select style="width: 100%;" name="subject">
                                             <c:forEach items="${subjects}" var="s">
                                                 <option ${s.subject_id eq question.subject.subject_id ? "selected=\"selected\"" : ""} value="${s.subject_id}">${s.subject_title}</option>
                                             </c:forEach>
@@ -114,6 +114,9 @@
                                         <label class="col-sm-2 control-label">Media: </label>
                                         <div class="col-sm-10">
                                             <input type="file" name="media" value="${question.media}" >
+                                        <div>
+                                            <img src="${pageContext.servletContext.contextPath}/question/media?questionid=${question.id}" width="300px" class="img-fluid" >
+                                        </div>
                                     </div>
                                 </div> 
                                 <div class="form-group">

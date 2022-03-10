@@ -1,5 +1,6 @@
 package dal;
 
+import java.io.InputStream;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -310,6 +311,64 @@ public class QuestionDAO extends DBContext {
             Logger.getLogger(QuestionDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return answers;
+    }
+
+    public boolean updateQuestion(String quizId, Question q, InputStream media) {
+        try {
+            connection.setAutoCommit(false);
+            String sql = "UPDATE `quiz_practice_db`.`question`\n"
+                    + "SET\n"
+                    + "`question_content` = ?,\n"
+                    //                    + "`correct_answer` = ?,\n"
+                    + "`subject_id` = ?,\n"
+                    + "`category_id` = ?,\n"
+                    + "`question_level` = ?,\n"
+                    + "`question_status` = ?,\n"
+                    + "`subcategory_id` = ?\n";
+            if (media != null) {
+                sql += ", `question_media` = ?\n";
+            }
+            sql += "WHERE `question_id` = ?";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setString(1, q.getContent());
+            stm.setInt(2, q.getSubject().getSubject_id());
+            stm.setInt(3, q.getCategory().getCategory_id());
+            stm.setString(4, q.getLevel());
+            stm.setString(5, q.getStatus());
+            stm.setInt(6, q.getSubCategory().getId());
+            if (media != null) {
+                stm.setBlob(7, media);
+                stm.setInt(8, q.getId());
+            } else {
+                stm.setInt(7, q.getId());
+            }
+            stm.executeUpdate();
+
+            String update_quizQues = "UPDATE `quiz_practice_db`.`quiz_question`\n"
+                    + "SET\n"
+                    + "`quiz_id` = ?\n"
+                    + "WHERE `question_id` = ?;";
+            PreparedStatement stm_1 = connection.prepareStatement(update_quizQues);
+            stm_1.setInt(1, Integer.parseInt(quizId));
+            stm_1.setInt(2, q.getId());
+            stm_1.executeUpdate();
+            connection.commit();
+            return true;
+        } catch (SQLException ex) {
+            Logger.getLogger(QuestionDAO.class.getName()).log(Level.SEVERE, null, ex);
+            try {
+                connection.rollback();
+            } catch (SQLException ex1) {
+                Logger.getLogger(QuestionDAO.class.getName()).log(Level.SEVERE, null, ex1);
+            }
+        } finally {
+            try {
+                connection.setAutoCommit(true);
+            } catch (SQLException ex) {
+                Logger.getLogger(QuestionDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return false;
     }
 
     public static void main(String[] args) {
