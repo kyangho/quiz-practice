@@ -36,6 +36,7 @@ public class SliderController extends HttpServlet {
 
     private static final String sliderListPath = "/director/slider/list";
     private static final String sliderEditPath = "/director/slider/edit";
+    private static final String sliderAddPath = "/director/slider/add";
     private static final String sliderChangePath = "/director/slider/change_status";
 
     @Override
@@ -47,7 +48,11 @@ public class SliderController extends HttpServlet {
         } else if (URI.contains(sliderChangePath)) {
             doGetChangeList(request, response);
         } else if (URI.contains(sliderEditPath)) {
+            request.setAttribute("edit", "edit");
             doGetEditList(request, response);
+        } else if (URI.contains(sliderAddPath)) {
+            request.setAttribute("add", "add");
+            doGetAddSlider(request, response);
         }
     }
 
@@ -58,6 +63,11 @@ public class SliderController extends HttpServlet {
         if (URI.contains(sliderEditPath)) {
             doPostEditList(request, response);
         }
+    }
+
+    protected void doGetAddSlider(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.getRequestDispatcher("../../view/director/slider/sliderEdit.jsp").forward(request, response);
+
     }
 
     protected void doPostEditList(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -139,11 +149,6 @@ public class SliderController extends HttpServlet {
         request.getRequestDispatcher("../../view/director/slider/sliderList.jsp").forward(request, response);
     }
 
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
     @Override
     public String getServletInfo() {
         return "Short description";

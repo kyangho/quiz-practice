@@ -113,7 +113,7 @@
                                     <div class="form-group">
                                         <label class="col-sm-2 control-label">Media: </label>
                                         <div class="col-sm-10">
-                                            <input type="file" name="media" value="${question.media}" >
+                                            <input type="file" name="media" >
                                         <div>
                                             <img src="${pageContext.servletContext.contextPath}/question/media?questionid=${question.id}" width="300px" class="img-fluid" >
                                         </div>

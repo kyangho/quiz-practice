@@ -34,7 +34,7 @@
                                         <div class="panel-heading" style="display: flex;">
                                             <div style="margin-right: 74%;"> Sliders  List</div>
                                             <div>
-                                                <a href="add-slider" style="margin-left: 90px">Add Slider</a>
+                                                <a href="../slider/add" style="margin-left: 90px">Add Slider</a>
                                             </div>
                                         </div>
                                     </header>

@@ -212,7 +212,7 @@ public class QuestionController extends HttpServlet {
 //                + ", quizID:" + quizid + ", media: " + q.getMedia());
         response.getWriter().print(q.getContent() + " " + q.getContent().length() + " " + q.getLevel() + " ");
         QuestionDAO qdao = new QuestionDAO();
-        if (qdao.updateQuestion(quizid, q, mediaContent)) {
+//        if (qdao.updateQuestion(quizid, q, mediaContent)) {
             qdao.updateQuestion(quizid, q, mediaContent);
             request.setAttribute("subcate", qdao.getSubCategoryByCate(q.getCategory().getCategory_id()));
             request.setAttribute("categories", qdao.getCategory());
@@ -224,10 +224,10 @@ public class QuestionController extends HttpServlet {
             request.setAttribute("tag", "done");
             request.setAttribute("question", q);
             request.getRequestDispatcher("../view/director/question/questiondetails.jsp").forward(request, response);
-
-        } else {
-            response.getWriter().print("update failed");
-        }
+            
+//        } else {
+//            response.getWriter().print("update failed");
+//        }
 
     }
 

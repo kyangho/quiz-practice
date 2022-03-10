@@ -36,22 +36,7 @@ public class QuestionMediaController extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String id = request.getParameter("questionid");
-        int quesId = Integer.parseInt(id);
-        QuestionDAO qdao = new QuestionDAO();
-        Blob blob = qdao.getQuestionById(quesId).getMedia();
-        byte[] buffer;
-        try {
-            response.reset();
-            buffer = blob.getBytes(1, (int) blob.length());
-            OutputStream os = response.getOutputStream();
-            response.setContentType("media/*");
-            ServletOutputStream out = response.getOutputStream();
-            out.write(buffer, 0, (int) blob.length());
-            os.flush();
-            os.close();
-        } catch (SQLException ex) {
-        }
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -66,7 +51,22 @@ public class QuestionMediaController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+//        String id = request.getParameter("questionid");
+        int quesId = Integer.parseInt(request.getParameter("questionid"));
+        QuestionDAO qdao = new QuestionDAO();
+        Blob blob = qdao.getQuestionById(quesId).getMedia();
+        byte[] buffer;
+        try {
+            response.reset();
+            buffer = blob.getBytes(1, (int) blob.length());
+            OutputStream os = response.getOutputStream();
+            response.setContentType("image/*");
+            ServletOutputStream out = response.getOutputStream();
+            out.write(buffer, 0, (int) blob.length());
+            os.flush();
+            os.close();
+        } catch (SQLException ex) {
+        }
     }
 
     /**
