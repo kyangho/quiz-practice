@@ -612,13 +612,14 @@ public class AccountDAO extends DBContext {
         }
     }
 
-    public ArrayList<Account> getTeacherOrStudent() {
+    public ArrayList<Account> getTeacherOrStudent(String role) {
         ArrayList<Account> accounts = new ArrayList<>();
         String sql = "SELECT account_id FROM quiz_practice_db.account_role ar\n"
                 + "join quiz_practice_db.role r on ar.role_id = r.role_id\n"
-                + "where r.role_name = 'Teacher' or r.role_name = 'Student'";
+                + "where r.role_name = ?";
         try {
             PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setString(1, role);
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
                 Account a = getAccountById(rs.getInt(1));

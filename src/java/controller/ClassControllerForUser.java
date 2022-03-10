@@ -148,8 +148,8 @@ public class ClassControllerForUser extends HttpServlet {
             AccountDAO adao = new AccountDAO();
             int classID = Integer.parseInt(classID_raw);
             Classes c = cdao.getClassByID(classID);
-            ArrayList<Account> teachersOrStudents = adao.getTeacherOrStudent();
-            request.setAttribute("teachersOrStudents", teachersOrStudents);
+            ArrayList<Account> teachers = adao.getTeacherOrStudent("Teacher");
+            request.setAttribute("teachers", teachers);
             request.setAttribute("class", c);
             request.getRequestDispatcher("../../view/classes/classdetail.jsp").forward(request, response);
         }
@@ -166,8 +166,8 @@ public class ClassControllerForUser extends HttpServlet {
         ClassDAO cdao = new ClassDAO();
         AccountDAO adao = new AccountDAO();
         cdao.updateClass(classID, className, status, note, author);
-        ArrayList<Account> teachersOrStudents = adao.getTeacherOrStudent();
-        request.setAttribute("teachersOrStudents", teachersOrStudents);
+        ArrayList<Account> teachers = adao.getTeacherOrStudent("Teacher");
+        request.setAttribute("teachers", teachers);
         request.setAttribute("tag", "done");
         request.setAttribute("class", cdao.getClassByID(classID));
         request.getRequestDispatcher("../../view/classes/classdetail.jsp").forward(request, response);
@@ -190,8 +190,8 @@ public class ClassControllerForUser extends HttpServlet {
     private void doGetAddNewClass(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         AccountDAO adao = new AccountDAO();
-        ArrayList<Account> teachersOrStudents = adao.getTeacherOrStudent();
-        request.setAttribute("teachersOrStudents", teachersOrStudents);
+        ArrayList<Account> teachers = adao.getTeacherOrStudent("Teacher");
+        request.setAttribute("teachers", teachers);
         request.getRequestDispatcher("../../view/classes/addnewclass.jsp").forward(request, response);
     }
 
