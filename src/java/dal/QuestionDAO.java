@@ -231,7 +231,7 @@ public class QuestionDAO extends DBContext {
                 q.setLevel(rs.getString(6));
                 q.setStatus(rs.getString(7));
                 q.setSubCategory(new Subcategory(rs.getInt(8), null));
-                q.setMedia(rs.getBlob(9));
+                q.setMedia(rs.getBlob("question_media"));
                 q.setAnswers(getAnswerForQues(id));
                 return q;
             }
@@ -240,7 +240,13 @@ public class QuestionDAO extends DBContext {
         }
         return null;
     }
-
+//    public static void main(String[] args) throws SQLException {
+//        QuestionDAO q = new QuestionDAO();
+//        int id = 2;
+//        Question ques = q.getQuestionById(id);
+//        System.out.println(ques.getMedia().getBinaryStream());
+//        
+//    }
     public ArrayList<Subcategory> getSubCategoryByCate(int cateId) {
         ArrayList<Subcategory> subcategorys = new ArrayList<>();
         try {
@@ -371,18 +377,18 @@ public class QuestionDAO extends DBContext {
         return false;
     }
 
-    public static void main(String[] args) {
-        QuestionDAO qdao = new QuestionDAO();
-//        System.out.println(qdao.getQuestions(1, 1, 4, null, "all", "1", "all", "all").size());
-//        for (Question question : qdao.getQuestions(1, 1, 4, null, "2", "1", "easy", "all")) {
-//            System.out.println(question.getContent() + " " + question.getId());
+//    public static void main(String[] args) {
+//        QuestionDAO qdao = new QuestionDAO();
+////        System.out.println(qdao.getQuestions(1, 1, 4, null, "all", "1", "all", "all").size());
+////        for (Question question : qdao.getQuestions(1, 1, 4, null, "2", "1", "easy", "all")) {
+////            System.out.println(question.getContent() + " " + question.getId());
+////        }
+////        for (Subcategory subcategory : qdao.getSubCategoryByCate(1)) {
+////            System.out.println(subcategory.getName());
+////        }
+////        System.out.println(qdao.getTotalRows(1, null, "all", "1", "all", "all"));
+//        for (Answer answerForQue : qdao.getAnswerForQues(1)) {
+//            System.out.println(answerForQue.getContent());
 //        }
-//        for (Subcategory subcategory : qdao.getSubCategoryByCate(1)) {
-//            System.out.println(subcategory.getName());
-//        }
-//        System.out.println(qdao.getTotalRows(1, null, "all", "1", "all", "all"));
-        for (Answer answerForQue : qdao.getAnswerForQues(1)) {
-            System.out.println(answerForQue.getContent());
-        }
-    }
+//    }
 }

@@ -35,13 +35,15 @@
                                     </header>
                                     <div class="panel-body">
                                         <form class="form-horizontal tasi-form" method="POST" action="edit" enctype="multipart/form-data">
+                                        <c:if test="${requestScope.edit eq 'edit'}" >
                                             <div class="form-group">
                                                 <label class="col-sm-2 col-sm-2 control-label">ID</label>
                                                 <div class="col-sm-10">
                                                     <input value="${slider.id}" name="id" hidden="">
-                                                <input disabled value="${slider.id}" name ="id" type="text" class="form-control">
+                                                    <input disabled value="${slider.id}" name ="id" type="text" class="form-control">
+                                                </div>
                                             </div>
-                                        </div>
+                                        </c:if>
                                         <div class="form-group">
                                             <label class="col-sm-2 col-sm-2 control-label">Title</label>
                                             <div class="col-sm-10">
@@ -70,7 +72,7 @@
                                             <label class="col-sm-2 col-sm-2 control-label">Status</label>
                                             <div class="col-sm-10">
                                                 <input type="radio" id="status" name="status" value="Show"
-                                                       ${slider.status eq 'Show' ? "checked=\"checked\"" : ""}>
+                                                       ${slider.status eq 'Show' ? "checked=\"checked\"" : ""} checked="checked">
                                                 <label for="html">Show</label><br>
                                                 <input type="radio" id="status" name="status" value="Hide"
                                                        ${slider.status eq 'Hide' ? "checked=\"checked\"" : ""}>
@@ -84,7 +86,12 @@
                                             </div>
                                         </div>
                                         <div style="margin-left: 40%; margin-top: -30px; padding-bottom: 30px">
-                                            <button style="float: left" type="submit"  id="buu" class="btn btn-success btn-lg ">Edit</button>
+                                            <c:if test="${requestScope.edit eq 'edit'}">
+                                                <button style="float: left" type="submit"  id="buu" class="btn btn-success btn-lg ">Edit</button>
+                                            </c:if>
+                                            <c:if test="${requestScope.add eq 'add'}">
+                                                <button style="float: left" type="submit"  id="add" class="btn btn-success btn-lg ">Add Slider</button>
+                                            </c:if>
                                             <a href="list"><div style="float: left; margin-left: 5px" id="buu" class="btn btn-danger btn-lg ">Cancel</div></a>
                                         </div>
                                     </form>
