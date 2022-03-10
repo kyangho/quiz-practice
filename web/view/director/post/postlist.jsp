@@ -114,7 +114,7 @@
                                                     <td>
                                                         <a href="view?id=${post.id}" class="label label-primary">View</a>
                                                         <a href="update?id=${post.id}" class="label label-success">Update</a><br>
-                                                        <a class="button-show-post" value="${post.id}" status="${post.status}"><i ${post.status == "PUBLISH" ? "class='fa fa-eye'" : "class='fa fa-eye-slash'"}></i></a>
+                                                        <a class="button-show-post" value="${post.id}" status="${post.status}"><i ${post.status eq 'PUBLISH' ? "class='fa fa-eye'" : "class='fa fa-eye-slash'"}></i></a>
                                                     </td>
                                                 </tr>
                                             </c:forEach>

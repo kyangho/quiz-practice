@@ -32,130 +32,127 @@
                                     <div class="panel-heading" style="display: flex;">
                                         <div style="margin-right: 74%;"> List of questions</div>
                                         <div>
-                                            <a class="btn label-danger center-block col-sm-10" style="width: 100%;margin-left: 68%;" href="adduser">Add new user </a>
+                                            <a class="btn label-danger center-block col-sm-10" style="width: 100%;margin-left: 50%;" href="#">Import question </a>
                                         </div>
                                     </div>
 
                                     <div class="panel-body table-responsive">
                                         <div class="box-tools m-b-15" style="float: right;">
                                             <div class="input-group">
-                                                <form action="userlist" method="POST">
-                                                    <input type="text" name="keySearch" class="form-control input-sm pull-right" style="width: 150px;" placeholder="Search users" value="${valueSearch}" />
+                                                <form action="list" method="GET">
+                                                    <input type="text" name="key" class="form-control input-sm pull-right" style="width: 150px;" placeholder="Search" value="${key}" />
                                                 <button class="btn btn-sm btn-default" type="submit"><i class="fa fa-search"></i> </button>                                             
                                             </form>
                                         </div>
                                     </div>
-                                    <form action="userlist" method="POST">
-                                        <c:if test="${requestScope.accounts.isEmpty()}">
-                                            <h3>Not Found User</h3>
+                                    <form action="list" method="GET">
+                                        <c:if test="${requestScope.questions.isEmpty()}">
+                                            <h3>Not Found Questions</h3>
                                         </c:if>
-                                        <c:if test="${!requestScope.accounts.isEmpty()}">
+                                        <div style="margin: 0 0 1% 75%; ">
+                                            <button class="btn btn-sm btn-default" style="color: white;font-weight: bolder;background-color: #94a8ff;width: 90px;" type="submit">Apply</button>
+                                        </div>
+                                        <c:if test="${!requestScope.questions.isEmpty()}">
                                             <table class="table table-hover">
                                                 <tr>
                                                     <th>ID</th>
                                                     <th>Content</th>
-                                                     <th>Subject
-                                                        <select class=" input-sm" style="border-radius: 7px; margin-left: 10px" name="phone">
-                                                            <option ${requestScope.phone eq "all" ? "selected=\"selected\"" : ""} value="all">ALL</option>
-                                                            <option ${requestScope.phone eq "asc" ? "selected=\"selected\"" : ""} value="asc">Ascending</option>
-                                                            <option ${requestScope.phone eq "desc" ? "selected=\"selected\"" : ""} value="desc">Descending</option>
+                                                    <th>Subject
+                                                        <select class=" input-sm" style="border-radius: 7px; margin-left: 10px" name="subject">
+                                                            <option ${requestScope.subject eq "all" ? "selected=\"selected\"" : ""} value="all">ALL</option>
+                                                            <c:forEach items="${requestScope.subjects}" var="s">
+                                                                <option ${s.subject_id eq subject ? "selected=\"selected\"" : ""} value="${s.subject_id}">${s.subject_title}</option>
+                                                            </c:forEach>
                                                         </select>
                                                     </th>
                                                     <th>Category</th>
                                                     <th>Sub category
-                                                        <select class=" input-sm" style="border-radius: 7px; margin-left: 10px" name="phone">
-                                                            <option ${requestScope.phone eq "all" ? "selected=\"selected\"" : ""} value="all">ALL</option>
-                                                            <option ${requestScope.phone eq "asc" ? "selected=\"selected\"" : ""} value="asc">Ascending</option>
-                                                            <option ${requestScope.phone eq "desc" ? "selected=\"selected\"" : ""} value="desc">Descending</option>
+                                                        <select class=" input-sm" style="border-radius: 7px; margin-left: 10px" name="subcategory">
+                                                            <option ${requestScope.subcategory eq "all" ? "selected=\"selected\"" : ""} value="all">ALL</option>
+                                                            <c:forEach items="${requestScope.subcate}" var="s">
+                                                                <option ${s.id eq subcategory ? "selected=\"selected\"" : ""} value="${s.id}">${s.name}</option>
+                                                            </c:forEach>
                                                         </select>
                                                     </th>
                                                     <th>Level
-                                                        <select class=" input-sm" style="border-radius: 7px; margin-left: 10px" name="roleID">
-                                                            <option ${requestScope.roleID eq "all" ? "selected=\"selected\"" : ""} value="all">ALL</option>
-                                                            <c:forEach items="${roles}" var="r">
-                                                                <option ${requestScope.roleID eq r.id ? "selected=\"selected\"" : ""} value="${r.id}">${r.roleName}</option>    
-                                                            </c:forEach>
+                                                        <select class=" input-sm" style="border-radius: 7px; margin-left: 10px" name="level">
+                                                            <option ${requestScope.level eq "all" ? "selected=\"selected\"" : ""} value="all">ALL</option>
+                                                            <option ${requestScope.level eq "Easy" ? "selected=\"selected\"" : ""} value="Easy">Easy</option>
+                                                            <option ${requestScope.level eq "Medium" ? "selected=\"selected\"" : ""} value="Medium">Medium</option>
+                                                            <option ${requestScope.level eq "Difficult" ? "selected=\"selected\"" : ""} value="Difficult">Difficult</option>
                                                         </select>
                                                     </th>
                                                     <th>Status
                                                         <select class=" input-sm" style="border-radius: 7px; margin-left: 10px" name="status">
                                                             <option ${requestScope.status eq "all" ? "selected=\"selected\"" : ""} value="all">ALL</option>
-                                                            <option ${requestScope.status eq "ACTIVE" ? "selected=\"selected\"" : ""} value="Active">Active</option>
-                                                            <option ${requestScope.status eq "DEACTIVE" ? "selected=\"selected\"" : ""} value="Deactive">Deactive</option>
+                                                            <option ${requestScope.status eq "public" ? "selected=\"selected\"" : ""} value="publish">Public</option>
+                                                            <option ${requestScope.status eq "unpublic" ? "selected=\"selected\"" : ""} value="unpublic">Un public</option>
                                                         </select>
                                                     </th>
-                                                    <th>View</th>
-                                                    <th>Change status</th>
+                                                    <th>Active</th>
+                                                    <!--<th>Change status</th>-->
                                                 </tr>
-                                                <c:forEach items="${requestScope.accounts}" var="a">
+                                                <c:forEach items="${requestScope.questions}" var="q">
                                                     <tr>
-                                                        <td>${a.id}</td>
-                                                        <td>${a.fullname}</td>
-                                                        <td>${a.email}</td>
-                                                        <td>${a.phone}</td>
-                                                        <td><c:forEach items="${a.role}" var="r">
-                                                                ${r.roleName} <br>
-                                                            </c:forEach>
-                                                        </td>
-                                                        <td>${a.status}</td>
-                                                        <td><button class="label label-info"><a style="color: white;" href="userdetails?id=${a.id}">Details</a></button></td>
-                                                        <td><button 
-                                                                onclick="changeStatus(${a.id}, '${a.status}', 'changestatusforuser')" 
-                                                                type="button" class="label 
-                                                                <c:if test="${a.status == 'ACTIVE'}">
-                                                                    label-danger
-                                                                </c:if>
-                                                                <c:if test="${a.status eq 'DEACTIVE'}">
-                                                                    label-success
-                                                                </c:if>
-                                                                ">
-                                                                <c:if test="${a.status eq 'ACTIVE'}">
-                                                                    DEACTIVE
-                                                                </c:if>
-                                                                <c:if test="${a.status eq 'DEACTIVE'}">
-                                                                    ACTIVE
-                                                                </c:if>
-                                                            </button>
-                                                        </td>
-                                                    </tr>
-                                                </c:forEach>
-                                            </table>
-                                            <div style="margin: -2% 0 1% 93%;">
-                                                <button class="btn btn-info center-block col-sm-10" type="submit">Apply</button>
-                                            </div>
-                                        </c:if>
-                                    </form>
-                                    <div id="paggingBottom" class="pageLine" style=" margin: 1%; float: right;">
-                                    </div>
-                                    <script>
-                                       generatePagger('paggingBottom',${requestScope.pageindex},${requestScope.totalPage}, '${requestScope.url}', 1);
-                                       function generatePagger(div, pageIndex, totalpage, url, gap) {
-                                           var container = document.getElementById(div);
-                                           if (pageIndex - gap > 0)
-                                               container.innerHTML += '<li class="page-item"><a class="page-link" href="' + url + (pageIndex - 1) + '">Previous</a></li>';
-                                           for (var i = (pageIndex) - gap; i < pageIndex; i++) {
-                                               if (i > 0)
-                                                   container.innerHTML += '<li class="page-item"><a class="page-link" href="' + url + i + '">' + i + '</a></li>';
-                                           }
-                                           container.innerHTML += '<li class="page-item active"><span class="page-link">' + pageIndex + '</span></li>';
-                                           for (var i = (pageIndex) + 1; i <= pageIndex + gap; i++) {
-                                               if (i <= totalpage)
-                                                   container.innerHTML += '<li class="page-item"><a class="page-link" href="' + url + i + '">' + i + '</a></li>';
-                                           }
-                                           if (pageIndex + gap < totalpage)
-                                               container.innerHTML += '<li class="page-item"><a class="page-link" href="' + url + (pageIndex + 1) + '">Next</a></li>';
-                                       }
-                                    </script>
+                                                        <td>${q.id}</td>
+                                                        <td>${q.content}</td>
+                                                        <td>${q.subject.subject_title}</td>
+                                                        <td>${q.category.category_value}</td>
+                                                        <td>${q.subCategory.name}</td>
+                                                        <td>${q.level}</td>
+                                                        <td>${q.status}</td>
+                                                        <td>
+                                                            <a href="details?questionId=${q.id}" class="label label-primary">Edit</a>
+                                                            <a class="button-show-post" value="#" status="${post.status}">
+                                                                <i <c:if test="${q.status eq 'publish'}">
+                                                                        class="fa fa-eye-slash"
+                                                                    </c:if>
+                                                                    <c:if test="${q.status != 'publish'}">
+                                                                        class="fa fa-eye"
+                                                                    </c:if>>  
+                                                            </i>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            </c:forEach>
+                                        </table>
+                                    </c:if>
+                                </form>
+                                <div>
+                                    <nav aria-label="Page navigation example">
+                                        <ul id="paggingBottom" class="pagination" style="float: right;">
+                                        </ul>
+                                    </nav>
                                 </div>
-                                <!-- /.box-body -->
+                                <script>
+                                        generatePagger('paggingBottom',${requestScope.pageindex},${requestScope.totalPage}, '${requestScope.url}', 1);
+                                        function generatePagger(div, pageIndex, totalpage, url, gap) {
+                                            var container = document.getElementById(div);
+                                            if (pageIndex - gap > 0)
+                                                container.innerHTML += '<li class="page-item"><a class="page-link" href="' + url + '1">First</a></li>';
+                                            for (var i = (pageIndex) - gap; i < pageIndex; i++) {
+                                                if (i > 0)
+                                                    container.innerHTML += '<li class="page-item"><a class="page-link" href="' + url + i + '">' + i + '</a></li>';
+                                            }
+                                            container.innerHTML += '<li class="page-item active"><span class="page-link">' + pageIndex + '</span></li>';
+                                            for (var i = (pageIndex) + 1; i <= pageIndex + gap; i++) {
+                                                if (i <= totalpage)
+                                                    container.innerHTML += '<li class="page-item"><a class="page-link" href="' + url + i + '">' + i + '</a></li>';
+                                            }
+                                            if (pageIndex + gap < totalpage)
+                                                container.innerHTML += '<li class="page-item"><a class="page-link" href="' + url + totalpage + '">Last</a></li>';
+                                        }
+                                </script>
                             </div>
-                            <!-- /.box -->
+                            <!-- /.box-body -->
                         </div>
+                        <!-- /.box -->
                     </div>
-                </section>
-            </aside>
+                </div>
+            </section>
+        </aside>
 
-        </div>
-        <jsp:include page="../header/linkjavascript.jsp"></jsp:include>
-    </body>
+    </div>
+    <jsp:include page="../header/linkjavascript.jsp"></jsp:include>
+</body>
 </html>
