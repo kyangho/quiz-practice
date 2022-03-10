@@ -1,5 +1,7 @@
 package model;
 
+import java.sql.Blob;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -13,7 +15,7 @@ public class Slider {
 
     private int id;
     private String title;
-    private String image;
+    private Blob image;
     private String backlink;
     private String status;
     private String note;
@@ -21,7 +23,7 @@ public class Slider {
     public Slider() {
     }
 
-    public Slider(int id, String title, String image, String backlink, String status, String note) {
+    public Slider(int id, String title, Blob image, String backlink, String status, String note) {
         this.id = id;
         this.title = title;
         this.image = image;
@@ -46,11 +48,11 @@ public class Slider {
         this.title = title;
     }
 
-    public String getImage() {
+    public Blob getImage() {
         return image;
     }
 
-    public void setImage(String image) {
+    public void setImage(Blob image) {
         this.image = image;
     }
 

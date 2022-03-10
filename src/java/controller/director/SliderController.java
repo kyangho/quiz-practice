@@ -5,16 +5,23 @@
  */
 package controller.director;
 
+import dal.PostDAO;
 import dal.SliderDAO;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.sql.Blob;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.servlet.ServletException;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Part;
 import model.Slider;
 
 /**
@@ -28,8 +35,8 @@ import model.Slider;
 public class SliderController extends HttpServlet {
 
     private static final String sliderListPath = "/director/slider/list";
-    private static final String sliderDetailPath = "/director/slider/detail";
     private static final String sliderEditPath = "/director/slider/edit";
+    private static final String sliderChangePath = "/director/slider/change_status";
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -37,13 +44,59 @@ public class SliderController extends HttpServlet {
         String URI = request.getRequestURI().replaceFirst("/\\w+", "");
         if (URI.contains(sliderListPath)) {
             doGetPostList(request, response);
+        } else if (URI.contains(sliderChangePath)) {
+            doGetChangeList(request, response);
+        } else if (URI.contains(sliderEditPath)) {
+            doGetEditList(request, response);
         }
+    }
 
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String URI = request.getRequestURI().replaceFirst("/\\w+", "");
+        if (URI.contains(sliderEditPath)) {
+            doPostEditList(request, response);
+        }
+    }
+
+    protected void doPostEditList(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        int id = Integer.parseInt(request.getParameter("id"));
+        String title = request.getParameter("title");
+        InputStream fileContent = null;
+        Part filePart = request.getPart("thumbnail");
+        if (!filePart.getSubmittedFileName().isEmpty()) {
+            fileContent = filePart.getInputStream();
+        }
+        String backlink = request.getParameter("backlink");
+        String status = request.getParameter("status");
+        String note = request.getParameter("note");
+        SliderDAO s = new SliderDAO();
+        s.updateSlider(id, title, fileContent, backlink, status, note);
+        response.sendRedirect("list");
+    }
+
+    protected void doGetEditList(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String id = request.getParameter("id");
+        SliderDAO s = new SliderDAO();
+        Slider slider = s.GetSliderByID(id);
+        request.setAttribute("slider", slider);
+        request.getRequestDispatcher("../../view/director/slider/sliderEdit.jsp").forward(request, response);
+    }
+
+    protected void doGetChangeList(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        SliderDAO s = new SliderDAO();
+        String id = request.getParameter("slider_id");
+        String slider_status = request.getParameter("slider_status");
+        if (id != null && slider_status != null) {
+            s.changeStatus(Integer.parseInt(id), slider_status);
+        }
+        response.sendRedirect("../slider/list");
     }
 
     protected void doGetPostList(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         SliderDAO s = new SliderDAO();
-        int pagesize = 5;
+        int pagesize = 3;
         String raw_page = request.getParameter("page");
         String status = request.getParameter("status");
         String search = request.getParameter("search");
@@ -63,18 +116,18 @@ public class SliderController extends HttpServlet {
                 totalrows = s.getRowcount(status, null);
                 url = "list?page=";
             } else {
-                ss = s.getAllSliders(pagesize, pageindex, status, null);
+                ss = s.getAllSliders(pageindex, pagesize, status, null);
                 totalrows = s.getRowcount(status, null);
                 url = "list?status=" + status + "&page=";
                 request.setAttribute("status", status);
             }
         } else {
             ss = new ArrayList<>();
-            ss = s.getAllSliders(pagesize, pageindex, null, search);
+            ss = s.getAllSliders(pageindex, pagesize, null, search);
             request.setAttribute("search", search);
+            request.setAttribute("status", status);
             totalrows = s.getRowcount(null, search);
             url = "list?search=" + search + "&page=";
-
         }
         int totalpage = (totalrows % pagesize == 0) ? totalrows / pagesize : totalrows / pagesize + 1;
         request.setAttribute("totalpage", totalpage);
@@ -84,11 +137,6 @@ public class SliderController extends HttpServlet {
         request.setAttribute("pageindex", pageindex);
         request.setAttribute("totalpage", totalpage);
         request.getRequestDispatcher("../../view/director/slider/sliderList.jsp").forward(request, response);
-    }
-
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
     }
 
     /**
