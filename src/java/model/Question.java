@@ -5,6 +5,7 @@
  */
 package model;
 
+import java.sql.Blob;
 import java.util.ArrayList;
 
 /**
@@ -15,6 +16,12 @@ public class Question {
     private int id;
     private String content;
     private String correctAnswer;
+    private Subject subject;
+    private Category category;
+    private Subcategory subCategory;
+    private String level;
+    private String status;
+    private Blob media;
     private ArrayList<Answer> answers = new ArrayList<>();
     
     public  Question(){
@@ -26,6 +33,65 @@ public class Question {
         this.content = content;
         this.correctAnswer = correctAnswer;
     }
+
+    public Question(int id, String content, String correctAnswer, Subject subject, Category category, Subcategory subCategory) {
+        this.id = id;
+        this.content = content;
+        this.correctAnswer = correctAnswer;
+        this.subject = subject;
+        this.category = category;
+        this.subCategory = subCategory;
+    }
+
+    public String getLevel() {
+        return level;
+    }
+
+    public void setLevel(String level) {
+        this.level = level;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public Blob getMedia() {
+        return media;
+    }
+
+    public void setMedia(Blob media) {
+        this.media = media;
+    }
+
+    public Subject getSubject() {
+        return subject;
+    }
+
+    public void setSubject(Subject subject) {
+        this.subject = subject;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
+    public Subcategory getSubCategory() {
+        return subCategory;
+    }
+
+    public void setSubCategory(Subcategory subCategory) {
+        this.subCategory = subCategory;
+    }
+    
+    
 
     public int getId() {
         return id;
