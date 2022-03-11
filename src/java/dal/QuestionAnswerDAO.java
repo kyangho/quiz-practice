@@ -40,7 +40,6 @@ public class QuestionAnswerDAO extends DBContext {
     }
     
     public boolean insertAnswer(List<Answer> answers){
-        String sql = ""
         return true;
     }
 }
