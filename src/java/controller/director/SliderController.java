@@ -62,12 +62,28 @@ public class SliderController extends HttpServlet {
         String URI = request.getRequestURI().replaceFirst("/\\w+", "");
         if (URI.contains(sliderEditPath)) {
             doPostEditList(request, response);
+        } else if (URI.contains(sliderAddPath)) {
+            doPostAddSlider(request, response);
         }
+    }
+
+    protected void doPostAddSlider(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String title = request.getParameter("title");
+        InputStream fileContent = null;
+        Part filePart = request.getPart("thumbnail");
+        if (!filePart.getSubmittedFileName().isEmpty()) {
+            fileContent = filePart.getInputStream();
+        }
+        String backlink = request.getParameter("backlink");
+        String status = request.getParameter("status");
+        String note = request.getParameter("note");
+        SliderDAO s = new SliderDAO();
+        s.addSlider(title, fileContent, backlink, status, note);
+        response.sendRedirect("list");
     }
 
     protected void doGetAddSlider(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.getRequestDispatcher("../../view/director/slider/sliderEdit.jsp").forward(request, response);
-
     }
 
     protected void doPostEditList(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

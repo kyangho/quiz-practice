@@ -30,11 +30,31 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <section class="panel">
+                                <c:if test="${requestScope.edit eq 'edit'}" >
                                     <header class="panel-heading">
                                         Edit Slider
                                     </header>
-                                    <div class="panel-body">
-                                        <form class="form-horizontal tasi-form" method="POST" action="edit" enctype="multipart/form-data">
+                                </c:if>
+                                <c:if test="${requestScope.add eq 'add'}" >
+                                    <header class="panel-heading">
+                                        Add Slider
+                                    </header>
+                                </c:if>
+
+                                <div class="panel-body">
+                                    <form class="form-horizontal tasi-form" method="POST" 
+                                          <c:if test="${requestScope.add eq 'add'}" >
+                                              action="add"</c:if>
+                                          <c:if test="${requestScope.edit eq 'edit'}" >
+                                              action="edit"
+                                          </c:if>
+                                          enctype="multipart/form-data">
+
+                                        <%--</c:if>
+                                        <c:if test="${requestScope.add eq 'add'}" >
+                                            <form class="form-horizontal tasi-form" method="POST" action="add" enctype="multipart/form-data">
+                                            </c:if>--%>
+
                                         <c:if test="${requestScope.edit eq 'edit'}" >
                                             <div class="form-group">
                                                 <label class="col-sm-2 col-sm-2 control-label">ID</label>
@@ -47,25 +67,29 @@
                                         <div class="form-group">
                                             <label class="col-sm-2 col-sm-2 control-label">Title</label>
                                             <div class="col-sm-10">
-                                                <input value="${slider.title}" name ="title" type="text" class="form-control">
+                                                <input type="text" name="title" class="form-control" 
+                                                       value="${slider.title}" required placeholder="title title">
                                             </div>
                                         </div>
-                                        <div class="form-group">
-                                            <label class="col-sm-2 col-sm-2 control-label">ThumbNail</label>
-                                            <div class="col-sm-10">
-                                                <img src="${pageContext.servletContext.contextPath}/slider/imagin?id=${slider.id}" width="300px" class="img-fluid" >
+                                        <c:if test="${requestScope.edit eq 'edit'}" >
+                                            <div class="form-group">
+                                                <label class="col-sm-2 col-sm-2 control-label">ThumbNail</label>
+                                                <div class="col-sm-10">
+                                                    <img src="${pageContext.servletContext.contextPath}/slider/imagin?id=${slider.id}" width="300px" class="img-fluid" >
+                                                </div>
                                             </div>
-                                        </div>
+                                        </c:if>
                                         <div class="form-group">
-                                            <label class="col-sm-2 col-sm-2 control-label">Image</label>
+                                            <label class="col-sm-2 col-sm-2 control-label">Upload Image</label>
                                             <div class="col-sm-10">
-                                                <input type="file" name="thumbnail">
+                                                <img id="image" width="300px" style="padding-bottom: 10px" class="img-fluid" >
+                                                <input type="file" name="thumbnail" id="files" />
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label class="col-sm-2 col-sm-2 control-label">Backlink</label>
                                             <div class="col-sm-10">
-                                                <input value="${slider.backlink}" name="backlink" type="text" class="form-control">
+                                                <input value="${slider.backlink}" required name="backlink" type="text" class="form-control">
                                             </div>
                                         </div>
                                         <div class="form-group">
@@ -82,10 +106,12 @@
                                         <div class="form-group">
                                             <label class="col-sm-2 col-sm-2 control-label">Note</label>
                                             <div class="col-sm-10">
-                                                <input value="${slider.note}" name ="note"type="text" class="form-control">
+                                                <input value="${slider.note}" required name ="note"type="text" class="form-control">
                                             </div>
                                         </div>
                                         <div style="margin-left: 40%; margin-top: -30px; padding-bottom: 30px">
+                                            <!--<button style="float: left" type="submit"  id="buu" class="btn btn-success btn-lg ">Edit</button>-->
+
                                             <c:if test="${requestScope.edit eq 'edit'}">
                                                 <button style="float: left" type="submit"  id="buu" class="btn btn-success btn-lg ">Edit</button>
                                             </c:if>
@@ -103,7 +129,15 @@
             </aside>
         </div>
     </body>
-
+    <script>
+        document.getElementById("files").onchange = function () {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                document.getElementById("image").src = e.target.result;
+            };
+            reader.readAsDataURL(this.files[0]);
+        };
+    </script>
 
 </html>
 
