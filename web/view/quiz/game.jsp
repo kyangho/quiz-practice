@@ -9,7 +9,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link href="${pageContext.request.contextPath}/css/quizgamestyle.css" rel="stylesheet">
+        <link href="${pageContext.request.contextPath}/css/quizgamestyle.css?v=1" rel="stylesheet">
         <link href="${pageContext.request.contextPath}/bootstrap_for_admin/bootstrap.min.css" rel="stylesheet">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
         <script src="${pageContext.request.contextPath}/js/jquery.min.js"></script>
@@ -18,7 +18,7 @@
     <body>
         <div class="quiz_box">
             <header>
-                <div class="title">Awesome Quiz Application</div>
+                <div class="title">Quiz</div>
                 <div class="timer">
                     <div class="time_left_txt">Time Left</div>
                     <div class="timer_sec">15</div>
@@ -28,6 +28,9 @@
             <section>
                 <div class="que_text">
                     <!-- Here I've inserted question from JavaScript -->
+                </div>
+                <div class="que-image">
+                    
                 </div>
                 <div class="option_list">
                     <!-- Here I've inserted options from JavaScript -->

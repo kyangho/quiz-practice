@@ -17,6 +17,7 @@ public class Quiz {
 
     private int id;
     private String title;
+    private String name;
     private Subject subject;
     private String level;
     private String type;
@@ -48,6 +49,16 @@ public class Quiz {
         this.rate = rate;
         this.hasJoin = hasJoin;
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+    
+    
 
     public boolean isHasJoin() {
         return hasJoin;
