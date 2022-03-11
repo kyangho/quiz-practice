@@ -122,6 +122,31 @@ public class SliderDAO extends DBContext {
         return null;
     }
 
+    public void addSlider(String title, InputStream fileContent, String backlink, String status, String note) {
+        try {
+            String sql = "INSERT INTO `quiz_practice_db`.`slider` (`slider_title`, `slider_backlink`, `slider_status`, `slider_note`";
+            if (fileContent != null) {
+                sql += ",`slider_img`";
+            }
+            sql += ") VALUES (?, ?, ?, ? ";
+            if (fileContent != null) {
+                sql += " , ?";
+            }
+            sql += " );";
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setString(1, title);
+            ps.setString(2, backlink);
+            ps.setString(3, status);
+            ps.setString(4, note);
+            if (fileContent != null) {
+                ps.setBlob(5, fileContent);
+            }
+            ps.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(SliderDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
     public void updateSlider(int id, String title, InputStream fileContent, String backlink, String status, String note) {
         int row = 0;
 

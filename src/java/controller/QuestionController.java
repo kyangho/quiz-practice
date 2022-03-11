@@ -8,15 +8,26 @@ package controller;
 import dal.QuestionDAO;
 import dal.QuizDAO;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.nio.file.Paths;
+import java.sql.Blob;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.servlet.ServletException;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Part;
 import model.Account;
+import model.Answer;
+import model.Category;
 import model.Question;
+import model.Subcategory;
+import model.Subject;
 
 /**
  *
@@ -29,6 +40,7 @@ public class QuestionController extends HttpServlet {
     private final String questionListPath = "/question/list";
     private final String questionDetailsPath = "/question/details";
     private final String deleteAnswerPath = "/question/delete";
+//    private final String mediaPath = "/question/media";
     private final int pagesize = 4;
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -168,12 +180,55 @@ public class QuestionController extends HttpServlet {
     private void doGetDeleteAnswer(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String id = request.getParameter("id");
-        response.getWriter().print(id);
+//        response.getWriter().print(id);
     }
 
     private void doPostQuestionDetails(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+        Part mediaPart = request.getPart("media");
+//        String mediaName = Paths.get(mediaPart.getSubmittedFileName()).getFileName().toString();
+        InputStream mediaContent = null;
+        if (!mediaPart.getSubmittedFileName().isEmpty()) {
+            mediaContent = mediaPart.getInputStream();
+        }
+        Question q = new Question();
+        q.setId(Integer.parseInt(request.getParameter("questionId")));
+        q.setCategory(new Category(Integer.parseInt(request.getParameter("category")), null));
+        q.setSubject(new Subject(Integer.parseInt(request.getParameter("subject")), null));
+        q.setSubCategory(new Subcategory(Integer.parseInt(request.getParameter("subcategory")), null));
+        q.setLevel(request.getParameter("level"));
+        q.setStatus(request.getParameter("status"));
+        q.setContent(request.getParameter("content").replaceAll("\\s+", " ").trim());
+        String[] answers = request.getParameterValues("answer");
+        ArrayList<Answer> ans = new ArrayList<>();
+        for (String answer : answers) {
+            ans.add(new Answer(0, answer));
+        }
+        q.setAnswers(ans);
+//        q.setMedia((Blob) mediaContent);
+        String quizid = request.getParameter("quiz");
+//        response.getWriter().print("quesId:" + q.getId() + ", level: " + q.getLevel() + ",content: " + q.getContent() + ", status " + q.getStatus() 
+//                + ", cate: " + q.getCategory().getCategory_id() + ", sub: " + q.getSubCategory().getId() + ", subject: " + q.getSubject().getSubject_id()
+//                + ", quizID:" + quizid + ", media: " + q.getMedia());
+        response.getWriter().print(q.getContent() + " " + q.getContent().length() + " " + q.getLevel() + " ");
+        QuestionDAO qdao = new QuestionDAO();
+//        if (qdao.updateQuestion(quizid, q, mediaContent)) {
+            qdao.updateQuestion(quizid, q, mediaContent);
+            request.setAttribute("subcate", qdao.getSubCategoryByCate(q.getCategory().getCategory_id()));
+            request.setAttribute("categories", qdao.getCategory());
+            QuizDAO qiAO = new QuizDAO();
+            Account account = (Account) request.getSession().getAttribute("account");
+            request.setAttribute("subjects", qiAO.getsubs());
+            request.setAttribute("quizs", qdao.getQuizForQuestion(account.getId()));
+            request.setAttribute("quizId", qdao.getQuizIdOfQuestion(q.getId()));
+            request.setAttribute("tag", "done");
+            request.setAttribute("question", q);
+            request.getRequestDispatcher("../view/director/question/questiondetails.jsp").forward(request, response);
+            
+//        } else {
+//            response.getWriter().print("update failed");
+//        }
+
     }
 
 }
