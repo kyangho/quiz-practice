@@ -231,7 +231,8 @@ public class QuestionDAO extends DBContext {
                 q.setLevel(rs.getString(6));
                 q.setStatus(rs.getString(7));
                 q.setSubCategory(new Subcategory(rs.getInt(8), null));
-                q.setMedia(rs.getBlob(9));
+                q.setMedia(rs.getBlob("question_media"));
+                q.setMediaName(rs.getString("question_mediaName"));
                 q.setAnswers(getAnswerForQues(id));
                 return q;
             }
@@ -297,6 +298,54 @@ public class QuestionDAO extends DBContext {
         return categorys;
     }
 
+    public void deleteAnswer(int answerID) {
+        try {
+            connection.setAutoCommit(false);
+            String sql = "delete from answer where answer_id = ?;";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setInt(1, answerID);
+            stm.executeUpdate();
+            connection.commit();
+        } catch (SQLException ex) {
+            Logger.getLogger(QuestionDAO.class.getName()).log(Level.SEVERE, null, ex);
+            try {
+                connection.rollback();
+            } catch (SQLException ex1) {
+                Logger.getLogger(QuestionDAO.class.getName()).log(Level.SEVERE, null, ex1);
+            }
+        } finally {
+            try {
+                connection.setAutoCommit(true);
+            } catch (SQLException ex) {
+                Logger.getLogger(QuestionDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+
+    public void deleteQuestion(int quesid) {
+        try {
+            String sql = "DELETE FROM `quiz_practice_db`.`question`\n"
+                    + "WHERE question_id = ?;";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setInt(1, quesid);
+            stm.executeUpdate();
+            connection.commit();
+        } catch (SQLException ex) {
+            Logger.getLogger(QuestionDAO.class.getName()).log(Level.SEVERE, null, ex);
+            try {
+                connection.rollback();
+            } catch (SQLException ex1) {
+                Logger.getLogger(QuestionDAO.class.getName()).log(Level.SEVERE, null, ex1);
+            }
+        } finally {
+            try {
+                connection.setAutoCommit(true);
+            } catch (SQLException ex) {
+                Logger.getLogger(QuestionDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+
     private ArrayList<Answer> getAnswerForQues(int quesId) {
         ArrayList<Answer> answers = new ArrayList<>();
         try {
@@ -313,6 +362,34 @@ public class QuestionDAO extends DBContext {
         return answers;
     }
 
+    public void changeStatusQues(int id, String status) {
+        try {
+            connection.setAutoCommit(false);
+            String sql = "UPDATE `quiz_practice_db`.`question`\n"
+                    + "SET\n"
+                    + "`question_status` = ?\n"
+                    + "WHERE `question_id` = ?;";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setString(1, status);
+            stm.setInt(2, id);
+            stm.executeUpdate();
+            connection.commit();
+        } catch (SQLException ex) {
+            Logger.getLogger(QuestionDAO.class.getName()).log(Level.SEVERE, null, ex);
+            try {
+                connection.rollback();
+            } catch (SQLException ex1) {
+                Logger.getLogger(QuestionDAO.class.getName()).log(Level.SEVERE, null, ex1);
+            }
+        } finally {
+            try {
+                connection.setAutoCommit(true);
+            } catch (SQLException ex) {
+                Logger.getLogger(QuestionDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+
     public boolean updateQuestion(String quizId, Question q, InputStream media) {
         try {
             connection.setAutoCommit(false);
@@ -326,7 +403,8 @@ public class QuestionDAO extends DBContext {
                     + "`question_status` = ?,\n"
                     + "`subcategory_id` = ?\n";
             if (media != null) {
-                sql += ", `question_media` = ?\n";
+                sql += ", `question_media` = ?,\n"
+                        + "`question_mediaName` = ?\n";
             }
             sql += "WHERE `question_id` = ?";
             PreparedStatement stm = connection.prepareStatement(sql);
@@ -338,7 +416,8 @@ public class QuestionDAO extends DBContext {
             stm.setInt(6, q.getSubCategory().getId());
             if (media != null) {
                 stm.setBlob(7, media);
-                stm.setInt(8, q.getId());
+                stm.setString(8, q.getMediaName());
+                stm.setInt(9, q.getId());
             } else {
                 stm.setInt(7, q.getId());
             }
@@ -352,6 +431,26 @@ public class QuestionDAO extends DBContext {
             stm_1.setInt(1, Integer.parseInt(quizId));
             stm_1.setInt(2, q.getId());
             stm_1.executeUpdate();
+
+            String deleteAnswer = "DELETE FROM `quiz_practice_db`.`answer`\n"
+                    + "WHERE question_id = ?;";
+            PreparedStatement stm_2 = connection.prepareStatement(deleteAnswer);
+            stm_2.setInt(1, q.getId());
+            stm_2.executeUpdate();
+
+            String insertAnswer = "INSERT INTO `quiz_practice_db`.`answer`\n"
+                    + "(`question_id`,\n"
+                    + "`answer_content`)\n"
+                    + "VALUES\n"
+                    + "(?,\n"
+                    + "?);";
+            PreparedStatement stm_3 = connection.prepareStatement(insertAnswer);
+            for (Answer answer : q.getAnswers()) {
+                stm_3.setInt(1, q.getId());
+                stm_3.setString(2, answer.getContent());
+                stm_3.executeUpdate();
+            }
+
             connection.commit();
             return true;
         } catch (SQLException ex) {
@@ -381,8 +480,6 @@ public class QuestionDAO extends DBContext {
 //            System.out.println(subcategory.getName());
 //        }
 //        System.out.println(qdao.getTotalRows(1, null, "all", "1", "all", "all"));
-        for (Answer answerForQue : qdao.getAnswerForQues(1)) {
-            System.out.println(answerForQue.getContent());
-        }
+        qdao.changeStatusQues(1, "unpublish");
     }
 }

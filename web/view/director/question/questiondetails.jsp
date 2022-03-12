@@ -24,7 +24,7 @@
                         </header>
                         <div style="display: flex;">
                             <div class="panel-body col-lg-8">
-                                <form class="form-horizontal tasi-form add-form" enctype="multipart/form-data" action="details" method="POST">
+                                <form id="updateQues" class="form-horizontal tasi-form add-form" enctype="multipart/form-data" action="details" method="POST">
                                     <div class="form-group">
                                         <label class="col-sm-2 col-sm-2 control-label">Quiz *:</label>
                                         <div class="col-sm-10">
@@ -69,7 +69,7 @@
                                 <div class="form-group">
                                     <label class="col-sm-2 control-label">Content *:</label>
                                     <div class="col-sm-10">
-                                        <textarea class="ckeditor" name="content" cols="55" rows="5">${question.content}</textarea>
+                                        <textarea class="ckeditor" name="content"cols="55" rows="5">${question.content}</textarea>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -113,7 +113,7 @@
                                     <div class="form-group">
                                         <label class="col-sm-2 control-label">Media: </label>
                                         <div class="col-sm-10">
-                                            <input type="file" name="media" value="${question.media}" >
+                                            <input type="file" name="media" onchange="submitForm()" style="color: transparent;"> ${question.mediaName}
                                         <div>
                                             <img src="${pageContext.servletContext.contextPath}/question/media?questionid=${question.id}" width="300px" class="img-fluid" >
                                         </div>
@@ -121,14 +121,15 @@
                                 </div> 
                                 <div class="form-group">
                                     <label class="col-sm-2 control-label">Answers *: </label>
-                                    <div class="col-sm-10">
+                                    <div id="answer" class="col-sm-10">
                                         <c:forEach items="${question.answers}" var="a">
                                             <div style="margin-bottom: 1%;">
                                                 <input style="width: 94%;" name="answer" value="${a.content}">
-                                                <button type="button" onclick="location.href = 'delete?id=${a.id}'"><i class="fa fa-trash"></i></button>
+                                                <button class="btn btn-success" type="button" onclick="location.href = 'delete?anId=${a.id}&quesid=${question.id}'"><i class="fa fa-trash"></i></button>
                                             </div>
                                         </c:forEach>
                                     </div>
+                                    <button style="margin-left: 18%;" class="btn btn-danger" type="button" onclick="addQues()"><i class="fa fa-plus"></i></button>
                                 </div>
                                 <div class="form-group">
                                     <div class="col-sm-2"></div>
@@ -165,6 +166,26 @@
                 var cateid = document.getElementById('cate').value;
                 window.location.href = "details?questionId=" + questid + "&cateid=" + cateid;
             }
+            function submitForm() {
+                document.getElementById('updateQues').submit();
+            }
+            function addQues() {
+                var div = document.getElementById('answer');
+                div.innerHTML += '<div id="add" style="margin-bottom: 1%;">' +
+                        '<input style="width: 94%;" name="answer">' +
+                        '<button onclick="deleteQues()" type="button"><i class="fa fa-trash"></i></button>' +
+                        '</div>';
+            }
+            
+            function deleteQues(){
+               document.getElementById('add').remove();
+            }
+            
+//            function getDataOfCKeditor(){
+//                 var data = CKEDITOR.instances.contenttext.getData();
+//                 console.log(data);
+//            }
+            
         </script>
         <jsp:include page="../header/linkjavascript.jsp"></jsp:include>
     </body>

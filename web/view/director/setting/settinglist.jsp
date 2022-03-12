@@ -130,6 +130,12 @@
                                             if (pageindex + gap < totalpage)
                                                 container.innerHTML += '<a href="' + url + totalpage + '">Last</a>';
                                         }
+                                        function changeStatus(id, status, url) {
+                                            var c = confirm("Do you sure that change status?");
+                                            if (c) {
+                                                window.location.href = url + "?id=" + id + "&status=" + status;
+                                            }
+                                        }
                                     </script>
                                 </div>
                                 <!-- /.box-body -->

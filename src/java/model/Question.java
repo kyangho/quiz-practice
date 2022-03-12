@@ -22,6 +22,7 @@ public class Question {
     private String level;
     private String status;
     private Blob media;
+    private String mediaName;
     private ArrayList<Answer> answers = new ArrayList<>();
     
     public  Question(){
@@ -43,6 +44,14 @@ public class Question {
         this.subCategory = subCategory;
     }
 
+    public String getMediaName() {
+        return mediaName;
+    }
+
+    public void setMediaName(String mediaName) {
+        this.mediaName = mediaName;
+    }
+    
     public String getLevel() {
         return level;
     }

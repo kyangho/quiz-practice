@@ -102,29 +102,30 @@
                                                         <td>${q.level}</td>
                                                         <td>${q.status}</td>
                                                         <td>
+                                                            <button type="button" style="border: none;" onclick="confirmDelete(${q.id})" class="label btn-danger">Delete</button>
                                                             <a href="details?questionId=${q.id}" class="label label-primary">Edit</a>
-                                                            <a class="button-show-post" value="#" status="${post.status}">
+                                                            <a onclick="changeStatus(${q.id}, '${q.status}')">
                                                                 <i <c:if test="${q.status eq 'publish'}">
                                                                         class="fa fa-eye-slash"
                                                                     </c:if>
                                                                     <c:if test="${q.status != 'publish'}">
                                                                         class="fa fa-eye"
                                                                     </c:if>>  
-                                                            </i>
-                                                        </a>
-                                                    </td>
-                                                </tr>
-                                            </c:forEach>
-                                        </table>
-                                    </c:if>
-                                </form>
-                                <div>
-                                    <nav aria-label="Page navigation example">
-                                        <ul id="paggingBottom" class="pagination" style="float: right;">
-                                        </ul>
-                                    </nav>
-                                </div>
-                                <script>
+                                                                </i>
+                                                            </a>
+                                                        </td>
+                                                    </tr>
+                                                </c:forEach>
+                                            </table>
+                                        </c:if>
+                                    </form>
+                                    <div>
+                                        <nav aria-label="Page navigation example">
+                                            <ul id="paggingBottom" class="pagination" style="float: right;">
+                                            </ul>
+                                        </nav>
+                                    </div>
+                                    <script>
                                         generatePagger('paggingBottom',${requestScope.pageindex},${requestScope.totalPage}, '${requestScope.url}', 1);
                                         function generatePagger(div, pageIndex, totalpage, url, gap) {
                                             var container = document.getElementById(div);
@@ -142,17 +143,31 @@
                                             if (pageIndex + gap < totalpage)
                                                 container.innerHTML += '<li class="page-item"><a class="page-link" href="' + url + totalpage + '">Last</a></li>';
                                         }
-                                </script>
+                                        function confirmDelete(id) {
+                                            var c = confirm("Are you delete question?");
+                                            if (c) {
+                                                window.location.href = "delete?quesid=" + id;
+                                            }
+                                        }
+                                        function changeStatus(id, status) {
+                                            var c = confirm("Are you sure that change status?");
+//                                            var a = "changestatus?id=" + id + "&status=" + status;
+//                                            console.log(a);
+                                            if (c) {
+                                                window.location.href = "changestatus?id=" + id + "&status=" + status;
+                                            }
+                                        }
+                                    </script>
+                                </div>
+                                <!-- /.box-body -->
                             </div>
-                            <!-- /.box-body -->
+                            <!-- /.box -->
                         </div>
-                        <!-- /.box -->
                     </div>
-                </div>
-            </section>
-        </aside>
+                </section>
+            </aside>
 
-    </div>
-    <jsp:include page="../header/linkjavascript.jsp"></jsp:include>
-</body>
+        </div>
+        <jsp:include page="../header/linkjavascript.jsp"></jsp:include>
+    </body>
 </html>
