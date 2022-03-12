@@ -10,7 +10,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Question Details</title>
+        <title>Quizz</title>
         <jsp:include page="../header/linkcss.jsp"></jsp:include>
         </head>
         <body class="skin-black">
@@ -113,12 +113,11 @@
                                     <div class="form-group">
                                         <label class="col-sm-2 control-label">Media : </label>
                                         <div class="col-sm-10">
-                                            <input class="" type="file" name="media" onchange="submitForm()" style="color: transparent;"> ${question.mediaName}
-                                        <div>
-                                            <c:if test="${question.media != null}">
-                                                <img src="${pageContext.servletContext.contextPath}/question/media?questionid=${question.id}" class="img-fluid" >
-                                            </c:if>
-                                        </div>
+                                        <c:if test="${question.media != null}">
+                                            <img id="media" src="${pageContext.servletContext.contextPath}/question/media?questionid=${question.id}" class="img-fluid" >
+                                        </c:if>
+                                        <img id="image" style="padding-bottom: 10px" class="img-fluid" >
+                                        <input type="file" name="media" id="files" />
                                     </div>
                                 </div> 
                                 <div class="form-group">
@@ -178,16 +177,22 @@
                         '<button style="margin-left:2px;" class="btn btn-success" onclick="deleteQues()" type="button"><i class="fa fa-trash"></i></button>' +
                         '</div>';
             }
-
             function deleteQues() {
                 document.getElementById('add').remove();
             }
-
-//            function getDataOfCKeditor(){
-//                 var data = CKEDITOR.instances.contenttext.getData();
-//                 console.log(data);
-//            }
-
+            
+            document.getElementById("files").onchange = function () {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    document.getElementById("image").src = e.target.result;
+                };
+                reader.readAsDataURL(this.files[0]);
+                var media = document.getElementById('media');
+                if (media != null) {
+                    media.remove();
+                }
+            };
+            
         </script>
         <jsp:include page="../header/linkjavascript.jsp"></jsp:include>
     </body>

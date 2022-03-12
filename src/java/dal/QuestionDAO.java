@@ -21,7 +21,7 @@ import model.Subject;
  * @author conmu
  */
 public class QuestionDAO extends DBContext {
-
+    
     public ArrayList<Question> getQuestions(int accountId, int pageindex, int pagesize, String key, String subject,
             String subcategory, String level, String status) {
         ArrayList<Question> questions = new ArrayList<>();
@@ -83,7 +83,7 @@ public class QuestionDAO extends DBContext {
                 int start = (pageindex - 1) * pagesize;
                 sql += "limit " + start + "," + pagesize + "\n";
             }
-
+            
             sql += ") as ques";
 //            System.out.println(sql);
             PreparedStatement stm = connection.prepareStatement(sql);
@@ -112,7 +112,7 @@ public class QuestionDAO extends DBContext {
         }
         return questions;
     }
-
+    
     public int getQuizIdOfQuestion(int quesId) {
         try {
             String sql = "select * from quiz_question\n"
@@ -128,7 +128,7 @@ public class QuestionDAO extends DBContext {
         }
         return -1;
     }
-
+    
     public ArrayList<Subcategory> getSubcategorys() {
         ArrayList<Subcategory> subcategorys = new ArrayList<>();
         try {
@@ -143,7 +143,7 @@ public class QuestionDAO extends DBContext {
         }
         return subcategorys;
     }
-
+    
     public int getTotalRows(int accountId, String key, String subject,
             String subcategory, String level, String status) {
         try {
@@ -214,7 +214,7 @@ public class QuestionDAO extends DBContext {
         }
         return -1;
     }
-
+    
     public Question getQuestionById(int id, int accountId) {
         try {
             String sql = "select * from quiz_practice_db.question\n"
@@ -245,13 +245,6 @@ public class QuestionDAO extends DBContext {
         }
         return null;
     }
-//    public static void main(String[] args) throws SQLException {
-//        QuestionDAO q = new QuestionDAO();
-//        int id = 2;
-//        Question ques = q.getQuestionById(id);
-//        System.out.println(ques.getMedia().getBinaryStream());
-//        
-//    }
 
     public ArrayList<Subcategory> getSubCategoryByCate(int cateId) {
         ArrayList<Subcategory> subcategorys = new ArrayList<>();
@@ -269,7 +262,7 @@ public class QuestionDAO extends DBContext {
         }
         return subcategorys;
     }
-
+    
     public ArrayList<Quiz> getQuizForQuestion(int accountId) {
         ArrayList<Quiz> quizs = new ArrayList<>();
         try {
@@ -293,7 +286,7 @@ public class QuestionDAO extends DBContext {
         }
         return quizs;
     }
-
+    
     public ArrayList<Category> getCategory() {
         ArrayList<Category> categorys = new ArrayList<>();
         try {
@@ -308,7 +301,7 @@ public class QuestionDAO extends DBContext {
         }
         return categorys;
     }
-
+    
     public void deleteAnswer(int answerID) {
         try {
             connection.setAutoCommit(false);
@@ -332,7 +325,7 @@ public class QuestionDAO extends DBContext {
             }
         }
     }
-
+    
     public void deleteQuestion(int quesid) {
         try {
             String sql = "DELETE FROM `quiz_practice_db`.`question`\n"
@@ -356,7 +349,7 @@ public class QuestionDAO extends DBContext {
             }
         }
     }
-
+    
     private ArrayList<Answer> getAnswerForQues(int quesId) {
         ArrayList<Answer> answers = new ArrayList<>();
         try {
@@ -372,7 +365,7 @@ public class QuestionDAO extends DBContext {
         }
         return answers;
     }
-
+    
     public void changeStatusQues(int id, String status) {
         try {
             connection.setAutoCommit(false);
@@ -400,7 +393,7 @@ public class QuestionDAO extends DBContext {
             }
         }
     }
-
+    
     public boolean updateQuestion(String quizId, Question q, InputStream media) {
         try {
             connection.setAutoCommit(false);
@@ -433,7 +426,7 @@ public class QuestionDAO extends DBContext {
                 stm.setInt(7, q.getId());
             }
             stm.executeUpdate();
-
+            
             String update_quizQues = "UPDATE `quiz_practice_db`.`quiz_question`\n"
                     + "SET\n"
                     + "`quiz_id` = ?\n"
@@ -442,13 +435,13 @@ public class QuestionDAO extends DBContext {
             stm_1.setInt(1, Integer.parseInt(quizId));
             stm_1.setInt(2, q.getId());
             stm_1.executeUpdate();
-
+            
             String deleteAnswer = "DELETE FROM `quiz_practice_db`.`answer`\n"
                     + "WHERE question_id = ?;";
             PreparedStatement stm_2 = connection.prepareStatement(deleteAnswer);
             stm_2.setInt(1, q.getId());
             stm_2.executeUpdate();
-
+            
             String insertAnswer = "INSERT INTO `quiz_practice_db`.`answer`\n"
                     + "(`question_id`,\n"
                     + "`answer_content`)\n"
@@ -461,7 +454,7 @@ public class QuestionDAO extends DBContext {
                 stm_3.setString(2, answer.getContent());
                 stm_3.executeUpdate();
             }
-
+            
             connection.commit();
             return true;
         } catch (SQLException ex) {
@@ -480,24 +473,19 @@ public class QuestionDAO extends DBContext {
         }
         return false;
     }
-
-//    public static void main(String[] args) {
-//        QuestionDAO qdao = new QuestionDAO();
-////        System.out.println(qdao.getQuestions(1, 1, 4, null, "all", "1", "all", "all").size());
-////        for (Question question : qdao.getQuestions(1, 1, 4, null, "2", "1", "easy", "all")) {
-////            System.out.println(question.getContent() + " " + question.getId());
-////        }
-////        for (Subcategory subcategory : qdao.getSubCategoryByCate(1)) {
-////            System.out.println(subcategory.getName());
-////        }
-////        System.out.println(qdao.getTotalRows(1, null, "all", "1", "all", "all"));
-//        for (Answer answerForQue : qdao.getAnswerForQues(1)) {
-//            System.out.println(answerForQue.getContent());
+    
+    public static void main(String[] args) {
+        QuestionDAO qdao = new QuestionDAO();
+//        System.out.println(qdao.getQuestions(1, 1, 4, null, "all", "1", "all", "all").size());
+//        for (Question question : qdao.getQuestions(1, 1, 4, null, "2", "1", "easy", "all")) {
+//            System.out.println(question.getContent() + " " + question.getId());
 //        }
 //        for (Subcategory subcategory : qdao.getSubCategoryByCate(1)) {
 //            System.out.println(subcategory.getName());
 //        }
 //        System.out.println(qdao.getTotalRows(1, null, "all", "1", "all", "all"));
-//        qdao.changeStatusQues(1, "unpublish");
-//    }
+        for (Subcategory subcategory : qdao.getSubCategoryByCate(3)) {
+            System.out.println(subcategory.getName());
+        }
+    }
 }

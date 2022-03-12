@@ -9,9 +9,13 @@ import dal.QuestionDAO;
 import dal.QuizDAO;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.file.Paths;
+import java.sql.Blob;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.servlet.ServletException;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -37,6 +41,7 @@ public class QuestionController extends HttpServlet {
     private final String questionDetailsPath = "/question/details";
     private final String deleteAnswerPath = "/question/delete";
     private final String changeStatusPath = "/question/changestatus";
+    private final String mediaPath = "/question/media";
     private final int pagesize = 4;
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -66,6 +71,9 @@ public class QuestionController extends HttpServlet {
         } else if (URI.contains(changeStatusPath)) {
             doGetChangeStatus(request, response);
 //            response.getWriter().print(URI);
+        } else if (URI.contains(mediaPath)) {
+            doGetMedia(request, response);
+//            response.getWriter().print(URI);
         }
     }
 
@@ -86,11 +94,17 @@ public class QuestionController extends HttpServlet {
         if (URI.contains(questionListPath)) {
             doGetQuestionList(request, response);
         } else if (URI.contains(questionDetailsPath)) {
-            doGetQuestionDetails(request, response);
+            doPostQuestionDetails(request, response);
+//            response.getWriter().print(URI);
         } else if (URI.contains(deleteAnswerPath)) {
             doGetDeleteAnswer(request, response);
+//            response.getWriter().print(URI);
         } else if (URI.contains(changeStatusPath)) {
             doGetChangeStatus(request, response);
+//            response.getWriter().print(URI);
+        } else if (URI.contains(mediaPath)) {
+            doGetMedia(request, response);
+//            response.getWriter().print(URI);
         }
     }
 
@@ -155,6 +169,7 @@ public class QuestionController extends HttpServlet {
             }
         }
         QuizDAO q = new QuizDAO();
+        request.setAttribute("tag", "question");
         request.setAttribute("subjects", q.getsubs());
         request.setAttribute("subcate", qdao.getSubcategorys());
         request.getRequestDispatcher("../view/director/question/questionlist.jsp").forward(request, response);
@@ -181,6 +196,7 @@ public class QuestionController extends HttpServlet {
         request.setAttribute("subjects", q.getsubs());
         request.setAttribute("quizs", qdao.getQuizForQuestion(account.getId()));
         request.setAttribute("quizId", qdao.getQuizIdOfQuestion(question.getId()));
+        request.setAttribute("tag", "question");
         request.getRequestDispatcher("../view/director/question/questiondetails.jsp").forward(request, response);
     }
 
@@ -193,6 +209,7 @@ public class QuestionController extends HttpServlet {
         if (anId != null && quesid != null) {
             qdao.deleteAnswer(Integer.parseInt(anId));
             request.setAttribute("quesid", quesid);
+            request.setAttribute("tag", "question");
             request.getRequestDispatcher("details").forward(request, response);
         }
 
@@ -205,6 +222,7 @@ public class QuestionController extends HttpServlet {
 
     private void doPostQuestionDetails(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        Account account = (Account) request.getSession().getAttribute("account");
         Part mediaPart = request.getPart("media");
         String mediaName = Paths.get(mediaPart.getSubmittedFileName()).getFileName().toString();
         InputStream mediaContent = null;
@@ -230,22 +248,19 @@ public class QuestionController extends HttpServlet {
         String quizid = request.getParameter("quiz");
         response.getWriter().print(q.getContent() + " " + q.getContent().length() + " " + q.getLevel() + " ");
         QuestionDAO qdao = new QuestionDAO();
-//        if (qdao.updateQuestion(quizid, q, mediaContent)) {
         qdao.updateQuestion(quizid, q, mediaContent);
         request.setAttribute("subcate", qdao.getSubCategoryByCate(q.getCategory().getCategory_id()));
         request.setAttribute("categories", qdao.getCategory());
         QuizDAO qiAO = new QuizDAO();
-        Account account = (Account) request.getSession().getAttribute("account");
+        q.setMedia(qdao.getQuestionById(q.getId(), account.getId()).getMedia());
         request.setAttribute("subjects", qiAO.getsubs());
         request.setAttribute("quizs", qdao.getQuizForQuestion(account.getId()));
         request.setAttribute("quizId", qdao.getQuizIdOfQuestion(q.getId()));
         request.setAttribute("tag", "done");
         request.setAttribute("question", q);
+        request.setAttribute("tag", "question");
         request.getRequestDispatcher("../view/director/question/questiondetails.jsp").forward(request, response);
 
-//        } else {
-//            response.getWriter().print("update failed");
-//        }
     }
 
     private void doGetChangeStatus(HttpServletRequest request, HttpServletResponse response)
@@ -260,5 +275,25 @@ public class QuestionController extends HttpServlet {
         }
         response.sendRedirect("list");
 //            response.getWriter().print(id + " " + status);
+    }
+
+    private void doGetMedia(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        Account account = (Account) request.getSession().getAttribute("account");
+        int quesId = Integer.parseInt(request.getParameter("questionid"));
+        QuestionDAO qdao = new QuestionDAO();
+        Blob blob = qdao.getQuestionById(quesId, account.getId()).getMedia();
+        byte[] buffer;
+        try {
+            response.reset();
+            buffer = blob.getBytes(1, (int) blob.length());
+            OutputStream os = response.getOutputStream();
+            response.setContentType("image/*");
+            ServletOutputStream out = response.getOutputStream();
+            out.write(buffer, 0, (int) blob.length());
+            os.flush();
+            os.close();
+        } catch (SQLException ex) {
+        }
     }
 }
