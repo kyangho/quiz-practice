@@ -169,7 +169,7 @@ public class QuestionController extends HttpServlet {
         }
         String cateId = request.getParameter("cateid");
         QuestionDAO qdao = new QuestionDAO();
-        Question question = qdao.getQuestionById(Integer.parseInt(quesId));
+        Question question = qdao.getQuestionById(Integer.parseInt(quesId), account.getId());
         request.setAttribute("question", question);
         if (cateId == null) {
             request.setAttribute("subcate", qdao.getSubCategoryByCate(question.getCategory().getCategory_id()));

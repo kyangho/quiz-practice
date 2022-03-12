@@ -17,6 +17,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import model.Account;
 
 /**
  *
@@ -24,20 +25,6 @@ import javax.servlet.http.HttpServletResponse;
  */
 @WebServlet(name = "QuestionMediaController", urlPatterns = {"/question/media"})
 public class QuestionMediaController extends HttpServlet {
-
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-
-    }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -52,9 +39,10 @@ public class QuestionMediaController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 //        String id = request.getParameter("questionid");
+        Account account = (Account) request.getSession().getAttribute("account");
         int quesId = Integer.parseInt(request.getParameter("questionid"));
         QuestionDAO qdao = new QuestionDAO();
-        Blob blob = qdao.getQuestionById(quesId).getMedia();
+        Blob blob = qdao.getQuestionById(quesId, account.getId()).getMedia();
         byte[] buffer;
         try {
             response.reset();
@@ -80,7 +68,6 @@ public class QuestionMediaController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
     }
 
     /**

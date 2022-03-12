@@ -111,12 +111,12 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="col-sm-2 control-label">Media: </label>
+                                        <label class="col-sm-2 control-label">Media : </label>
                                         <div class="col-sm-10">
-                                            <input type="file" name="media" onchange="submitForm()" style="color: transparent;"> ${question.mediaName}
+                                            <input class="" type="file" name="media" onchange="submitForm()" style="color: transparent;"> ${question.mediaName}
                                         <div>
                                             <c:if test="${question.media != null}">
-                                                <img src="${pageContext.servletContext.contextPath}/question/media?questionid=${question.id}" width="300px" class="img-fluid" >
+                                                <img src="${pageContext.servletContext.contextPath}/question/media?questionid=${question.id}" class="img-fluid" >
                                             </c:if>
                                         </div>
                                     </div>
@@ -175,7 +175,7 @@
                 var div = document.getElementById('answer');
                 div.innerHTML += '<div id="add" style="margin-bottom: 1%;">' +
                         '<input style="width: 94%;" name="answer">' +
-                        '<button onclick="deleteQues()" type="button"><i class="fa fa-trash"></i></button>' +
+                        '<button style="margin-left:2px;" class="btn btn-success" onclick="deleteQues()" type="button"><i class="fa fa-trash"></i></button>' +
                         '</div>';
             }
 
