@@ -115,7 +115,9 @@
                                         <div class="col-sm-10">
                                             <input type="file" name="media" onchange="submitForm()" style="color: transparent;"> ${question.mediaName}
                                         <div>
-                                            <img src="${pageContext.servletContext.contextPath}/question/media?questionid=${question.id}" width="300px" class="img-fluid" >
+                                            <c:if test="${question.media != null}">
+                                                <img src="${pageContext.servletContext.contextPath}/question/media?questionid=${question.id}" width="300px" class="img-fluid" >
+                                            </c:if>
                                         </div>
                                     </div>
                                 </div> 
@@ -176,16 +178,16 @@
                         '<button onclick="deleteQues()" type="button"><i class="fa fa-trash"></i></button>' +
                         '</div>';
             }
-            
-            function deleteQues(){
-               document.getElementById('add').remove();
+
+            function deleteQues() {
+                document.getElementById('add').remove();
             }
-            
+
 //            function getDataOfCKeditor(){
 //                 var data = CKEDITOR.instances.contenttext.getData();
 //                 console.log(data);
 //            }
-            
+
         </script>
         <jsp:include page="../header/linkjavascript.jsp"></jsp:include>
     </body>
