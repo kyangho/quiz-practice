@@ -245,8 +245,20 @@ public class QuestionController extends HttpServlet {
 //            response.getWriter().println(answer);
         }
         q.setAnswers(ans);
+        String correctAns = request.getParameter("correctAnswer");
+        if (correctAns != null) {
+            try {
+                int index = Integer.parseInt(correctAns);
+                q.setCorrectAnswer(answers[index]);
+            } catch (Exception e) {
+                q.setCorrectAnswer(correctAns);
+            }
+        } else {
+            q.setCorrectAnswer(correctAns);
+        }
+        
+        response.getWriter().print(correctAns + " " + q.getCorrectAnswer());
         String quizid = request.getParameter("quiz");
-        response.getWriter().print(q.getContent() + " " + q.getContent().length() + " " + q.getLevel() + " ");
         QuestionDAO qdao = new QuestionDAO();
         qdao.updateQuestion(quizid, q, mediaContent);
         request.setAttribute("subcate", qdao.getSubCategoryByCate(q.getCategory().getCategory_id()));
@@ -257,7 +269,8 @@ public class QuestionController extends HttpServlet {
         request.setAttribute("quizs", qdao.getQuizForQuestion(account.getId()));
         request.setAttribute("quizId", qdao.getQuizIdOfQuestion(q.getId()));
         request.setAttribute("tag", "done");
-        request.setAttribute("question", q);
+        
+        request.setAttribute("question", qdao.getQuestionById(q.getId(), account.getId()));
         request.setAttribute("tag", "question");
         request.getRequestDispatcher("../view/director/question/questiondetails.jsp").forward(request, response);
 

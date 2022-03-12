@@ -124,13 +124,17 @@
                                     <label class="col-sm-2 control-label">Answers *: </label>
                                     <div id="answer" class="col-sm-10">
                                         <c:forEach items="${question.answers}" var="a">
-                                            <div style="margin-bottom: 1%;">
-                                                <input style="width: 94%;" name="answer" value="${a.content}">
-                                                <button class="btn btn-success" type="button" onclick="location.href = 'delete?anId=${a.id}&quesid=${question.id}'"><i class="fa fa-trash"></i></button>
+                                            <div style="margin-bottom: 1%; display: flex;">
+                                                <span hidden="">${a.content} ${question.correctAnswer}</span>
+                                                <input onclick="checkCorrect()"
+                                                       <c:if test="${a.id eq question.correctAnswer}"> checked="checked" </c:if>
+                                                       style="margin: 10px 5px 0 0;" name="correctAnswer" value="${a.content}" type="radio">
+                                                <input class="form-control" name="answer" value="${a.content}">
+                                                <button style="margin-left: -5%;" class="btn btn-success" type="button" onclick="location.href = 'delete?anId=${a.id}&quesid=${question.id}'"><i class="fa fa-trash"></i></button>
                                             </div>
                                         </c:forEach>
                                     </div>
-                                    <button style="margin-left: 18%;" class="btn btn-danger" type="button" onclick="addQues()"><i class="fa fa-plus"></i></button>
+                                    <button style="margin-left: 55%;" class="btn btn-danger" type="button" onclick="addQues()"><i class="fa fa-plus"></i></button>
                                 </div>
                                 <div class="form-group">
                                     <div class="col-sm-2"></div>
@@ -172,9 +176,10 @@
             }
             function addQues() {
                 var div = document.getElementById('answer');
-                div.innerHTML += '<div id="add" style="margin-bottom: 1%;">' +
-                        '<input style="width: 94%;" name="answer">' +
-                        '<button style="margin-left:2px;" class="btn btn-success" onclick="deleteQues()" type="button"><i class="fa fa-trash"></i></button>' +
+                div.innerHTML += '<div id="add" style="margin-bottom: 1%; display: flex;">' +
+                        '<input onclick="checkCorrect()" name="correctAnswer" style="margin: 10px 5px 0 0;" class="form-check-input" value="no" type="radio">' +
+                        '<input class="form-control" name="answer">' +
+                        '<button style="margin-left: -5%;" class="btn btn-success" onclick="deleteQues()" type="button"><i class="fa fa-trash"></i></button>' +
                         '</div>';
             }
             function deleteQues() {
@@ -192,6 +197,16 @@
                     media.remove();
                 }
             };
+            
+            function checkCorrect() {
+                var corrects = document.getElementsByName('correctAnswer');
+//                var answers = document.getElementsByName('answer');
+                for (var i = 0; i < corrects.length; i++) {
+                    if (corrects[i].checked) {
+                        corrects[i].value = i;
+                    }
+                }
+            }
             
         </script>
         <jsp:include page="../header/linkjavascript.jsp"></jsp:include>
