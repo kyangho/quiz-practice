@@ -10,7 +10,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Add New User</title>
+        <title>Quizz</title>
         <jsp:include page="../header/linkcss.jsp"></jsp:include>
         </head>
         <body class="skin-black">
