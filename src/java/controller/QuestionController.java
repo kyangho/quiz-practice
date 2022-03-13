@@ -5,10 +5,14 @@
  */
 package controller;
 
+import dal.QuestionAnswerDAO;
 import dal.QuestionDAO;
 import dal.QuizDAO;
+import java.io.BufferedReader;
+import java.io.Console;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.nio.file.Paths;
 import java.sql.Blob;
@@ -42,7 +46,8 @@ public class QuestionController extends HttpServlet {
     private final String deleteAnswerPath = "/question/delete";
     private final String changeStatusPath = "/question/changestatus";
     private final String mediaPath = "/question/media";
-    private final int pagesize = 4;
+    private final String importPath = "/question/import";
+    private final int pagesize = 10;
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -105,6 +110,8 @@ public class QuestionController extends HttpServlet {
         } else if (URI.contains(mediaPath)) {
             doGetMedia(request, response);
 //            response.getWriter().print(URI);
+        } else if (URI.contains(importPath)) {
+            doPostQuestionImport(request, response);
         }
     }
 
@@ -256,7 +263,7 @@ public class QuestionController extends HttpServlet {
         } else {
             q.setCorrectAnswer(correctAns);
         }
-        
+
         response.getWriter().print(correctAns + " " + q.getCorrectAnswer());
         String quizid = request.getParameter("quiz");
         QuestionDAO qdao = new QuestionDAO();
@@ -269,7 +276,7 @@ public class QuestionController extends HttpServlet {
         request.setAttribute("quizs", qdao.getQuizForQuestion(account.getId()));
         request.setAttribute("quizId", qdao.getQuizIdOfQuestion(q.getId()));
         request.setAttribute("tag", "done");
-        
+
         request.setAttribute("question", qdao.getQuestionById(q.getId(), account.getId()));
         request.setAttribute("tag", "question");
         request.getRequestDispatcher("../view/director/question/questiondetails.jsp").forward(request, response);
@@ -307,6 +314,55 @@ public class QuestionController extends HttpServlet {
             os.flush();
             os.close();
         } catch (SQLException ex) {
+        }
+    }
+
+    private void doPostQuestionImport(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        Part filesPart = request.getPart("file"); // Retrieves <input type="file" name="files">
+        String fileName = Paths.get(filesPart.getSubmittedFileName()).getFileName().toString(); // MSIE fix.
+        InputStream fileContent = filesPart.getInputStream();
+        BufferedReader br = new BufferedReader(new InputStreamReader(fileContent));
+        ArrayList<Question> questions = new ArrayList<>();
+        QuizDAO quizDAO = new QuizDAO();
+        ArrayList<Category> categories = quizDAO.getCates();
+        QuestionDAO questionDAO = new QuestionDAO();
+        ArrayList<Subcategory> subcategories = questionDAO.getSubcategorys();
+        if (filesPart.getSize() > 0) {
+            String line;
+            boolean isFirstLine = true;
+            while ((line = br.readLine()) != null) {
+                if (isFirstLine){
+                    isFirstLine = false;
+                    continue;
+                }
+                Question question = new Question();
+                String[] infors = line.split("(?<=\"),|(?!(.{1,9999}\\\")),");
+                if (infors[0].isEmpty()){
+                    continue;
+                }
+                question.setContent(infors[0]);
+                for(Category c : categories){
+                    if (c.getCategory_value().compareToIgnoreCase(infors[1]) == 0){
+                        question.setCategory(c);
+                    }
+                }
+                for (Subcategory sc : subcategories){
+                    if (sc.getName().compareToIgnoreCase(infors[1]) == 0){
+                        question.setSubCategory(sc);
+                    }
+                }
+                for (int i = 2; i < infors.length; i++){
+                    question.getAnswers().add(new Answer(1, infors[i]));
+                }
+                if (question.getAnswers().size() >= 2){
+                    questions.add(question);
+                }
+            }
+            QuestionAnswerDAO qaDAO = new QuestionAnswerDAO();
+            for (Question q : questions){
+                qaDAO.insertQuestionInfor(q);
+            }
         }
     }
 }

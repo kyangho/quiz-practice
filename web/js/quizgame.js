@@ -118,7 +118,7 @@ next_btn.onclick = () => {
 submit_btn.onclick = () => {
     if (confirm("Do you want to submit?")) {
         var tmpQuestions = questions;
-        for (var i = 0; i < tmpQuestions.length; i++){
+        for (var i = 0; i < tmpQuestions.length; i++) {
             delete tmpQuestions[i].media;
         }
         $.ajax({
@@ -131,7 +131,7 @@ submit_btn.onclick = () => {
             }
         })
     } else {
-        
+
     }
 }
 
@@ -162,13 +162,13 @@ function showQuetions(index) {
                 document.querySelector(".que-image").innerHTML = "<img src='" + imageUrl + "'width='440' height='240'>"
             } else {
                 audioExists(e.target.result, function (exists) {
-                    if (!exists) {
+                    if (exists) {
                         var tmpBlob = new Blob([new Uint8Array(questions[0].media.binaryData)], {type: "audio/mp3"});
                         var urlCreator = window.URL || window.webkitURL;
                         var audioUrl = urlCreator.createObjectURL(tmpBlob);
                         document.querySelector(".que-image").innerHTML =
                                 `<div class="embed-responsive embed-responsive-4by3">
-                            <audio src=" ` + audioUrl + `" controls 'width='440'></audio>
+                            <audio src=" ` + audioUrl + `" controls width='440'></audio>
                         </div>`
                     } else {
                         var tmpBlob = new Blob([new Uint8Array(questions[0].media.binaryData)], {type: "video/mp4"});
@@ -176,7 +176,7 @@ function showQuetions(index) {
                         var videoUrl = urlCreator.createObjectURL(tmpBlob);
                         document.querySelector(".que-image").innerHTML =
                                 `<div class="embed-responsive embed-responsive-4by3">
-                            <video src=" ` + videoUrl + `" controls 'width='440' height='240'></video>
+                            <video src=" ` + videoUrl + `" controls width='440' height='240'   ></video>
                         </div>`
                     }
                 })
@@ -206,7 +206,6 @@ function showQuetions(index) {
         };
         audio.src = url;
     }
-
 
 }
 let tickIconTag = '<div class="icon tick"><i class="fas fa-check"></i></div>';

@@ -63,7 +63,7 @@
                 <c:if test="${sessionScope.account != null && !requestScope.quiz.hasJoin}">
                     <div class="button" style="margin: 0 30%;">
                         <button style="width: 300px; height: 66px; border-radius: 8px; font-size: 26px;" class="btn btn-success btn-circle a">
-                            <a style="color: white;" href="#">Practice</a></button>
+                            <a style="color: white;" href="${pageContext.request.contextPath}/quiz/join?quizId=${requestScope.quiz.id}">Practice</a></button>
                     </div>
                 </c:if>
                 <c:if test="${sessionScope.account == null}">

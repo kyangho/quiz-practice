@@ -20,19 +20,32 @@
         </head>
 
         <body class="skin-black">
+
         <jsp:include page="../header/headerforadmin.jsp"></jsp:include>
 
             <div class="wrapper row-offcanvas row-offcanvas-left">
             <jsp:include page="../header/leftmenuforadmin.jsp"></jsp:include>
                 <aside class="right-side">
                     <section class="content">
+
                         <div class="row">
                             <div class="col-xs-12">
+                                <div class="popup">
+                                    <div class="popup-content">
+                                        <form action="import" method="POST" enctype='multipart/form-data'>
+                                            <span class="close-btn">&times;</span>
+                                            <h3>Import Question</h3>
+                                            <input type="file" name="file" required="" accept=".csv">
+                                            <p>You can download template import <a href="">Here</a></p>
+                                            <button type="submit" class="btn btn-primary">Submit</button>
+                                        </form>
+                                    </div>
+                                </div>
                                 <div class="panel">
                                     <div class="panel-heading" style="display: flex;">
                                         <div style="margin-right: 74%;"> List of questions</div>
                                         <div>
-                                            <a class="btn label-danger center-block col-sm-10" style="width: 100%;margin-left: 6%;" href="#">Import question </a>
+                                            <a class="btn label-danger center-block col-sm-10" id="popup-btn" style="width: 100%;margin-left: 6%;" href="#">Import question </a>
                                         </div>
                                     </div>
 
@@ -169,5 +182,24 @@
 
         </div>
         <jsp:include page="../header/linkjavascript.jsp"></jsp:include>
+        <script>
+            let modalBtn = document.getElementById("popup-btn");
+            let modal = document.querySelector(".popup");
+            let closeBtn = document.querySelector(".close-btn");
+            modalBtn.onclick = function () {
+                modal.style.display = "block"
+            }
+            closeBtn.onclick = function () {
+                modal.style.display = "none"
+            }
+            window.onclick = function (e) {
+                if (e.target == modal) {
+                    modal.style.display = "none"
+                }
+            }
+            var file = new File(["Content,Category,Correct Answer,Answer 2,Answer 3,Answer 4,Answer 5,Answer 6,Answer 7,Answer 8,Answer 9,Answer 10"], "Template import question.csv", {type: "application/vnd.ms-excel"});
+            document.querySelector(".popup-content a").href = window.URL.createObjectURL(file);
+            document.querySelector(".popup-content a").download = 'Template import question.csv';
+        </script>
     </body>
 </html>
