@@ -303,7 +303,7 @@ public class QuestionDAO extends DBContext {
         return categorys;
     }
 
-    private ArrayList<Answer> getAnswerForQues(int quesId) {
+    public ArrayList<Answer> getAnswerForQues(int quesId) {
         ArrayList<Answer> answers = new ArrayList<>();
         try {
             String sql = "select answer_id, answer_content from answer where question_id = ?";
