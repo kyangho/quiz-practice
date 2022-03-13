@@ -50,11 +50,6 @@
                                           </c:if>
                                           enctype="multipart/form-data">
 
-                                        <%--</c:if>
-                                        <c:if test="${requestScope.add eq 'add'}" >
-                                            <form class="form-horizontal tasi-form" method="POST" action="add" enctype="multipart/form-data">
-                                            </c:if>--%>
-
                                         <c:if test="${requestScope.edit eq 'edit'}" >
                                             <div class="form-group">
                                                 <label class="col-sm-2 col-sm-2 control-label">ID</label>

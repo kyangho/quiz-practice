@@ -149,7 +149,6 @@ public class SliderDAO extends DBContext {
 
     public void updateSlider(int id, String title, InputStream fileContent, String backlink, String status, String note) {
         int row = 0;
-
         String query = "UPDATE `quiz_practice_db`.`slider` SET `slider_title` = ?, \n"
                 + " `slider_backlink` = ?, `slider_status` = ?, `slider_note` = ?\n";
         if (fileContent != null) {
