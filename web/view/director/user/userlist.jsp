@@ -14,7 +14,7 @@
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Users List</title>
+        <title>Quizz</title>
         <jsp:include page="../header/linkcss.jsp"></jsp:include>
 
         </head>
@@ -155,6 +155,12 @@
                                             }
                                             if (pageIndex + gap < totalpage)
                                                 container.innerHTML += '<a href="' + url + totalpage + '">Last</a>';
+                                        }
+                                        function changeStatus(id, status, url) {
+                                            var c = confirm("Do you sure that change status?");
+                                            if (c) {
+                                                window.location.href = url + "?id=" + id + "&status=" + status;
+                                            }
                                         }
                                     </script>
                                 </div>

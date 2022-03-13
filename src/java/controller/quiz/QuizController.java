@@ -27,6 +27,7 @@ import model.Quiz;
 @WebServlet(name = "QuizController", urlPatterns = {"/quiz/join/*"})
 public class QuizController extends HttpServlet {
 
+    private static final String quizJoinPath = "/quiz/join";
     private static final String quizGamePath = "/quiz/join/game";
     private static final String questionPath = "/quiz/join/game/getquestion";
     private static final String submitPath = "/quiz/join/submit";
@@ -36,15 +37,24 @@ public class QuizController extends HttpServlet {
             throws ServletException, IOException {
         String URI = request.getRequestURI().replaceFirst("/\\w+", "");
         if (URI.contains(quizGamePath)) {
-            int quizId = 3;
-            QuizDAO quizDAO = new QuizDAO();
-            Quiz quiz = quizDAO.getQuizDetail(quizId);
+            Quiz quiz = (Quiz)request.getSession().getAttribute("quiz");
+            if (quiz == null){
+                response.sendRedirect(request.getContextPath() + "/home");
+                return;
+            }
             request.setAttribute("quiz", quiz);
             Gson gs = new Gson();
-            Type listType = new TypeToken<ArrayList<Question>>(){}.getType();
+            Type listType = new TypeToken<ArrayList<Question>>() {
+            }.getType();
             request.setAttribute("questionJSON", gs.toJson(quiz.getQuestions(), listType));
             request.getRequestDispatcher("/view/quiz/game.jsp").forward(request, response);
-        }
+        }else if (URI.contains(quizJoinPath)) {
+            String id = request.getParameter("quizId");
+            QuizDAO quizDAO = new QuizDAO();
+            Quiz quiz = quizDAO.getQuizDetail(Integer.parseInt(id));
+            request.getSession().setAttribute("quiz", quiz);
+            response.sendRedirect("join/game");
+        } 
     }
 
     /**
@@ -60,19 +70,21 @@ public class QuizController extends HttpServlet {
             throws ServletException, IOException {
         String URI = request.getRequestURI().replaceFirst("/\\w+", "");
         if (URI.contains(questionPath)) {
-            int quizId = 3;
+            Quiz quiz = (Quiz)request.getSession().getAttribute("quiz");
             QuizDAO quizDAO = new QuizDAO();
-            Quiz quiz = quizDAO.getQuizDetail(quizId);
+            quiz = quizDAO.getQuizDetail(quiz.getId());
             Gson gs = new Gson();
             response.setCharacterEncoding("utf-8");
             response.getWriter().print(gs.toJson(quiz.getQuestions()));
         } else if (URI.contains(submitPath)) {
             Gson gs = new Gson();
-            Type listType = new TypeToken<ArrayList<Question>>(){}.getType();
+            Type listType = new TypeToken<ArrayList<Question>>() {
+            }.getType();
             ArrayList<Question> questions = gs.fromJson(request.getParameter("questions"), listType);
-            listType = new TypeToken<String[]>(){}.getType();
+            listType = new TypeToken<String[]>() {
+            }.getType();
             String[] userAnswer = gs.fromJson(request.getParameter("userAnswer"), String[].class);
-            for (int i = 0; i < questions.size(); i++){
+            for (int i = 0; i < questions.size(); i++) {
                 questions.get(i).setCorrectAnswer(userAnswer[i]);
             }
             System.out.println(questions);

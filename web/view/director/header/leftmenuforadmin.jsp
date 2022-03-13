@@ -41,43 +41,43 @@
             </li>
             <li ${pageContext.request.requestURI.contains("settinglist") ? "class=\"active\"" : ""}>
                 <a  href="${pageContext.request.contextPath}/director/setting/settinglist">
-                    <i class="fa fa-wrench"></i> <span>Setting List</span>
+                    <i class="fa fa-wrench"></i> <span>Setting</span>
                 </a>
             </li>
             <li
                 <c:if test="${tag eq 'userlist'}">class="active"</c:if>  >
                 <a href="${pageContext.request.contextPath}/director/user/userlist">
-                    <i class="fa fa-user"></i> <span>Users List</span>
+                    <i class="fa fa-user"></i> <span>Users</span>
                 </a>
             </li>
             <li
                 <c:if test="${tag eq 'subjectlist'}">class="active"</c:if>  >
                 <a href="${pageContext.request.contextPath}/director/subject/subjectlist">
-                    <i class="far fa-list-alt"></i> <span style="padding-left: 5px;">Subject List</span>
+                    <i class="far fa-list-alt"></i> <span style="padding-left: 5px;">Subject</span>
                 </a>
             </li>
             <li
                 <c:if test="${tag eq 'quizlist'}">class="active"</c:if>  >
                 <a href="${pageContext.request.contextPath}/quiz/listquiz">
-                    <i class="far fa-list-alt"></i> <span style="padding-left: 5px;">Quiz List</span>
+                    <i class="far fa-list-ul"></i> <span style="padding-left: 5px;">Quiz</span>
                 </a>
             </li>
             <li
                 <c:if test="${tag eq 'question'}">class="active"</c:if>  >
                 <a href="${pageContext.request.contextPath}/question/list">
-                    <i class="far fa-question-circle"></i> <span style="padding-left: 5px;">Question List</span>
+                    <i class="far fa-question-circle"></i> <span style="padding-left: 5px;">Question</span>
                 </a>
             </li>
             <li
                 <c:if test="${tag eq 'classeslist'}">class="active"</c:if>  >
                 <a href="${pageContext.request.contextPath}/director/class/classeslist">
-                    <i class="far fa-chalkboard-teacher"></i> <span style="padding-left: 5px;">Class List</span>
+                    <i class="far fa-notes-medical"></i> <span style="padding-left: 5px;">Class</span>
                 </a>
             </li>
             <li
                 <c:if test="${tag eq 'slider'}">class="active"</c:if>  >
                 <a href="${pageContext.request.contextPath}/director/slider/list">
-                    <i class="far fa-chalkboard-teacher"></i> <span style="padding-left: 5px;">Slider</span>
+                    <i class="far fa-shield"></i> <span style="padding-left: 5px;">Slider</span>
                 </a>
             </li>
         </ul>

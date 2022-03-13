@@ -33,11 +33,11 @@ public class QuestionDAO extends DBContext {
                     + "			, `subject`.subject_title, category.category_id, category.category_value\n"
                     + "			, subcategory.subcategory_id, subcategory.subcategory_name\n"
                     + "	from question\n"
-                    + "	join quiz_question on quiz_question.question_id = question.question_id\n"
-                    + "	join quiz on quiz_question.quiz_id = quiz.quiz_id\n"
-                    + "	join category on category.category_id = question.category_id\n"
-                    + "	join subcategory on subcategory.subcategory_id = question.subcategory_id\n"
-                    + "	join `subject` on `subject`.subject_id = question.subject_id\n"
+                    + "	left join quiz_question on quiz_question.question_id = question.question_id\n"
+                    + "	left join quiz on quiz_question.quiz_id = quiz.quiz_id\n"
+                    + "	left join category on category.category_id = question.category_id\n"
+                    + "	left join subcategory on subcategory.subcategory_id = question.subcategory_id\n"
+                    + "	left join `subject` on `subject`.subject_id = question.subject_id\n"
                     + "	where (1=1)\n";
             if (accountId != 1) {
                 sql += "AND account_id = " + accountId + "\n";
@@ -149,11 +149,11 @@ public class QuestionDAO extends DBContext {
         try {
             String sql = "select count(*)\n"
                     + "	from question\n"
-                    + "	join quiz_question on quiz_question.question_id = question.question_id\n"
-                    + "	join quiz on quiz_question.quiz_id = quiz.quiz_id\n"
-                    + "	join category on category.category_id = question.category_id\n"
-                    + "	join subcategory on subcategory.subcategory_id = question.subcategory_id\n"
-                    + "	join `subject` on `subject`.subject_id = question.subject_id\n"
+                    + "	left join quiz_question on quiz_question.question_id = question.question_id\n"
+                    + "	left join quiz on quiz_question.quiz_id = quiz.quiz_id\n"
+                    + "	left join category on category.category_id = question.category_id\n"
+                    + "	left join subcategory on subcategory.subcategory_id = question.subcategory_id\n"
+                    + "	left join `subject` on `subject`.subject_id = question.subject_id\n"
                     + "	where (1=1)\n";
             if (accountId != 1) {
                 sql += "AND account_id = " + accountId + "\n";
@@ -215,9 +215,48 @@ public class QuestionDAO extends DBContext {
         return -1;
     }
 
-    public Question getQuestionById(int id) {
+    public Question getQuestionById(int id, int accountId) {
         try {
-            String sql = "select * from question where question_id = ?";
+            String sql = "select * from quiz_practice_db.question\n"
+                    + "join quiz_question on quiz_question.question_id = question.question_id\n"
+                    + "join quiz on quiz.quiz_id = quiz_question.quiz_id\n"
+                    + "where question.question_id = ? \n";
+            if (accountId != 1) {
+                sql += "and account_id = ?";
+            }
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setInt(1, id);
+            if (accountId != 1) {
+                stm.setInt(2, accountId);
+            }
+            ResultSet rs = stm.executeQuery();
+            if (rs.next()) {
+                Question q = new Question();
+                q.setId(rs.getInt(1));
+                q.setContent(rs.getString(2));
+                q.setCorrectAnswer(rs.getString(3));
+                q.setSubject(new Subject(rs.getInt(4), null));
+                q.setCategory(new Category(rs.getInt(5), null));
+                q.setLevel(rs.getString(6));
+                q.setStatus(rs.getString(7));
+                q.setSubCategory(new Subcategory(rs.getInt(8), null));
+                q.setMedia(rs.getBlob("question_media"));
+                q.setMediaName(rs.getString("question_mediaName"));
+                q.setAnswers(getAnswerForQues(id));
+                return q;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(QuestionDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+    
+    public Question tmpgetQuestionById(int id) {
+        try {
+            String sql = "select * from quiz_practice_db.question\n"
+                    + "join quiz_question on quiz_question.question_id = question.question_id\n"
+                    + "join quiz on quiz.quiz_id = quiz_question.quiz_id\n"
+                    + "where question.question_id = ? \n";
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setInt(1, id);
             ResultSet rs = stm.executeQuery();
@@ -232,6 +271,7 @@ public class QuestionDAO extends DBContext {
                 q.setStatus(rs.getString(7));
                 q.setSubCategory(new Subcategory(rs.getInt(8), null));
                 q.setMedia(rs.getBlob("question_media"));
+                q.setMediaName(rs.getString("question_mediaName"));
                 q.setAnswers(getAnswerForQues(id));
                 return q;
             }
@@ -240,13 +280,7 @@ public class QuestionDAO extends DBContext {
         }
         return null;
     }
-//    public static void main(String[] args) throws SQLException {
-//        QuestionDAO q = new QuestionDAO();
-//        int id = 2;
-//        Question ques = q.getQuestionById(id);
-//        System.out.println(ques.getMedia().getBinaryStream());
-//        
-//    }
+
     public ArrayList<Subcategory> getSubCategoryByCate(int cateId) {
         ArrayList<Subcategory> subcategorys = new ArrayList<>();
         try {
@@ -303,7 +337,55 @@ public class QuestionDAO extends DBContext {
         return categorys;
     }
 
-    public ArrayList<Answer> getAnswerForQues(int quesId) {
+    public void deleteAnswer(int answerID) {
+        try {
+            connection.setAutoCommit(false);
+            String sql = "delete from answer where answer_id = ?;";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setInt(1, answerID);
+            stm.executeUpdate();
+            connection.commit();
+        } catch (SQLException ex) {
+            Logger.getLogger(QuestionDAO.class.getName()).log(Level.SEVERE, null, ex);
+            try {
+                connection.rollback();
+            } catch (SQLException ex1) {
+                Logger.getLogger(QuestionDAO.class.getName()).log(Level.SEVERE, null, ex1);
+            }
+        } finally {
+            try {
+                connection.setAutoCommit(true);
+            } catch (SQLException ex) {
+                Logger.getLogger(QuestionDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+
+    public void deleteQuestion(int quesid) {
+        try {
+            String sql = "DELETE FROM `quiz_practice_db`.`question`\n"
+                    + "WHERE question_id = ?;";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setInt(1, quesid);
+            stm.executeUpdate();
+            connection.commit();
+        } catch (SQLException ex) {
+            Logger.getLogger(QuestionDAO.class.getName()).log(Level.SEVERE, null, ex);
+            try {
+                connection.rollback();
+            } catch (SQLException ex1) {
+                Logger.getLogger(QuestionDAO.class.getName()).log(Level.SEVERE, null, ex1);
+            }
+        } finally {
+            try {
+                connection.setAutoCommit(true);
+            } catch (SQLException ex) {
+                Logger.getLogger(QuestionDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+
+    private ArrayList<Answer> getAnswerForQues(int quesId) {
         ArrayList<Answer> answers = new ArrayList<>();
         try {
             String sql = "select answer_id, answer_content from answer where question_id = ?";
@@ -319,34 +401,92 @@ public class QuestionDAO extends DBContext {
         return answers;
     }
 
-    public boolean updateQuestion(String quizId, Question q, InputStream media) {
+    public void changeStatusQues(int id, String status) {
         try {
             connection.setAutoCommit(false);
             String sql = "UPDATE `quiz_practice_db`.`question`\n"
                     + "SET\n"
+                    + "`question_status` = ?\n"
+                    + "WHERE `question_id` = ?;";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setString(1, status);
+            stm.setInt(2, id);
+            stm.executeUpdate();
+            connection.commit();
+        } catch (SQLException ex) {
+            Logger.getLogger(QuestionDAO.class.getName()).log(Level.SEVERE, null, ex);
+            try {
+                connection.rollback();
+            } catch (SQLException ex1) {
+                Logger.getLogger(QuestionDAO.class.getName()).log(Level.SEVERE, null, ex1);
+            }
+        } finally {
+            try {
+                connection.setAutoCommit(true);
+            } catch (SQLException ex) {
+                Logger.getLogger(QuestionDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+
+    public boolean updateQuestion(String quizId, Question q, InputStream media) {
+        try {
+            connection.setAutoCommit(false);
+            String deleteAnswer = "DELETE FROM `quiz_practice_db`.`answer`\n"
+                    + "WHERE question_id = ?;";
+            PreparedStatement stm_2 = connection.prepareStatement(deleteAnswer);
+            stm_2.setInt(1, q.getId());
+            stm_2.executeUpdate();
+
+            String insertAnswer = "INSERT INTO `quiz_practice_db`.`answer`\n"
+                    + "(`question_id`,\n"
+                    + "`answer_content`)\n"
+                    + "VALUES\n"
+                    + "(?,\n"
+                    + "?);";
+            PreparedStatement stm_3 = connection.prepareStatement(insertAnswer);
+            for (Answer answer : q.getAnswers()) {
+                stm_3.setInt(1, q.getId());
+                stm_3.setString(2, answer.getContent());
+                stm_3.executeUpdate();
+            }
+            String sql_tmp = "select answer_id from answer where answer_content = ? and question_id = ?\n";
+            PreparedStatement stm_tmp = connection.prepareStatement(sql_tmp);
+            stm_tmp.setString(1, q.getCorrectAnswer());
+            stm_tmp.setInt(2, q.getId());
+            ResultSet rs = stm_tmp.executeQuery();
+            String correctAns = null;
+            if (rs.next()) {
+                correctAns = new String(rs.getString(1));
+            }
+            String sql = "UPDATE `quiz_practice_db`.`question`\n"
+                    + "SET\n"
                     + "`question_content` = ?,\n"
-                    //                    + "`correct_answer` = ?,\n"
+                    + "`correct_answer` = ?,\n"
                     + "`subject_id` = ?,\n"
                     + "`category_id` = ?,\n"
                     + "`question_level` = ?,\n"
                     + "`question_status` = ?,\n"
                     + "`subcategory_id` = ?\n";
             if (media != null) {
-                sql += ", `question_media` = ?\n";
+                sql += ", `question_media` = ?,\n"
+                        + "`question_mediaName` = ?\n";
             }
             sql += "WHERE `question_id` = ?";
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setString(1, q.getContent());
-            stm.setInt(2, q.getSubject().getSubject_id());
-            stm.setInt(3, q.getCategory().getCategory_id());
-            stm.setString(4, q.getLevel());
-            stm.setString(5, q.getStatus());
-            stm.setInt(6, q.getSubCategory().getId());
+            stm.setString(2, correctAns);
+            stm.setInt(3, q.getSubject().getSubject_id());
+            stm.setInt(4, q.getCategory().getCategory_id());
+            stm.setString(5, q.getLevel());
+            stm.setString(6, q.getStatus());
+            stm.setInt(7, q.getSubCategory().getId());
             if (media != null) {
-                stm.setBlob(7, media);
-                stm.setInt(8, q.getId());
+                stm.setBlob(8, media);
+                stm.setString(9, q.getMediaName());
+                stm.setInt(10, q.getId());
             } else {
-                stm.setInt(7, q.getId());
+                stm.setInt(8, q.getId());
             }
             stm.executeUpdate();
 
@@ -358,6 +498,7 @@ public class QuestionDAO extends DBContext {
             stm_1.setInt(1, Integer.parseInt(quizId));
             stm_1.setInt(2, q.getId());
             stm_1.executeUpdate();
+
             connection.commit();
             return true;
         } catch (SQLException ex) {
@@ -377,18 +518,22 @@ public class QuestionDAO extends DBContext {
         return false;
     }
 
-//    public static void main(String[] args) {
-//        QuestionDAO qdao = new QuestionDAO();
-////        System.out.println(qdao.getQuestions(1, 1, 4, null, "all", "1", "all", "all").size());
-////        for (Question question : qdao.getQuestions(1, 1, 4, null, "2", "1", "easy", "all")) {
-////            System.out.println(question.getContent() + " " + question.getId());
-////        }
-////        for (Subcategory subcategory : qdao.getSubCategoryByCate(1)) {
-////            System.out.println(subcategory.getName());
-////        }
-////        System.out.println(qdao.getTotalRows(1, null, "all", "1", "all", "all"));
-//        for (Answer answerForQue : qdao.getAnswerForQues(1)) {
-//            System.out.println(answerForQue.getContent());
+    public static void main(String[] args) {
+        QuestionDAO qdao = new QuestionDAO();
+//        System.out.println(qdao.getQuestions(1, 1, 4, null, "all", "1", "all", "all").size());
+//        for (Question question : qdao.getQuestions(1, 1, 4, null, "2", "1", "easy", "all")) {
+//            System.out.println(question.getContent() + " " + question.getId());
 //        }
-//    }
+//        for (Subcategory subcategory : qdao.getSubCategoryByCate(1)) {
+//            System.out.println(subcategory.getName());
+//        }
+//        System.out.println(qdao.getTotalRows(1, null, "all", "1", "all", "all"));
+//        for (Answer a : qdao.getQuestionById(2, 2).getAnswers()) {
+//            System.out.print(a.getId() + " " + a.getContent());
+//            if (a.getId() == Integer.parseInt(qdao.getQuestionById(2, 2).getCorrectAnswer())) {
+//                System.out.println(" Yes");
+//            }
+//            System.out.println("");
+//        }
+    }
 }
