@@ -333,6 +333,7 @@ public class QuestionDAO extends DBContext {
 
     public void deleteQuestion(int quesid) {
         try {
+            connection.setAutoCommit(false);
             String sql = "DELETE FROM `quiz_practice_db`.`question`\n"
                     + "WHERE question_id = ?;";
             PreparedStatement stm = connection.prepareStatement(sql);
