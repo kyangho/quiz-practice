@@ -44,7 +44,7 @@ public class SliderController extends HttpServlet {
             throws ServletException, IOException {
         String URI = request.getRequestURI().replaceFirst("/\\w+", "");
         if (URI.contains(sliderListPath)) {
-            doGetPostList(request, response);
+            doGetSliderList(request, response);
         } else if (URI.contains(sliderChangePath)) {
             doGetChangeList(request, response);
         } else if (URI.contains(sliderEditPath)) {
@@ -120,7 +120,7 @@ public class SliderController extends HttpServlet {
         response.sendRedirect("../slider/list");
     }
 
-    protected void doGetPostList(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGetSliderList(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         SliderDAO s = new SliderDAO();
         int pagesize = 3;
         String raw_page = request.getParameter("page");
