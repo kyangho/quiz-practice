@@ -28,10 +28,10 @@ import model.classes.Classes;
 @MultipartConfig(maxFileSize = 1024 * 1024 * 1024 * 17)
 public class ClassControllerForAdmin extends HttpServlet {
 
-    private static final String classListPath = "/director/class/classeslist";
-    private static final String classDetailPath = "/director/class/classdetail";
-    private static final String changeClassStatusPath = "/director/class/changeclassstatus";
-    private static final String addNewClassPath = "/director/class/addnewclass";
+    private static final String classListForAdminPath = "/director/class/classeslist";
+    private static final String classDetailForAdminPath = "/director/class/classdetail";
+    private static final String changeClassStatusForAdminPath = "/director/class/changeclassstatus";
+    private static final String addNewClassForAdminPath = "/director/class/addnewclass";
 
     private static final int PAGESIZE = 3;
 
@@ -48,16 +48,16 @@ public class ClassControllerForAdmin extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String URI = request.getRequestURI().replaceFirst("/\\w+", "");
-        if (URI.contains(classListPath)) {
+        if (URI.contains(classListForAdminPath)) {
             doGetClassList(request, response);
         }
-        if (URI.contains(classDetailPath)) {
+        if (URI.contains(classDetailForAdminPath)) {
             doGetClassDetail(request, response);
         }
-        if (URI.contains(changeClassStatusPath)) {
+        if (URI.contains(changeClassStatusForAdminPath)) {
             doGetChangeClassStatus(request, response);
         }
-        if (URI.contains(addNewClassPath)) {
+        if (URI.contains(addNewClassForAdminPath)) {
             doGetAddNewClass(request, response);
         }
     }
@@ -74,16 +74,16 @@ public class ClassControllerForAdmin extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String URI = request.getRequestURI().replaceFirst("/\\w+", "");
-        if (URI.contains(classListPath)) {
+        if (URI.contains(classListForAdminPath)) {
             doPostClassList(request, response);
         }
-        if (URI.contains(classDetailPath)) {
+        if (URI.contains(classDetailForAdminPath)) {
             doPostClassDetail(request, response);
         }
-        if (URI.contains(changeClassStatusPath)) {
+        if (URI.contains(changeClassStatusForAdminPath)) {
             doPostChangeClassStatus(request, response);
         }
-        if (URI.contains(addNewClassPath)) {
+        if (URI.contains(addNewClassForAdminPath)) {
             doPostAddNewClass(request, response);
         }
     }
@@ -149,8 +149,8 @@ public class ClassControllerForAdmin extends HttpServlet {
             AccountDAO adao = new AccountDAO();
             int classID = Integer.parseInt(classID_raw);
             Classes c = cdao.getClassByID(classID);
-            ArrayList<Account> teachersOrStudents = adao.getTeacherOrStudent();
-            request.setAttribute("teachersOrStudents", teachersOrStudents);
+            ArrayList<Account> teachers = adao.getTeacherOrStudent("Teacher");
+            request.setAttribute("teachers", teachers);
             request.setAttribute("class", c);
             request.getRequestDispatcher("../../view/director/classes/classdetail.jsp").forward(request, response);
         }
@@ -167,8 +167,8 @@ public class ClassControllerForAdmin extends HttpServlet {
         ClassDAO cdao = new ClassDAO();
         AccountDAO adao = new AccountDAO();
         cdao.updateClass(classID, className, status, note, author);
-        ArrayList<Account> teachersOrStudents = adao.getTeacherOrStudent();
-        request.setAttribute("teachersOrStudents", teachersOrStudents);
+        ArrayList<Account> teachers = adao.getTeacherOrStudent("Teacher");
+        request.setAttribute("teachers", teachers);
         request.setAttribute("tag", "done");
         request.setAttribute("class", cdao.getClassByID(classID));
         request.getRequestDispatcher("../../view/director/classes/classdetail.jsp").forward(request, response);
@@ -191,8 +191,11 @@ public class ClassControllerForAdmin extends HttpServlet {
     private void doGetAddNewClass(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         AccountDAO adao = new AccountDAO();
-        ArrayList<Account> teachersOrStudents = adao.getTeacherOrStudent();
-        request.setAttribute("teachersOrStudents", teachersOrStudents);
+        ArrayList<Account> teachers = adao.getTeacherOrStudent("Teacher");
+        ArrayList<Account> students = adao.getTeacherOrStudent("Student");
+        
+        request.setAttribute("teachers", teachers);        
+        request.setAttribute("students", students);
         request.getRequestDispatcher("../../view/director/classes/addnewclass.jsp").forward(request, response);
     }
     

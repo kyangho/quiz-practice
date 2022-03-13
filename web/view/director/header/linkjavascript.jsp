@@ -88,5 +88,3 @@
     });
     // Chart.defaults.global.responsive = true;
 </script>
-
-<script src="${pageContext.request.contextPath}/js/settingcode.js" type="text/javascript"></script>

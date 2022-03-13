@@ -22,3 +22,4 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/styleforsettinglist.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/setting.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/postdirectorstyle.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/questiondirectorstyle.css">

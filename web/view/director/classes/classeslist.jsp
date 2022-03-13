@@ -14,7 +14,7 @@
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Users List</title>
+        <title>Classes List</title>
         <jsp:include page="../header/linkcss.jsp"></jsp:include>
         </head>
         <body class="skin-black">
@@ -28,7 +28,7 @@
                             <div class="col-xs-12">
                                 <div class="panel">
                                     <div class="panel-heading" style="display: flex;">
-                                        <div style="margin-right: 74%;"> List of users</div>
+                                        <div style="margin-right: 74%;"> List of classes</div>
                                         <div>
                                             <a class="btn label-danger center-block col-sm-10" style="width: 100%;margin-left: 68%;" href="addnewclass">Add new class</a>
                                         </div>
@@ -44,7 +44,7 @@
                                         </div>
                                     </div>
                                     <c:if test="${requestScope.classes.isEmpty()}">
-                                        <h3>Not Found Class</h3>
+                                        <h3>Not Found Any Order</h3>
                                     </c:if>
                                     <c:if test="${!requestScope.classes.isEmpty()}">
                                         <table class="table table-hover">

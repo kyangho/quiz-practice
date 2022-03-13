@@ -10,7 +10,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Add New User</title>
+        <title>Quizz</title>
         <jsp:include page="../header/linkcss.jsp"></jsp:include>
         </head>
         <body class="skin-black">
@@ -34,9 +34,9 @@
                                     <label class="col-sm-2 col-sm-2 control-label">Author *:</label>
                                     <div class="col-sm-4">
                                         <select class="form-control" name="author" id="author">
-                                            <option value="-1">Choose teacher</option>
-                                        <c:forEach items="${requestScope.teachersOrStudents}" var="tos">
-                                            <option value="${tos.id}">${tos.fullname}</option>
+                                            <option value="-1">Choose author</option>
+                                        <c:forEach items="${requestScope.teachers}" var="t">
+                                            <option value="${t.id}">${t.fullname}</option>
                                         </c:forEach>
                                     </select>
                                 </div>
