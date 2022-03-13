@@ -33,11 +33,11 @@ public class QuestionDAO extends DBContext {
                     + "			, `subject`.subject_title, category.category_id, category.category_value\n"
                     + "			, subcategory.subcategory_id, subcategory.subcategory_name\n"
                     + "	from question\n"
-                    + "	join quiz_question on quiz_question.question_id = question.question_id\n"
-                    + "	join quiz on quiz_question.quiz_id = quiz.quiz_id\n"
-                    + "	join category on category.category_id = question.category_id\n"
-                    + "	join subcategory on subcategory.subcategory_id = question.subcategory_id\n"
-                    + "	join `subject` on `subject`.subject_id = question.subject_id\n"
+                    + "	left join quiz_question on quiz_question.question_id = question.question_id\n"
+                    + "	left join quiz on quiz_question.quiz_id = quiz.quiz_id\n"
+                    + "	left join category on category.category_id = question.category_id\n"
+                    + "	left join subcategory on subcategory.subcategory_id = question.subcategory_id\n"
+                    + "	left join `subject` on `subject`.subject_id = question.subject_id\n"
                     + "	where (1=1)\n";
             if (accountId != 1) {
                 sql += "AND account_id = " + accountId + "\n";
@@ -149,11 +149,11 @@ public class QuestionDAO extends DBContext {
         try {
             String sql = "select count(*)\n"
                     + "	from question\n"
-                    + "	join quiz_question on quiz_question.question_id = question.question_id\n"
-                    + "	join quiz on quiz_question.quiz_id = quiz.quiz_id\n"
-                    + "	join category on category.category_id = question.category_id\n"
-                    + "	join subcategory on subcategory.subcategory_id = question.subcategory_id\n"
-                    + "	join `subject` on `subject`.subject_id = question.subject_id\n"
+                    + "	left join quiz_question on quiz_question.question_id = question.question_id\n"
+                    + "	left join quiz on quiz_question.quiz_id = quiz.quiz_id\n"
+                    + "	left join category on category.category_id = question.category_id\n"
+                    + "	left join subcategory on subcategory.subcategory_id = question.subcategory_id\n"
+                    + "	left join `subject` on `subject`.subject_id = question.subject_id\n"
                     + "	where (1=1)\n";
             if (accountId != 1) {
                 sql += "AND account_id = " + accountId + "\n";

@@ -47,7 +47,7 @@ public class QuestionController extends HttpServlet {
     private final String changeStatusPath = "/question/changestatus";
     private final String mediaPath = "/question/media";
     private final String importPath = "/question/import";
-    private final int pagesize = 10;
+    private final int pagesize = 5;
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
