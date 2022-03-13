@@ -9,7 +9,6 @@ import dal.QuestionAnswerDAO;
 import dal.QuestionDAO;
 import dal.QuizDAO;
 import java.io.BufferedReader;
-import java.io.Console;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -47,7 +46,7 @@ public class QuestionController extends HttpServlet {
     private final String changeStatusPath = "/question/changestatus";
     private final String mediaPath = "/question/media";
     private final String importPath = "/question/import";
-    private final int pagesize = 5;
+    private final int pagesize = 4;
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
