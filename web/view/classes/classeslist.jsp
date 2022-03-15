@@ -1,3 +1,8 @@
+<%-- 
+    Document   : classlist
+    Created on : Mar 2, 2022, 12:08:32 AM
+    Author     : Vu Duc Tien
+--%>
 
 <%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
@@ -103,46 +108,57 @@
                 <div data-v-3f400e64="" class="completed-games">
                     <div data-v-8d3099dc="" data-v-3f400e64="" class="text-unselectable"><!---->
                         <!--search-->
-                        <div class="panel-heading" style="display: flex; margin-bottom: 21px;justify-content: space-around;">
-                            <div style="margin-right: 60%;"><h1>List of exams</h1> </div>
-                        <c:if test="${sessionScope.account != null}">
-                            <div>
-                                <a href="../quiz/newquiz">Add new exam </a>
-                            </div>
-                        </c:if>
-                    </div>                        
-                    <div class="container">
-                        <div class="filter">
-                            <form style="border:none;width: 630px; padding-right: 30px" action="exam" method="POST">
-                                <table style="margin: 0;" class="table table-hover">
-                                    <tbody style="display: flex">
+                        <div class="container">
+                            <div class="filter">
+                                <form style="border:none;width: 630px; padding-right: 30px" action="listquiz" method="POST">
 
+                                    <table style="margin: 0;" class="table table-hover">
+                                        <tbody style="display: flex">
+                                            <tr>
+                                                <th style="display: flex">
+                                                    Subject
+                                                    <select name="subject" class=" input-sm" style="border-radius: 7px; margin-left: 10px">
+                                                        <option ${requestScope.subject eq "all" ? "selected=\"selected\"" : ""} value="all">All</option>
+                                                    <c:forEach items="${requestScope.subs}" var="s">
+                                                        <option ${requestScope.subject eq s.subject_title ? "selected=\"selected\"" : ""} value="${s.subject_title}">${s.subject_title}</option>
+                                                    </c:forEach>
+                                                </select>
+                                            </th>
+                                        </tr>
                                         <tr>
                                             <th style="display: flex">
                                                 Category
                                                 <select name="category" class=" input-sm" style="border-radius: 7px; margin-left: 10px">
                                                     <option ${requestScope.cates eq "all" ? "selected=\"selected\"" : ""} value="all">All </option>
                                                     <c:forEach items="${requestScope.cates}" var="s">
-                                                        <option ${requestScope.category eq s.category_name ? "selected=\"selected\"" : ""} value="${s.category_value}">${s.category_value}</option>
+                                                        <option ${requestScope.category eq s.category_name ? "selected=\"selected\"" : ""} value="${s.category_name}">${s.category_name}</option>
                                                     </c:forEach>
                                                 </select>
                                             </th>
                                         </tr>
-
+                                        <tr>
+                                            <th style="display: flex">
+                                                Type 
+                                                <select name="type" class=" input-sm" style="border-radius: 7px; margin-left: 10px">
+                                                    <option ${requestScope.type eq "all" ? "selected=\"selected\"" : ""} value="all">All</option>
+                                                    <option ${requestScope.type eq "Free" ? "selected=\"selected\"" : ""} value="Free">Free</option>
+                                                    <option ${requestScope.type eq "User Practices" ? "selected=\"selected\"" : ""} value="User Practices">User Practices</option>
+                                                </select>
+                                            </th>
+                                        </tr>
                                     </tbody>
                                 </table>
                                 <input class="inputhover" type="Submit">
                             </form>
                         </div>
-                        <form action="exam" method="POST">
-                            <input type="search" placeholder="Search exams by the title" name="search_exam_title" value="${requestScope.search_exam_title}">
+                        <form action="listquiz" method="POST">
+                            <input type="search" placeholder="Search quizzes by the title" name="search_quiz_title" value="${requestScope.search_quiz_title}">
                             <button type="submit">Search</button>
                         </form>
+
                     </div>
 
                     <div data-v-8d3099dc="" class="completed-games-list">
-                        <!--phan exam-->
-                        <c:forEach items="${requestScope.exams}" var="q">
                             <div data-v-8d3099dc="" class="completed-game">
                                 <a href="detail?id=${q.id}">
                                     <div data-v-0a33e012="" data-v-8d3099dc="" class="game-card-container">
@@ -152,7 +168,7 @@
                                             <div data-v-76782db8="" data-v-0a33e012="" class="curved-edge-container media-dimensions media-wrapper">
                                                 <div data-v-76782db8="" class="curve" style="width: 400%; padding-top: 400%; transform: translateX(-37.5%) translateY(-100%); top: 100%;">
                                                     <div data-v-76782db8="" class="content-container" style="width: calc(25.02%); left: calc(37.49%);">
-                                                        <div data-v-0a33e012="" data-v-76782db8="" role="img" aria-label="Quiz thumbnail" class="media-dimensions media" style="background-image: url(${pageContext.request.contextPath}/img/quiz2.jpg);">                                                      
+                                                        <div data-v-0a33e012="" data-v-76782db8="" role="img" aria-label="Quiz thumbnail" class="media-dimensions media" style="background-image: url(../../img_quiz.jpg);">                                                      
                                                         </div>                                                     
                                                     </div>                                                
                                                 </div>
@@ -165,28 +181,28 @@
                                             </div>
                                             <div data-v-0a33e012="" class="game-type-info">
                                                 <span data-v-0a33e012="" class="game-type-icon"><i data-v-0a33e012="" class="icon-fas-chalkboard-teacher"></i></span>
-                                                &nbsp; 
+                                                &nbsp; ${q.subject.subject_title}
                                             </div>
                                             <div data-v-0a33e012="" class="quiz-info">
-                                                <div data-v-0a33e012="" class="questions-length">Level: Medium</div>
+                                                <div data-v-0a33e012="" class="questions-length">Level: ${q.level}</div>
                                             </div>
-                                            <p data-v-0a33e012="" class="quiz-name" style="display: -webkit-box; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; -webkit-line-clamp: 2;">Study: ${q.title}</p>
+                                            <p data-v-0a33e012="" class="quiz-name" style="display: -webkit-box; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; -webkit-line-clamp: 2;">${q.title}</p>
                                             <div data-v-0a33e012="" class="game-details">
                                                 <div data-v-0a33e012="" class="assignment-info">
                                                     <span data-v-0a33e012="" class="assigned-by-title">By: </span>
-                                                    <span data-v-0a33e012="" class="assigned-by">${q.author}</span>
+                                                    <span data-v-0a33e012="" class="assigned-by">${q.author.fullname}</span>
                                                 </div>
                                             </div>
                                             <div data-v-0a33e012="" class="game-details">
                                                 <div data-v-0a33e012="" class="assignment-info">
                                                     <span data-v-0a33e012="" class="assigned-by-title">Type: </span>
-                                                    <span data-v-0a33e012="" class="assigned-by">Multiple choices</span>
+                                                    <span data-v-0a33e012="" class="assigned-by">${q.type}</span>
                                                 </div>
                                             </div>
                                             <div data-v-0a33e012="" class="game-details">
                                                 <div data-v-0a33e012="" class="assignment-info">
                                                     <span data-v-0a33e012="" class="assigned-by-title">Category: </span>
-                                                    <span data-v-0a33e012="" class="assigned-by">${q.category}</span>
+                                                    <span data-v-0a33e012="" class="assigned-by">${q.category.category_name}</span>
                                                 </div>
                                             </div>
                                             <div data-v-0a33e012="" class="great accuracy-bar">
@@ -197,7 +213,6 @@
                                     </div>
                                 </a>
                             </div>
-                        </c:forEach>
                     </div>
                 </div>
             </div>

@@ -10,7 +10,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Quizz</title>
+        <title>Class Details</title>
         <jsp:include page="../header/linkcss.jsp"></jsp:include>
         </head>
         <body class="skin-black">
@@ -35,9 +35,9 @@
                                 <label class="col-sm-2 col-sm-2 control-label">Author *: </label>
                                 <div class="col-sm-6">
                                     <select name="author" class="form-control">
-                                        <c:forEach items="${requestScope.teachersOrStudents}" var="tos">
-                                            <option ${tos.id eq requestScope.class.author.id ? "selected=\"selected\"" : ""}
-                                                value="${tos.id}">${tos.fullname}</option>
+                                        <c:forEach items="${requestScope.teachers}" var="t">
+                                            <option ${t.id eq requestScope.class.author.id ? "selected=\"selected\"" : ""}
+                                                value="${t.id}">${t.fullname}</option>
                                         </c:forEach>
                                     </select>
                                 </div>
@@ -48,13 +48,13 @@
                                     <textarea name="note" cols="50" rows="10" placeholder="Class note"></textarea>
                                 </div>
                             </div>
-                                <div class="form-group">
-                                    <label class="col-sm-2 col-sm-2 control-label">Status *:</label>
-                                    <div class="col-sm-6" style="display: flex;">
-                                        <div class="radio">
-                                            <label>
-                                                <input type="radio" name="status" value="ACTIVE" 
-                                                <c:if test="${requestScope.class.status eq 'ACTIVE'}">checked="checked"</c:if>> ACTIVE
+                            <div class="form-group">
+                                <label class="col-sm-2 col-sm-2 control-label">Status *:</label>
+                                <div class="col-sm-6" style="display: flex;">
+                                    <div class="radio">
+                                        <label>
+                                            <input type="radio" name="status" value="ACTIVE" 
+                                                   <c:if test="${requestScope.class.status eq 'ACTIVE'}">checked="checked"</c:if>> ACTIVE
                                             </label>
                                         </div>
                                         <div class="radio">
@@ -87,7 +87,6 @@
                                 </div>
                             </div>
                         </form>
-                    </div>
                     </div>
                 </section>
             </aside>

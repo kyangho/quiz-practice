@@ -223,7 +223,9 @@ public class QuestionDAO extends DBContext {
                     + "where question.question_id = ? and account_id = ?";
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setInt(1, id);
-            stm.setInt(2, accountId);
+            if (accountId != 1) {
+                stm.setInt(2, accountId);
+            }
             ResultSet rs = stm.executeQuery();
             if (rs.next()) {
                 Question q = new Question();
@@ -237,6 +239,34 @@ public class QuestionDAO extends DBContext {
                 q.setSubCategory(new Subcategory(rs.getInt(8), null));
                 q.setMedia(rs.getBlob("question_media"));
                 q.setMediaName(rs.getString("question_mediaName"));
+                q.setAnswers(getAnswerForQues(id));
+                return q;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(QuestionDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+    
+    public Question tmpgetQuestionById(int id) {
+        try {
+            String sql = "select * from quiz_practice_db.question\n"
+                    + "join quiz_question on quiz_question.question_id = question.question_id\n"
+                    + "join quiz on quiz.quiz_id = quiz_question.quiz_id\n"
+                    + "where question.question_id = ? \n";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setInt(1, id);
+            ResultSet rs = stm.executeQuery();
+            if (rs.next()) {
+                Question q = new Question();
+                q.setId(rs.getInt(1));
+                q.setContent(rs.getString(2));
+                q.setCorrectAnswer(rs.getString(3));
+                q.setSubject(new Subject(rs.getInt(4), null));
+                q.setCategory(new Category(rs.getInt(5), null));
+                q.setLevel(rs.getString(6));
+                q.setStatus(rs.getString(7));
+                q.setSubCategory(new Subcategory(rs.getInt(8), null));
                 q.setAnswers(getAnswerForQues(id));
                 return q;
             }
