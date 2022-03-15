@@ -193,11 +193,16 @@ public class QuestionController extends HttpServlet {
         QuestionDAO qdao = new QuestionDAO();
         Question question = qdao.getQuestionById(Integer.parseInt(quesId), account.getId());
         request.setAttribute("question", question);
-        if (cateId == null) {
-            request.setAttribute("subcate", qdao.getSubCategoryByCate(question.getCategory().getCategory_id()));
-        } else {
-            request.setAttribute("subcate", qdao.getSubCategoryByCate(Integer.parseInt(cateId)));
+        try {
+            if (cateId == null) {
+                request.setAttribute("subcate", qdao.getSubCategoryByCate(question.getCategory().getCategory_id()));
+            } else {
+                request.setAttribute("subcate", qdao.getSubCategoryByCate(Integer.parseInt(cateId)));
+            }
+        } catch (Exception e) {
+
         }
+
         QuizDAO q = new QuizDAO();
         request.setAttribute("categories", qdao.getCategory());
         request.setAttribute("subjects", q.getsubs());
@@ -332,35 +337,35 @@ public class QuestionController extends HttpServlet {
             String line;
             boolean isFirstLine = true;
             while ((line = br.readLine()) != null) {
-                if (isFirstLine){
+                if (isFirstLine) {
                     isFirstLine = false;
                     continue;
                 }
                 Question question = new Question();
                 String[] infors = line.split("(?<=\"),|(?!(.{1,9999}\\\")),");
-                if (infors[0].isEmpty()){
+                if (infors[0].isEmpty()) {
                     continue;
                 }
                 question.setContent(infors[0]);
-                for(Category c : categories){
-                    if (c.getCategory_value().compareToIgnoreCase(infors[1]) == 0){
+                for (Category c : categories) {
+                    if (c.getCategory_value().compareToIgnoreCase(infors[1]) == 0) {
                         question.setCategory(c);
                     }
                 }
-                for (Subcategory sc : subcategories){
-                    if (sc.getName().compareToIgnoreCase(infors[1]) == 0){
+                for (Subcategory sc : subcategories) {
+                    if (sc.getName().compareToIgnoreCase(infors[1]) == 0) {
                         question.setSubCategory(sc);
                     }
                 }
-                for (int i = 2; i < infors.length; i++){
+                for (int i = 2; i < infors.length; i++) {
                     question.getAnswers().add(new Answer(1, infors[i]));
                 }
-                if (question.getAnswers().size() >= 2){
+                if (question.getAnswers().size() >= 2) {
                     questions.add(question);
                 }
             }
             QuestionAnswerDAO qaDAO = new QuestionAnswerDAO();
-            for (Question q : questions){
+            for (Question q : questions) {
                 qaDAO.insertQuestionInfor(q);
             }
         }

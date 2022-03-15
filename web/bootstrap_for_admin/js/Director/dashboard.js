@@ -5,7 +5,7 @@
  *      This is a demo file used only for the main dashboard (index.html)
  **/
 
-$(function() {
+$(function () {
     "use strict";
 
     //Make the dashboard widgets sortable Using jquery UI
@@ -28,7 +28,8 @@ $(function() {
 
     //bootstrap WYSIHTML5 - text editor
     // $(".textarea").wysihtml5();
-
+    $(".daterange-text").text('Last 7 Days');
+    console.log($('.daterange'))
     $('.daterange').daterangepicker(
             {
                 ranges: {
@@ -39,12 +40,16 @@ $(function() {
                     'This Month': [moment().startOf('month'), moment().endOf('month')],
                     'Last Month': [moment().subtract('month', 1).startOf('month'), moment().subtract('month', 1).endOf('month')]
                 },
-                startDate: moment().subtract('days', 29),
+                startDate: moment().subtract('days', 6),
                 endDate: moment()
             },
-    function(start, end) {
-        alert("You chose: " + start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
-    });
+            function (start, end) {
+                if (start.format('DD-MM-YYYY') == end.format('DD-MM-YYYY')) {
+                    $(".daterange-text").text(start.format('DD-MM-YYYY'));
+                } else {
+                    $(".daterange-text").text(start.format('DD-MM-YYYY') + ' to ' + end.format('DD-MM-YYYY'));
+                }
+            });
 
 
 
@@ -68,7 +73,7 @@ $(function() {
 
 
     //Fix for charts under tabs
-    $('.box ul.nav a').on('shown.bs.tab', function(e) {
+    $('.box ul.nav a').on('shown.bs.tab', function (e) {
         area.redraw();
         donut.redraw();
     });
@@ -77,7 +82,7 @@ $(function() {
     /* BOX REFRESH PLUGIN EXAMPLE (usage with morris charts) */
     $("#loading-example").boxRefresh({
         source: "ajax/dashboard-boxrefresh-demo.php",
-        onLoadDone: function(box) {
+        onLoadDone: function (box) {
             bar = new Morris.Bar({
                 element: 'bar-chart',
                 resize: true,
@@ -101,13 +106,13 @@ $(function() {
 
     /* The todo list plugin */
     $(".todo-list").todolist({
-        onCheck: function(ele) {
+        onCheck: function (ele) {
             console.log("The element has been checked")
         },
-        onUncheck: function(ele) {
+        onUncheck: function (ele) {
             //console.log("The element has been unchecked")
         }
     });
-
+   
 });
 

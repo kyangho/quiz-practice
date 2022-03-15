@@ -218,8 +218,8 @@ public class QuestionDAO extends DBContext {
     public Question getQuestionById(int id, int accountId) {
         try {
             String sql = "select * from quiz_practice_db.question\n"
-                    + "join quiz_question on quiz_question.question_id = question.question_id\n"
-                    + "join quiz on quiz.quiz_id = quiz_question.quiz_id\n"
+                    + "left join quiz_question on quiz_question.question_id = question.question_id\n"
+                    + "left join quiz on quiz.quiz_id = quiz_question.quiz_id\n"
                     + "where question.question_id = ? and account_id = ?";
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setInt(1, id);
