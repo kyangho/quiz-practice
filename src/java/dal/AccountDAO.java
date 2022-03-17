@@ -33,23 +33,21 @@ public class AccountDAO extends DBContext {
         }
         return flag;
     }
-
+    
     public Account getAccount(String username, String password) {
         try {
             String sql1 = "SELECT a.account_id, a.username, a.password, a.account_status,\n"
-                    + "ap.account_email, ap.account_phone, ap.account_fullname, ap.account_address, ap.account_gender, ap.account_avatar\n"
+                    + "ap.account_email, ap.account_phone, ap.account_fullname, ap.account_gender, ap.account_avatar\n"
                     + "FROM account as a\n"
                     + "JOIN account_profile as ap on a.account_id = ap.account_id\n"
-                    + "JOIN account_role as ar on a.account_id = ar.account_id\n"
-                    + "JOIN role as r on r.role_id = ar.role_id\n"
                     + "WHERE a.username = ?";
             PreparedStatement stm1 = connection.prepareStatement(sql1);
             stm1.setString(1, username);
             ResultSet rs1 = stm1.executeQuery();
-            String sql2 = "SELECT r.role_id, r.role_name\n"
-                    + "FROM account as a\n"
-                    + "JOIN account_role as ar on a.account_id = ar.account_id\n"
-                    + "JOIN role as r on r.role_id = ar.role_id\n"
+            String sql2 = "SELECT s.setting_id, setting_name\n"
+                    + "FROM setting as s\n"
+                    + "JOIN account_role as ar on s.setting_id = ar.setting_id\n"
+                    + "JOIN account as a on a.account_id = ar.account_id\n"
                     + "WHERE username = ?";
 
             if (rs1.next()) {
@@ -61,9 +59,8 @@ public class AccountDAO extends DBContext {
                 account.setEmail(rs1.getString(5));
                 account.setPhone(rs1.getString(6));
                 account.setFullname(rs1.getString(7));
-                account.setAddress(rs1.getString(8));
-                account.setGender(rs1.getBoolean(9));
-                account.setAvatar(rs1.getString(10));
+                account.setGender(rs1.getBoolean(8));
+                account.setAvatar(rs1.getBlob(9));
 
                 ArrayList<Role> roles = new ArrayList<>();
                 PreparedStatement stm2 = connection.prepareStatement(sql2);
@@ -76,9 +73,7 @@ public class AccountDAO extends DBContext {
                     roles.add(r);
                 }
                 account.setRole(roles);
-                if (password.equals(account.getPassword())) {
-                    return account;
-                } else if (BCrypt.verifyer().verify(password.toCharArray(), account.getPassword()).verified == true) {
+                if (BCrypt.verifyer().verify(password.toCharArray(), account.getPassword()).verified == true) {
                     return account;
                 } else {
                     return null;
@@ -90,6 +85,12 @@ public class AccountDAO extends DBContext {
             Logger.getLogger(AccountDAO.class.getName()).log(Level.SEVERE, null, e);
         }
         return null;
+    }
+    
+        public static void main(String[] args) {
+        AccountDAO adbc = new AccountDAO();
+        Account account = adbc.getAccount("admin", "admin123");
+            System.out.println(account.getUsername() + " " + account.getFullname());
     }
 
     public Account isExistAccount(String phone, String email, String username, String condition) {
@@ -120,22 +121,21 @@ public class AccountDAO extends DBContext {
     public void insertAccount(Account account) {
         try {
             connection.setAutoCommit(false);
-            String sql1 = "INSERT INTO `quiz_practice_db`.`account`\n"
+            String sql1 = "INSERT INTO account\n"
                     + "(`username`,\n"
                     + "`password`,\n"
                     + "`account_status`)\n"
                     + "VALUES\n"
                     + "(?,?,?);\n";
-            String sql2 = "INSERT INTO `quiz_practice_db`.`account_profile`\n"
+            String sql2 = "INSERT INTO `account_profile`\n"
                     + "(`account_id`,\n"
                     + "`account_email`,\n"
                     + "`account_phone`,\n"
                     + "`account_fullname`,\n"
-                    + "`account_address`,\n"
                     + "`account_gender`,\n"
                     + "`account_avatar`)\n"
                     + "VALUES\n"
-                    + "(?,?,?,?,?,?,?);";
+                    + "(?,?,?,?,?,?);";
 
             PreparedStatement stm1 = connection.prepareStatement(sql1);
             stm1.setString(1, account.getUsername());
@@ -144,7 +144,7 @@ public class AccountDAO extends DBContext {
             } else {
                 stm1.setString(2, account.getPassword());
             }
-            stm1.setString(3, "ACTIVE");
+            stm1.setString(3, "DEACTIVE");
             stm1.executeUpdate();
 
             String sql3 = "SELECT LAST_INSERT_ID();";
@@ -157,13 +157,12 @@ public class AccountDAO extends DBContext {
             stm2.setString(2, account.getEmail());
             stm2.setString(3, account.getPhone());
             stm2.setString(4, account.getFullname());
-            stm2.setString(5, account.getAddress());
-            stm2.setBoolean(6, account.isGender());
-            stm2.setString(7, account.getAvatar());
+            stm2.setBoolean(5, account.isGender());
+            stm2.setBlob(6, account.getAvatar());
             stm2.executeUpdate();
 
             if (account.getRole().size() > 0) {
-                String sql4 = "INSERT INTO `quiz_practice_db`.`account_role`\n"
+                String sql4 = "INSERT INTO `account_role`\n"
                         + "(`account_id`,\n"
                         + "`role_id`)\n"
                         + "VALUES\n"
@@ -196,7 +195,7 @@ public class AccountDAO extends DBContext {
     public void changePassword(Account account) {
         try {
             connection.setAutoCommit(false);
-            String sql = "UPDATE `quiz_practice_db`.`account`\n"
+            String sql = "UPDATE `account`\n"
                     + "SET\n"
                     + "`password` = ?\n"
                     + "WHERE `account_id` = ?;";
@@ -224,7 +223,7 @@ public class AccountDAO extends DBContext {
     public void updateAccount(Account account) {
         try {
             connection.setAutoCommit(false);
-            String sql1 = "UPDATE `quiz_practice_db`.`account`\n"
+            String sql1 = "UPDATE `account`\n"
                     + "SET\n"
                     + "`account_status` = ?\n"
                     + "WHERE `account_id` = ?;";
@@ -233,12 +232,11 @@ public class AccountDAO extends DBContext {
             stm1.setInt(2, account.getId());
             stm1.executeUpdate();
 
-            String sql2 = "UPDATE `quiz_practice_db`.`account_profile`\n"
+            String sql2 = "UPDATE `account_profile`\n"
                     + "SET\n"
                     + "`account_email` = ?,\n"
                     + "`account_phone` = ?,\n"
                     + "`account_fullname` = ?,\n"
-                    + "`account_address` = ?,\n"
                     + "`account_gender` = ?,\n"
                     + "`account_avatar` = ?\n"
                     + "WHERE `account_id` = ?;";
@@ -246,18 +244,17 @@ public class AccountDAO extends DBContext {
             stm2.setString(1, account.getEmail());
             stm2.setString(2, account.getPhone());
             stm2.setString(3, account.getFullname());
-            stm2.setString(4, account.getAddress());
-            stm2.setBoolean(5, account.isGender());
-            stm2.setString(6, account.getAvatar());
-            stm2.setInt(7, account.getId());
+            stm2.setBoolean(4, account.isGender());
+            stm2.setBlob(5, account.getAvatar());
+            stm2.setInt(6, account.getId());
             stm2.executeUpdate();
-            String sql3 = "DELETE FROM `quiz_practice_db`.`account_role`\n"
+            String sql3 = "DELETE FROM `account_role`\n"
                     + "WHERE account_id = ?;";
             PreparedStatement stm3 = connection.prepareStatement(sql3);
             stm3.setInt(1, account.getId());
             stm3.executeUpdate();
 
-            String sql4 = "INSERT INTO `quiz_practice_db`.`account_role`\n"
+            String sql4 = "INSERT INTO `account_role`\n"
                     + "(`account_id`,\n"
                     + "`role_id`)\n"
                     + "VALUES\n"
@@ -289,12 +286,11 @@ public class AccountDAO extends DBContext {
     public void updateAccountProfile(Account account) {
         try {
             connection.setAutoCommit(false);
-            String sql = "UPDATE `quiz_practice_db`.`account_profile`\n"
+            String sql = "UPDATE `account_profile`\n"
                     + "SET\n"
                     + "`account_email` = ?,\n"
                     + "`account_phone` = ?,\n"
                     + "`account_fullname` = ?,\n"
-                    + "`account_address` = ?,\n"
                     + "`account_gender` = ?,\n"
                     + "`account_avatar` = ?\n"
                     + "WHERE `account_id` = ?;";
@@ -302,10 +298,9 @@ public class AccountDAO extends DBContext {
             stm2.setString(1, account.getEmail());
             stm2.setString(2, account.getPhone());
             stm2.setString(3, account.getFullname());
-            stm2.setString(4, account.getAddress());
-            stm2.setBoolean(5, account.isGender());
-            stm2.setString(6, account.getAvatar());
-            stm2.setInt(7, account.getId());
+            stm2.setBoolean(4, account.isGender());
+            stm2.setBlob(5, account.getAvatar());
+            stm2.setInt(6, account.getId());
             stm2.executeUpdate();
             connection.commit();
         } catch (SQLException ex) {
@@ -346,13 +341,12 @@ public class AccountDAO extends DBContext {
                     account.setFullname(rs.getString(3));
                     account.setEmail(rs.getString(4));
                     account.setPhone(rs.getString(5));
-                    account.setAddress(rs.getString(6));
-                    account.setStatus(rs.getString(7));
-                    account.setGender(rs.getBoolean(8));
-                    account.getRole().add(new Role(rs.getInt(9), rs.getString(10)));
-                    account.setAvatar(rs.getString(11));
+                    account.setStatus(rs.getString(6));
+                    account.setGender(rs.getBoolean(7));
+                    account.getRole().add(new Role(rs.getInt(8), rs.getString(9)));
+                    account.setAvatar(rs.getBlob(10));
                 } else {
-                    account.getRole().add(new Role(rs.getInt(9), rs.getString(10)));
+                    account.getRole().add(new Role(rs.getInt(8), rs.getString(9)));
                 }
             }
         } catch (SQLException ex) {
@@ -367,7 +361,7 @@ public class AccountDAO extends DBContext {
         String sql = "select * \n"
                 + "from (\n"
                 + "	select row_number() over (order by a.account_id ) as stt, a.account_id, a.username ,ap.account_fullname, \n"
-                + "		ap.account_email, ap.account_phone, ap.account_address, a.account_status,\n"
+                + "		ap.account_email, ap.account_phone, a.account_status,\n"
                 + "		ap.account_gender, r.role_id, r.role_name, ap.account_avatar  \n"
                 + "	from quiz_practice_db.`account` as a\n"
                 + "	join quiz_practice_db.account_profile as ap on a.account_id = ap.account_id\n"
@@ -445,16 +439,15 @@ public class AccountDAO extends DBContext {
                     a.setFullname(rs.getString(4));
                     a.setEmail(rs.getString(5));
                     a.setPhone(rs.getString(6));
-                    a.setAddress(rs.getString(7));
-                    a.setStatus(rs.getString(8));
-                    a.setGender(rs.getBoolean(9));
-                    a.getRole().add(new Role(rs.getInt(10), rs.getString(11)));
-                    a.setAvatar(rs.getString(12));
+                    a.setStatus(rs.getString(7));
+                    a.setGender(rs.getBoolean(8));
+                    a.getRole().add(new Role(rs.getInt(9), rs.getString(10)));
+                    a.setAvatar(rs.getBlob(11));
                     accounts.add(a);
                 } else {
                     for (Account account : accounts) {
                         if (account.getId() == a.getId()) {
-                            account.getRole().add(new Role(rs.getInt(10), rs.getString(11)));
+                            account.getRole().add(new Role(rs.getInt(9), rs.getString(10)));
                             break;
                         }
                     }
@@ -587,7 +580,7 @@ public class AccountDAO extends DBContext {
 
     public void ActiveStatus(int id) {
         try {
-            String sql = "UPDATE `quiz_practice_db`.`account`\n"
+            String sql = "UPDATE `account`\n"
                     + "SET\n"
                     + "`account_status` =?\n"
                     + "WHERE `account_id` = ?;";
@@ -602,7 +595,7 @@ public class AccountDAO extends DBContext {
 
     public void DeActiveStatus(int id) {
         try {
-            String sql = "UPDATE `quiz_practice_db`.`account`\n"
+            String sql = "UPDATE `account`\n"
                     + "SET\n"
                     + "`account_status` =?\n"
                     + "WHERE `account_id` = ?;";
@@ -633,18 +626,5 @@ public class AccountDAO extends DBContext {
             Logger.getLogger(AccountDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
-    }
-
-    public static void main(String[] args) {
-        AccountDAO adbc = new AccountDAO();
-//        adbc.isExistAccountForAdd(null, "user@user.com", null).display();
-        boolean empty = adbc.getAccountById(2).getRole().isEmpty();
-        System.out.println(empty);
-//        System.out.println(adbc.totalRowsByAccountInfor(null, null, null, null, null, null, null));
-//        Account a = adbc.getAccount("admin", "admin@admin.com");
-        String newPassword = "user123";
-        String hashPass = "$2a$12$OS.8wHYDW4UvK1vLv3Qsvu46XUgQK4u/r5zVpan6VIflwm3Y4TojO";
-        System.out.println(BCrypt.withDefaults().hashToString(12, newPassword.toCharArray()));
-        System.out.println(BCrypt.verifyer().verify(newPassword.toCharArray(), hashPass).verified == true);
     }
 }

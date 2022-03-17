@@ -55,10 +55,8 @@ public class ChangeProfileController extends HttpServlet {
         String fullname = request.getParameter("fullname");
         boolean gender = request.getParameter("gender").equalsIgnoreCase("male");
         String phone = request.getParameter("phone");
-        String address = request.getParameter("address");
         
         Account account = (Account) request.getSession().getAttribute("account");
-        account.setAddress(address);
         account.setGender(gender);
         account.setFullname(fullname);
         account.setPhone(phone);

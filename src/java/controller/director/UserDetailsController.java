@@ -8,6 +8,7 @@ package controller.director;
 import dal.AccountDAO;
 import dal.RoleDAO;
 import java.io.IOException;
+import java.sql.Blob;
 import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -62,17 +63,16 @@ public class UserDetailsController extends HttpServlet {
         String fullname = request.getParameter("fullname");
         String email = request.getParameter("email");
         String phone = request.getParameter("phone");
-        String address = request.getParameter("address");
         boolean gender = request.getParameter("gender").equalsIgnoreCase("male");
         String status = request.getParameter("status");
         String[] roleIDs = request.getParameterValues("roleID");
-        String avatar = null;
+        Blob avatar = null;
         ArrayList<Role> roles = new ArrayList<>();
         for (String roleID : roleIDs) {
             roles.add(new Role(Integer.parseInt(roleID), ""));
         }
 
-        Account account = new Account(Integer.parseInt(id), username, phone, email, phone, fullname, address, gender, status, roles, avatar);
+        Account account = new Account(Integer.parseInt(id), username, phone, email, phone, fullname, gender, status, roles, avatar);
 
         AccountDAO adbc = new AccountDAO();
         RoleDAO rdao = new RoleDAO();

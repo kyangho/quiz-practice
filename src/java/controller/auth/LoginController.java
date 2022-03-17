@@ -53,8 +53,8 @@ public class LoginController extends HttpServlet {
             throws ServletException, IOException {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
-        AccountDAO adbc = new AccountDAO();
 
+        AccountDAO adbc = new AccountDAO();
         Account account = adbc.getAccount(username, password);
         if (account == null) {
             request.setAttribute("isFail", true);

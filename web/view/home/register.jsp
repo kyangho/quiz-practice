@@ -58,9 +58,6 @@
                             <div class="form-group">
                                 <input name="register_phone" type="tel" class="form-control border-0 p-4" placeholder="Phone number" required="required" />
                             </div>
-                            <div class="form-group">
-                                <input name="register_address" type="text" class="form-control border-0 p-4" placeholder="Address" required="required" />
-                            </div>
                             <div>
                                 <button class="btn btn-dark btn-block border-0 py-3" type="button" onclick="checkRePassword()">Register</button>
                             </div>
