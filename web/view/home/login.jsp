@@ -33,10 +33,10 @@
                     <div class="card-body rounded-bottom bg-primary p-5">
                         <form action="${pageContext.request.contextPath}/login" method="POST">
                             <div class="form-group">
-                                <input name="username" type="text" class="form-control border-0 p-4" placeholder="Username" required="required" />
+                                <input name="username" type="text" class="form-control border-0 p-4" placeholder="Username"/>
                             </div>
                             <div class="form-group">
-                                <input name="password" type="password" class="form-control border-0 p-4" placeholder="Password" required="required" />
+                                <input name="password" type="password" class="form-control border-0 p-4" placeholder="Password"/>
                             </div>
                             <a class="forget_password" href="${pageContext.request.contextPath}/forgotpassword">Forgot password</a>
                             <div>
