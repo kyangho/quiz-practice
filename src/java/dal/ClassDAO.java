@@ -187,7 +187,7 @@ public class ClassDAO extends DBContext {
             PreparedStatement stm = connection.prepareStatement(sql);
             if (status.equalsIgnoreCase("DEACTIVE")) {
                 stm.setString(1, "ACTIVE");
-            }else{
+            } else {
                 stm.setString(1, "DEACTIVE");
             }
             stm.setInt(2, id);
@@ -196,8 +196,8 @@ public class ClassDAO extends DBContext {
             Logger.getLogger(ClassDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    public void insertClass(String className, String note, String status, int authorID){
+
+    public void insertClass(String className, String note, String status, int authorID) {
         try {
             connection.setAutoCommit(false);
             String sql = "INSERT INTO `quiz_practice_db`.`class`\n"
