@@ -7,8 +7,6 @@ package dal;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -25,7 +23,7 @@ public class DBContext {
         try {
             String user = "root";
             String pass = "admin123";
-            String url = "jdbc:mysql://localhost:3306/quiz_practice_db?allowPublicKeyRetrieval=true&useSSL=false";
+            String url = "jdbc:mysql://localhost:3306/quiz_db?allowPublicKeyRetrieval=true&useSSL=false";
             Class.forName("com.mysql.cj.jdbc.Driver");
             connection = DriverManager.getConnection(url, user, pass);
         } catch (ClassNotFoundException ex) {

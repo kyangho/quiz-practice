@@ -36,34 +36,55 @@ public class AccountDAO extends DBContext {
 
     public Account getAccount(String username, String password) {
         try {
-            String sql1 = "SELECT a.account_id, a.username, a.password, a.account_status,\n"
-                    + "ap.account_email, ap.account_phone, ap.account_fullname, ap.account_address, ap.account_gender, ap.account_avatar\n"
-                    + "FROM account as a\n"
-                    + "JOIN account_profile as ap on a.account_id = ap.account_id\n"
-                    + "JOIN account_role as ar on a.account_id = ar.account_id\n"
-                    + "JOIN role as r on r.role_id = ar.role_id\n"
-                    + "WHERE a.username = ?";
+            String sql1
+                    = 
+//                    "SELECT a.account_id, a.username, a.password, a.account_status,\n"
+//                    + "ap.account_email, ap.account_phone, ap.account_fullname, ap.account_address, ap.account_gender, ap.account_avatar\n"
+//                    + "FROM account as a\n"
+//                    + "JOIN account_profile as ap on a.account_id = ap.account_id\n"
+//                    + "JOIN account_role as ar on a.account_id = ar.account_id\n"
+//                    + "JOIN role as r on r.role_id = ar.role_id\n"
+//                    + "WHERE a.username = ?";
+                    "select ap.*, username, `password`, account_status\n"
+                    + "from `account` as a\n"
+                    + "join account_role as ar on ar.account_id = a.account_id\n"
+                    + "join account_profile as ap on ap.account_id = a.account_id\n"
+                    + "where username = ?";
             PreparedStatement stm1 = connection.prepareStatement(sql1);
             stm1.setString(1, username);
             ResultSet rs1 = stm1.executeQuery();
-            String sql2 = "SELECT r.role_id, r.role_name\n"
-                    + "FROM account as a\n"
-                    + "JOIN account_role as ar on a.account_id = ar.account_id\n"
-                    + "JOIN role as r on r.role_id = ar.role_id\n"
-                    + "WHERE username = ?";
+            String sql2
+                    = 
+//                    "SELECT r.role_id, r.role_name\n"
+//                    + "FROM account as a\n"
+//                    + "JOIN account_role as ar on a.account_id = ar.account_id\n"
+//                    + "JOIN role as r on r.role_id = ar.role_id\n"
+//                    + "WHERE username = ?";
+                    "select s.setting_id as role_id, s.setting_value as role_name\n"
+                    + "from account_role as ar\n"
+                    + "join setting as s on s.setting_id = ar.setting_id\n"
+                    + "where account_id = ?";
 
             if (rs1.next()) {
                 Account account = new Account();
                 account.setId(rs1.getInt(1));
-                account.setUsername(rs1.getString(2));
-                account.setPassword(rs1.getString(3));
-                account.setStatus(rs1.getString(4));
-                account.setEmail(rs1.getString(5));
-                account.setPhone(rs1.getString(6));
-                account.setFullname(rs1.getString(7));
-                account.setAddress(rs1.getString(8));
-                account.setGender(rs1.getBoolean(9));
-                account.setAvatar(rs1.getString(10));
+//                account.setUsername(rs1.getString(2));
+//                account.setPassword(rs1.getString(3));
+//                account.setStatus(rs1.getString(4));
+//                account.setEmail(rs1.getString(5));
+//                account.setPhone(rs1.getString(6));
+//                account.setFullname(rs1.getString(7));
+//                account.setAddress(rs1.getString(8));
+//                account.setGender(rs1.getBoolean(9));
+//                account.setAvatar(rs1.getString(10));
+                account.setFullname(rs1.getString(2));
+                account.setEmail(rs1.getString(3));
+                account.setPhone(rs1.getString(4));
+                account.setGender(rs1.getBoolean(5));
+                account.setUsername(rs1.getString(6));
+                account.setPassword(rs1.getString(7));
+                account.setStatus(rs1.getString(8));
+                account.setAvatar(rs1.getString(9));
 
                 ArrayList<Role> roles = new ArrayList<>();
                 PreparedStatement stm2 = connection.prepareStatement(sql2);
