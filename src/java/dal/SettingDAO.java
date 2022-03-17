@@ -26,7 +26,7 @@ public class SettingDAO extends DBContext {
                 + "    `setting`.`setting_description`,\n"
                 + "    `setting`.`setting_value`,\n"
                 + "    `setting`.`setting_status`\n"
-                + "FROM `quiz_practice_db`.`setting`\n"
+                + "FROM `setting`\n"
                 + "WHERE `setting`.`setting_id` = ?";
 
         try {
@@ -83,7 +83,7 @@ public class SettingDAO extends DBContext {
     }
 
     public boolean insertSetting(Setting setting) {
-        String sql_insert = "INSERT INTO `quiz_practice_db`.`setting`\n"
+        String sql_insert = "INSERT INTO `setting`\n"
                 + "	(`setting_name`,`setting_type`,\n"
                 + "    `setting_description`,`setting_value`,\n"
                 + "    `setting_status`)\n"
@@ -106,7 +106,7 @@ public class SettingDAO extends DBContext {
     }
 
     public boolean updateSetting(Setting setting) {
-        String sql_update = "UPDATE `quiz_practice_db`.`setting`\n"
+        String sql_update = "UPDATE `setting`\n"
                 + "SET\n"
                 + "	`setting_name` = ?,`setting_type` = ?,\n"
                 + "	`setting_description` = ?,`setting_value` = ?,\n"
@@ -130,7 +130,7 @@ public class SettingDAO extends DBContext {
     }
 
     public boolean deactiveSetting(int settingId) {
-        String sql = "UPDATE `quiz_practice_db`.`setting`\n"
+        String sql = "UPDATE `setting`\n"
                 + "SET`setting_status` = ?\n"
                 + "WHERE `setting_id` = ?;";
 
@@ -148,7 +148,7 @@ public class SettingDAO extends DBContext {
     }
 
     public boolean activeSetting(int settingId) {
-        String sql = "UPDATE `quiz_practice_db`.`setting`\n"
+        String sql = "UPDATE `setting`\n"
                 + "SET`setting_status` = ?\n"
                 + "WHERE `setting_id` = ?;";
 

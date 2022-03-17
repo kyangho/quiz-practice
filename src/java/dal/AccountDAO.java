@@ -6,6 +6,7 @@
 package dal;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
+import java.io.InputStream;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -21,19 +22,6 @@ import model.Role;
  */
 public class AccountDAO extends DBContext {
 
-    private boolean checkAccountIsExist(Account a, ArrayList<Account> accounts) {
-        if (accounts.isEmpty()) {
-            return false;
-        }
-        boolean flag = false;
-        for (Account acc : accounts) {
-            if (acc.getId() == a.getId()) {
-                flag = true;
-            }
-        }
-        return flag;
-    }
-    
     public Account getAccount(String username, String password) {
         try {
             String sql1 = "SELECT a.account_id, a.username, a.password, a.account_status,\n"
@@ -44,11 +32,9 @@ public class AccountDAO extends DBContext {
             PreparedStatement stm1 = connection.prepareStatement(sql1);
             stm1.setString(1, username);
             ResultSet rs1 = stm1.executeQuery();
-            String sql2 = "SELECT s.setting_id, setting_name\n"
-                    + "FROM setting as s\n"
-                    + "JOIN account_role as ar on s.setting_id = ar.setting_id\n"
-                    + "JOIN account as a on a.account_id = ar.account_id\n"
-                    + "WHERE username = ?";
+            String sql2 = "select s.setting_id, setting_value from setting s\n"
+                    + "join account_role a on a.setting_id = s.setting_id\n"
+                    + "where setting_type = 'role' and account_id = ?";
 
             if (rs1.next()) {
                 Account account = new Account();
@@ -64,7 +50,7 @@ public class AccountDAO extends DBContext {
 
                 ArrayList<Role> roles = new ArrayList<>();
                 PreparedStatement stm2 = connection.prepareStatement(sql2);
-                stm2.setString(1, username);
+                stm2.setInt(1, account.getId());
                 ResultSet rs2 = stm2.executeQuery();
                 while (rs2.next()) {
                     Role r = new Role();
@@ -86,11 +72,11 @@ public class AccountDAO extends DBContext {
         }
         return null;
     }
-    
-        public static void main(String[] args) {
+
+    public static void main(String[] args) {
         AccountDAO adbc = new AccountDAO();
         Account account = adbc.getAccount("admin", "admin123");
-            System.out.println(account.getUsername() + " " + account.getFullname());
+        System.out.println(account.getUsername() + " " + account.getFullname());
     }
 
     public Account isExistAccount(String phone, String email, String username, String condition) {
@@ -283,24 +269,28 @@ public class AccountDAO extends DBContext {
         }
     }
 
-    public void updateAccountProfile(Account account) {
+    public void updateAccountProfile(Account account, InputStream avatar) {
         try {
             connection.setAutoCommit(false);
             String sql = "UPDATE `account_profile`\n"
                     + "SET\n"
-                    + "`account_email` = ?,\n"
                     + "`account_phone` = ?,\n"
                     + "`account_fullname` = ?,\n"
-                    + "`account_gender` = ?,\n"
-                    + "`account_avatar` = ?\n"
-                    + "WHERE `account_id` = ?;";
+                    + "`account_gender` = ?,\n";
+            if (avatar != null) {
+                sql += "`account_avatar` = ?\n";
+            }
+            sql += "WHERE `account_id` = ?;";
             PreparedStatement stm2 = connection.prepareStatement(sql);
-            stm2.setString(1, account.getEmail());
-            stm2.setString(2, account.getPhone());
-            stm2.setString(3, account.getFullname());
-            stm2.setBoolean(4, account.isGender());
-            stm2.setBlob(5, account.getAvatar());
-            stm2.setInt(6, account.getId());
+            stm2.setString(1, account.getPhone());
+            stm2.setString(2, account.getFullname());
+            stm2.setBoolean(3, account.isGender());
+            if (avatar != null) {
+                stm2.setBlob(4, avatar);
+                stm2.setInt(5, account.getId());
+            } else {
+                stm2.setInt(4, account.getId());
+            }
             stm2.executeUpdate();
             connection.commit();
         } catch (SQLException ex) {
@@ -323,12 +313,12 @@ public class AccountDAO extends DBContext {
         Account account = null;
         try {
             String sql = "select  a.account_id, a.username ,ap.account_fullname, \n"
-                    + "		ap.account_email, ap.account_phone, ap.account_address, a.account_status,\n"
+                    + "		ap.account_email, ap.account_phone, a.account_status,\n"
                     + "		ap.account_gender, r.role_id, r.role_name, ap.account_avatar  \n"
-                    + "	from quiz_practice_db.`account` as a\n"
-                    + "	join quiz_practice_db.account_profile as ap on a.account_id = ap.account_id\n"
-                    + "	left join quiz_practice_db.account_role as ar on ar.account_id = ap.account_id\n"
-                    + "	left join quiz_practice_db.`role` as r on ar.role_id = r.role_id\n"
+                    + "	from `account` as a\n"
+                    + "	join account_profile as ap on a.account_id = ap.account_id\n"
+                    + "	left join account_role as ar on ar.account_id = ap.account_id\n"
+                    + "	left join `role` as r on ar.role_id = r.role_id\n"
                     + "	where a.account_id = ?;";
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setInt(1, id);
@@ -363,10 +353,10 @@ public class AccountDAO extends DBContext {
                 + "	select row_number() over (order by a.account_id ) as stt, a.account_id, a.username ,ap.account_fullname, \n"
                 + "		ap.account_email, ap.account_phone, a.account_status,\n"
                 + "		ap.account_gender, r.role_id, r.role_name, ap.account_avatar  \n"
-                + "	from quiz_practice_db.`account` as a\n"
-                + "	join quiz_practice_db.account_profile as ap on a.account_id = ap.account_id\n"
-                + "	left join quiz_practice_db.account_role as ar on ar.account_id = ap.account_id\n"
-                + "	left join quiz_practice_db.`role` as r on ar.role_id = r.role_id\n"
+                + "	from `account` as a\n"
+                + "	join account_profile as ap on a.account_id = ap.account_id\n"
+                + "	left join account_role as ar on ar.account_id = ap.account_id\n"
+                + "	left join `role` as r on ar.role_id = r.role_id\n"
                 + "	where (1=1)\n";
         if (id != null && fullname != null && email != null && roleID != null && status != null && phone != null) {
             int flag = 0;
@@ -459,13 +449,26 @@ public class AccountDAO extends DBContext {
         return accounts;
     }
 
+    private boolean checkAccountIsExist(Account a, ArrayList<Account> accounts) {
+        if (accounts.isEmpty()) {
+            return false;
+        }
+        boolean flag = false;
+        for (Account acc : accounts) {
+            if (acc.getId() == a.getId()) {
+                flag = true;
+            }
+        }
+        return flag;
+    }
+
     public int totalRowsByAccountInfor(String id, String fullname, String email, String phone, String roleID, String status, String keySearch) {
         ArrayList<Account> accounts = new ArrayList<>();
         String sql = "select count(*) as total \n"
-                + "	from quiz_practice_db.`account` as a\n"
-                + "	join quiz_practice_db.account_profile as ap on a.account_id = ap.account_id\n"
-                + "	left join quiz_practice_db.account_role as ar on ar.account_id = ap.account_id\n"
-                + "	left join quiz_practice_db.`role` as r on ar.role_id = r.role_id\n"
+                + "	from `account` as a\n"
+                + "	join account_profile as ap on a.account_id = ap.account_id\n"
+                + "	left join account_role as ar on ar.account_id = ap.account_id\n"
+                + "	left join `role` as r on ar.role_id = r.role_id\n"
                 + "	where (1=1)\n";
 
         if (id != null && fullname != null && email != null && roleID != null && status != null && phone != null) {
@@ -527,31 +530,9 @@ public class AccountDAO extends DBContext {
             if (rs.next()) {
                 return rs.getInt(1);
             }
-//            while (rs.next()) {
-//                Account a = new Account();
-//                a.setId(rs.getInt(1));
-//                if (!checkAccountIsExist(a, accounts)) {
-//                    a.setFullname(rs.getString(2));
-//                    a.setEmail(rs.getString(3));
-//                    a.setPhone(rs.getString(4));
-//                    a.setAddress(rs.getString(5));
-//                    a.setStatus(rs.getString(6));
-//                    a.setGender(rs.getBoolean(7));
-//                    a.getRole().add(new Role(rs.getInt(8), rs.getString(9)));
-//                    accounts.add(a);
-//                } else {
-//                    for (Account account : accounts) {
-//                        if (account.getId() == a.getId()) {
-//                            account.getRole().add(new Role(rs.getInt(8), rs.getString(9)));
-//                            break;
-//                        }
-//                    }
-//                }
-//            }
         } catch (SQLException ex) {
             Logger.getLogger(AccountDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
-//        return accounts.size();
         return 0;
     }
 
@@ -610,8 +591,8 @@ public class AccountDAO extends DBContext {
 
     public ArrayList<Account> getTeacherOrStudent(String role) {
         ArrayList<Account> accounts = new ArrayList<>();
-        String sql = "SELECT account_id FROM quiz_practice_db.account_role ar\n"
-                + "join quiz_practice_db.role r on ar.role_id = r.role_id\n"
+        String sql = "SELECT account_id FROM account_role ar\n"
+                + "join role r on ar.role_id = r.role_id\n"
                 + "where r.role_name = ?";
         try {
             PreparedStatement stm = connection.prepareStatement(sql);

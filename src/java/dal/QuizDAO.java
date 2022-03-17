@@ -203,7 +203,7 @@ public class QuizDAO extends DBContext {
                     + "                           join quiz_practice_db.category as c on quiz.category_id = c.category_id \n"
                     + "                           join quiz_practice_db.`subject` on quiz.subject_id = `subject`.subject_id\n"
                     + "                           join quiz_practice_db.quiz_question as qq on quiz.quiz_id = qq.quiz_id\n"
-                    + "                           join `quiz_practice_db`.`question` on qq.question_id = question.question_id\n"
+                    + "                           join `question` on qq.question_id = question.question_id\n"
                     + "                           where quiz.quiz_id = ?\n";
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setInt(1, id);
@@ -247,7 +247,7 @@ public class QuizDAO extends DBContext {
 
     public void insertQuiz(Quiz q) {
         try {
-            String insert_quiz = "INSERT INTO `quiz_practice_db`.`quiz` (`quiz_title`, `subject_id`, "
+            String insert_quiz = "INSERT INTO `quiz` (`quiz_title`, `subject_id`, "
                     + "`category_id`, `quiz_level`, `account_id`, `quiz_type`) VALUES (?, ?, ?, ?, ?, ?);";
             PreparedStatement ps_insert_quiz = connection.prepareStatement(insert_quiz);
             ps_insert_quiz.setString(1, q.getTitle());
@@ -377,7 +377,7 @@ public class QuizDAO extends DBContext {
     public void editQuiz(Quiz q) {
         try {
             connection.setAutoCommit(false);
-            String sql = "UPDATE `quiz_practice_db`.`quiz` SET `quiz_title` = ?, `subject_id` = ?, `category_id` = ?, `quiz_level` = ?,\n"
+            String sql = "UPDATE `quiz` SET `quiz_title` = ?, `subject_id` = ?, `category_id` = ?, `quiz_level` = ?,\n"
                     + "`quiz_type` = ?\n"
                     + "WHERE (`quiz_id` = ?) ;";
             PreparedStatement ps = connection.prepareStatement(sql);
@@ -417,7 +417,7 @@ public class QuizDAO extends DBContext {
 
     public void inset_quiz_ques(int quiz_id, int ques_id) {
         try {
-            String insert_quiz_ques = "INSERT INTO `quiz_practice_db`.`quiz_question` (`quiz_id`, `question_id`) VALUES (?, ?);";
+            String insert_quiz_ques = "INSERT INTO `quiz_question` (`quiz_id`, `question_id`) VALUES (?, ?);";
             PreparedStatement ps_insert_quiz_ques = connection.prepareStatement(insert_quiz_ques);
             ps_insert_quiz_ques.setInt(1, quiz_id);
             ps_insert_quiz_ques.setInt(2, ques_id);
@@ -430,15 +430,15 @@ public class QuizDAO extends DBContext {
 
     public void deleteQuiz(int q) {
         try {
-            String delete_quiz_acc = "DELETE FROM `quiz_practice_db`.`quiz_account` WHERE (`quiz_id` = ?);";
+            String delete_quiz_acc = "DELETE FROM `quiz_account` WHERE (`quiz_id` = ?);";
             PreparedStatement ps_dqa = connection.prepareStatement(delete_quiz_acc);
             ps_dqa.setInt(1, q);
             ps_dqa.executeUpdate();
-            String delete_quiz_ques = "DELETE FROM `quiz_practice_db`.`quiz_question` WHERE (`quiz_id` = ?);";
+            String delete_quiz_ques = "DELETE FROM `quiz_question` WHERE (`quiz_id` = ?);";
             PreparedStatement ps_dqq = connection.prepareStatement(delete_quiz_ques);
             ps_dqq.setInt(1, q);
             ps_dqq.executeUpdate();
-            String delete_quiz = "DELETE FROM `quiz_practice_db`.`quiz` WHERE (`quiz_id` = ?);";
+            String delete_quiz = "DELETE FROM `quiz` WHERE (`quiz_id` = ?);";
             PreparedStatement ps_dq = connection.prepareStatement(delete_quiz);
             ps_dq.setInt(1, q);
             ps_dq.executeUpdate();
@@ -450,13 +450,13 @@ public class QuizDAO extends DBContext {
 
     public void deleteQuizQues(int q, int[] qid) {
         try {
-            String delete_question = "DELETE FROM `quiz_practice_db`.`quiz_question` WHERE (`quiz_id` = ?);";
+            String delete_question = "DELETE FROM `quiz_question` WHERE (`quiz_id` = ?);";
             PreparedStatement stm = connection.prepareStatement(delete_question);
             stm.setInt(1, q);
             stm.executeUpdate();
 
             for (int i : qid) {
-                String sql = "DELETE FROM `quiz_practice_db`.`question` WHERE (`question_id` = ?);";
+                String sql = "DELETE FROM `question` WHERE (`question_id` = ?);";
                 PreparedStatement psd = connection.prepareStatement(sql);
                 psd.setInt(1, i);
                 psd.executeUpdate();
@@ -469,7 +469,7 @@ public class QuizDAO extends DBContext {
 
     public void insertQues(String q) {
         try {
-            String insert_ques = "INSERT INTO `quiz_practice_db`.`question` (`question_content`) VALUES (?);";
+            String insert_ques = "INSERT INTO `question` (`question_content`) VALUES (?);";
             PreparedStatement ps_insert = connection.prepareStatement(insert_ques);
             ps_insert.setString(1, q);
             ps_insert.executeUpdate();
