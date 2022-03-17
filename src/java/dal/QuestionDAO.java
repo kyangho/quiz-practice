@@ -270,8 +270,6 @@ public class QuestionDAO extends DBContext {
                 q.setLevel(rs.getString(6));
                 q.setStatus(rs.getString(7));
                 q.setSubCategory(new Subcategory(rs.getInt(8), null));
-                q.setMedia(rs.getBlob("question_media"));
-                q.setMediaName(rs.getString("question_mediaName"));
                 q.setAnswers(getAnswerForQues(id));
                 return q;
             }
