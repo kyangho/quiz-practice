@@ -30,11 +30,11 @@ public class HomePageController extends HttpServlet {
         String admin = "admin";
         Account account = (Account) request.getSession().getAttribute("account");
         request.setAttribute("IsAdmin", admin);
-        if (account != null) {
-            QuizDAO qdb = new QuizDAO();
-            ArrayList<Quiz> quizzes = qdb.getQuizzesPractice(account.getId(), 1, 4);
-            request.setAttribute("quizs", quizzes);
-        }
+//        if (account != null) {
+//            QuizDAO qdb = new QuizDAO();
+//            ArrayList<Quiz> quizzes = qdb.getQuizzesPractice(account.getId(), 1, 4);
+//            request.setAttribute("quizs", quizzes);
+//        }
         request.setAttribute("tag", "home");
         request.setAttribute("information", accounts);
         request.getRequestDispatcher("view/home/homepage.jsp").forward(request, response);

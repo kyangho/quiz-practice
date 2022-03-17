@@ -46,7 +46,7 @@
                                             </form>
                                         </div>
                                     </div>
-                                    <form action="settinglist" method="POST">
+                                    <form action="settinglist" method="GET">
                                         <c:if test="${requestScope.settings.isEmpty()}">
                                             <h3>Not Found Settings</h3>
                                         </c:if>
@@ -55,6 +55,7 @@
                                                 <tr>
                                                     <th>ID</th>
                                                     <th>Setting Name</th>
+                                                    <th>Setting Value</th>
                                                     <th>Description</th>
                                                     <th>
                                                         Type:
@@ -82,6 +83,7 @@
                                                     <tr>
                                                         <td>${s.id}</td>
                                                         <td>${s.name}</td>
+                                                        <td>${s.value}</td>
                                                         <td>${s.description}</td>
                                                         <td>${s.type}</td>
                                                         <td>${s.status}</td>
