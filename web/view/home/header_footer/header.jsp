@@ -101,14 +101,14 @@
                     <a href="contact.html" class="nav-item nav-link">Contact</a>
                     <!--<a href="${pageContext.request.contextPath}/quiz/listquiz" class="nav-item nav-link">List Quizzes</a>-->
                     <c:forEach items="${sessionScope.account.role}" var="r">
-                        <c:if test="${r.roleName == 'Admin'}">
+                        <c:if test="${r.roleName == 'admin'}">
                             <a href="${pageContext.request.contextPath}/profile" class="nav-item nav-link">List User</a>
                         </c:if>
                     </c:forEach>
                     <%--<c:forEach items="${sessionScope.account.role}" var="r">--%>
-                        <%--<c:if test="${r.roleName == 'Admin' || r.roleName == 'Author'}">--%>
+                         <c:if test="${sessionScope.account != null}">
                             <a href="${pageContext.request.contextPath}/director" class="nav-item nav-link">For Director</a>
-                        <%--</c:if>--%>
+                        </c:if>
                     <%--</c:forEach>--%>
                     <c:if test="${sessionScope.account == null}"> 
                         <a href="${pageContext.request.contextPath}/login" class="btn btn-primary py-4 px-lg-5 d-none d-lg-block">Join Now<i class="fa fa-arrow-right ms-3"></i></a>

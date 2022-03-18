@@ -78,14 +78,6 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-sm-2 col-sm-2 control-label">Address: </label>
-                                    <div class="col-sm-10">
-                                        <input type="text" name="address" class="form-control"
-                                               value="${requestScope.account.address}"
-                                               placeholder="Address">
-                                    </div>
-                                </div>
-                                <div class="form-group">
                                     <label class="col-sm-2 col-sm-2 control-label">Gender *:</label>
                                     <div class="col-sm-10" style="display: flex;">
                                         <div class="radio">
