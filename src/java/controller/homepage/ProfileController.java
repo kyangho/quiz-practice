@@ -33,17 +33,8 @@ import model.Account;
 public class ProfileController extends HttpServlet {
 
     private final String profilePath = "/profile";
-    private final String avatarPath = "/profile/avatar";
+//    private final String avatarPath = "/profile/avatar";
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -52,19 +43,12 @@ public class ProfileController extends HttpServlet {
         String URI = request.getRequestURI().replaceFirst("/\\w+", "");
         if (URI.contains(profilePath)) {
             doGetProfile(request, response);
-        } else if (URI.contains(avatarPath)) {
-            doGetAvatar(request, response);
         }
+//        else if (URI.contains(avatarPath)) {
+//            doGetAvatar(request, response);
+//        }
     }
 
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -104,25 +88,24 @@ public class ProfileController extends HttpServlet {
         response.sendRedirect("profile");
     }
 
-    private void doGetAvatar(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        int accountID = Integer.parseInt(request.getParameter("accountID"));
-        AccountDAO adao = new AccountDAO();
-        Blob blob = adao.getAccountById(accountID).getAvatar();
-        byte[] buffer;
-        try {
-            response.reset();
-            buffer = blob.getBytes(1, (int) blob.length());
-            OutputStream os = response.getOutputStream();
-            response.setContentType("image/*");
-            ServletOutputStream out = response.getOutputStream();
-            out.write(buffer, 0, (int) blob.length());
-            os.flush();
-            os.close();
-        } catch (SQLException ex) {
-        }
-    }
-
+//    private void doGetAvatar(HttpServletRequest request, HttpServletResponse response)
+//            throws ServletException, IOException {
+//        int accountID = Integer.parseInt(request.getParameter("accountID"));
+//        AccountDAO adao = new AccountDAO();
+//        Blob blob = adao.getAccountById(accountID).getAvatar();
+//        byte[] buffer;
+//        try {
+//            response.reset();
+//            buffer = blob.getBytes(1, (int) blob.length());
+//            OutputStream os = response.getOutputStream();
+//            response.setContentType("image/*");
+//            ServletOutputStream out = response.getOutputStream();
+//            out.write(buffer, 0, (int) blob.length());
+//            os.flush();
+//            os.close();
+//        } catch (SQLException ex) {
+//        }
+//    }
     /**
      * Returns a short description of the servlet.
      *

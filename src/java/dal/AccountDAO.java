@@ -259,15 +259,12 @@ public class AccountDAO extends DBContext {
     public void updateAccountProfile(Account account, InputStream avatar) {
         try {
             connection.setAutoCommit(false);
-            String sql = "UPDATE `account_profile`\n"
-                    + "SET\n"
-                    + "`account_phone` = ?,\n"
-                    + "`account_fullname` = ?,\n"
-                    + "`account_gender` = ?,\n";
+            String sql = "UPDATE `account_profile`SET\n"
+                    + "`account_phone` = ? ,`account_fullname` = ? ,`account_gender` = ? \n";
             if (avatar != null) {
-                sql += "`account_avatar` = ?\n";
+                sql += ",`account_avatar` = ?\n";
             }
-            sql += "WHERE `account_id` = ?;";
+            sql += " WHERE (`account_id` = ?);";
             PreparedStatement stm2 = connection.prepareStatement(sql);
             stm2.setString(1, account.getPhone());
             stm2.setString(2, account.getFullname());

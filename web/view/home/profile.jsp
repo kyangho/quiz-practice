@@ -29,7 +29,7 @@
                                         <img id="image" style="padding-bottom: 10px" class="img-fluid" >
                                         <div style="display: flex; margin: 5px 0 10px 0">
                                             <span style="color:white; margin-right: 10px;">Change avatar</span>
-                                        <input type="file" name="avatar" id="files" style="color: transparent; width: 40%;"/>
+                                            <input type="file" name="avatar" id="files" style="color: transparent; width: 40%;"/>
                                         </div>
                                         <style>
                                             img{
@@ -67,25 +67,26 @@
                                 <c:if test="${requestScope.isFail == true}" >
                                     <p style="color: white;">Username, email or phone number already in use</p>
                                 </c:if>
+                            </div>
                         </form>
-                        <script>
-                            document.getElementById("files").onchange = function () {
-                                var reader = new FileReader();
-                                reader.onload = function (e) {
-                                    document.getElementById("image").src = e.target.result;
-                                };
-                                reader.readAsDataURL(this.files[0]);
-                                var media = document.getElementById('avatar');
-                                if (media != null) {
-                                    media.remove();
-                                }
-                            };
-                        </script>
+
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-<jsp:include page="header_footer/footer.jsp"></jsp:include>
+    <script>
+        document.getElementById("files").onchange = function () {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                document.getElementById("avatar").src = e.target.result;
+            };
+            reader.readAsDataURL(this.files[0]);
+            var media = document.getElementById('avatar');
+            if (media != null) {
+                media.remove();
+            }
+        };
+    </script>
+    <jsp:include page="header_footer/footer.jsp"></jsp:include>
 
