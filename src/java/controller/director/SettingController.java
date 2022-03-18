@@ -44,9 +44,9 @@ public class SettingController extends HomeDirectorController {
         String URI = request.getRequestURI().replaceFirst("\\w+/", "");
         if (URI.compareTo("/director/setting") == 0) {
             super.doGet(request, response);
-        } else if (URI.compareTo(settingAddPath) == 0) {
+        } else if (URI.contains(settingAddPath)) {
             doGetAddSetting(request, response);
-        }else if (URI.compareTo(settingDetailPath) == 0) {
+        }else if (URI.contains(settingDetailPath)) {
             doGetSettingDetails(request, response);
         }
     }
@@ -67,11 +67,11 @@ public class SettingController extends HomeDirectorController {
         String test = request.getHeaderNames().nextElement();
         Enumeration<String> names = request.getHeaderNames();
         if (URI.compareTo("/director/setting") == 0) {
-            super.doPost(request, response);
-        } else if (URI.compareTo(settingAddPath) == 0) {
-            doPostAddSetting(request, response);
-        } else if (URI.compareTo(settingUpdatePath) == 0) {
-            doPostSettingUpdate(request, response);
+            super.doGet(request, response);
+        } else if (URI.contains(settingAddPath)) {
+            doGetAddSetting(request, response);
+        }else if (URI.contains(settingDetailPath)) {
+            doGetSettingDetails(request, response);
         }
     }
     // <editor-fold defaultstate="collapsed" desc="Add Setting Servlet methods. Click on the + sign on the left to edit the code.">

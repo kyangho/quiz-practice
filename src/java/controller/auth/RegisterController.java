@@ -68,7 +68,7 @@ public class RegisterController extends HttpServlet {
             account.setFullname(request.getParameter("register_fullname"));
             account.setStatus("ACTIVE");
             account.setGender(request.getParameter("gender").equalsIgnoreCase("male"));
-            adbc.insertAccount(account);
+            adbc.insertAccount(account,"deavtice");
             response.sendRedirect(request.getContextPath() + "/home");
         }
     }

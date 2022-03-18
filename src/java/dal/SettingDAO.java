@@ -52,7 +52,7 @@ public class SettingDAO extends DBContext {
 
     public int totalRowsInSetting(String status, String type, String setting_name) {
         try {
-            String sql = "select count(*) as toltalRows from quiz_practice_db.setting\n";
+            String sql = "select count(*) as toltalRows from setting\n";
             if (status != null && type != null) {
                 if (!type.equals("all") && !status.equals("all")) {
                     sql += "where setting_type = '" + type + "'" + " AND setting_status = '" + status + "'";
@@ -118,7 +118,7 @@ public class SettingDAO extends DBContext {
             stm.setString(2, setting.getType());
             stm.setString(3, setting.getDescription());
             stm.setString(4, setting.getValue());
-            stm.setString(5, setting.getStatus());
+            stm.setString(5, setting.getStatus().toUpperCase());
             stm.setInt(6, setting.getId());
 
             stm.executeUpdate();
@@ -164,46 +164,44 @@ public class SettingDAO extends DBContext {
         }
         return true;
     }
-    
+
     public ArrayList<Setting> getALLSetting(int pageSize, int pageIndex, String type, String status, String setting_name) {
         String sql_get = "select * from\n"
-                + "	(select row_number() over (order by setting_id ) as stt,\n"
-                + "		setting_id, setting_name, setting_status, setting_type, setting_description"
-                + "         from quiz_practice_db.setting\n";
+                + "             (select row_number() over (order by setting_id ) as stt, s.* \n"
+                + "                    from setting s\n";
         if (status != null && type != null) {
-                if (!type.equals("all") && !status.equals("all")) {
-                    sql_get += "where setting_type = '" + type + "'" + " AND setting_status = '" + status + "'";
-                }
-                if (type.equals("all") && !status.equals("all")) {
-                    sql_get += "where setting_status = '" + status + "'";
-                }
-                if (!type.equals("all") && status.equals("all")) {
-                    sql_get += "where setting_type = '" + type + "'";
-                }
+            if (!type.equals("all") && !status.equals("all")) {
+                sql_get += "where setting_type = '" + type + "'" + " AND setting_status = '" + status + "'";
             }
+            if (type.equals("all") && !status.equals("all")) {
+                sql_get += "where setting_status = '" + status + "'";
+            }
+            if (!type.equals("all") && status.equals("all")) {
+                sql_get += "where setting_type = '" + type + "'";
+            }
+        }
 
         if (setting_name != null) {
             sql_get += "where setting_name like '%" + setting_name + "%'";
         }
 
-        sql_get += "        ) as t\n"
-                + " where  t.stt >= (? - 1)*? + 1 AND t.stt <= ? * ?;";
+        if (pageIndex != 0 || pageSize != 0) {
+                int start = (pageIndex - 1) * pageSize;
+                sql_get += ") as st limit " + start + "," + pageSize + "\n";
+            }
         ArrayList<Setting> settings = new ArrayList<>();
         try {
             PreparedStatement stm = connection.prepareStatement(sql_get);
-            stm.setInt(1, pageIndex);
-            stm.setInt(2, pageSize);
-            stm.setInt(3, pageIndex);
-            stm.setInt(4, pageSize);
             ResultSet rs = stm.executeQuery();
 
             while (rs.next()) {
                 Setting setting = new Setting();
                 setting.setId(rs.getInt("setting_id"));
                 setting.setName(rs.getString("setting_name"));
+                setting.setValue(rs.getString("setting_value"));
                 setting.setType(rs.getString("setting_type"));
                 setting.setDescription(rs.getString("setting_description"));
-                setting.setStatus(rs.getString("setting_status"));
+                setting.setStatus(rs.getString("setting_status").toUpperCase());
 
                 settings.add(setting);
             }
