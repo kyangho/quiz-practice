@@ -6,6 +6,7 @@
 package dal;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
+import java.io.InputStream;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -255,24 +256,28 @@ public class AccountDAO extends DBContext {
         }
     }
 
-    public void updateAccountProfile(Account account) {
+    public void updateAccountProfile(Account account, InputStream avatar) {
         try {
             connection.setAutoCommit(false);
             String sql = "UPDATE `account_profile`\n"
                     + "SET\n"
-                    + "`account_email` = ?,\n"
                     + "`account_phone` = ?,\n"
                     + "`account_fullname` = ?,\n"
-                    + "`account_gender` = ?,\n"
-                    + "`account_avatar` = ?\n"
-                    + "WHERE `account_id` = ?;";
+                    + "`account_gender` = ?,\n";
+            if (avatar != null) {
+                sql += "`account_avatar` = ?\n";
+            }
+            sql += "WHERE `account_id` = ?;";
             PreparedStatement stm2 = connection.prepareStatement(sql);
-            stm2.setString(1, account.getEmail());
-            stm2.setString(2, account.getPhone());
-            stm2.setString(3, account.getFullname());
-            stm2.setBoolean(4, account.isGender());
-            stm2.setBlob(5, account.getAvatar());
-            stm2.setInt(6, account.getId());
+            stm2.setString(1, account.getPhone());
+            stm2.setString(2, account.getFullname());
+            stm2.setBoolean(3, account.isGender());
+            if (avatar != null) {
+                stm2.setBlob(4, avatar);
+                stm2.setInt(5, account.getId());
+            } else {
+                stm2.setInt(4, account.getId());
+            }
             stm2.executeUpdate();
             connection.commit();
         } catch (SQLException ex) {

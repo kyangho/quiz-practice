@@ -23,7 +23,7 @@ import model.Question;
 public class QuestionAnswerDAO extends DBContext {
 
     public boolean insertQuestionInfor(Question question) {
-        String sql = "INSERT INTO `quiz_practice_db`.`question`\n"
+        String sql = "INSERT INTO `question`\n"
                 + "(`question_content`,`subject_id`,\n"
                 + "`category_id`,`question_media`)\n"
                 + "VALUES\n"
@@ -53,7 +53,7 @@ public class QuestionAnswerDAO extends DBContext {
             }
             ArrayList<Answer> answers = insertAnswer(Integer.parseInt(id), question.getAnswers());
             question.setCorrectAnswer(answers.get(0).getId() + "");
-            String updateSQL = "UPDATE `quiz_practice_db`.`question`\n"
+            String updateSQL = "UPDATE `question`\n"
                     + "SET\n"
                     + "`correct_answer` = ?\n"
                     + "WHERE `question_id` = ?;\n";
@@ -70,7 +70,7 @@ public class QuestionAnswerDAO extends DBContext {
     }
 
     public ArrayList<Answer> insertAnswer(int questionId, ArrayList<Answer> answers) {
-        String sql = "INSERT INTO `quiz_practice_db`.`answer`\n"
+        String sql = "INSERT INTO `answer`\n"
                 + "(`question_id`,\n"
                 + "`answer_content`)\n"
                 + "VALUES\n"

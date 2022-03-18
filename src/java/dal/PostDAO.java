@@ -29,7 +29,7 @@ public class PostDAO extends DBContext {
         ArrayList<Post> resPosts = new ArrayList<>();
         String sqlGetPostInfo = "SELECT `post`.`post_id`,"
                 + "`post`.`post_time_created`\n"
-                + "FROM `quiz_practice_db`.`post`\n"
+                + "FROM `post`\n"
                 + "ORDER BY post_time_created DESC;";
         try {
             PreparedStatement stm = connection.prepareStatement(sqlGetPostInfo);
@@ -213,7 +213,7 @@ public class PostDAO extends DBContext {
         ArrayList<PostFile> resPostFileList = new ArrayList<>();
         String sql = "SELECT `post_has_file`.`post_id`,\n"
                 + "    `post_has_file`.`file_id`\n"
-                + "FROM `quiz_practice_db`.`post_has_file`\n"
+                + "FROM `post_has_file`\n"
                 + "WHERE post_id = ?;";
 
         try {
@@ -240,7 +240,7 @@ public class PostDAO extends DBContext {
                 + "    `post_file`.`file_name`,\n"
                 + "    `post_file`.`file_type`,\n"
                 + "    `post_file`.`file_blob`\n"
-                + "FROM `quiz_practice_db`.`post_file`\n"
+                + "FROM `post_file`\n"
                 + "WHERE file_id = ?;";
         try {
             PreparedStatement stm = connection.prepareStatement(sql);
@@ -377,7 +377,7 @@ public class PostDAO extends DBContext {
     // <editor-fold defaultstate="collapsed" desc="Insert post SQL. Click on the + sign on the left to edit the code.">
 //======================== INSERT SQL ==============================
     public String insertPost(Post inputPost, InputStream isThumbnail) {
-        String sql = "INSERT INTO `quiz_practice_db`.`post`\n"
+        String sql = "INSERT INTO `post`\n"
                 + "(`post_thumbnail`,\n"
                 + "`post_title`,\n"
                 + "`post_content`,\n"
@@ -420,7 +420,7 @@ public class PostDAO extends DBContext {
     }
 
     public String insertPost(Post inputPost) {
-        String sql = "INSERT INTO `quiz_practice_db`.`post`\n"
+        String sql = "INSERT INTO `post`\n"
                 + "("
                 + "`post_title`,\n"
                 + "`post_content`,\n"
@@ -462,7 +462,7 @@ public class PostDAO extends DBContext {
     }
 
     public boolean insertPostCategory(int postId, ArrayList<PostCategory> categories) {
-        String sql = "INSERT INTO `quiz_practice_db`.`post_category`\n"
+        String sql = "INSERT INTO `post_category`\n"
                 + "(`post_id`,\n"
                 + "`category_id`)\n"
                 + "VALUES\n"
@@ -483,13 +483,13 @@ public class PostDAO extends DBContext {
     }
 
     public boolean insertPostFile(int postId, String name, String type, InputStream isFile) {
-        String sql = "INSERT INTO `quiz_practice_db`.`post_file`\n"
+        String sql = "INSERT INTO `post_file`\n"
                 + "(`file_name`,\n"
                 + "`file_type`,\n"
                 + "`file_blob`)\n"
                 + "VALUES\n"
                 + "(?,?,?);\n";
-        String sqlInsertPostPostFile = "INSERT INTO `quiz_practice_db`.`post_has_file`\n"
+        String sqlInsertPostPostFile = "INSERT INTO `post_has_file`\n"
                 + "(`post_id`,\n"
                 + "`file_id`)\n"
                 + "VALUES\n"
@@ -523,7 +523,7 @@ public class PostDAO extends DBContext {
 
     // <editor-fold defaultstate="collapsed" desc="Update post SQL. Click on the + sign on the left to edit the code.">
     public String updatetPost(Post inputPost, InputStream isThumbnail) {
-        String sql = "UPDATE `quiz_practice_db`.`post`\n"
+        String sql = "UPDATE `post`\n"
                 + "SET\n"
                 + "`post_thumbnail` = ?,\n"
                 + "`post_title` = ?,\n"
@@ -561,7 +561,7 @@ public class PostDAO extends DBContext {
     }
 
     public String updatetPost(Post inputPost) {
-        String sql = "UPDATE `quiz_practice_db`.`post`\n"
+        String sql = "UPDATE `post`\n"
                 + "SET\n"
                 + "`post_title` = ?,\n"
                 + "`post_content` = ?,\n"
@@ -604,7 +604,7 @@ public class PostDAO extends DBContext {
     }
 
     public boolean updatePostThumbnail(int postId, InputStream is) {
-        String sql = "UPDATE `quiz_practice_db`.`post`\n"
+        String sql = "UPDATE `post`\n"
                 + "SET\n"
                 + "`post_thumbnail` = ?\n"
                 + "WHERE post_id = ?";
@@ -623,7 +623,7 @@ public class PostDAO extends DBContext {
     }
 
     public boolean updatePostFile(int postId, String fileName, String fileType, InputStream fileContent) {
-        String sql = "UPDATE `quiz_practice_db`.`post_has_file` as phf\n"
+        String sql = "UPDATE `post_has_file` as phf\n"
                 + "LEFT JOIN post_file as pf on pf.file_id = phf.file_id\n"
                 + "SET\n"
                 + "pf.file_name = ?,\n"
@@ -646,7 +646,7 @@ public class PostDAO extends DBContext {
     }
 
     public boolean updateStatus(int postId, String status) {
-        String sql = "UPDATE `quiz_practice_db`.`post`\n"
+        String sql = "UPDATE `post`\n"
                 + "SET\n"
                 + "post_status = ?,\n"
                 + "post_date_modified = ?\n"
@@ -665,7 +665,7 @@ public class PostDAO extends DBContext {
     }
 
     public boolean updateFeature(int postId, boolean isFeature) {
-        String sql = "UPDATE `quiz_practice_db`.`post`\n"
+        String sql = "UPDATE `post`\n"
                 + "SET\n"
                 + "post_isFeaturing = ?,\n"
                 + "post_time_modified = ?\n"
@@ -685,7 +685,7 @@ public class PostDAO extends DBContext {
 //</editor-fold>
 
     public boolean deletePostPostCategory(int postId) {
-        String sql = "DELETE FROM `quiz_practice_db`.`post_category`\n"
+        String sql = "DELETE FROM `post_category`\n"
                 + "WHERE post_id = ?;";
         try {
             PreparedStatement stm = connection.prepareStatement(sql);

@@ -31,7 +31,7 @@ public class ExamDAO extends DBContext {
                 + "    `exam`.`brief`,\n"
                 + "    `exam`.`content`,\n"
                 + "    `exam`.`class_id`\n"
-                + "FROM `quiz_practice_db`.`exam`"
+                + "FROM `exam`"
                 + "ORDER BY `exam`.`update_date` DESC;";
         try {
             PreparedStatement stm = connection.prepareStatement(sql);
@@ -71,7 +71,7 @@ public class ExamDAO extends DBContext {
                 + "    `exam`.`brief`,\n"
                 + "    `exam`.`content`,\n"
                 + "    `exam`.`class_id`\n"
-                + "FROM `quiz_practice_db`.`exam`\n"
+                + "FROM `exam`\n"
                 + "WHERE\n"
                 + "`exam`.`category` LIKE ('%" + category + "%') AND `exam`.`title` LIKE ('%" + search + "%')\n"
                 + "ORDER BY `exam`.`update_date` DESC;";
@@ -112,7 +112,7 @@ public class ExamDAO extends DBContext {
                 + "    `exam`.`brief`,\n"
                 + "    `exam`.`content`,\n"
                 + "    `exam`.`class_id`\n"
-                + "FROM `quiz_practice_db`.`exam`"
+                + "FROM `exam`"
                 + "WHERE `exam`.`id` = ?;";
         try {
             PreparedStatement stm = connection.prepareStatement(sql);
