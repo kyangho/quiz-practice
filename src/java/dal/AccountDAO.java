@@ -21,19 +21,6 @@ import model.Role;
  */
 public class AccountDAO extends DBContext {
 
-    private boolean checkAccountIsExist(Account a, ArrayList<Account> accounts) {
-        if (accounts.isEmpty()) {
-            return false;
-        }
-        boolean flag = false;
-        for (Account acc : accounts) {
-            if (acc.getId() == a.getId()) {
-                flag = true;
-            }
-        }
-        return flag;
-    }
-    
     public Account getAccount(String username, String password) {
         try {
             String sql1 = "SELECT a.account_id, a.username, a.password, a.account_status,\n"
@@ -86,11 +73,11 @@ public class AccountDAO extends DBContext {
         }
         return null;
     }
-    
-        public static void main(String[] args) {
+
+    public static void main(String[] args) {
         AccountDAO adbc = new AccountDAO();
         Account account = adbc.getAccount("admin", "admin123");
-            System.out.println(account.getUsername() + " " + account.getFullname());
+        System.out.println(account.getUsername() + " " + account.getFullname());
     }
 
     public Account isExistAccount(String phone, String email, String username, String condition) {
@@ -118,7 +105,7 @@ public class AccountDAO extends DBContext {
         return null;
     }
 
-    public void insertAccount(Account account) {
+    public void insertAccount(Account account, String condition) {
         try {
             connection.setAutoCommit(false);
             String sql1 = "INSERT INTO account\n"
@@ -139,12 +126,12 @@ public class AccountDAO extends DBContext {
 
             PreparedStatement stm1 = connection.prepareStatement(sql1);
             stm1.setString(1, account.getUsername());
-            if (account.getRole().size() > 0) {
-                stm1.setString(2, account.getEmail());
-            } else {
-                stm1.setString(2, account.getPassword());
+            if (account.getPassword() == null || account.getPassword().trim().length() == 0) {
+                account.setPassword(BCrypt.withDefaults().hashToString(12, account.getEmail().toCharArray()));
             }
-            stm1.setString(3, "DEACTIVE");
+            stm1.setString(2, account.getPassword());
+
+            stm1.setString(3, condition.toUpperCase());
             stm1.executeUpdate();
 
             String sql3 = "SELECT LAST_INSERT_ID();";
@@ -457,6 +444,19 @@ public class AccountDAO extends DBContext {
             Logger.getLogger(AccountDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return accounts;
+    }
+
+    private boolean checkAccountIsExist(Account a, ArrayList<Account> accounts) {
+        if (accounts.isEmpty()) {
+            return false;
+        }
+        boolean flag = false;
+        for (Account acc : accounts) {
+            if (acc.getId() == a.getId()) {
+                flag = true;
+            }
+        }
+        return flag;
     }
 
     public int totalRowsByAccountInfor(String id, String fullname, String email, String phone, String roleID, String status, String keySearch) {

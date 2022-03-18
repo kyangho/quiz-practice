@@ -84,7 +84,7 @@ public class AddNewUserController extends HttpServlet {
             request.setAttribute("tag", tag);
             request.getRequestDispatcher("../../view/director/user/adduser.jsp").forward(request, response);
         } else {
-            adbc.insertAccount(account);
+            adbc.insertAccount(account, "active");
             response.sendRedirect("userlist");
         }
 

@@ -13,7 +13,7 @@ import at.favre.lib.crypto.bcrypt.BCrypt;
 public class MainApp {
 
     public static void main(String[] args) {
-        String pass1 = "admin123";
+        String pass1 = "Admin123";
 //        String pass2="02072001";
 //        String pass3="14052001";
 //        String pass4="t042001";
