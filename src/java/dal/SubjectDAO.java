@@ -21,11 +21,11 @@ import model.Subject;
 public class SubjectDAO extends DBContext {
 
     public ArrayList<Subject> getAllSubject_2(int pageSize, int pageIndex, String status, String subject_title) {
-//        String s = "SELECT * FROM quiz_practice_db.`subject` as s join quiz_practice_db.`user` on s.user_id = `user`.user_id";
+//        String s = "SELECT * FROM quiz_db.`subject` as s join quiz_db.`user` on s.user_id = `user`.user_id";
         String sql = "select * from (select row_number() over (order by subject_id ) as stt,\n"
-                + "subject_id, subject_title, subject_status, subject_author, ap.account_fullname, ap.account_id FROM quiz_practice_db.`subject` \n"
-                + "as s join quiz_practice_db.`account` on s.subject_author = `account`.account_id \n"
-                + "join quiz_practice_db.account_profile as ap on `account`.account_id = ap.account_id";
+                + "subject_id, subject_title, subject_status, subject_author, ap.account_fullname, ap.account_id FROM quiz_db.`subject` \n"
+                + "as s join quiz_db.`account` on s.subject_author = `account`.account_id \n"
+                + "join quiz_db.account_profile as ap on `account`.account_id = ap.account_id";
         if (status != null) {
             if (!status.equals("all")) {
                 sql += " where subject_status = '" + status + "'";
@@ -62,7 +62,7 @@ public class SubjectDAO extends DBContext {
 
     public int getRowcount(String status, String subject_title) {
         try {
-            String sql = "select count(*) as total From  quiz_practice_db.subject";
+            String sql = "select count(*) as total From  quiz_db.subject";
             if (status != null) {
                 if (!status.equals("all")) {
                     sql += " where subject_status = '" + status + "'";
@@ -86,9 +86,9 @@ public class SubjectDAO extends DBContext {
     public Subject getSubjectDetail(String subject_id) {
         try {
             String sql = "select s.subject_id,s.subject_title, ap.account_fullname, s.subject_status\n"
-                    + "FROM quiz_practice_db.`subject` \n"
-                    + "as s join quiz_practice_db.`account` on s.subject_author = `account`.account_id \n"
-                    + "join quiz_practice_db.account_profile as ap on `account`.account_id = ap.account_id\n"
+                    + "FROM quiz_db.`subject` \n"
+                    + "as s join quiz_db.`account` on s.subject_author = `account`.account_id \n"
+                    + "join quiz_db.account_profile as ap on `account`.account_id = ap.account_id\n"
                     + " where s.subject_id = ?";
             PreparedStatement ps = connection.prepareStatement(sql);
             ps.setString(1, subject_id);
@@ -179,7 +179,7 @@ public class SubjectDAO extends DBContext {
 
     public void deleteSubject(int id) {
         try {
-            String sql = "delete from quiz_practice_db.`subject` where `subject`.subject_id = ?";
+            String sql = "delete from quiz_db.`subject` where `subject`.subject_id = ?";
             PreparedStatement ps = connection.prepareStatement(sql);
             ps.setInt(1, id);
             ps.executeUpdate();
@@ -199,7 +199,7 @@ public class SubjectDAO extends DBContext {
 //    public ArrayList<Subject> getAllSubject_1(int pageIndex) {
 //        String sql = "select * from (select row_number() over (order by subject_id ) as stt,\n"
 //                + "subject_id, subject_title, subject_author, subject_status\n"
-//                + "from quiz_practice_db.`subject` ) as t\n"
+//                + "from quiz_db.`subject` ) as t\n"
 //                + "where stt between ?*3-2 and ?*3";
 //        ArrayList<Subject> subjects = new ArrayList<>();
 //        try {
