@@ -13,12 +13,12 @@ import at.favre.lib.crypto.bcrypt.BCrypt;
 public class MainApp {
 
     public static void main(String[] args) {
-        String pass1 = "Admin123";
-        String pass2="02072001";
+        String pass1 = "dangtdhe150020";
+        String pass2="Tom123";
         String pass3="14052001";
         String pass4="t042001";
         String pass5="anbanlientuc";
-        String bcryptHashString1 = BCrypt.withDefaults().hashToString(12, pass1.toCharArray());
+        String bcryptHashString1 = BCrypt.withDefaults().hashToString(12, pass2.toCharArray());
 //        String bcryptHashString2 = BCrypt.withDefaults().hashToString(12, pass2.toCharArray());
 //        String bcryptHashString3 = BCrypt.withDefaults().hashToString(12, pass3.toCharArray());
 //        String bcryptHashString4 = BCrypt.withDefaults().hashToString(12, pass4.toCharArray());
