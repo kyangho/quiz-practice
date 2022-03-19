@@ -64,44 +64,45 @@
                 </div>
             </div>
             <div class="row g-4">
-                <c:forEach items="${requestScope.quizs}" var="q">
+                <c:forEach items="${requestScope.practices}" var="p" begin="0" end="4">
                     <div class="col-lg-3 col-sm-6 wow fadeInUp" data-wow-delay="0.1s">
-                        <div class="service-item text-center pt-3">
-                            <a href="practice/details?quizID=${q.id}">
-                                <div class="p-4" style="text-align: left;">
+                        <div class="service-item text-center pt-3" style="box-shadow: 0px 0px 6px 1px grey;">
+                            <a href="details?quizID=${q.id}">
+                                <div class="p-3" style="text-align: left;">
                                     <div class="img-responsive ImagePreviewLoader">
                                         <img class="img-fluid" src="${pageContext.request.contextPath}/img/quiz1.jpg" alt=""/>
                                     </div>
-                                    <h5 class="mb-3">${q.title}</h5>
-                                    <p>By: ${q.author.fullname}</p>
-                                    <p>Start date: <fmt:formatDate pattern="dd-MM-yyyy" value="${q.startTime}"/> </p>
-                                    <p class="quiz">${q.questions.size()} Qs</p>
-                                    <style>
-                                        .quiz{
-                                            width: 66px;
-                                            background-color: #999c9b;
-                                            color: white;
-                                            text-align: center;
-                                            border-radius: 11px;
-                                            box-shadow: 0px 0px 6px 2px #5a5757;
-                                        }
-                                    </style>
-                                    <p style="<c:if test="${q.rate < 30}">
+                                    <h5 class="mb-3">${p.quiz.name}</h5>
+                                    <p>By: ${p.quiz.author.fullname}</p>
+                                    <p>Subject: ${p.quiz.subject.subject_title}</p>
+                                    <p>Duration: ${p.duration}h</p>
+                                    <p>Start date: <fmt:formatDate pattern="dd-MM-yyyy" value="${p.timeJoin}"/> </p>
+                                    <p class="quiz">${p.quiz.questions.size()} Qs</p>
+                                    <p style="<c:if test="${p.rate < 30}">
                                        background-color: red;
                                         </c:if>
-                                        <c:if test="${q.rate > 30 && q.rate < 75}">
+                                        <c:if test="${p.rate > 30 && p.rate < 75}">
                                             background-color: #e09519;
                                         </c:if>
-                                        <c:if test="${q.rate > 75}">
+                                        <c:if test="${p.rate > 75}">
                                             background-color: #086404;
-                                        </c:if>
-                                        border-radius: 10px; color: white; text-align: center;">${q.rate}%</p>
+                                        </c:if> border-radius: 10px; color: white; text-align: center;">${p.rate}%</p>
                                 </div>
                             </a>
                         </div>
                     </div>
                 </c:forEach>
             </div>
+            <style>
+                .quiz{
+                    width: 66px;
+                    background-color: #999c9b;
+                    color: white;
+                    text-align: center;
+                    border-radius: 11px;
+                    box-shadow: 0px 0px 6px 2px #5a5757;
+                }
+            </style>
         </c:if>
         <c:if test="${sessionScope.account == null}">
             <div class="row g-4">
