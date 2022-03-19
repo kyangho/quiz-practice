@@ -26,7 +26,7 @@ public class SettingDAO extends DBContext {
                 + "    `setting`.`setting_description`,\n"
                 + "    `setting`.`setting_value`,\n"
                 + "    `setting`.`setting_status`\n"
-                + "FROM `quiz_practice_db`.`setting`\n"
+                + "FROM `setting`\n"
                 + "WHERE `setting`.`setting_id` = ?";
 
         try {
@@ -148,7 +148,7 @@ public class SettingDAO extends DBContext {
     }
 
     public boolean activeSetting(int settingId) {
-        String sql = "UPDATE `quiz_practice_db`.`setting`\n"
+        String sql = "UPDATE `setting`\n"
                 + "SET`setting_status` = ?\n"
                 + "WHERE `setting_id` = ?;";
 

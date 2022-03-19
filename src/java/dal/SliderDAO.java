@@ -124,7 +124,7 @@ public class SliderDAO extends DBContext {
 
     public void addSlider(String title, InputStream fileContent, String backlink, String status, String note) {
         try {
-            String sql = "INSERT INTO `quiz_practice_db`.`slider` (`slider_title`, `slider_backlink`, `slider_status`, `slider_note`";
+            String sql = "INSERT INTO `slider` (`slider_title`, `slider_backlink`, `slider_status`, `slider_note`";
             if (fileContent != null) {
                 sql += ",`slider_img`";
             }
@@ -149,7 +149,7 @@ public class SliderDAO extends DBContext {
 
     public void updateSlider(int id, String title, InputStream fileContent, String backlink, String status, String note) {
         int row = 0;
-        String query = "UPDATE `quiz_practice_db`.`slider` SET `slider_title` = ?, \n"
+        String query = "UPDATE `slider` SET `slider_title` = ?, \n"
                 + " `slider_backlink` = ?, `slider_status` = ?, `slider_note` = ?\n";
         if (fileContent != null) {
             query += ", `slider_img` = ?\n";

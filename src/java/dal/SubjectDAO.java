@@ -116,7 +116,7 @@ public class SubjectDAO extends DBContext {
 
     public void inserSubject(Subject subject) {
         try {
-            String sql = "INSERT INTO `quiz_practice_db`.`subject` (`subject_title`, `subject_author`, `subject_status`) VALUES (?,?, ?);";
+            String sql = "INSERT INTO `subject` (`subject_title`, `subject_author`, `subject_status`) VALUES (?,?, ?);";
             PreparedStatement ps = connection.prepareStatement(sql);
             ps.setString(1, subject.getSubject_title());
             ps.setInt(2, subject.getSubject_Author().getId());
@@ -130,7 +130,7 @@ public class SubjectDAO extends DBContext {
 
     public void editSubject(Subject sub) {
         try {
-            String sql = "UPDATE `quiz_practice_db`.`subject`\n"
+            String sql = "UPDATE `subject`\n"
                     + "SET\n"
                     + "`subject_title` =?,\n"
                     + "`subject_author` =?,\n"
@@ -149,7 +149,7 @@ public class SubjectDAO extends DBContext {
 
     public boolean unpublishedSubject(int subjectId) {
         try {
-            String sql = "UPDATE `quiz_practice_db`.`subject` SET `subject_status` = ?"
+            String sql = "UPDATE `subject` SET `subject_status` = ?"
                     + " WHERE (`subject_id` = ?);";
             PreparedStatement ps = connection.prepareStatement(sql);
             ps.setString(1, "Unpublished");
@@ -164,7 +164,7 @@ public class SubjectDAO extends DBContext {
 
     public boolean publishedSubject(int subjectId) {
         try {
-            String sql = "UPDATE `quiz_practice_db`.`subject` SET `subject_status` = ?"
+            String sql = "UPDATE `subject` SET `subject_status` = ?"
                     + " WHERE (`subject_id` = ?);";
             PreparedStatement ps = connection.prepareStatement(sql);
             ps.setString(1, "Published");

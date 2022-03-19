@@ -362,7 +362,7 @@ public class QuestionDAO extends DBContext {
     public void deleteQuestion(int quesid) {
         try {
             connection.setAutoCommit(false);
-            String sql = "DELETE FROM `quiz_practice_db`.`question`\n"
+            String sql = "DELETE FROM `question`\n"
                     + "WHERE question_id = ?;";
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setInt(1, quesid);
@@ -403,7 +403,7 @@ public class QuestionDAO extends DBContext {
     public void changeStatusQues(int id, String status) {
         try {
             connection.setAutoCommit(false);
-            String sql = "UPDATE `quiz_practice_db`.`question`\n"
+            String sql = "UPDATE `question`\n"
                     + "SET\n"
                     + "`question_status` = ?\n"
                     + "WHERE `question_id` = ?;";
@@ -431,13 +431,13 @@ public class QuestionDAO extends DBContext {
     public boolean updateQuestion(String quizId, Question q, InputStream media) {
         try {
             connection.setAutoCommit(false);
-            String deleteAnswer = "DELETE FROM `quiz_practice_db`.`answer`\n"
+            String deleteAnswer = "DELETE FROM `answer`\n"
                     + "WHERE question_id = ?;";
             PreparedStatement stm_2 = connection.prepareStatement(deleteAnswer);
             stm_2.setInt(1, q.getId());
             stm_2.executeUpdate();
 
-            String insertAnswer = "INSERT INTO `quiz_practice_db`.`answer`\n"
+            String insertAnswer = "INSERT INTO `answer`\n"
                     + "(`question_id`,\n"
                     + "`answer_content`)\n"
                     + "VALUES\n"
@@ -458,7 +458,7 @@ public class QuestionDAO extends DBContext {
             if (rs.next()) {
                 correctAns = new String(rs.getString(1));
             }
-            String sql = "UPDATE `quiz_practice_db`.`question`\n"
+            String sql = "UPDATE `question`\n"
                     + "SET\n"
                     + "`question_content` = ?,\n"
                     + "`correct_answer` = ?,\n"
@@ -489,7 +489,7 @@ public class QuestionDAO extends DBContext {
             }
             stm.executeUpdate();
 
-            String update_quizQues = "UPDATE `quiz_practice_db`.`quiz_question`\n"
+            String update_quizQues = "UPDATE `quiz_question`\n"
                     + "SET\n"
                     + "`quiz_id` = ?\n"
                     + "WHERE `question_id` = ?;";
