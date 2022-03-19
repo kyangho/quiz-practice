@@ -23,7 +23,7 @@ public class RoleDAO extends DBContext{
         ArrayList<Role> roles = new ArrayList<>();
                 
         try {
-            String sql = "select setting_id, setting_value from setting;";
+            String sql = "select setting_id, setting_value from setting where setting_type = 'role';";
             PreparedStatement stm = connection.prepareStatement(sql);
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {                
