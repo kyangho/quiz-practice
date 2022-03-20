@@ -30,7 +30,7 @@ public class HomeDirectorController extends HttpServlet {
         for (Role r : account.getRole()) {
             if (r.getRoleName().compareToIgnoreCase("admin") == 0 || r.getRoleName().compareToIgnoreCase("author") == 0) {
 //                String contextPath = request.getServletContext().getContextPath();
-                request.getRequestDispatcher("/view/director/homedirector.jsp").forward(request, response);
+                request.getRequestDispatcher("view/director/homedirector.jsp").forward(request, response);
                 return;
             }
         }

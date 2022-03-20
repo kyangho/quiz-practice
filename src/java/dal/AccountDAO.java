@@ -114,6 +114,7 @@ public class AccountDAO extends DBContext {
             if (account.getPassword() == null || account.getPassword().trim().length() == 0) {
                 account.setPassword(BCrypt.withDefaults().hashToString(12, account.getEmail().toCharArray()));
             }
+            stm1.setString(1, account.getUsername());
             stm1.setString(2, account.getPassword());
             stm1.setString(3, condition.toUpperCase());
             stm1.executeUpdate();
