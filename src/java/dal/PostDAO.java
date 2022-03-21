@@ -268,7 +268,7 @@ public class PostDAO extends DBContext {
                 + "    c.category_value\n"
                 + "from post_category as pc\n"
                 + "right join category  as c on pc.category_id = c.category_id\n";
-        if (postId.isEmpty()) {
+        if (postId == null || postId.isEmpty()) {
             sql = "select \n"
                     + "	c.category_id,\n"
                     + "    c.category_name,\n"
@@ -276,7 +276,7 @@ public class PostDAO extends DBContext {
                     + "from category as c\n";
         }
 
-        if (!postId.isEmpty() || !categoryName.isEmpty()) {
+        if (!postId.isEmpty() && !categoryName.isEmpty()) {
             postId = "('%" + postId + "%')";
             categoryName = "('%" + categoryName + "%')";
             sql += "WHERE post_id LIKE " + postId + " AND " + "category_name LIKE " + categoryName;
@@ -299,8 +299,13 @@ public class PostDAO extends DBContext {
             }
         } catch (SQLException ex) {
             Logger.getLogger(PostDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally{
+            try {
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(PostDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
-
         return categories;
     }
 
