@@ -166,27 +166,31 @@ public class PracticeContoller extends HttpServlet {
         q.setAuthor(account);
         if (!cate.equals("all")) {
             q.setCategory(new Category(Integer.parseInt(cate), null));
-        }else{
+        } else {
             q.setCategory(new Category(0, null));
         }
 
         if (!subject.equals("all")) {
             q.setSubject(new Subject(Integer.parseInt(subject), null));
-        }else{
+        } else {
             q.setSubject(new Subject(0, null));
         }
         ArrayList<Question> ques = new ArrayList<>();
         for (String question : questions) {
             ques.add(new Question(Integer.parseInt(question), null, null));
         }
-        
+
         String name = LocalDate.now().toString();
         q.setName("Practice at " + name);
         q.setType("publish");
         q.setTitle("Quiz");
         q.setQuestions(ques);
         QuizDAO quizDAO = new QuizDAO();
-        quizDAO.insertPractice(q);
-        request.getRequestDispatcher("list").forward(request, response);
+        int id = quizDAO.insertPractice(q);
+        if (id != -1) {
+            request.getRequestDispatcher("quiz/join?quizId=" + id).forward(request, response);
+        }else{
+            response.getWriter().print("Error");
+        }
     }
 }

@@ -314,6 +314,7 @@ public class QuizDAO extends DBContext {
     }
 
     public int insertPractice(Quiz q) {
+        q.setId(-1);
         try {
             connection.setAutoCommit(false);
             String insert_quiz = "INSERT INTO `quiz`\n"
@@ -353,7 +354,6 @@ public class QuizDAO extends DBContext {
                 ps_insert_quiz.setDouble(9, 50);
             }
             ps_insert_quiz.setString(10, q.getType());
-//            System.out.println(insert_quiz);
             ps_insert_quiz.executeUpdate();
 
             String sqlGetLastId = "select LAST_INSERT_ID() as id";
