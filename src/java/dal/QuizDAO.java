@@ -17,6 +17,7 @@ import model.Question;
 import model.Quiz;
 import model.Subject;
 import model.Answer;
+import model.Ques_Ans;
 
 /**
  *
@@ -109,8 +110,7 @@ public class QuizDAO extends DBContext {
 //            System.out.println(quiz1.getTitle());
 //        }
 //    }
- 
-    
+
     public int getRowcount(String subject, String category, String quiz_type, String search_quiz_title) {
         try {
             String sql = "select count(*) as total From  quiz_practice_db.quiz\n"
@@ -273,7 +273,6 @@ public class QuizDAO extends DBContext {
         }
 
     }
-
 
     public ArrayList<Quiz> getQuizzesPractice(int accountID, int pageindex, int pagesize) {
         ArrayList<Quiz> quizs = new ArrayList<>();
@@ -665,4 +664,48 @@ public class QuizDAO extends DBContext {
         return false;
     }
 
+    public ArrayList<Ques_Ans> getQuestion_AnswerList(String search, int accountID) {
+        QuestionDAO qdao = new QuestionDAO();
+        ArrayList<Ques_Ans> ques_Anses = new ArrayList<>();
+        try {
+            String sql = "SELECT q.question_id, answer_id, quiz_id FROM user_answer ua\n"
+                    + "join  question q on ua.question_id = q.question_id\n"
+                    + "where account_id = ?";
+            if (search.equals("wrong")) {
+                sql += "where answer_id <> correct_answer";
+            }
+            if (search.equals("correct")) {
+                sql += "where answer_id = correct_answer";
+            }
+
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setInt(1, accountID);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                Ques_Ans qa = new Ques_Ans();
+                qa.setQuestion(qdao.tmpgetQuestionById(rs.getInt(1)));
+                qa.setAnswer(rs.getString(2));
+                qa.setQuizID(getQuizById(rs.getInt(3)));
+                ques_Anses.add(qa);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(QuestionDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return ques_Anses;
+    }
+    public Answer getAnswerByID(int id) {
+        try {
+            String sql = "select answer_id, answer_content from answer where answer_id = ?";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setInt(1, id);
+            ResultSet rs = stm.executeQuery();
+            if (rs.next()) {
+                Answer a = new Answer(rs.getInt(1), rs.getString(2));
+                return a;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(QuestionDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
 }

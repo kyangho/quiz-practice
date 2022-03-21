@@ -91,7 +91,7 @@ public class AccountDAO extends DBContext {
         return null;
     }
 
-    public void insertAccount(Account account, String condition) {
+    public void insertAccount(Account account, String status) {
         try {
             connection.setAutoCommit(false);
             String sql1 = "INSERT INTO account\n"
@@ -117,7 +117,7 @@ public class AccountDAO extends DBContext {
             }
             stm1.setString(2, account.getPassword());
 
-            stm1.setString(3, condition.toUpperCase());
+            stm1.setString(3, status.toUpperCase());
             stm1.executeUpdate();
 
             String sql3 = "SELECT LAST_INSERT_ID();";

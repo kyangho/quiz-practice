@@ -3,24 +3,53 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package tmp;
+package controller.auth;
 
-import model.Ques_Ans;
+import at.favre.lib.crypto.bcrypt.BCrypt;
+import dal.AccountDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import model.Account;
 
 /**
  *
  * @author Vu Duc Tien
  */
-@WebServlet(name = "tmpQuizReviewController", urlPatterns = {"/quiz/game/review"})
-public class tmpQuizReviewController extends HttpServlet {
+@WebServlet(name = "VerifyController", urlPatterns = {"/verify"})
+public class VerifyController extends HttpServlet {
+
+    /**
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String key = request.getParameter("key");
+        String verifyCode = (String) request.getSession().getAttribute("verifyCode");
+
+        if (verifyCode != null) {
+            if (BCrypt.verifyer().verify(verifyCode.toCharArray(), key).verified == true) {
+                Account account = (Account) request.getSession().getAttribute("newAccount");
+                AccountDAO adao = new AccountDAO();
+                adao.insertAccount(account, "active");
+                request.getRequestDispatcher("view/home/verify.jsp").forward(request, response);
+            } else {
+                request.getRequestDispatcher("view/404.jsp").forward(request, response);
+            }
+        } else {
+            request.getRequestDispatcher("view/404.jsp").forward(request, response);
+        }
+    }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -34,11 +63,7 @@ public class tmpQuizReviewController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-//        tmpDAO dao = new tmpDAO();
-//        ArrayList<Ques_Ans> ques_Anses = dao.getQuestion_AnswerList("all");
-//        request.setAttribute("ques_Anses", ques_Anses);
-//        request.setAttribute("search", "all");
-//        request.getRequestDispatcher("../../view/quiz/review.jsp").forward(request, response);
+        processRequest(request, response);
     }
 
     /**
@@ -52,13 +77,7 @@ public class tmpQuizReviewController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-//        String search = request.getParameter("search");
-//        response.getWriter().print(search);
-//        tmpDAO dao = new tmpDAO();
-//        ArrayList<Ques_Ans> ques_Anses = dao.getQuestion_AnswerList(search);
-//        request.setAttribute("ques_Anses", ques_Anses);
-//        request.setAttribute("search", search);
-//        request.getRequestDispatcher("../../view/quiz/review.jsp").forward(request, response);
+        processRequest(request, response);
     }
 
     /**

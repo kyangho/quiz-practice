@@ -5,6 +5,8 @@
  */
 package tmp;
 
+import dal.QuizDAO;
+import model.Ques_Ans;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -13,6 +15,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import model.Account;
 
 /**
  *
@@ -32,12 +35,13 @@ public class tmpQuizResultController extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        tmpDAO dao = new tmpDAO();
-        ArrayList<Ques_Ans> ques_Anses = dao.getQuestion_AnswerList("all");
+        QuizDAO qdao = new QuizDAO();
+        Account a = (Account) request.getSession().getAttribute("account");
+        ArrayList<Ques_Ans> ques_Anses = qdao.getQuestion_AnswerList("all", a.getId());
         int numCorrect = countCorrectAnswer(ques_Anses);
         double percent = (double) numCorrect / ques_Anses.size() * 100;
         boolean pass;
-        if (percent > 80) {
+        if (percent > ques_Anses.get(0).getQuizID().getId()) {
             pass = true;
         } else {
             pass = false;
