@@ -19,7 +19,7 @@
                             <h5 class="mb-3">Practice List</h5>
                         </div>
                         <div class="col-lg-2">
-                            <a class="btn btn-danger" href="details">Add practice</a>
+                            <a class="btn btn-danger" href="add">Add practice</a>
                         </div>
                     </div>
                     <div class="container">

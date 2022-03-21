@@ -5,8 +5,6 @@
  */
 package model;
 
-import java.sql.Date;
-import java.sql.Time;
 import java.util.ArrayList;
 
 /**
@@ -27,6 +25,7 @@ public class Quiz {
     private String status;
     private double rate;
     private double duration;
+    private String description;
     ArrayList<Question> questions = new ArrayList<>();
     
     public Quiz() {
@@ -34,6 +33,14 @@ public class Quiz {
 
     public int getId() {
         return id;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public void setId(int id) {

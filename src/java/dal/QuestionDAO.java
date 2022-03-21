@@ -26,6 +26,7 @@ public class QuestionDAO extends DBContext {
     public ArrayList<Question> getQuestions(int accountId, int pageindex, int pagesize, String key, String subject,
             String subcategory, String level, String status) {
         ArrayList<Question> questions = new ArrayList<>();
+        PreparedStatement stm = null;
         try {
             String sql = "select * from (\n"
                     + "	  select  row_number()over (order by q.question_id asc) as stt,\n"
@@ -40,7 +41,7 @@ public class QuestionDAO extends DBContext {
                     + "left join setting st1 on q.question_level = st1.setting_id\n"
                     + "where (1=1)\n";
             if (accountId != 1) {
-                sql += "AND account_id = " + accountId + "\n";
+                sql += "AND quiz_author = " + accountId + "\n";
             }
             int paramIndex = 0;
             HashMap<Integer, Object[]> params = new HashMap<>();
@@ -86,7 +87,7 @@ public class QuestionDAO extends DBContext {
 
             sql += ") as ques";
 //            System.out.println(sql);
-            PreparedStatement stm = connection.prepareStatement(sql);
+            stm = connection.prepareStatement(sql);
             for (Map.Entry<Integer, Object[]> entry : params.entrySet()) {
                 Integer index = entry.getKey();
                 Object[] value = entry.getValue();
@@ -109,25 +110,17 @@ public class QuestionDAO extends DBContext {
             }
         } catch (SQLException ex) {
             Logger.getLogger(QuestionDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        } 
+//        finally {
+//            try {
+//                connection.close();
+//            } catch (SQLException ex) {
+//                Logger.getLogger(QuestionDAO.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+//        }
         return questions;
     }
 
-//    public int getQuizIdOfQuestion(int quesId) {
-//        try {
-//            String sql = "select * from quiz_question\n"
-//                    + "where question_id = ?;";
-//            PreparedStatement stm = connection.prepareStatement(sql);
-//            stm.setInt(1, quesId);
-//            ResultSet rs = stm.executeQuery();
-//            if (rs.next()) {
-//                return rs.getInt(1);
-//            }
-//        } catch (SQLException ex) {
-//            Logger.getLogger(QuestionDAO.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//        return -1;
-//    }
     public ArrayList<Subcategory> getSubcategorys() {
         ArrayList<Subcategory> subcategorys = new ArrayList<>();
         try {
@@ -140,63 +133,72 @@ public class QuestionDAO extends DBContext {
         } catch (SQLException ex) {
             Logger.getLogger(QuestionDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
+//        finally {
+//            try {
+//                connection.close();
+//            } catch (SQLException ex) {
+//                Logger.getLogger(QuestionDAO.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+//        }
         return subcategorys;
     }
 
     public int getTotalRows(int accountId, String key, String subject,
             String subcategory, String level, String status) {
-        try {
-            String sql = "select count(*)\n"
-                    + "from question q\n"
-                    + "left join quiz_question qq on qq.question_id = q.question_id\n"
-                    + "left join quiz on qq.quiz_id = quiz.quiz_id\n"
-                    + "left join subcategory sb on sb.subcategory_id = q.subcategory_id\n"
-                    + "left join `subject` s on s.subject_id = q.subject_id\n"
-                    + "left join setting st on quiz.quiz_category = st.setting_id\n"
-                    + "left join setting st1 on q.question_level = st1.setting_id\n"
-                    + "	where (1=1)\n";
-            if (accountId != 1) {
-                sql += "AND account_id = " + accountId + "\n";
-            }
-            int paramIndex = 0;
-            HashMap<Integer, Object[]> params = new HashMap<>();
-            if (key != null) {
-                sql += " and question_content  like '%" + key + "%'\n";
-            }
-            if (subject != null && !subject.equals("all")) {
-                sql += " AND s.subject_id = ?\n";
-                paramIndex++;
-                Object[] param = new Object[2];
-                param[0] = String.class.getName();
-                param[1] = subject;
-                params.put(paramIndex, param);
-            }
-            if (subcategory != null && !subcategory.equals("all")) {
-                sql += " AND sb.subcategory_id = ?\n";
-                paramIndex++;
-                Object[] param = new Object[2];
-                param[0] = String.class.getName();
-                param[1] = subcategory;
-                params.put(paramIndex, param);
-            }
-            if (level != null && !level.equals("all")) {
-                sql += " AND st1.setting_value = ?\n";
-                paramIndex++;
-                Object[] param = new Object[2];
-                param[0] = String.class.getName();
-                param[1] = level;
-                params.put(paramIndex, param);
-            }
-            if (status != null && !status.equals("all")) {
-                sql += " AND question_status = ?\n";
-                paramIndex++;
-                Object[] param = new Object[2];
-                param[0] = String.class.getName();
-                param[1] = status;
-                params.put(paramIndex, param);
-            }
+
+        String sql = "select count(*)\n"
+                + "from question q\n"
+                + "left join quiz_question qq on qq.question_id = q.question_id\n"
+                + "left join quiz on qq.quiz_id = quiz.quiz_id\n"
+                + "left join subcategory sb on sb.subcategory_id = q.subcategory_id\n"
+                + "left join `subject` s on s.subject_id = q.subject_id\n"
+                + "left join setting st on quiz.quiz_category = st.setting_id\n"
+                + "left join setting st1 on q.question_level = st1.setting_id\n"
+                + "	where (1=1)\n";
+        if (accountId != 1) {
+            sql += "AND quiz_author = " + accountId + "\n";
+        }
+        int paramIndex = 0;
+        HashMap<Integer, Object[]> params = new HashMap<>();
+        if (key != null) {
+            sql += " and question_content  like '%" + key + "%'\n";
+        }
+        if (subject != null && !subject.equals("all")) {
+            sql += " AND s.subject_id = ?\n";
+            paramIndex++;
+            Object[] param = new Object[2];
+            param[0] = String.class.getName();
+            param[1] = subject;
+            params.put(paramIndex, param);
+        }
+        if (subcategory != null && !subcategory.equals("all")) {
+            sql += " AND sb.subcategory_id = ?\n";
+            paramIndex++;
+            Object[] param = new Object[2];
+            param[0] = String.class.getName();
+            param[1] = subcategory;
+            params.put(paramIndex, param);
+        }
+        if (level != null && !level.equals("all")) {
+            sql += " AND st1.setting_value = ?\n";
+            paramIndex++;
+            Object[] param = new Object[2];
+            param[0] = String.class.getName();
+            param[1] = level;
+            params.put(paramIndex, param);
+        }
+        if (status != null && !status.equals("all")) {
+            sql += " AND question_status = ?\n";
+            paramIndex++;
+            Object[] param = new Object[2];
+            param[0] = String.class.getName();
+            param[1] = status;
+            params.put(paramIndex, param);
+        }
 //            System.out.println(sql);
-            PreparedStatement stm = connection.prepareStatement(sql);
+        PreparedStatement stm = null;
+        try {
+            stm = connection.prepareStatement(sql);
             for (Map.Entry<Integer, Object[]> entry : params.entrySet()) {
                 Integer index = entry.getKey();
                 Object[] value = entry.getValue();
@@ -212,6 +214,13 @@ public class QuestionDAO extends DBContext {
         } catch (SQLException ex) {
             Logger.getLogger(QuestionDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
+//        finally {
+//            try {
+//                connection.close();
+//            } catch (SQLException ex) {
+//                Logger.getLogger(QuestionDAO.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+//        }
         return -1;
     }
 
@@ -222,7 +231,7 @@ public class QuestionDAO extends DBContext {
                     + "join quiz on quiz.quiz_id = quiz_question.quiz_id\n"
                     + "where question.question_id = ?\n ";
             if (accountId != 1) {
-                sql += "and account_id = ?";
+                sql += "and quiz_author = ?";
             }
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setInt(1, id);
@@ -247,6 +256,13 @@ public class QuestionDAO extends DBContext {
         } catch (SQLException ex) {
             Logger.getLogger(QuestionDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
+//        finally {
+//            try {
+//                connection.close();
+//            } catch (SQLException ex) {
+//                Logger.getLogger(QuestionDAO.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+//        }
         return null;
     }
 
@@ -275,6 +291,13 @@ public class QuestionDAO extends DBContext {
         } catch (SQLException ex) {
             Logger.getLogger(QuestionDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
+//        finally {
+//            try {
+//                connection.close();
+//            } catch (SQLException ex) {
+//                Logger.getLogger(QuestionDAO.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+//        }
         return null;
     }
 
@@ -292,6 +315,13 @@ public class QuestionDAO extends DBContext {
         } catch (SQLException ex) {
             Logger.getLogger(QuestionDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
+//        finally {
+//            try {
+//                connection.close();
+//            } catch (SQLException ex) {
+//                Logger.getLogger(QuestionDAO.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+//        }
         return subcategorys;
     }
 
@@ -316,6 +346,13 @@ public class QuestionDAO extends DBContext {
         } catch (SQLException ex) {
             Logger.getLogger(QuestionDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
+//        finally {
+//            try {
+//                connection.close();
+//            } catch (SQLException ex) {
+//                Logger.getLogger(QuestionDAO.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+//        }
         return quizs;
     }
 
@@ -347,6 +384,13 @@ public class QuestionDAO extends DBContext {
         } catch (SQLException ex) {
             Logger.getLogger(QuestionDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
+//        finally {
+//            try {
+//                connection.close();
+//            } catch (SQLException ex) {
+//                Logger.getLogger(QuestionDAO.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+//        }
         return categorys;
     }
 
@@ -368,6 +412,7 @@ public class QuestionDAO extends DBContext {
         } finally {
             try {
                 connection.setAutoCommit(true);
+//                connection.close();
             } catch (SQLException ex) {
                 Logger.getLogger(QuestionDAO.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -393,6 +438,7 @@ public class QuestionDAO extends DBContext {
         } finally {
             try {
                 connection.setAutoCommit(true);
+//                connection.close();
             } catch (SQLException ex) {
                 Logger.getLogger(QuestionDAO.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -412,6 +458,13 @@ public class QuestionDAO extends DBContext {
         } catch (SQLException ex) {
             Logger.getLogger(QuestionDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
+//        finally {
+//            try {
+//                connection.close();
+//            } catch (SQLException ex) {
+//                Logger.getLogger(QuestionDAO.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+//        }
         return answers;
     }
 
@@ -437,6 +490,7 @@ public class QuestionDAO extends DBContext {
         } finally {
             try {
                 connection.setAutoCommit(true);
+//                connection.close();
             } catch (SQLException ex) {
                 Logger.getLogger(QuestionDAO.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -511,6 +565,7 @@ public class QuestionDAO extends DBContext {
         } finally {
             try {
                 connection.setAutoCommit(true);
+//                connection.close();
             } catch (SQLException ex) {
                 Logger.getLogger(QuestionDAO.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -520,6 +575,5 @@ public class QuestionDAO extends DBContext {
 
     public static void main(String[] args) {
         QuestionDAO qdao = new QuestionDAO();
-        System.out.println(qdao.getQuestionById(1, 1).getSubject().getSubject_id());
     }
 }

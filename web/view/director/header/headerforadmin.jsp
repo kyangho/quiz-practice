@@ -53,7 +53,7 @@
                         <li class="divider"></li>
 
                         <li>
-                            <a href="../../logout"><i class="fa fa-ban fa-fw pull-right"></i> Logout</a>
+                            <a href="${pageContext.request.contextPath}/logout"><i class="fa fa-ban fa-fw pull-right"></i> Logout</a>
                         </li>
                     </ul>
 
