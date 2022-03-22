@@ -18,16 +18,13 @@ import java.util.logging.Logger;
 public class DBContext {
 
     public Connection connection;
-    private String user = "root";
-    private String pass = "admin123";
-    private String url = "jdbc:mysql://localhost:3306/quiz_practice_db_test_2?allowPublicKeyRetrieval=true&useSSL=false";
+    private String user = "ljgpnrdtbqnqze";
+    private String pass = "f63ec82850964146927bd513c4ac3330d3bdb5346a13aebaf3b446ac028c3cb9";
+    private String url = "jdbc:postgresql://ec2-44-194-92-192.compute-1.amazonaws.com:5432/denuvcv64biigd";
 
     public DBContext() {
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
             connection = DriverManager.getConnection(url, user, pass);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(DBContext.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {
             Logger.getLogger(DBContext.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -36,10 +33,7 @@ public class DBContext {
     public Connection getConnection() {
         Connection connection = null;
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
             connection = DriverManager.getConnection(url, user, pass);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(DBContext.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {
             Logger.getLogger(DBContext.class.getName()).log(Level.SEVERE, null, ex);
         }
