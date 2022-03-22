@@ -21,7 +21,6 @@ import model.Subject;
 public class SubjectDAO extends DBContext {
 
     public ArrayList<Subject> getAllSubject_2(int pageSize, int pageIndex, String status, String subject_title) {
-//        String s = "SELECT * FROM quiz_db.`subject` as s join quiz_db.`user` on s.user_id = `user`.user_id";
         String sql = "select * from (select row_number() over (order by subject_id ) as stt,\n"
                 + "subject_id, subject_title, subject_status, subject_author, ap.account_fullname, ap.account_id FROM quiz_db.`subject` \n"
                 + "as s join quiz_db.`account` on s.subject_author = `account`.account_id \n"
@@ -34,14 +33,20 @@ public class SubjectDAO extends DBContext {
         if (subject_title != null) {
             sql += " where subject_title like '%" + subject_title + "%'";
         }
-        sql += " ) as t where  t.stt >= (? - 1)*? + 1 AND t.stt <= ? * ?";
+        sql += ") as t";
+        if (pageIndex != 0 && pageSize != 0) {
+            sql += " where  t.stt >= (? - 1)*? + 1 AND t.stt <= ? * ?";
+        }
+
         ArrayList<Subject> subjects = new ArrayList<>();
         try {
             PreparedStatement stm = connection.prepareStatement(sql);
-            stm.setInt(1, pageIndex);
-            stm.setInt(2, pageSize);
-            stm.setInt(3, pageIndex);
-            stm.setInt(4, pageSize);
+            if (pageIndex != 0 && pageSize != 0) {
+                stm.setInt(1, pageIndex);
+                stm.setInt(2, pageSize);
+                stm.setInt(3, pageIndex);
+                stm.setInt(4, pageSize);
+            }
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
                 Subject subject = new Subject();
@@ -187,12 +192,13 @@ public class SubjectDAO extends DBContext {
             Logger.getLogger(SubjectDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
     public static void main(String[] args) {
         SubjectDAO s = new SubjectDAO();
         for (Subject dSubject : s.getAllSubject_2(1, 2, "all", null)) {
             System.out.println(dSubject.getSubject_id());
         }
-        
+
     }
 }
 

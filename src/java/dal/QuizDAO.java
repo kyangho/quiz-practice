@@ -29,12 +29,6 @@ public class QuizDAO extends DBContext {
 
     public ArrayList<Quiz> getQuiz(int pageSize, int pageIndex, String subject, String category, String quiz_type, String search_quiz_title) {
         ArrayList<Quiz> quizs = new ArrayList<>();
-//        String sql = "SELECT q.quiz_id, q.quiz_title, s.subject_title, c.category_name, q.quiz_level\n"
-//                + ", q.quiz_type, ap.account_fullname as Author, q.quiz_status\n"
-//                + "FROM quiz as q \n"
-//                + "join subject as s on q.subject_id = s.subject_id \n"
-//                + "join category as c on q.category_id = c.category_id\n"
-//                + "join account_profile as ap on q.account_id = ap.account_id\n";
         String sql = "select * from (select row_number()over (order by quiz_id asc) as stt,\n"
                 + "q.quiz_id, q.quiz_title, s.subject_title, c.category_name, q.quiz_level\n"
                 + "                , q.quiz_type, ap.account_fullname as Author, q.quiz_status\n"
@@ -235,33 +229,159 @@ public class QuizDAO extends DBContext {
         return null;
     }
 
-    public void insertQuiz(Quiz q) {
+    public int insertQuiz(Quiz q, String type) {
         try {
-            String insert_quiz = "INSERT INTO `quiz` (`quiz_title`, `subject_id`, "
-                    + "`category_id`, `quiz_level`, `account_id`, `quiz_type`) VALUES (?, ?, ?, ?, ?, ?);";
+            connection.setAutoCommit(false);
+            String insert_quiz = "INSERT INTO `quiz`\n"
+                    + "(`quiz_name`,`quiz_title`,`quiz_subject`,`quiz_category`,\n"
+                    + "`quiz_author`,`quiz_description`,`quiz_duration`,`quiz_level`,\n"
+                    + "`quiz_rate`,`quiz_type`)\n"
+                    + "VALUES\n"
+                    + "(?,?,?,?,?,?,?,?,?,?);";
             PreparedStatement ps_insert_quiz = connection.prepareStatement(insert_quiz);
-            ps_insert_quiz.setString(1, q.getTitle());
-            ps_insert_quiz.setInt(2, q.getSubject().getSubject_id());
-            ps_insert_quiz.setInt(3, q.getCategory().getCategory_id());
-            ps_insert_quiz.setString(4, q.getLevel());
-            ps_insert_quiz.setInt(5, q.getAuthor().getId());
-            ps_insert_quiz.setString(6, q.getType());
-            System.out.println(insert_quiz);
+            ps_insert_quiz.setString(1, q.getName());
+            ps_insert_quiz.setString(2, q.getTitle());
+            if (q.getSubject().getSubject_id() != 0) {
+                ps_insert_quiz.setInt(3, q.getSubject().getSubject_id());
+            } else {
+                ps_insert_quiz.setString(3, null);
+            }
+            if (q.getCategory().getCategory_id() != 0) {
+                ps_insert_quiz.setInt(4, q.getCategory().getCategory_id());
+            } else {
+                ps_insert_quiz.setString(4, null);
+            }
+            if (q.getAuthor() != null) {
+                ps_insert_quiz.setInt(5, q.getAuthor().getId());
+            } else {
+                ps_insert_quiz.setString(5, null);
+            }
+            ps_insert_quiz.setString(6, q.getDescription());
+            if (q.getDuration() != 0) {
+                ps_insert_quiz.setDouble(7, q.getDuration());
+            } else {
+                ps_insert_quiz.setString(7, null);
+            }
+            ps_insert_quiz.setString(8, q.getLevel());
+            if (q.getRate() != 0) {
+                ps_insert_quiz.setDouble(9, q.getRate());
+            } else {
+                ps_insert_quiz.setString(9, null);
+            }
+            ps_insert_quiz.setString(10, q.getType());
+//            System.out.println(insert_quiz);
             ps_insert_quiz.executeUpdate();
 
-            for (Question question : q.getQuestions()) {
-                insertQues(question.getContent());
+            String sqlGetLastId = "select LAST_INSERT_ID() as id";
+            PreparedStatement stm2 = connection.prepareStatement(sqlGetLastId);
+            ResultSet rs = stm2.executeQuery();
+            if (rs.next()) {
+                q.setId(rs.getInt(1));
             }
-            for (Question question : q.getQuestions()) {
-                String s = question.getContent();
-                Question qu = new Question();
-                qu.setContent(s);
-                getquestion(qu.getContent(), q.getId());
+            if (type.equals("practice")) {
+                for (Question question : q.getQuestions()) {
+                    inset_quiz_ques(q.getId(), question.getId());
+                }
+
+            } else {
+                for (Question question : q.getQuestions()) {
+                    insertQues(question.getContent());
+                }
+                for (Question question : q.getQuestions()) {
+                    String s = question.getContent();
+                    Question qu = new Question();
+                    qu.setContent(s);
+                    getquestion(qu.getContent(), q.getId());
+                }
             }
+            connection.commit();
         } catch (SQLException ex) {
             Logger.getLogger(QuizDAO.class.getName()).log(Level.SEVERE, null, ex);
+            try {
+                connection.rollback();
+            } catch (SQLException ex1) {
+                Logger.getLogger(QuizDAO.class.getName()).log(Level.SEVERE, null, ex1);
+            }
+        } finally {
+            try {
+                connection.setAutoCommit(true);
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(QuizDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
+        return q.getId();
+    }
 
+    public int insertPractice(Quiz q) {
+        q.setId(-1);
+        try {
+            connection.setAutoCommit(false);
+            String insert_quiz = "INSERT INTO `quiz`\n"
+                    + "(`quiz_name`,`quiz_title`,`quiz_subject`,`quiz_category`,\n"
+                    + "`quiz_author`,`quiz_description`,`quiz_duration`,`quiz_level`,\n"
+                    + "`quiz_rate`,`quiz_type`)\n"
+                    + "VALUES\n"
+                    + "(?,?,?,?,?,?,?,?,?,?);";
+            PreparedStatement ps_insert_quiz = connection.prepareStatement(insert_quiz);
+            ps_insert_quiz.setString(1, q.getName());
+            ps_insert_quiz.setString(2, q.getTitle());
+            if (q.getSubject().getSubject_id() != 0) {
+                ps_insert_quiz.setInt(3, q.getSubject().getSubject_id());
+            } else {
+                ps_insert_quiz.setString(3, null);
+            }
+            if (q.getCategory().getCategory_id() != 0) {
+                ps_insert_quiz.setInt(4, q.getCategory().getCategory_id());
+            } else {
+                ps_insert_quiz.setString(4, null);
+            }
+            if (q.getAuthor() != null) {
+                ps_insert_quiz.setInt(5, q.getAuthor().getId());
+            } else {
+                ps_insert_quiz.setString(5, null);
+            }
+            ps_insert_quiz.setString(6, q.getDescription());
+            if (q.getDuration() != 0) {
+                ps_insert_quiz.setDouble(7, q.getDuration());
+            } else {
+                ps_insert_quiz.setDouble(7, 15);
+            }
+            ps_insert_quiz.setString(8, q.getLevel());
+            if (q.getRate() != 0) {
+                ps_insert_quiz.setDouble(9, q.getRate());
+            } else {
+                ps_insert_quiz.setDouble(9, 50);
+            }
+            ps_insert_quiz.setString(10, q.getType());
+            ps_insert_quiz.executeUpdate();
+
+            String sqlGetLastId = "select LAST_INSERT_ID() as id";
+            PreparedStatement stm2 = connection.prepareStatement(sqlGetLastId);
+            ResultSet rs = stm2.executeQuery();
+            if (rs.next()) {
+                q.setId(rs.getInt(1));
+            }
+            for (Question question : q.getQuestions()) {
+                inset_quiz_ques(q.getId(), question.getId());
+            }
+            connection.commit();
+        } catch (SQLException ex) {
+            Logger.getLogger(QuizDAO.class.getName()).log(Level.SEVERE, null, ex);
+            try {
+                connection.rollback();
+            } catch (SQLException ex1) {
+                Logger.getLogger(QuizDAO.class.getName()).log(Level.SEVERE, null, ex1);
+            }
+        } finally {
+            try {
+                connection.setAutoCommit(true);
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(QuizDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return q.getId();
     }
 
     public ArrayList<Quiz_Account> getQuizzesPractice(int accountID, int pageindex, int pagesize) {

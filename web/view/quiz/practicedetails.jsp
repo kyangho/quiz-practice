@@ -45,7 +45,7 @@
                 </div>
                 <div class="button" style="margin: 0 10%;">
                     <button style="width: 300px; height: 66px; border-radius: 8px; font-size: 26px;" class="btn btn-success btn-circle a">
-                        <a style="color: white;" href="#">Practice</a></button>
+                        <a style="color: white;" href="quiz/join?quizId=${requestScope.quiz.id}">Practice</a></button>
                     <button style="width: 300px; height: 66px; border-radius: 8px; font-size: 26px;" class="btn btn-danger btn-circle">
                         <a style="color: white;" href="#">Review</a></button>
                 </div>

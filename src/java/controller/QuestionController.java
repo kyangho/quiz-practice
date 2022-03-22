@@ -185,29 +185,25 @@ public class QuestionController extends HttpServlet {
             throws ServletException, IOException {
         Account account = (Account) request.getSession().getAttribute("account");
         String quesId = request.getParameter("questionId");
-        if (quesId == null) {
-            quesId = request.getAttribute("quesid").toString();
-        }
         String cateId = request.getParameter("cateid");
         QuestionDAO qdao = new QuestionDAO();
         Question question = qdao.getQuestionById(Integer.parseInt(quesId), account.getId());
         request.setAttribute("question", question);
-        try {
-            if (cateId == null) {
-                request.setAttribute("subcate", qdao.getSubCategoryByCate(question.getCategory().getCategory_id()));
-            } else {
-                request.setAttribute("subcate", qdao.getSubCategoryByCate(Integer.parseInt(cateId)));
-            }
-        } catch (Exception e) {
-
+        ArrayList<Subcategory> sub;
+        if (cateId == null) {
+            sub = qdao.getSubCategoryByCate(question.getCategory().getCategory_id());
+            request.setAttribute("subcate", sub);
+        } else {
+            sub = qdao.getSubCategoryByCate(Integer.parseInt(cateId));
+            request.setAttribute("subcate", sub);
         }
-
+//        for (Subcategory subcategory : sub) {
+//            response.getWriter().print(subcategory.getName());
+//        }
         QuizDAO q = new QuizDAO();
         request.setAttribute("level", qdao.getLevel());
         request.setAttribute("categories", qdao.getCategory());
         request.setAttribute("subjects", q.getsubs());
-//        request.setAttribute("quizs", qdao.getQuizForQuestion(account.getId()));
-//        request.setAttribute("quizId", qdao.getQuizIdOfQuestion(question.getId()));
         request.setAttribute("tag", "question");
         request.getRequestDispatcher("../view/director/question/questiondetails.jsp").forward(request, response);
     }
@@ -220,9 +216,7 @@ public class QuestionController extends HttpServlet {
         response.getWriter().print(anId + " " + quesid);
         if (anId != null && quesid != null) {
             qdao.deleteAnswer(Integer.parseInt(anId));
-            request.setAttribute("quesid", quesid);
-            request.setAttribute("tag", "question");
-            request.getRequestDispatcher("details").forward(request, response);
+            request.getRequestDispatcher("details?questionId=" + quesid).forward(request, response);
         }
 
         if (anId == null && quesid != null) {

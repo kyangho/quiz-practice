@@ -72,7 +72,7 @@ public class NewQuiz extends HttpServlet {
         }
 
         QuizDAO q = new QuizDAO();
-        q.insertQuiz(quiz);
+        q.insertQuiz(quiz, "quiz");
         response.sendRedirect("listquiz");
 
     }

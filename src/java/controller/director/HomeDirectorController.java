@@ -27,6 +27,7 @@ public class HomeDirectorController extends HttpServlet {
             response.sendRedirect(request.getContextPath() + "/home");
             return;
         }
+<<<<<<< HEAD
         for (Role r : account.getRole()) {
             if (r.getRoleName().compareToIgnoreCase("admin") == 0 || r.getRoleName().compareToIgnoreCase("author") == 0) {
 //                String contextPath = request.getServletContext().getContextPath();
@@ -35,18 +36,22 @@ public class HomeDirectorController extends HttpServlet {
             }
         }
 //        response.sendRedirect(request.getContextPath() + "/home");
+=======
+        request.getRequestDispatcher("/view/director/homedirector.jsp").forward(request, response);
+>>>>>>> 6b1a32344a8ef6a01665f0149bff1a683d36b9c3
     }
+//        response.sendRedirect(request.getContextPath() + "/home");
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+/**
+ * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+ * methods.
+ *
+ * @param request servlet request
+ * @param response servlet response
+ * @throws ServletException if a servlet-specific error occurs
+ * @throws IOException if an I/O error occurs
+ */
+protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         request.setAttribute("contentPageIncluded", null);
         loadHeader(request, response);
@@ -61,7 +66,7 @@ public class HomeDirectorController extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+        protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }
@@ -75,7 +80,7 @@ public class HomeDirectorController extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+        protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }
@@ -86,7 +91,7 @@ public class HomeDirectorController extends HttpServlet {
      * @return a String containing servlet description
      */
     @Override
-    public String getServletInfo() {
+        public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
 

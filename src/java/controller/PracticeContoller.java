@@ -5,8 +5,11 @@
  */
 package controller;
 
+import dal.DBContext;
+import dal.QuestionDAO;
 import dal.QuizDAO;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,8 +17,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import model.Account;
+import model.Category;
+import model.Question;
 import model.Quiz;
 import model.Quiz_Account;
+import model.Subcategory;
+import model.Subject;
 
 /**
  *
@@ -70,9 +77,9 @@ public class PracticeContoller extends HttpServlet {
         if (URI.contains(practiceListPath)) {
             doGetPracticeList(request, response);
         } else if (URI.contains(practiceDetailPath)) {
-            doPostPracticeDetail(request, response);
+            doGetPracticeDetail(request, response);
         } else {
-            doGetAddPractice(request, response);
+            doPostAddPractice(request, response);
         }
     }
 
@@ -106,31 +113,84 @@ public class PracticeContoller extends HttpServlet {
         QuizDAO qdb = new QuizDAO();
         ArrayList<Quiz_Account> quizzesPractice = qdb.getQuizzesPractice(account.getId(), 0, 0);
         request.setAttribute("practices", quizzesPractice);
-        Quiz_Account practice = qdb.getPracticeByQuizID(Integer.parseInt(quizID),account.getId());
+        Quiz_Account practice = qdb.getPracticeByQuizID(Integer.parseInt(quizID), account.getId());
         request.setAttribute("practice", practice);
         request.getRequestDispatcher("../view/quiz/practicedetails.jsp").forward(request, response);
     }
 
-    private void doPostPracticeDetail(HttpServletRequest request, HttpServletResponse response)
+    private void doGetAddPractice(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-//        String key = request.getParameter("keySearch");
-//        QuizDAO qdb = new QuizDAO();
-//        if (key == null || key.trim().length() == 0) {
-//            response.sendRedirect("details");
-//        } else {
-//            ArrayList<Quiz> allQuiz = qdb.getAllQuiz(key, 1, pageSize);
-//            request.setAttribute("quizs", allQuiz);
-//            request.setAttribute("pageindex", 1);
-//            request.setAttribute("keySearch", key);
-//            request.setAttribute("pagesize", pageSize);
-//            String url = "details?keySearch=" + key + "&pageindex=";
-//            request.setAttribute("url", url);
-//            request.setAttribute("tag", "details");
-//            request.getRequestDispatcher("../view/quiz/addpratice.jsp").forward(request, response);
-//        }
+        String cate = request.getParameter("category");
+        String subject = request.getParameter("subject");
+        String subcate = request.getParameter("subcate");
+        String noQues = request.getParameter("noQues");
+        request.setAttribute("noQues", noQues);
+        request.setAttribute("cateID", cate);
+        if (noQues == null || noQues.length() == 0) {
+            noQues = new String("10");
+        }
+        QuizDAO qdbt = new QuizDAO();
+        QuestionDAO qdao = new QuestionDAO();
+        request.setAttribute("subject", qdbt.getsubs());
+        ArrayList<Category> category = qdao.getCategory();
+        request.setAttribute("categories", category);
+        if (cate != null && cate.equals("all")) {
+            cate = Integer.toString(category.get(0).getCategory_id());
+        }
+        ArrayList<Subcategory> sub;
+        if (subcate == null) {
+            qdao = new QuestionDAO();
+            sub = qdao.getSubCategoryByCate(category.get(0).getCategory_id());
+            request.setAttribute("subcate", sub);
+        } else {
+            qdao = new QuestionDAO();
+            sub = qdao.getSubCategoryByCate(Integer.parseInt(cate));
+            request.setAttribute("subcate", sub);
+            qdao = new QuestionDAO();
+            ArrayList<Question> questions = qdao.getQuestions(1, 1, Integer.parseInt(noQues), null, subject, subcate, null, null);
+            request.setAttribute("questions", questions);
+            request.setAttribute("subjectID", subject);
+            request.setAttribute("subcateId", subcate);
+        }
+        request.getRequestDispatcher("../view/quiz/addpratice.jsp").forward(request, response);
     }
 
-    private void doGetAddPractice(HttpServletRequest request, HttpServletResponse response) {
-    }
+    private void doPostAddPractice(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String cate = request.getParameter("cateid");
+        String subject = request.getParameter("subjectid");
+        String[] questions = request.getParameterValues("questionId");
 
+        Quiz q = new Quiz();
+        Account account = (Account) request.getSession().getAttribute("account");
+        q.setAuthor(account);
+        if (!cate.equals("all")) {
+            q.setCategory(new Category(Integer.parseInt(cate), null));
+        } else {
+            q.setCategory(new Category(0, null));
+        }
+
+        if (!subject.equals("all")) {
+            q.setSubject(new Subject(Integer.parseInt(subject), null));
+        } else {
+            q.setSubject(new Subject(0, null));
+        }
+        ArrayList<Question> ques = new ArrayList<>();
+        for (String question : questions) {
+            ques.add(new Question(Integer.parseInt(question), null, null));
+        }
+
+        String name = LocalDate.now().toString();
+        q.setName("Practice at " + name);
+        q.setType("publish");
+        q.setTitle("Quiz");
+        q.setQuestions(ques);
+        QuizDAO quizDAO = new QuizDAO();
+        int id = quizDAO.insertPractice(q);
+        if (id != -1) {
+            request.getRequestDispatcher("quiz/join?quizId=" + id).forward(request, response);
+        }else{
+            response.getWriter().print("Error");
+        }
+    }
 }
