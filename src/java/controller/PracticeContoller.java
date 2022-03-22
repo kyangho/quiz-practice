@@ -5,7 +5,6 @@
  */
 package controller;
 
-import dal.DBContext;
 import dal.QuestionDAO;
 import dal.QuizDAO;
 import java.io.IOException;
@@ -131,7 +130,8 @@ public class PracticeContoller extends HttpServlet {
         }
         QuizDAO qdbt = new QuizDAO();
         QuestionDAO qdao = new QuestionDAO();
-        request.setAttribute("subject", qdbt.getsubs());
+        ArrayList<Subject> subs = qdbt.getsubs();
+        request.setAttribute("subject", subs);
         ArrayList<Category> category = qdao.getCategory();
         request.setAttribute("categories", category);
         if (cate != null && cate.equals("all")) {
@@ -139,14 +139,14 @@ public class PracticeContoller extends HttpServlet {
         }
         ArrayList<Subcategory> sub;
         if (subcate == null) {
-            qdao = new QuestionDAO();
+//            qdao = new QuestionDAO();
             sub = qdao.getSubCategoryByCate(category.get(0).getCategory_id());
             request.setAttribute("subcate", sub);
         } else {
-            qdao = new QuestionDAO();
+//            qdao = new QuestionDAO();
             sub = qdao.getSubCategoryByCate(Integer.parseInt(cate));
             request.setAttribute("subcate", sub);
-            qdao = new QuestionDAO();
+//            qdao = new QuestionDAO();
             ArrayList<Question> questions = qdao.getQuestions(1, 1, Integer.parseInt(noQues), null, subject, subcate, null, null);
             request.setAttribute("questions", questions);
             request.setAttribute("subjectID", subject);
@@ -162,8 +162,6 @@ public class PracticeContoller extends HttpServlet {
         String[] questions = request.getParameterValues("questionId");
 
         Quiz q = new Quiz();
-        Account account = (Account) request.getSession().getAttribute("account");
-        q.setAuthor(account);
         if (!cate.equals("all")) {
             q.setCategory(new Category(Integer.parseInt(cate), null));
         } else {

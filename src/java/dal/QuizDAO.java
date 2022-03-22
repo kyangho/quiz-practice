@@ -305,7 +305,7 @@ public class QuizDAO extends DBContext {
         } finally {
             try {
                 connection.setAutoCommit(true);
-                connection.close();
+//                connection.close();
             } catch (SQLException ex) {
                 Logger.getLogger(QuizDAO.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -376,14 +376,14 @@ public class QuizDAO extends DBContext {
         } finally {
             try {
                 connection.setAutoCommit(true);
-                connection.close();
+//                connection.close();
             } catch (SQLException ex) {
                 Logger.getLogger(QuizDAO.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         return q.getId();
     }
-
+    
     public ArrayList<Quiz_Account> getQuizzesPractice(int accountID, int pageindex, int pagesize) {
         ArrayList<Quiz_Account> qa = new ArrayList<>();
         try {
@@ -415,6 +415,13 @@ public class QuizDAO extends DBContext {
             Logger.getLogger(QuizDAO.class
                     .getName()).log(Level.SEVERE, null, ex);
         }
+//        finally{
+//            try {
+//                connection.close();
+//            } catch (SQLException ex) {
+//                Logger.getLogger(QuizDAO.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+//        }
         return qa;
     }
 
