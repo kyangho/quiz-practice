@@ -26,19 +26,9 @@
                             <div class="panel-body col-lg-8">
                                 <form id="updateQues" class="form-horizontal tasi-form add-form" enctype="multipart/form-data" action="details" method="POST">
                                     <div class="form-group">
-                                        <label class="col-sm-2 col-sm-2 control-label">Quiz *:</label>
+                                        <label class="col-sm-2 control-label">Subject *:</label>
                                         <div class="col-sm-10">
-                                            <select style="width: 100%;" name="quiz">
-                                            <c:forEach items="${quizs}" var="q">
-                                                <option ${quizId == q.id ? "selected=\"selected\"" : ""} value="${q.id}">${q.name}</option>
-                                            </c:forEach>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-2 control-label">Subject *:</label>
-                                    <div class="col-sm-10">
-                                        <input type="hidden" name="questionId" value="${requestScope.question.id}">
+                                            <input type="hidden" name="questionId" value="${requestScope.question.id}">
                                         <select style="width: 100%;" name="subject">
                                             <c:forEach items="${subjects}" var="s">
                                                 <option ${s.subject_id eq question.subject.subject_id ? "selected=\"selected\"" : ""} value="${s.subject_id}">${s.subject_title}</option>
@@ -75,31 +65,22 @@
                                 <div class="form-group">
                                     <label class="col-sm-2 col-sm-2 control-label">Level *: </label>
                                     <div class="col-sm-10" style="display: flex;">
+                                        <c:forEach items="${level}" var="l">
+                                            <div class="radio">
+                                                <label>
+                                                    <input type="radio" <c:if test="${question.level eq l.id}">checked="checked"</c:if> name="level" value="${l.id}"> ${l.level} 
+                                                    </label>
+                                                </div>
+                                        </c:forEach>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">Status *:</label>
+                                    <div class="col-sm-10" style="display: flex;">
                                         <div class="radio">
                                             <label>
-                                                <input type="radio" <c:if test="${question.level eq 'Easy'}">checked="checked"</c:if> name="level" value="Easy"> Easy 
-                                                </label>
-                                            </div>
-                                            <div class="radio">
-                                                <label>
-                                                    <input type="radio" name="level" <c:if test="${question.level eq 'Medium'}">checked="checked"</c:if> value="Medium"> Medium
-                                                </label>
-                                            </div>
-                                            <div class="radio">
-                                                <label>
-                                                    <input type="radio" name="level" <c:if test="${question.level eq 'Difficult'}">checked="checked"</c:if> value="Difficult"> Difficult
-                                                </label>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-sm-2 control-label">Status *:</label>
-                                        <div class="col-sm-10" style="display: flex;">
-                                            <div class="radio">
-                                                <label>
-                                                    <input type="radio" name="status" value="publish" 
-                                                    <c:if test="${question.status eq 'publish'}">checked="checked"</c:if> > Publish
+                                                <input type="radio" name="status" value="publish" 
+                                                       <c:if test="${question.status eq 'publish'}">checked="checked"</c:if> > Publish
                                                 </label>
                                             </div>
                                             <div class="radio">
@@ -142,9 +123,9 @@
                                         Note: (*) is required.
                                     </div>
                                 </div>
-                                <c:if test="${tag eq 'done'}">
+                                <c:if test="${requestScope.tag eq 'done'}">
                                     <div class="col-sm-12" style="color: green; margin: 1% 38% 2% 38%;">
-                                        Update successful.
+                                        <strong>Update successful.</strong>
                                     </div>
                                 </c:if>
                                 <div class="col-sm-12">
@@ -185,7 +166,7 @@
             function deleteQues() {
                 document.getElementById('add').remove();
             }
-            
+
             document.getElementById("files").onchange = function () {
                 var reader = new FileReader();
                 reader.onload = function (e) {
@@ -197,7 +178,7 @@
                     media.remove();
                 }
             };
-            
+
             function checkCorrect() {
                 var corrects = document.getElementsByName('correctAnswer');
 //                var answers = document.getElementsByName('answer');
@@ -207,7 +188,7 @@
                     }
                 }
             }
-            
+
         </script>
         <jsp:include page="../header/linkjavascript.jsp"></jsp:include>
     </body>

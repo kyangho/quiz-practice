@@ -46,7 +46,7 @@
                         </div>
                         <div class="box border-bottom">
                             <div class="box-label text-uppercase d-flex align-items-center">Category <button class="btn ml-auto" type="button" data-toggle="collapse" data-target="#inner-box" aria-expanded="false" aria-controls="inner-box" id="out" onclick="outerFilter()"> <span class="fas fa-plus"></span> </button> </div>
-                            <div id="inner-box" class="collapse mt-2 mr-1">
+                            <div id="inner-box" class="collapse mt-2 mr-1 show">
                             <c:forEach items="${requestScope.categories}" var="category">
                                 <div class="my-1 category-check"> 
                                     <label class="tick">

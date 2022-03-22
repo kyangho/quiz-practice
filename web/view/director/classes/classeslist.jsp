@@ -66,7 +66,7 @@
                                                     <td>${c.status}</td>
                                                     <td><button class="label label-info"><a style="color: white;" href="classdetail?classID=${c.classID}">Details</a></button></td>
                                                     <td><button 
-                                                            onclick="changeStatus('${c.classID}'', '${c.status}', 'changeclassstatus')" 
+                                                            onclick="changeStatus('${c.classID}', '${c.status}', 'changeclassstatus')" 
                                                             type="button" class="label 
                                                             <c:if test="${c.status eq 'ACTIVE'}">
                                                                 label-danger

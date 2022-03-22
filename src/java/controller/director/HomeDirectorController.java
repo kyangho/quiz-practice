@@ -6,7 +6,6 @@
 package controller.director;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -30,12 +29,12 @@ public class HomeDirectorController extends HttpServlet {
         }
         for (Role r : account.getRole()) {
             if (r.getRoleName().compareToIgnoreCase("admin") == 0 || r.getRoleName().compareToIgnoreCase("author") == 0) {
-                String contextPath = request.getServletContext().getContextPath();
+//                String contextPath = request.getServletContext().getContextPath();
                 request.getRequestDispatcher("/view/director/homedirector.jsp").forward(request, response);
                 return;
             }
         }
-        response.sendRedirect(request.getContextPath() + "/home");
+//        response.sendRedirect(request.getContextPath() + "/home");
     }
 
     /**

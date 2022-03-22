@@ -143,7 +143,7 @@ public class ClassDAO extends DBContext {
     public void updateClass(int classID, String className, String status, String note, int authorID) {
         try {
             connection.setAutoCommit(false);
-            String sql = "UPDATE `quiz_practice_db`.`class`\n"
+            String sql = "UPDATE `class`\n"
                     + "SET\n"
                     + "`class_name` = ?,\n"
                     + "`class_status` = ?,\n"
@@ -180,7 +180,7 @@ public class ClassDAO extends DBContext {
 
     public void ChangeStatus(int id, String status) {
         try {
-            String sql = "UPDATE `quiz_practice_db`.`class`\n"
+            String sql = "UPDATE `class`\n"
                     + "SET\n"
                     + "`class_status` =?\n"
                     + "WHERE `class_id` = ?";
@@ -200,7 +200,7 @@ public class ClassDAO extends DBContext {
     public void insertClass(String className, String note, String status, int authorID) {
         try {
             connection.setAutoCommit(false);
-            String sql = "INSERT INTO `quiz_practice_db`.`class`\n"
+            String sql = "INSERT INTO `class`\n"
                     + "(`class_name`, `class_stutus`, `class_note`, `author`)\n"
                     + "VALUES (?,?,?,?)";
             PreparedStatement stm = connection.prepareStatement(sql);
@@ -233,7 +233,7 @@ public class ClassDAO extends DBContext {
     public void insertAccountToClass(int classID, int accountID) {
         try {
             connection.setAutoCommit(false);
-            String sql = "INSERT INTO `quiz_practice_db`.`class_user`\n"
+            String sql = "INSERT INTO `class_user`\n"
                     + "(`class_id`, `account_id`)\n"
                     + "VALUES (?,?)";
             PreparedStatement stm = connection.prepareStatement(sql);

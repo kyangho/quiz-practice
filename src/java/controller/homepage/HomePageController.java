@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import model.Account;
 import model.Quiz;
+import model.Quiz_Account;
 
 /**
  *
@@ -32,8 +33,8 @@ public class HomePageController extends HttpServlet {
         request.setAttribute("IsAdmin", admin);
         if (account != null) {
             QuizDAO qdb = new QuizDAO();
-            ArrayList<Quiz> quizzes = qdb.getQuizzesPractice(account.getId(), 1, 4);
-            request.setAttribute("quizs", quizzes);
+             ArrayList<Quiz_Account> quizzesPractice = qdb.getQuizzesPractice(account.getId(), 1, 4);
+            request.setAttribute("practices", quizzesPractice);
         }
         request.setAttribute("tag", "home");
         request.setAttribute("information", accounts);

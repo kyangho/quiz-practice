@@ -10,7 +10,9 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script src="${pageContext.request.contextPath}/ajax/postajax.js?v=6" type="text/javascript"></script>
 <script src="${pageContext.request.contextPath}/ajax/setting/setting.js?v=2" type="text/javascript"></script>
-<link href="${pageContext.request.contextPath}/css/post.css?v=1" rel="stylesheet">
+<script src="${pageContext.request.contextPath}/ckeditor/ckeditor.js" type="text/javascript"></script>
+
+<link href="${pageContext.request.contextPath}/css/post.css?v=3" rel="stylesheet">
 
 <html lang="en">
     <head>
@@ -19,7 +21,17 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Quiz Practice</title>
         <jsp:include page="../header/linkcss.jsp"></jsp:include>
+            <style>
+                .cke_top, .cke_bottom{
+                    display: none !important;
+                }
+                .cke_chrome{
+                    outline: none;
+                    border: none !important;
+                }
 
+                
+            </style>
         </head>
 
         <body class="skin-black">
@@ -37,20 +49,20 @@
                                     </header>
                                     <div class="panel-body">
                                         <div class="blog-post-area">
-                                            <h2 class="title text-center">${requestScope.post.title}</h2>
-                                        <div class="single-blog-post">
-                                            <h3>${requestScope.post.brief}</h3>
-                                            <div class="post-meta">
+                                            <h2 class="title text-center ">${requestScope.post.title}</h2>
+                                        <div class="single-blog-post ">
+                                            <h4 class="col-md-12">${requestScope.post.brief}</h4>
+                                            <div class="post-meta col-md-12" >
                                                 <ul>
                                                     <li><i class="fa fa-user"></i><a href="list?author=${post.author}">${post.author}</a></li>
                                                     <li>
                                                         <i class="fa fa-clock-o"></i>
-                                                    <fmt:formatDate value="${requestScope.post.dateCreated}" type = "time" timeStyle = "short"></fmt:formatDate>
-                                                    </li>
-                                                    <li>
-                                                        <i class="fa fa-calendar"></i>                                     
-                                                    <fmt:formatDate value="${requestScope.post.dateCreated}" type = "date" timeStyle = "short"></fmt:formatDate>
-                                                    </li>
+                                                        <fmt:formatDate value="${requestScope.post.dateCreated}" type = "time" timeStyle = "short"></fmt:formatDate>
+                                                        </li>
+                                                        <li>
+                                                            <i class="fa fa-calendar"></i>                                     
+                                                        <fmt:formatDate value="${requestScope.post.dateCreated}" type = "date" timeStyle = "short"></fmt:formatDate>
+                                                        </li>
                                                     <c:forEach items="${requestScope.post.categories}" var="category">
                                                         <li class="category-label">
                                                             <a class="label label-info btn" href="list?category=${category.name}" >${category.value}</a>
@@ -58,21 +70,22 @@
                                                     </c:forEach>
                                                 </ul>
                                             </div>
-                                            <div class="col-sm-12">
-                                                <a href="">
-                                                    <img  class="col-sm-12 rounded img-fluid w-100 img-responsive pt-2" src="${pageContext.request.contextPath}/post/image?id=${post.id}" alt="">
-                                                </a>
-                                            </div>
-                                            <div style="white-space: pre-line;">
-                                                <p>
+                                            <div class="col-sm-12" style="margin-left: -20px">
+                                                <textarea name="postContent"  id="postContent" contenteditable="false" rows="10" class="ckeditor col-sm-12">
                                                     ${requestScope.post.content}
-                                                </p>
+                                                </textarea>
+                                                <script>
+                                                    CKEDITOR.config.readOnly = true;
+                                                    CKEDITOR.replace('postContent', {
+                                                        customConfig: '${pageContext.request.contextPath}/ckeditor/emptyButtonConfig.js'
+                                                    });
+                                                </script>
                                             </div>
                                             <c:if test="${requestScope.post.author == sessionScope.account.username}">
                                                 <a class="btn btn-danger" href="update?id=${requestScope.post.id}">Edit</a>
                                             </c:if>
                                             <div>
-                                                <h6>Attach file:</h6>
+                                                <h5>Attach file:</h5>
                                                 <a href="file?id=${requestScope.post.id}">${requestScope.fileName}</a>
                                             </div>
                                         </div>

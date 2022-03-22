@@ -203,10 +203,11 @@ public class QuestionController extends HttpServlet {
         }
 
         QuizDAO q = new QuizDAO();
+        request.setAttribute("level", qdao.getLevel());
         request.setAttribute("categories", qdao.getCategory());
         request.setAttribute("subjects", q.getsubs());
-        request.setAttribute("quizs", qdao.getQuizForQuestion(account.getId()));
-        request.setAttribute("quizId", qdao.getQuizIdOfQuestion(question.getId()));
+//        request.setAttribute("quizs", qdao.getQuizForQuestion(account.getId()));
+//        request.setAttribute("quizId", qdao.getQuizIdOfQuestion(question.getId()));
         request.setAttribute("tag", "question");
         request.getRequestDispatcher("../view/director/question/questiondetails.jsp").forward(request, response);
     }
@@ -253,7 +254,6 @@ public class QuestionController extends HttpServlet {
         ArrayList<Answer> ans = new ArrayList<>();
         for (String answer : answers) {
             ans.add(new Answer(0, answer));
-//            response.getWriter().println(answer);
         }
         q.setAnswers(ans);
         String correctAns = request.getParameter("correctAnswer");
@@ -277,10 +277,8 @@ public class QuestionController extends HttpServlet {
         QuizDAO qiAO = new QuizDAO();
         q.setMedia(qdao.getQuestionById(q.getId(), account.getId()).getMedia());
         request.setAttribute("subjects", qiAO.getsubs());
-        request.setAttribute("quizs", qdao.getQuizForQuestion(account.getId()));
-        request.setAttribute("quizId", qdao.getQuizIdOfQuestion(q.getId()));
         request.setAttribute("tag", "done");
-
+        request.setAttribute("level", qdao.getLevel());
         request.setAttribute("question", qdao.getQuestionById(q.getId(), account.getId()));
         request.setAttribute("tag", "question");
         request.getRequestDispatcher("../view/director/question/questiondetails.jsp").forward(request, response);

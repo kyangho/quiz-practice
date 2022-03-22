@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import model.Account;
 import model.Quiz;
+import model.Quiz_Account;
 
 /**
  *
@@ -25,6 +26,7 @@ public class PracticeContoller extends HttpServlet {
 
     private final String practiceListPath = "/practice/list";
     private final String practiceDetailPath = "/practice/details";
+    private final String addPracticePath = "/practice/add";
     private final int pageSize = 4;
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -44,8 +46,10 @@ public class PracticeContoller extends HttpServlet {
         String URI = request.getRequestURI().replaceFirst("/\\w+", "");
         if (URI.contains(practiceListPath)) {
             doGetPracticeList(request, response);
-        } else {
+        } else if (URI.contains(practiceDetailPath)) {
             doGetPracticeDetail(request, response);
+        } else {
+            doGetAddPractice(request, response);
         }
     }
 
@@ -65,8 +69,10 @@ public class PracticeContoller extends HttpServlet {
         String URI = request.getRequestURI().replaceFirst("/\\w+", "");
         if (URI.contains(practiceListPath)) {
             doGetPracticeList(request, response);
-        } else {
+        } else if (URI.contains(practiceDetailPath)) {
             doPostPracticeDetail(request, response);
+        } else {
+            doGetAddPractice(request, response);
         }
     }
 
@@ -81,10 +87,10 @@ public class PracticeContoller extends HttpServlet {
         }
         Account account = (Account) request.getSession().getAttribute("account");
         QuizDAO qdb = new QuizDAO();
-        ArrayList<Quiz> quizzes = qdb.getQuizzesPractice(account.getId(), pageindex, pageSize);
+        ArrayList<Quiz_Account> quizzesPractice = qdb.getQuizzesPractice(account.getId(), pageindex, pageSize);
         int totalRows = qdb.totalRowsForQuizPractice(account.getId());
         int totalPage = (totalRows % pageSize == 0) ? totalRows / pageSize : totalRows / pageSize + 1;
-        request.setAttribute("quizs", quizzes);
+        request.setAttribute("practices", quizzesPractice);
         String url = "list?pageindex=";
         request.setAttribute("url", url);
         request.setAttribute("pageindex", pageindex);
@@ -95,63 +101,36 @@ public class PracticeContoller extends HttpServlet {
 
     private void doGetPracticeDetail(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+        Account account = (Account) request.getSession().getAttribute("account");
         String quizID = request.getParameter("quizID");
         QuizDAO qdb = new QuizDAO();
-        if (quizID == null || quizID.length() == 0) {
-            String key = request.getParameter("keySearch");
-            if (key != null) {
-                String pageindex_raw = request.getParameter("pageindex");
-                int pageindex;
-                if (pageindex_raw == null || pageindex_raw.length() == 0) {
-                    pageindex = 1;
-                } else {
-                    pageindex = Integer.parseInt(pageindex_raw);
-                }
-                ArrayList<Quiz> allQuiz = qdb.getAllQuiz(key, pageindex, pageSize);
-                request.setAttribute("quizs", allQuiz);
-                request.setAttribute("pageindex", pageindex);
-                request.setAttribute("keySearch", key);
-                request.setAttribute("pagesize", pageSize);
-                String url = "details?keySearch=" + key + "&pageindex=";
-                request.setAttribute("url", url);
-            } else {
-                ArrayList<Quiz> allQuiz = qdb.getAllQuiz(null, 0, 0);
-                request.setAttribute("quizs", allQuiz);
-            }
-            request.setAttribute("tag", "details");
-            request.getRequestDispatcher("../view/quiz/addpratice.jsp").forward(request, response);
-        } else {
-            Quiz quiz = qdb.getQuizById(Integer.parseInt(quizID));
-            Account acc = (Account) request.getSession().getAttribute("account");
-            if (acc != null) {
-                ArrayList<Quiz> quizzesPractice = qdb.getQuizzesPractice(acc.getId(), 0, 0);
-                request.setAttribute("quizs", quizzesPractice);
-                quiz.setHasJoin(qdb.checkHasJoin(acc.getId(), quiz.getId()));
-            }
-            request.setAttribute("quiz", quiz);
-            request.setAttribute("tag", "details");
-            request.getRequestDispatcher("../view/quiz/practicedetails.jsp").forward(request, response);
-        }
+        ArrayList<Quiz_Account> quizzesPractice = qdb.getQuizzesPractice(account.getId(), 0, 0);
+        request.setAttribute("practices", quizzesPractice);
+        Quiz_Account practice = qdb.getPracticeByQuizID(Integer.parseInt(quizID),account.getId());
+        request.setAttribute("practice", practice);
+        request.getRequestDispatcher("../view/quiz/practicedetails.jsp").forward(request, response);
     }
 
     private void doPostPracticeDetail(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String key = request.getParameter("keySearch");
-        QuizDAO qdb = new QuizDAO();
-        if (key == null || key.trim().length() == 0) {
-            response.sendRedirect("details");
-        } else {
-            ArrayList<Quiz> allQuiz = qdb.getAllQuiz(key, 1, pageSize);
-            request.setAttribute("quizs", allQuiz);
-            request.setAttribute("pageindex", 1);
-            request.setAttribute("keySearch", key);
-            request.setAttribute("pagesize", pageSize);
-            String url = "details?keySearch=" + key + "&pageindex=";
-            request.setAttribute("url", url);
-            request.setAttribute("tag", "details");
-            request.getRequestDispatcher("../view/quiz/addpratice.jsp").forward(request, response);
-        }
+//        String key = request.getParameter("keySearch");
+//        QuizDAO qdb = new QuizDAO();
+//        if (key == null || key.trim().length() == 0) {
+//            response.sendRedirect("details");
+//        } else {
+//            ArrayList<Quiz> allQuiz = qdb.getAllQuiz(key, 1, pageSize);
+//            request.setAttribute("quizs", allQuiz);
+//            request.setAttribute("pageindex", 1);
+//            request.setAttribute("keySearch", key);
+//            request.setAttribute("pagesize", pageSize);
+//            String url = "details?keySearch=" + key + "&pageindex=";
+//            request.setAttribute("url", url);
+//            request.setAttribute("tag", "details");
+//            request.getRequestDispatcher("../view/quiz/addpratice.jsp").forward(request, response);
+//        }
+    }
+
+    private void doGetAddPractice(HttpServletRequest request, HttpServletResponse response) {
     }
 
 }

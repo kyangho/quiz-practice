@@ -13,6 +13,7 @@ import java.util.ArrayList;
  * @author conmu
  */
 public class Question {
+
     private int id;
     private String content;
     private String correctAnswer;
@@ -24,9 +25,9 @@ public class Question {
     private Blob media;
     private String mediaName;
     private ArrayList<Answer> answers = new ArrayList<>();
-    
-    public  Question(){
-        
+
+    public Question() {
+
     }
 
     public Question(int id, String content, String correctAnswer) {
@@ -35,7 +36,8 @@ public class Question {
         this.correctAnswer = correctAnswer;
     }
 
-    public Question(int id, String content, String correctAnswer, Subject subject, Category category, Subcategory subCategory) {
+    public Question(int id, String content, String correctAnswer,
+            Subject subject, Category category, Subcategory subCategory) {
         this.id = id;
         this.content = content;
         this.correctAnswer = correctAnswer;
@@ -51,7 +53,7 @@ public class Question {
     public void setMediaName(String mediaName) {
         this.mediaName = mediaName;
     }
-    
+
     public String getLevel() {
         return level;
     }
@@ -99,8 +101,6 @@ public class Question {
     public void setSubCategory(Subcategory subCategory) {
         this.subCategory = subCategory;
     }
-    
-    
 
     public int getId() {
         return id;
@@ -133,7 +133,6 @@ public class Question {
     public void setAnswers(ArrayList<Answer> answers) {
         this.answers = answers;
     }
-    
 
     @Override
     public String toString() {

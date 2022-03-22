@@ -26,41 +26,7 @@ $(document).ready(function () {
     });
     $(".tick input").on("change", function () {
         var para = $(this).attr('name') + '=' + $(this).val();
-        var href = window.location.href.split("/");
-        href = href[href.length - 1];
-        href = href.replace('detail', 'list');
-        if (href == 'list' || href == 'detail') {
-            if (href.includes("?")) {
-                if (href[href.length - 1] == '&') {
-                    window.location.href = href + para;
-                } else {
-                    window.location.href = href + '&' + para;
-                }
-            } else {
-                window.location.href = href + '?' + para;
-            }
-            return;
-        }
-        var paras = href.split("?")[1].split("&");
-        var uri = href.split("?")[0] + '?';
-        for (var i = 0; i < paras.length; i++) {
-            if (paras[i].includes($(this).attr('name') + '=')) {
-                continue;
-            }
-            console.log(paras[i])
-            uri += paras[i];
-            uri += (i !== paras.length - 1) ? '&' : '';
-        }
-        href = uri;
-        if (href.includes("?")) {
-            if (href[href.length - 1] == '&' || href[href.length - 1] == '?') {
-                window.location.href = href + para;
-            } else {
-                window.location.href = href + '&' + para;
-            }
-        } else {
-            window.location.href = href + '?' + para;
-        }
+        window.location.href = 'list' + '?' + para;
     })
     $(".form-check-input[type='radio']").on("change", function () {
         window.location.href = "list";
@@ -73,16 +39,16 @@ $(document).ready(function () {
             $(".tick input")[i].setAttributeNode(att);
         }
     }
-    if (href.includes("category")) {
-        const att = document.createAttribute("class");
-        att.value = $("#inner-box")[0].getAttribute("class") + " show";
-        $("#inner-box")[0].setAttributeNode(att)
-    }
-    if (href.includes("status")) {
-        const att = document.createAttribute("class");
-        att.value = $("#inner-box-status")[0].getAttribute("class") + " show";
-        $("#inner-box-status")[0].setAttributeNode(att)
-    }
+//    if (href.includes("category")) {
+//        const att = document.createAttribute("class");
+//        att.value = $("#inner-box")[0].getAttribute("class") + " show";
+//        $("#inner-box")[0].setAttributeNode(att)
+//    }
+//    if (href.includes("status")) {
+//        const att = document.createAttribute("class");
+//        att.value = $("#inner-box-status")[0].getAttribute("class") + " show";
+//        $("#inner-box-status")[0].setAttributeNode(att)
+//    }
 
 
     $(".pagination a").on("click", function (e) {

@@ -5,6 +5,7 @@
  */
 package model;
 
+import java.sql.Date;
 import java.sql.Time;
 import java.util.ArrayList;
 
@@ -23,56 +24,12 @@ public class Quiz {
     private String img;
     private Account author;
     private Category category;
-    private Time startTime;
-    private Time endTime;
     private String status;
     private double rate;
+    private double duration;
     ArrayList<Question> questions = new ArrayList<>();
-    private boolean hasJoin;
-
+    
     public Quiz() {
-    }
-
-    public Quiz(int id, String title, Subject subject, String level, String type, String img, Account author, Category category, Time startTime, Time endTime, String status, double rate, boolean hasJoin) {
-        this.id = id;
-        this.title = title;
-        this.subject = subject;
-        this.level = level;
-        this.type = type;
-        this.img = img;
-        this.author = author;
-        this.category = category;
-        this.startTime = startTime;
-        this.endTime = endTime;
-        this.status = status;
-        this.rate = rate;
-        this.hasJoin = hasJoin;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-    
-    
-
-    public boolean isHasJoin() {
-        return hasJoin;
-    }
-
-    public void setHasJoin(boolean hasJoin) {
-        this.hasJoin = hasJoin;
-    }
-
-    public Category getCategory() {
-        return category;
-    }
-
-    public void setCategory(Category category) {
-        this.category = category;
     }
 
     public int getId() {
@@ -83,12 +40,28 @@ public class Quiz {
         this.id = id;
     }
 
+    public double getDuration() {
+        return duration;
+    }
+
+    public void setDuration(double duration) {
+        this.duration = duration;
+    }
+
     public String getTitle() {
         return title;
     }
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Subject getSubject() {
@@ -115,14 +88,6 @@ public class Quiz {
         this.type = type;
     }
 
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
     public String getImg() {
         return img;
     }
@@ -139,20 +104,20 @@ public class Quiz {
         this.author = author;
     }
 
-    public Time getStartTime() {
-        return startTime;
+    public Category getCategory() {
+        return category;
     }
 
-    public void setStartTime(Time startTime) {
-        this.startTime = startTime;
+    public void setCategory(Category category) {
+        this.category = category;
     }
 
-    public Time getEndTime() {
-        return endTime;
+    public String getStatus() {
+        return status;
     }
 
-    public void setEndTime(Time endTime) {
-        this.endTime = endTime;
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public double getRate() {
@@ -169,19 +134,5 @@ public class Quiz {
 
     public void setQuestions(ArrayList<Question> questions) {
         this.questions = questions;
-    }
-
-    @Override
-    public String toString() {
-        return "Quiz{" + "id=" + id + ", title=" + title + ", subject=" + subject + ", level=" + level + ", type=" + type + ", img=" + img + ", author=" + author + ", startTime=" + startTime + ", endTime=" + endTime + ", rate=" + rate + '}';
-    }
-
-    public void display() {
-        System.out.print("Quiz{" + "id=" + id + ", title=" + title + ", subject=" + subject + ", level=" + level + ", type=" + type + ", img=" + img + ", author=" + author + ", startTime=" + startTime + ", endTime=" + endTime + ", rate=" + rate + ", ");
-        questions.forEach((question) -> {
-            System.out.print(question.toString());
-        });
-        System.out.println();
-    }
-
+    } 
 }

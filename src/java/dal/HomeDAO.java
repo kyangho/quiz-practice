@@ -22,7 +22,7 @@ public class HomeDAO extends DBContext {
     public ArrayList<Account> getAccounts() {
 
         ArrayList<Account> acc = new ArrayList<>();
-        String sql = "SELECT * FROM `quiz_practice_db`.`account` a join `quiz_practice_db`.`account_profile` inf on inf.account_id = a.account_id";
+        String sql = "SELECT * FROM `account` a join `account_profile` inf on inf.account_id = a.account_id";
         try {
             PreparedStatement ps = connection.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
@@ -34,8 +34,7 @@ public class HomeDAO extends DBContext {
                 a.setEmail(rs.getString("account_email"));
                 a.setPhone(rs.getString("account_phone"));
                 a.setFullname(rs.getString("account_fullname"));
-                a.setAddress(rs.getString("account_address"));
-                a.setAvatar(rs.getString("account_avatar"));
+                a.setAvatar(rs.getBlob("account_avatar"));
                 acc.add(a);
             }
         } catch (SQLException ex) {
@@ -46,7 +45,7 @@ public class HomeDAO extends DBContext {
 
     public Account getInfomation(String user) {
         try {
-            String sql = "select * from `quiz_practice_db`.account a join `quiz_practice_db`.account_profile ap \n"
+            String sql = "select * from account a join account_profile ap \n"
                     + "on a.account_id = ap.account_id\n"
                     + "where a.account_id = ?\n"
                     + ";";
@@ -61,7 +60,6 @@ public class HomeDAO extends DBContext {
                 a.setEmail(rs.getString(5));
                 a.setPhone(rs.getString(6));
                 a.setFullname(rs.getString(7));
-                a.setAddress(rs.getString(8));
                 return a;
             }
 

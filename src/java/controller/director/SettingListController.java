@@ -35,7 +35,7 @@ public class SettingListController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        int pageSize = 2;
+        int pageSize = 7;
         String pageIndex_raw = request.getParameter("pageindex");
         String status = request.getParameter("status");
         String type = request.getParameter("type");
@@ -98,41 +98,6 @@ public class SettingListController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        int pageSize = 2;
-        SettingDAO stdb = new SettingDAO();
-        String type = request.getParameter("type");
-        String status = request.getParameter("status");
-        String setting_name = request.getParameter("setting_name");
-        int totalRows;
-        int totalPage;
-        String url;
-        ArrayList<Setting> settings = null;
-        if (setting_name == null) {
-            settings = new ArrayList<>();
-            settings = stdb.getALLSetting(pageSize, 1, type, status, null);
-            totalRows = stdb.totalRowsInSetting(status, type, null);
-            url = "settinglist?status=" + status + "&type=" + type + "&pageindex=";
-
-            request.setAttribute("type", type);
-            request.setAttribute("status", status);
-        } else {
-            settings = new ArrayList<>();
-            settings = stdb.getALLSetting(pageSize, 1, null, null, setting_name);
-            request.setAttribute("valueSearch", setting_name);
-            url = "settinglist?setting_name=" + setting_name + "&pageindex=";
-            totalRows = stdb.totalRowsInSetting(null, null, setting_name);
-        }
-        totalPage = (totalRows % pageSize == 0) ? totalRows / pageSize : totalRows / pageSize + 1;
-        request.setAttribute("totalPage", totalPage);
-
-        request.setAttribute("settings", settings);
-        request.setAttribute("url", url);
-        request.setAttribute("pageindex", 1);
-        request.setAttribute("tag", "settinglist");
-        TypeConfigController tcc = new TypeConfigController();
-        ArrayList<Type> types =  tcc.getTypesList();
-        request.setAttribute("types", types);
-        request.getRequestDispatcher("../../view/director/setting/settinglist.jsp").forward(request, response);
     }
 
     /**

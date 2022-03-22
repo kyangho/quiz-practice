@@ -66,10 +66,9 @@ public class RegisterController extends HttpServlet {
             account.setEmail(email);
             account.setPhone(phone);
             account.setFullname(request.getParameter("register_fullname"));
-            account.setAddress(request.getParameter("register_address"));
             account.setStatus("ACTIVE");
             account.setGender(request.getParameter("gender").equalsIgnoreCase("male"));
-            adbc.insertAccount(account);
+            adbc.insertAccount(account,"deavtice");
             response.sendRedirect(request.getContextPath() + "/home");
         }
     }
