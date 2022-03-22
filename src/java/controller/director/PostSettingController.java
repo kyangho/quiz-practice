@@ -288,6 +288,7 @@ public class PostSettingController extends HttpServlet {
             author = acc.getUsername();
         }   
         if (paraMap.containsKey("sort")) {
+            pd = new PostDAO();
             posts = pd.getPostsListSortBy(title, category, author, feature, status, PAGESIZE, pageIndex);
         } else {
             Boolean isFeature = null;
@@ -296,8 +297,10 @@ public class PostSettingController extends HttpServlet {
             } else if (feature.compareToIgnoreCase("false") == 0) {
                 isFeature = false;
             }
+            pd = new PostDAO();
             posts = pd.getPostsList(search, category, author, status, isFeature, PAGESIZE, pageIndex);
         }
+        pd = new PostDAO();
         ArrayList<PostCategory> categories = pd.getPostCategories("", "");
         PostCategory currentCategory = null;
 //        for (int i = 0; i < categories.size(); i++) {
@@ -310,8 +313,10 @@ public class PostSettingController extends HttpServlet {
 
         int postTotal = 0;
         if (paraMap.containsKey("sort")) {
+            pd = new PostDAO();
             postTotal = pd.countTotalPostWithCondition("", "", "", "", PAGESIZE, pageIndex);
         } else {
+            pd = new PostDAO();
             postTotal = pd.countTotalPostWithCondition(search, category, author, status, PAGESIZE, pageIndex);
         }
         double pageTotal = Math.ceil((double) postTotal / (double) PAGESIZE);

@@ -226,6 +226,7 @@ public class QuestionDAO extends DBContext {
 
     public Question getQuestionById(int id, int accountId) {
         try {
+
             String sql = "select question.* , quiz_category from question \n"
                     + "join quiz_question on quiz_question.question_id = question.question_id\n"
                     + "join quiz on quiz.quiz_id = quiz_question.quiz_id\n"

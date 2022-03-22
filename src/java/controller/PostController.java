@@ -262,7 +262,9 @@ public class PostController extends HttpServlet {
             String[] values = paraMap.get("status");
             status = values[0];
         }
+        pd = new PostDAO();
         posts = pd.getPostsListSortByFeature(search, category, author, "PUBLISH", null, PAGESIZE, pageIndex);
+        pd = new PostDAO();
         ArrayList<PostCategory> categories = pd.getPostCategories("", "");
         PostCategory currentCategory = null;
 //        for (int i = 0; i < categories.size(); i++) {
@@ -272,8 +274,10 @@ public class PostController extends HttpServlet {
 //                break;
 //            }
 //        }
+        pd = new PostDAO();
         int postTotal = pd.countTotalPostWithCondition(search, category, author, status, PAGESIZE, pageIndex);
-        double pageTotal = Math.ceil((double)postTotal/ (double)PAGESIZE);
+        double pageTotal = Math.ceil((double) postTotal / (double) PAGESIZE);
+        pd = new PostDAO();
         ArrayList<Post> featurePosts = pd.getPostsList("", "", "", "PUBLISH", true, 5, 1);
         request.setAttribute("featurePosts", featurePosts);
         request.setAttribute("pageTotal", pageTotal);

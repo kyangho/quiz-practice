@@ -27,7 +27,18 @@ public class HomeDirectorController extends HttpServlet {
             response.sendRedirect(request.getContextPath() + "/home");
             return;
         }
+<<<<<<< HEAD
+        for (Role r : account.getRole()) {
+            if (r.getRoleName().compareToIgnoreCase("admin") == 0 || r.getRoleName().compareToIgnoreCase("author") == 0) {
+//                String contextPath = request.getServletContext().getContextPath();
+                request.getRequestDispatcher("/view/director/homedirector.jsp").forward(request, response);
+                return;
+            }
+        }
+//        response.sendRedirect(request.getContextPath() + "/home");
+=======
         request.getRequestDispatcher("/view/director/homedirector.jsp").forward(request, response);
+>>>>>>> 6b1a32344a8ef6a01665f0149bff1a683d36b9c3
     }
 //        response.sendRedirect(request.getContextPath() + "/home");
 

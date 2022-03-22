@@ -32,4 +32,20 @@ public class DBContext {
             Logger.getLogger(DBContext.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+    public Connection getConnection(){
+        Connection connection = null;
+        try {
+            String user = "root";
+            String pass = "admin123";
+            String url = "jdbc:mysql://localhost:3306/quiz_db?allowPublicKeyRetrieval=true&useSSL=false";
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            connection = DriverManager.getConnection(url, user, pass);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(DBContext.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(DBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return connection;
+    }
 }

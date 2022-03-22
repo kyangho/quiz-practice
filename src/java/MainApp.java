@@ -14,7 +14,7 @@ public class MainApp {
 
     public static void main(String[] args) {
         String pass1 = "dangtdhe150020";
-        String pass2="Tom123";
+        String pass2="admin123";
         String pass3="14052001";
         String pass4="t042001";
         String pass5="anbanlientuc";

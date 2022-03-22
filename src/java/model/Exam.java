@@ -18,7 +18,6 @@ public class Exam {
     private String briefInfo;
     private String author;
     private String content;
-
     public Exam() {
     }
 

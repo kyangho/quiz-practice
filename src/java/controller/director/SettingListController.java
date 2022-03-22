@@ -35,7 +35,7 @@ public class SettingListController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        int pageSize = 2;
+        int pageSize = 7;
         String pageIndex_raw = request.getParameter("pageindex");
         String status = request.getParameter("status");
         String type = request.getParameter("type");

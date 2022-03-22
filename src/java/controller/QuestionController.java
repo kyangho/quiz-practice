@@ -360,5 +360,6 @@ public class QuestionController extends HttpServlet {
                 qaDAO.insertQuestionInfor(q);
             }
         }
+        response.sendRedirect("list");
     }
 }
