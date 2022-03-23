@@ -67,7 +67,7 @@
                 <c:forEach items="${requestScope.practices}" var="p" begin="0" end="4">
                     <div class="col-lg-3 col-sm-6 wow fadeInUp" data-wow-delay="0.1s">
                         <div class="service-item text-center pt-3" style="box-shadow: 0px 0px 6px 1px grey;">
-                            <a href="details?quizID=${q.id}">
+                            <a href="practice/details?quizID=${p.quiz.id}">
                                 <div class="p-3" style="text-align: left;">
                                     <div class="img-responsive ImagePreviewLoader">
                                         <img class="img-fluid" src="${pageContext.request.contextPath}/img/quiz1.jpg" alt=""/>

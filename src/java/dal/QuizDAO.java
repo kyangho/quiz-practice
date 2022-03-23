@@ -418,7 +418,12 @@ public class QuizDAO extends DBContext {
                 q.setId(rs.getInt(1));
             }
             for (Question question : q.getQuestions()) {
-                inset_quiz_ques(q.getId(), question.getId());
+                String insert_quiz_ques = "INSERT INTO `quiz_question` (`quiz_id`, `question_id`) VALUES (?, ?);";
+                PreparedStatement ps_insert_quiz_ques = connection.prepareStatement(insert_quiz_ques);
+                ps_insert_quiz_ques.setInt(1, q.getId());
+                ps_insert_quiz_ques.setInt(2, question.getId());
+                ps_insert_quiz_ques.executeUpdate();
+                ps_insert_quiz_ques.close();
             }
             ps_insert_quiz.close();
             stm2.close();
@@ -514,7 +519,7 @@ public class QuizDAO extends DBContext {
             stm.setInt(1, questionID);
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
-                answers.add(new Answer(rs.getInt(1), rs.getString(3)));
+                answers.add(new Answer(rs.getInt(1), rs.getString(2)));
             }
             stm.close();
         } catch (SQLException ex) {
@@ -718,7 +723,7 @@ public class QuizDAO extends DBContext {
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
                 Question q = new Question(rs.getInt(1), rs.getString(2), rs.getString(3));
-                q.setMedia(rs.getBlob(9));
+                q.setMedia(rs.getBlob("question_media"));
                 q.setAnswers(getAnswerOfQues(q.getId()));
                 questions.add(q);
 
@@ -815,7 +820,8 @@ public class QuizDAO extends DBContext {
         }
         return null;
     }
-    public ArrayList<Setting> getQuizTypes(){
+
+    public ArrayList<Setting> getQuizTypes() {
         SettingDAO sd = new SettingDAO();
         TypeConfigController tcc = new TypeConfigController();
         ArrayList<Type> types = tcc.getTypesList();

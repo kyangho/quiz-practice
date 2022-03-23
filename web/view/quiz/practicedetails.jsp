@@ -3,6 +3,7 @@
     <div class="row" style="margin: 2%;">
         <div class="left col-lg-3 col-md-3"><div class="col-lg-12 col-sm-3">
                 <a class="btn btn-circle btn-success" href="list"><i class="bi bi-arrow-return-left"></i> Practice List</a>
+                 <a class="btn btn-circle btn-danger" href="add">Create Practice</a>
             </div>
             <div class="col-lg-10" style="margin-top: 1%;">
                 <h5 class="mb-3">Choose Quiz:</h5>

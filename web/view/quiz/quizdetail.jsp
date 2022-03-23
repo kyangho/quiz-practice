@@ -29,14 +29,15 @@
                     <p>Level: ${requestScope.quiz.level}</p>
                     <p>Type quiz: ${requestScope.quiz.type}</p>
                     <p>Author: ${requestScope.quiz.author.fullname}</p>
-                    <p>Time start: ${requestScope.quiz.startTime}</p>
-                    <p>Time end: ${requestScope.quiz.endTime}</p>
-                    <p>Rate: ${requestScope.quiz.rate}</p>
+                    <p>Rate: ${requestScope.quiz.rate}%</p>
+                    <p>Duration: ${requestScope.quiz.duration} minutes</p>
                     <p>Sample questions: </p> 
                     <div style="background-color: #47424233;margin:0 1%;padding: 1% 5%;color: gray;border-radius: 8px;">
-                        <c:forEach items="${requestScope.quiz.questions}" var="q">
-                            <p>${q.content}</p>
-                        </c:forEach>
+                        <ol>
+                            <c:forEach items="${requestScope.quiz.questions}" var="q" begin="0" end="3">
+                                <li>${q.content}</li>
+                            </c:forEach>
+                        </ol>
                     </div>
                 </div>
                 <c:if test="${sessionScope.account != null  && sessionScope.account.fullname eq requestScope.quiz.author.fullname}">

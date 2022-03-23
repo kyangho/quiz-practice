@@ -29,7 +29,7 @@
                                             <!--<a href="../quiz/newquiz">Add new quiz </a>-->
                                             <div style="margin: 0 0 1% 90%"; >
                                                 <a href="../quiz/newquiz">
-                                                    <button class="btn btn-sm btn-default" style="color: #fdfdfd;font-weight: bolder;background-color: #00a6ff;" type="submit">Add new subject</button>
+                                                    <button class="btn btn-sm btn-default" style="color: #fdfdfd;font-weight: bolder;background-color: #00a6ff;" type="submit">Add new quiz</button>
                                                 </a>
                                             </div>
                                         </div>

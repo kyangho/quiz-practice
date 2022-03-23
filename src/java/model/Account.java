@@ -28,7 +28,9 @@ public class Account {
     public Account() {
     }
 
-    public Account(int id, String username, String password, String email, String phone, String fullname, boolean gender, String status, ArrayList<Role> role, Blob avatar) {
+    public Account(int id, String username, String password, 
+            String email, String phone, String fullname, boolean gender,
+            String status, ArrayList<Role> role, Blob avatar) {
         this.id = id;
         this.username = username;
         this.password = password;

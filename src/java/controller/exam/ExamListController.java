@@ -1,6 +1,7 @@
 package controller.exam;
 
 import dal.ExamDAO;
+import dal.QuestionDAO;
 import dal.QuizDAO;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -20,15 +21,17 @@ import model.Subject;
  */
 @WebServlet(name = "ExamListController", urlPatterns = {"/exam"})
 public class ExamListController extends HttpServlet {
+
     ExamDAO dao = new ExamDAO();
     QuizDAO q = new QuizDAO();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-ArrayList<Exam> exams = dao.getExams();
+        ArrayList<Exam> exams = dao.getExams();
         ArrayList<Subject> subs = q.getsubs();
-        ArrayList<Category> cates = q.getCates();
+        QuestionDAO questionDAO = new QuestionDAO();
+        ArrayList<Category> cates = questionDAO.getCategory();
         request.setAttribute("exams", exams);
         request.setAttribute("cates", cates);
         request.setAttribute("subs", subs);
@@ -43,16 +46,17 @@ ArrayList<Exam> exams = dao.getExams();
         String category = request.getParameter("category");
         String type = request.getParameter("type");
         String search = request.getParameter("search_exam_title");
-        if (category == null){
+        if (category == null) {
             category = "";
-        }else if (category.compareToIgnoreCase("all") == 0){
+        } else if (category.compareToIgnoreCase("all") == 0) {
             category = "";
         }
-        if (search == null){
+        if (search == null) {
             search = "";
         }
         ArrayList<Exam> exams = dao.getExams("", category, "", search);
-        ArrayList<Category> cates = q.getCates();
+        QuestionDAO questionDAO = new QuestionDAO();
+        ArrayList<Category> cates = questionDAO.getCategory();
         request.setAttribute("search_exam_title", search);
         request.setAttribute("exams", exams);
         request.setAttribute("cates", cates);
