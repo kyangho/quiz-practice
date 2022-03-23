@@ -61,9 +61,18 @@ public class AccountDAO extends DBContext {
     }
 
     public static void main(String[] args) {
-        AccountDAO adbc = new AccountDAO();
-        Account account = adbc.getAccountById(1);
-        System.out.println(account.toString());
+//        AccountDAO adbc = new AccountDAO();
+//        Account account = adbc.getAccountById(1);
+////        System.out.println(account.toString());
+//        Account a = new Account();
+//        a.setFullname("Tom");
+//        a.setEmail("sdfsdf");
+//        a.setPhone("5126532");
+//        a.setStatus("active");
+//        a.setUsername("jdfhdjfdg");
+//        a.setGender(true);
+//        a.getRole().add(new Role(1, "fsdhfjds"));
+//        adbc.insertAccount(a, "ac");
     }
 
     public Account isExistAccount(String phone, String email, String username, String condition) {
@@ -100,6 +109,21 @@ public class AccountDAO extends DBContext {
                     + "`account_status`)\n"
                     + "VALUES\n"
                     + "(?,?,?);\n";
+            PreparedStatement stm1 = connection.prepareStatement(sql1);
+            System.out.println(account.getPassword());
+            if (account.getPassword() == null || account.getPassword().trim().length() == 0) {
+                account.setPassword(BCrypt.withDefaults().hashToString(12, account.getEmail().toCharArray()));
+            }
+            stm1.setString(1, account.getUsername());
+            stm1.setString(2, account.getPassword());
+            stm1.setString(3, status.toUpperCase());
+            stm1.executeUpdate();
+            String sql3 = "SELECT LAST_INSERT_ID();";
+            PreparedStatement stm3 = connection.prepareStatement(sql3);
+            ResultSet rs = stm3.executeQuery();
+            if (rs.next()) {
+                account.setId(rs.getInt("LAST_INSERT_ID()"));
+            }
             String sql2 = "INSERT INTO `account_profile`\n"
                     + "(`account_id`,\n"
                     + "`account_email`,\n"
@@ -109,24 +133,8 @@ public class AccountDAO extends DBContext {
                     + "`account_avatar`)\n"
                     + "VALUES\n"
                     + "(?,?,?,?,?,?);";
-
-            PreparedStatement stm1 = connection.prepareStatement(sql1);
-            stm1.setString(1, account.getUsername());
-            if (account.getPassword() == null || account.getPassword().trim().length() == 0) {
-                account.setPassword(BCrypt.withDefaults().hashToString(12, account.getEmail().toCharArray()));
-            }
-            stm1.setString(2, account.getPassword());
-
-            stm1.setString(3, status.toUpperCase());
-            stm1.executeUpdate();
-
-            String sql3 = "SELECT LAST_INSERT_ID();";
-            PreparedStatement stm3 = connection.prepareStatement(sql3);
-            ResultSet rs = stm3.executeQuery();
-            rs.next();
-            int id = rs.getInt("LAST_INSERT_ID()");
             PreparedStatement stm2 = connection.prepareStatement(sql2);
-            stm2.setInt(1, id);
+            stm2.setInt(1, account.getId());
             stm2.setString(2, account.getEmail());
             stm2.setString(3, account.getPhone());
             stm2.setString(4, account.getFullname());
@@ -143,7 +151,7 @@ public class AccountDAO extends DBContext {
                         + "?);";
                 PreparedStatement stm4 = connection.prepareStatement(sql4);
                 for (Role role : account.getRole()) {
-                    stm4.setInt(1, id);
+                    stm4.setInt(1, account.getId());
                     stm4.setInt(2, role.getId());
                     stm4.executeUpdate();
                 }

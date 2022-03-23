@@ -25,7 +25,7 @@ public class SliderDAO extends DBContext {
         try {
             String sql = "select * from (select row_number()over (order by slider_id asc) as stt, \n"
                     + "s.slider_id, s.slider_title,s.slider_img,s.slider_backlink, s.slider_status,s.slider_note \n"
-                    + "FROM quiz_practice_db.slider as s \n";
+                    + "FROM quiz_db.slider as s \n";
             if (status != null) {
                 if (!status.equalsIgnoreCase("all")) {
                     sql += " where s.slider_status = '" + status + "' ";
@@ -60,7 +60,7 @@ public class SliderDAO extends DBContext {
 
     public void changeStatus(int id, String status) {
         try {
-            String sql = "UPDATE quiz_practice_db.slider\n"
+            String sql = "UPDATE quiz_db.slider\n"
                     + "SET\n"
                     + "`slider_status` = ?\n"
                     + "WHERE (`slider_id` = ?);";
@@ -80,7 +80,7 @@ public class SliderDAO extends DBContext {
 
     public int getRowcount(String status, String title) {
         try {
-            String sql = "select count(*) as total From  quiz_practice_db.slider as s ";
+            String sql = "select count(*) as total From  quiz_db.slider as s ";
             if (status != null) {
                 if (!status.equalsIgnoreCase("all")) {
                     sql += " where s.slider_status = '" + status + "' ";
@@ -101,7 +101,7 @@ public class SliderDAO extends DBContext {
     }
 
     public Slider GetSliderByID(String id) {
-        String query = "SELECT * FROM quiz_practice_db.slider where slider.slider_id =  ?";
+        String query = "SELECT * FROM quiz_db.slider where slider.slider_id =  ?";
         try {
             PreparedStatement ps = connection.prepareStatement(query);
             ps.setString(1, id);

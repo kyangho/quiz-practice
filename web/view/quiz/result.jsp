@@ -34,13 +34,17 @@
                     <div style="margin: 4% auto;">NOT PASS</div>
                 </div>
             </c:if>
-            <div class="result_lable" style="background-color: #546939">
+            <div class="result_lable2" style="background-color: #546939">
                 <div class="num">${numCorrect}</div>
                 <div class="title_under">Correct</div>
             </div>
-            <div class="result_lable" style="background-color: #493307">
+            <div class="result_lable2" style="background-color: #493307">
                 <div class="num">${numWrong}</div>
                 <div class="title_under">Wrong</div>
+            </div>
+            <div class="result_lable2" style="background-color: #493307">
+                <div class="num">${numNone}</div>
+                <div class="title_under">No answer</div>
             </div>
             <div class="button" style="background-color: #210820">
                 <a href="${pageContext.request.contextPath}/quiz/game/review" class="btn btn-danger center-block col-sm-2">Done</a>
@@ -64,6 +68,21 @@
                 width: 100px;
             }
             .result_lable{
+                display: inline-block;
+                vertical-align: top;
+                width: 30%;
+                height: 80px;
+                border-radius: 8px;
+                padding: 6px 0;
+                -webkit-box-sizing: border-box;
+                box-sizing: border-box;
+                position: relative;
+                border: 1px solid #000;
+                overflow: hidden;
+                margin: 1% 4% 1% 5%;
+                background-color: black;
+            }
+            .result_lable2{
                 display: inline-block;
                 vertical-align: top;
                 width: 40%;

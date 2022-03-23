@@ -27,6 +27,7 @@
                     <option value="all" ${search eq "all" ? "selected=\"selected\"":""}>All</option>
                     <option value="correct" ${search eq "correct" ? "selected=\"selected\"":""}>Correct</option>
                     <option value="wrong" ${search eq "wrong" ? "selected=\"selected\"":""}>Wrong</option>
+                    <option value="none" ${search eq "none" ? "selected=\"selected\"":""}>No answer</option>
                 </select>
                 <button type="submit">Search</button>
             </form>
@@ -40,7 +41,7 @@
                     </div>
                     <div class="option_list">
                         <c:forEach items="${qa.question.answers}" var="a">
-                            <p class="option" ${a.id eq qa.answer ? (qa.question.correctAnswer eq qa.answer ? "style=\"background-color: green;\"" : "style=\"background-color: red;\"") : ""}>${a.content}</p>
+                            <p class="option" style="${a.id eq qa.answer ? (qa.question.correctAnswer eq qa.answer ? "background-color: green;" : "background-color: red;") : ""}">${a.content}</p>
                         </c:forEach>
                     </div>
                 </c:forEach>

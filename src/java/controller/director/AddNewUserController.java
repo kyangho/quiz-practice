@@ -57,18 +57,22 @@ public class AddNewUserController extends HttpServlet {
         String fullname = request.getParameter("fullname");
         String email = request.getParameter("email");
         String phone = request.getParameter("phone");
-        String address = request.getParameter("address");
         boolean gender = request.getParameter("gender").equalsIgnoreCase("male");
         String status = request.getParameter("status");
         String[] roleIDs = request.getParameterValues("roleID");
-        Blob avatar = null;
         ArrayList<Role> roles = new ArrayList<>();
         for (String roleID : roleIDs) {
             roles.add(new Role(Integer.parseInt(roleID), ""));
         }
 
-        Account account = new Account(-1, username, phone, email, phone, fullname, gender, status, roles, avatar);
-
+        Account account = new Account();
+        account.setFullname(fullname);
+        account.setEmail(email);
+        account.setGender(gender);
+        account.setStatus(status);
+        account.setPhone(phone);
+        account.setUsername(username);
+        account.setRole(roles);
         AccountDAO adbc = new AccountDAO();
         if (adbc.isExistAccountForAdd(phone, email, username) != null) {
             request.setAttribute("account", account);

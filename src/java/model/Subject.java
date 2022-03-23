@@ -29,11 +29,12 @@ public class Subject {
         this.subject_title = subject_title;
         this.subject_status = subject_status;
     }
-    
-     public Subject(int subject_id, String subject_title) {
+
+    public Subject(int subject_id, String subject_title) {
         this.subject_id = subject_id;
         this.subject_title = subject_title;
     }
+
     public int getSubject_id() {
         return subject_id;
     }

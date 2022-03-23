@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package tmp;
+package controller;
 
+import dal.QuizDAO;
 import model.Ques_Ans;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -14,13 +15,14 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import model.Account;
 
 /**
  *
  * @author Vu Duc Tien
  */
-@WebServlet(name = "tmpQuizReviewController", urlPatterns = {"/quiz/game/review"})
-public class tmpQuizReviewController extends HttpServlet {
+@WebServlet(name = "QuizReviewController", urlPatterns = {"/quiz/game/review"})
+public class QuizReviewController extends HttpServlet {
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -34,11 +36,12 @@ public class tmpQuizReviewController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-//        tmpDAO dao = new tmpDAO();
-//        ArrayList<Ques_Ans> ques_Anses = dao.getQuestion_AnswerList("all");
-//        request.setAttribute("ques_Anses", ques_Anses);
-//        request.setAttribute("search", "all");
-//        request.getRequestDispatcher("../../view/quiz/review.jsp").forward(request, response);
+        QuizDAO qdao = new QuizDAO();
+        Account a = (Account) request.getSession().getAttribute("account");
+        ArrayList<Ques_Ans> ques_Anses = qdao.getQuestion_AnswerList("all", a.getId());
+        request.setAttribute("ques_Anses", ques_Anses);
+        request.setAttribute("search", "all");
+        request.getRequestDispatcher("../../view/quiz/review.jsp").forward(request, response);
     }
 
     /**
@@ -52,13 +55,13 @@ public class tmpQuizReviewController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-//        String search = request.getParameter("search");
-//        response.getWriter().print(search);
-//        tmpDAO dao = new tmpDAO();
-//        ArrayList<Ques_Ans> ques_Anses = dao.getQuestion_AnswerList(search);
-//        request.setAttribute("ques_Anses", ques_Anses);
-//        request.setAttribute("search", search);
-//        request.getRequestDispatcher("../../view/quiz/review.jsp").forward(request, response);
+        String search = request.getParameter("search");
+        QuizDAO qdao = new QuizDAO();
+        Account a = (Account) request.getSession().getAttribute("account");
+        ArrayList<Ques_Ans> ques_Anses = qdao.getQuestion_AnswerList(search, a.getId());
+        request.setAttribute("ques_Anses", ques_Anses);
+        request.setAttribute("search", search);
+        request.getRequestDispatcher("../../view/quiz/review.jsp").forward(request, response);
     }
 
     /**

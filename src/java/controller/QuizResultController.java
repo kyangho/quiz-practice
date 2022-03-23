@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package tmp;
+package controller;
 
 import dal.QuizDAO;
 import model.Ques_Ans;
@@ -21,8 +21,8 @@ import model.Account;
  *
  * @author Vu Duc Tien
  */
-@WebServlet(name = "tmpQuizResultController", urlPatterns = {"/quiz/game/result"})
-public class tmpQuizResultController extends HttpServlet {
+@WebServlet(name = "QuizResultController", urlPatterns = {"/quiz/game/result"})
+public class QuizResultController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -36,29 +36,38 @@ public class tmpQuizResultController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         QuizDAO qdao = new QuizDAO();
-        Account a = (Account) request.getSession().getAttribute("account");
-        ArrayList<Ques_Ans> ques_Anses = qdao.getQuestion_AnswerList("all", a.getId());
-        int numCorrect = countCorrectAnswer(ques_Anses);
+//        Account a = (Account) request.getSession().getAttribute("account");
+        ArrayList<Ques_Ans> ques_Anses = qdao.getQuestion_AnswerList("all", 3);
+        int numCorrect = countAnswer(ques_Anses, "correct");
+        int numNone = countAnswer(ques_Anses, "none");
         double percent = (double) numCorrect / ques_Anses.size() * 100;
         boolean pass;
-        if (percent > ques_Anses.get(0).getQuizID().getId()) {
+        if (percent > ques_Anses.get(0).getQuizID().getRate()) {
             pass = true;
         } else {
             pass = false;
         }
         request.setAttribute("numCorrect", numCorrect);
-        request.setAttribute("numWrong", ques_Anses.size() - numCorrect);
+        request.setAttribute("numNone", numNone);
+        request.setAttribute("numWrong", ques_Anses.size() - numCorrect - numNone);
         request.setAttribute("percent", String.format("%.2f", percent));
         request.setAttribute("pass", pass);
         request.setAttribute("ques_Anses", ques_Anses);
         request.getRequestDispatcher("../../view/quiz/result.jsp").forward(request, response);
     }
 
-    private int countCorrectAnswer(ArrayList<Ques_Ans> ques_Anses) {
+    private int countAnswer(ArrayList<Ques_Ans> ques_Anses, String condition) {
         int count = 0;
         for (Ques_Ans qa : ques_Anses) {
-            if (qa.getAnswer().equals(qa.getQuestion().getCorrectAnswer())) {
-                count++;
+            if (condition.equals("correct")) {
+                if (qa.getAnswer().equals(qa.getQuestion().getCorrectAnswer())) {
+                    count++;
+                }
+            }
+            if(condition.equals("none")){
+                if (qa.getQuestion().getCorrectAnswer() == null) {
+                    count++;
+                }
             }
         }
         return count;
