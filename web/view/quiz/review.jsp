@@ -41,10 +41,15 @@
                     </div>
                     <div class="option_list">
                         <c:forEach items="${qa.question.answers}" var="a">
-                            <p class="option"
-                               style="${a.id eq qa.answer ? (qa.question.correctAnswer eq qa.answer ? "background-color: green;" : "background-color: red;") : ""}">
-                                ${a.content}
-                            </p>
+                            <p class="option" style="
+                               <c:if test="${a.id eq qa.answer}">
+                                   background-color: red;
+                               </c:if>
+                               <c:if test="${a.id eq qa.question.correctAnswer}">
+                                   background-color: green !important;
+                               </c:if>
+                               ">
+                                ${a.content}</p>
                         </c:forEach>
                     </div>
                 </c:forEach>
