@@ -321,8 +321,8 @@ public class QuestionController extends HttpServlet {
         BufferedReader br = new BufferedReader(new InputStreamReader(fileContent));
         ArrayList<Question> questions = new ArrayList<>();
         QuizDAO quizDAO = new QuizDAO();
-        ArrayList<Category> categories = quizDAO.getCates();
         QuestionDAO questionDAO = new QuestionDAO();
+         ArrayList<Category> categories = questionDAO.getCategory();
         ArrayList<Subcategory> subcategories = questionDAO.getSubcategorys();
         if (filesPart.getSize() > 0) {
             String line;

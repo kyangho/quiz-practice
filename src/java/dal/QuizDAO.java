@@ -112,9 +112,9 @@ public class QuizDAO extends DBContext {
         Connection connection = getConnection();
         try {
             String sql = "select count(*) as total From  quiz\n"
-                    + "join subject as s on quiz.subject_id = s.subject_id\n"
-                    + "join category as c on quiz.category_id = c.category_id\n"
-                    + "join account_profile as ap on quiz.account_id = ap.account_id";
+                    + "                    join subject as s on quiz.quiz_subject = s.subject_id\n"
+                    + "                    join setting as c on quiz.quiz_category= c.setting_id\n"
+                    + "                    join account_profile as ap on quiz.quiz_author = ap.account_id";
             if (subject != null && category != null && quiz_type != null) {
                 if (!subject.equalsIgnoreCase("all") && !category.equalsIgnoreCase("all") && !quiz_type.equalsIgnoreCase("all")) {
                     sql += " where subject_title = '" + subject + "' and category_name = '" + category + "' and quiz_type = '" + quiz_type + "'; ";
@@ -185,33 +185,32 @@ public class QuizDAO extends DBContext {
         return s;
     }
 
-    public ArrayList<Category> getCates() {
-        Connection connection = getConnection();
-        ArrayList<Category> c = new ArrayList<>();
-        String sql = "SELECT * FROM category;";
-        try {
-            ps = connection.prepareStatement(sql);
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                Category cate = new Category();
-                cate.setCategory_id(rs.getInt("category_id"));
-                cate.setCategory_name(rs.getString("category_name"));
-                cate.setCategory_value(rs.getString("category_value"));
-                c.add(cate);
-            }
-            ps.close();
-        } catch (SQLException ex) {
-            Logger.getLogger(QuizDAO.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            try {
-                connection.close();
-            } catch (SQLException ex) {
-                Logger.getLogger(QuizDAO.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-        return c;
-    }
-
+//    public ArrayList<Category> getCates() {
+//        Connection connection = getConnection();
+//        ArrayList<Category> c = new ArrayList<>();
+//        String sql = "SELECT * FROM category;";
+//        try {
+//            ps = connection.prepareStatement(sql);
+//            ResultSet rs = ps.executeQuery();
+//            while (rs.next()) {
+//                Category cate = new Category();
+//                cate.setCategory_id(rs.getInt("category_id"));
+//                cate.setCategory_name(rs.getString("category_name"));
+//                cate.setCategory_value(rs.getString("category_value"));
+//                c.add(cate);
+//            }
+//            ps.close();
+//        } catch (SQLException ex) {
+//            Logger.getLogger(QuizDAO.class.getName()).log(Level.SEVERE, null, ex);
+//        } finally {
+//            try {
+//                connection.close();
+//            } catch (SQLException ex) {
+//                Logger.getLogger(QuizDAO.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+//        }
+//        return c;
+//    }
     public Quiz getQuizDetail(int id) {
         Connection connection = getConnection();
         try {

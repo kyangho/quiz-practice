@@ -6,6 +6,7 @@
 package controller.quiz;
 
 import dal.HomeDAO;
+import dal.QuestionDAO;
 import dal.QuizDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -34,7 +35,8 @@ public class NewQuiz extends HttpServlet {
         ArrayList<Account> acc = h.getAccounts();
         request.setAttribute("account", acc);
         QuizDAO q = new QuizDAO();
-        ArrayList<Category> cates = q.getCates();
+        QuestionDAO questionDAO = new QuestionDAO();
+        ArrayList<Category> cates = questionDAO.getCategory();
         ArrayList<Subject> subs = q.getsubs();
         request.setAttribute("subs", subs);
         request.setAttribute("category", cates);

@@ -114,9 +114,8 @@
                                         <table class="table table-hover">
                                             <tr>
                                                 <th>ID</th>
-                                                <th>Content</th>
+                                                <th style="text-align: center;">Content</th>
                                                 <th>Subject</th>
-                                                <!--<th>Category</th>-->
                                                 <th>Sub category</th>
                                                 <th>Level</th>
                                                 <th>Status</th>
