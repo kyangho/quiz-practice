@@ -5,6 +5,7 @@
  */
 package controller;
 
+import controller.auth.BaseRequiredAuthController;
 import dal.QuizDAO;
 import model.Ques_Ans;
 import java.io.IOException;
@@ -22,7 +23,7 @@ import model.Account;
  * @author Vu Duc Tien
  */
 @WebServlet(name = "QuizReviewController", urlPatterns = {"/quiz/game/review"})
-public class QuizReviewController extends HttpServlet {
+public class QuizReviewController extends BaseRequiredAuthController {
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -34,7 +35,7 @@ public class QuizReviewController extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    protected void processGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         QuizDAO qdao = new QuizDAO();
 //        Account a = (Account) request.getSession().getAttribute("account");
@@ -53,7 +54,7 @@ public class QuizReviewController extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+    protected void processPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String search = request.getParameter("search");
         QuizDAO qdao = new QuizDAO();

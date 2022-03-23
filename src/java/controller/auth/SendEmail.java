@@ -54,8 +54,8 @@ public class SendEmail {
         props.put("mail.smtp.port", "587");
         props.put("mail.smtp.auth", "true");
         props.put("mail.smtp.starttls.enable", "true");
-        String fromEmail = "tienvdhe153313@fpt.edu.vn";
-        String password = "30062001";
+        String fromEmail = "luongnthhe151453@fpt.edu.vn";
+        String password = "Hienluong1405";
         /* Pass Properties object(props) and Authenticator object   
            for authentication to Session instance 
          */
