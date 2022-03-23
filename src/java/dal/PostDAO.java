@@ -566,6 +566,7 @@ public class PostDAO extends DBContext {
                 stm.setInt(1, postId);
                 stm.setInt(2, pc.getId());
                 stm.executeUpdate();
+                stm.close();
             }
 
         } catch (SQLException ex) {

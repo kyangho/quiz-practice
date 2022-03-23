@@ -147,7 +147,7 @@ public class PracticeContoller extends HttpServlet {
             sub = qdao.getSubCategoryByCate(Integer.parseInt(cate));
             request.setAttribute("subcate", sub);
 //            qdao = new QuestionDAO();
-            ArrayList<Question> questions = qdao.getQuestions(1, 1, Integer.parseInt(noQues), null, subject, subcate, null, null);
+            ArrayList<Question> questions = qdao.getQuestions(1, 1, Integer.parseInt(noQues), null, subject, subcate, null, "publish");
             request.setAttribute("questions", questions);
             request.setAttribute("subjectID", subject);
             request.setAttribute("subcateId", subcate);

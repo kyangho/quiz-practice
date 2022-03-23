@@ -110,6 +110,13 @@ public class QuizDAO extends DBContext {
         return quizs;
     }
 
+    public static void main(String[] args) {
+        QuizDAO q = new QuizDAO();
+        q.getQuiz(1, 3, null, null, null, null);
+        System.out.println();
+
+    }
+
     public int getRowcount(String subject, String category, String quiz_type, String search_quiz_title) {
         Connection connection = getConnection();
         try {
@@ -411,7 +418,12 @@ public class QuizDAO extends DBContext {
                 q.setId(rs.getInt(1));
             }
             for (Question question : q.getQuestions()) {
-                inset_quiz_ques(q.getId(), question.getId());
+                String insert_quiz_ques = "INSERT INTO `quiz_question` (`quiz_id`, `question_id`) VALUES (?, ?);";
+                PreparedStatement ps_insert_quiz_ques = connection.prepareStatement(insert_quiz_ques);
+                ps_insert_quiz_ques.setInt(1, q.getId());
+                ps_insert_quiz_ques.setInt(2, question.getId());
+                ps_insert_quiz_ques.executeUpdate();
+                ps_insert_quiz_ques.close();
             }
             ps_insert_quiz.close();
             stm2.close();
@@ -808,19 +820,13 @@ public class QuizDAO extends DBContext {
         }
         return null;
     }
-    public ArrayList<Setting> getQuizTypes(){
+
+    public ArrayList<Setting> getQuizTypes() {
         SettingDAO sd = new SettingDAO();
         TypeConfigController tcc = new TypeConfigController();
         ArrayList<Type> types = tcc.getTypesList();
         ArrayList<Setting> settings = sd.getALLSetting(10000, 1, types.get(5).getName(), "all", "all");
         return settings;
-    }
-    public static void main(String[] args) {
-        QuizDAO qdb = new QuizDAO();
-        ArrayList<Ques_Ans> ques_Anses = qdb.getQuestion_AnswerList("all", 3);
-        for (Ques_Ans ques_Anse : ques_Anses) {
-            System.out.println(ques_Anse.getQuiz().getId() + " " + ques_Anse.getQuestion().getCorrectAnswer() + " " + ques_Anse.getAnswer());
-        }
     }
 
     public ArrayList<Ques_Ans> getQuestion_AnswerList(String search, int accountID) {

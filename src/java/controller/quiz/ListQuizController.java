@@ -6,6 +6,7 @@
 package controller.quiz;
 
 import controller.TypeConfigController;
+import dal.QuestionDAO;
 import dal.QuizDAO;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -72,7 +73,8 @@ public class ListQuizController extends HttpServlet {
         request.setAttribute("subject", subject);
         int totalpage = (totalrows % pagesize == 0) ? totalrows / pagesize : totalrows / pagesize + 1;
         ArrayList<Subject> subs = q.getsubs();
-        ArrayList<Category> cates = q.getCates();
+        QuestionDAO questionDAO = new QuestionDAO();
+        ArrayList<Category> cates = questionDAO.getCategory();
         request.setAttribute("pageindex", pageindex);
         request.setAttribute("totalpage", totalpage);
         request.setAttribute("quiz", quiz);
