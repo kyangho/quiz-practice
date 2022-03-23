@@ -38,7 +38,7 @@ public class HomeDAO extends DBContext {
                 a.setAvatar(rs.getBlob("account_avatar"));
                 acc.add(a);
             }
-            ps.close();
+//            ps.close();
         } catch (SQLException ex) {
             Logger.getLogger(HomeDAO.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
@@ -50,7 +50,15 @@ public class HomeDAO extends DBContext {
         }
         return acc;
     }
-
+    public static void main(String[] args) {
+        HomeDAO h = new HomeDAO();
+        for (Account a : h.getAccounts()) {
+            System.out.println(a.getFullname());
+        }
+        
+    }
+    
+    
     public Account getInfomation(String user) {
         Connection connection = getConnection();
         try {
@@ -84,10 +92,10 @@ public class HomeDAO extends DBContext {
         return null;
     }
 
-    public static void main(String[] args) {
-        HomeDAO h = new HomeDAO();
-        for (Account b : h.getAccounts()) {
-            System.out.println(b.toString());
-        }
-    }
+//    public static void main(String[] args) {
+//        HomeDAO h = new HomeDAO();
+//        for (Account b : h.getAccounts()) {
+//            System.out.println(b.toString());
+//        }
+//    }
 }
