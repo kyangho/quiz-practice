@@ -4,6 +4,7 @@
     Author     : ducky
 --%>
 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -26,20 +27,33 @@
                 <div class="time_line"></div>
             </header>
             <section>
-                <div class="que_text">
-                    <!-- Here I've inserted question from JavaScript -->
+                <i class="fa fa-flag" style="color: red; font-size: 1.5rem; display: none" ></i>
+                <div class="que_text" style="display: inline">
+
                 </div>
                 <div class="que-image">
-                    
+
                 </div>
                 <div class="option_list">
-                    <!-- Here I've inserted options from JavaScript -->
+
+                </div>
+                <div class="popup">
+                    <div class="popup-content">
+                        <span class="close-btn">&times;</span>
+                        <div class="shortcut-questions">
+                            <c:forEach items="${sessionScope.quiz.questions}" var="q" varStatus="i">
+                                <div class="shortcut-question" value="${i.index}">${i.index + 1}</div>
+                            </c:forEach>
+                        </div>
+                    </div>
                 </div>
             </section>
-            <!-- footer of Quiz Box -->
             <footer>
                 <div class="total_que">
-                    <!-- Here I've inserted Question Count Number from JavaScript -->
+                </div>
+                <div>
+                    <button class="btn-mark show">Mark question</button>
+                    <button class="btn-show-question show" id="popup-btn" style="margin-left: 100px">Show all question</button>
                 </div>
                 <div class="buttons">
                     <button class="back_btn">Back</button>
@@ -49,9 +63,7 @@
             </footer>
         </div>
         <div class="container">
-            <!-- start Quiz button -->
             <div class="start_btn"><button>Start Quiz</button></div>
-            <!-- Info Box -->
             <div class="info_box">
                 <div class="info-title"><span>Some Rules of this Quiz</span></div>
                 <div class="info-list">
@@ -66,27 +78,27 @@
                     <button class="restart">Continue</button>
                 </div>
             </div>
-            <!-- Quiz Box -->
 
-            <!-- Result Box -->
             <div class="result_box">
                 <div class="icon">
                     <i class="fas fa-crown"></i>
                 </div>
                 <div class="complete_text">You've completed the Quiz!</div>
                 <div class="score_text">
-                    <!-- Here I've inserted Score Result from JavaScript -->
                 </div>
                 <div class="buttons">
                     <button class="restart">Replay Quiz</button>
                     <button class="quit">Quit Quiz</button>
                 </div>
             </div>
-            <!-- Inside this JavaScript file I've inserted Questions and Options only -->
-
-            <!-- Inside this JavaScript file I've coded all Quiz Codes -->
-            <script src="${pageContext.request.contextPath}/js/quizgame.js"></script>
+            <script src="${pageContext.request.contextPath}/js/quizgame.js?v=1"></script>
             <script></script>
         </div>
+
+        <script>
+        </script>
     </body>
+
+
 </html>
+

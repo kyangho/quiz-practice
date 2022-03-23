@@ -15,6 +15,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.Answer;
 import model.Question;
+import model.Quiz;
 
 /**
  *
@@ -69,7 +70,7 @@ public class QuestionAnswerDAO extends DBContext {
         } catch (SQLException ex) {
             Logger.getLogger(QuestionAnswerDAO.class.getName()).log(Level.SEVERE, null, ex);
             return false;
-        }finally{
+        } finally {
             try {
                 connection.close();
             } catch (SQLException ex) {
@@ -106,7 +107,7 @@ public class QuestionAnswerDAO extends DBContext {
             connection.setAutoCommit(true);
         } catch (SQLException ex) {
             Logger.getLogger(QuestionAnswerDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }finally{
+        } finally {
             try {
                 connection.close();
             } catch (SQLException ex) {
@@ -114,5 +115,70 @@ public class QuestionAnswerDAO extends DBContext {
             }
         }
         return answers;
+    }
+
+    public boolean insertUserAnswer(Quiz quiz) {
+        String sql = "INSERT INTO `quiz_practice_db_test_2`.`user_answer`\n"
+                + "(`account_id`,\n"
+                + "`question_id`,\n"
+                + "`answer_id`,\n"
+                + "quiz_id)\n"
+                + "VALUES\n"
+                + "(?,?,?,?);";
+        Connection connection = getConnection();
+        deleteUserAnswer(quiz.getId(), quiz.getAuthor().getId());
+        try {
+            connection.setAutoCommit(false);
+            for (Question question : quiz.getQuestions()) {
+                PreparedStatement stm = connection.prepareStatement(sql);
+                stm.setInt(1, quiz.getAuthor().getId());
+                stm.setInt(2, question.getId());
+                int answerId = Integer.parseInt(question.getCorrectAnswer());
+                if (answerId == -1) {
+                    stm.setNull(3, Types.INTEGER);
+                } else {
+                    stm.setInt(3, Integer.parseInt(question.getCorrectAnswer()));
+                }
+                stm.setInt(4, quiz.getId());
+                stm.executeUpdate();
+
+            }
+            connection.setAutoCommit(true);
+        } catch (SQLException ex) {
+            Logger.getLogger(QuestionAnswerDAO.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(QuestionAnswerDAO.class.getName()).log(Level.SEVERE, null, ex);
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public boolean deleteUserAnswer(int quizId, int accountId) {
+        String sql = "DELETE FROM `quiz_practice_db_test_2`.`user_answer`\n"
+                + "WHERE quiz_id = ? AND account_id = ?;";
+        Connection connection = getConnection();
+        try {
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setInt(1, quizId);
+            stm.setInt(2, accountId);
+            stm.executeUpdate();
+            stm.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(QuestionAnswerDAO.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(QuestionAnswerDAO.class.getName()).log(Level.SEVERE, null, ex);
+                return false;
+            }
+        }
+        return true;
     }
 }

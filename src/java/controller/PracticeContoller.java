@@ -183,6 +183,8 @@ public class PracticeContoller extends HttpServlet {
         q.setType("publish");
         q.setTitle("Quiz");
         q.setQuestions(ques);
+        Account account = (Account) request.getSession().getAttribute("account");
+        q.setAuthor(account);
         QuizDAO quizDAO = new QuizDAO();
         int id = quizDAO.insertPractice(q);
         if (id != -1) {

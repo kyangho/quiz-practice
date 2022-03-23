@@ -273,43 +273,6 @@ public class QuestionDAO extends DBContext {
         return null;
     }
 
-    public Question tmpgetQuestionById(int id) {
-        Connection connection = getConnection();
-        try {
-            String sql = "select * from quiz_practice_db.question\n"
-                    + "join quiz_question on quiz_question.question_id = question.question_id\n"
-                    + "join quiz on quiz.quiz_id = quiz_question.quiz_id\n"
-                    + "where question.question_id = ? \n";
-            PreparedStatement stm = connection.prepareStatement(sql);
-            stm.setInt(1, id);
-            ResultSet rs = stm.executeQuery();
-            if (rs.next()) {
-                Question q = new Question();
-                q.setId(rs.getInt(1));
-                q.setContent(rs.getString(2));
-                q.setCorrectAnswer(rs.getString(3));
-                q.setSubject(new Subject(rs.getInt(4), null));
-                q.setCategory(new Category(rs.getInt(5), null));
-                q.setLevel(rs.getString(6));
-                q.setStatus(rs.getString(7));
-                q.setSubCategory(new Subcategory(rs.getInt(8), null));
-                q.setAnswers(getAnswerForQues(id));
-                return q;
-            }
-            stm.close();
-        } catch (SQLException ex) {
-            Logger.getLogger(QuestionDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        finally {
-            try {
-                connection.close();
-            } catch (SQLException ex) {
-                Logger.getLogger(QuestionDAO.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-        return null;
-    }
-
     public ArrayList<Subcategory> getSubCategoryByCate(int cateId) {
         Connection connection = getConnection();
         ArrayList<Subcategory> subcategorys = new ArrayList<>();
