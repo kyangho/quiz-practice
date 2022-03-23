@@ -3,23 +3,25 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package tmp;
+package controller.auth;
 
+import at.favre.lib.crypto.bcrypt.BCrypt;
+import dal.AccountDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import model.Account;
 
 /**
  *
  * @author Vu Duc Tien
  */
-@WebServlet(name = "tmpQuizResultController", urlPatterns = {"/quiz/game/result"})
-public class tmpQuizResultController extends HttpServlet {
+@WebServlet(name = "VerifyController", urlPatterns = {"/verify"})
+public class VerifyController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -32,32 +34,21 @@ public class tmpQuizResultController extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        tmpDAO dao = new tmpDAO();
-        ArrayList<Ques_Ans> ques_Anses = dao.getQuestion_AnswerList("all");
-        int numCorrect = countCorrectAnswer(ques_Anses);
-        double percent = (double) numCorrect / ques_Anses.size() * 100;
-        boolean pass;
-        if (percent > 80) {
-            pass = true;
-        } else {
-            pass = false;
-        }
-        request.setAttribute("numCorrect", numCorrect);
-        request.setAttribute("numWrong", ques_Anses.size() - numCorrect);
-        request.setAttribute("percent", String.format("%.2f", percent));
-        request.setAttribute("pass", pass);
-        request.setAttribute("ques_Anses", ques_Anses);
-        request.getRequestDispatcher("../../view/quiz/result.jsp").forward(request, response);
-    }
+        String key = request.getParameter("key");
+        String verifyCode = (String) request.getSession().getAttribute("verifyCode");
 
-    private int countCorrectAnswer(ArrayList<Ques_Ans> ques_Anses) {
-        int count = 0;
-        for (Ques_Ans qa : ques_Anses) {
-            if (qa.getAnswer().equals(qa.getQuestion().getCorrectAnswer())) {
-                count++;
+        if (verifyCode != null) {
+            if (BCrypt.verifyer().verify(verifyCode.toCharArray(), key).verified == true) {
+                Account account = (Account) request.getSession().getAttribute("newAccount");
+                AccountDAO adao = new AccountDAO();
+                adao.insertAccount(account, "active");
+                request.getRequestDispatcher("view/home/verify.jsp").forward(request, response);
+            } else {
+                request.getRequestDispatcher("view/404.jsp").forward(request, response);
             }
+        } else {
+            request.getRequestDispatcher("view/404.jsp").forward(request, response);
         }
-        return count;
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
