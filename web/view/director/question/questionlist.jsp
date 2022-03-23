@@ -50,88 +50,105 @@
                                     </div>
 
                                     <div class="panel-body table-responsive">
-                                        <div class="box-tools m-b-15" style="float: right;">
-                                            <div class="input-group">
-                                                <form action="list" method="GET">
-                                                    <input type="text" name="key" class="form-control input-sm pull-right" style="width: 150px;" placeholder="Search" value="${key}" />
-                                                <button class="btn btn-sm btn-default" type="submit"><i class="fa fa-search"></i> </button>                                             
-                                            </form>
-                                        </div>
-                                    </div>
-                                    <form action="list" method="GET">
-                                        <c:if test="${requestScope.questions.isEmpty()}">
-                                            <h3>Not Found Questions</h3>
-                                        </c:if>
-                                        <div style="margin: 0 0 1% 75%; ">
-                                            <button class="btn btn-sm btn-default" style="color: white;font-weight: bolder;background-color: #94a8ff;width: 90px;" type="submit">Apply</button>
-                                        </div>
-                                        <c:if test="${!requestScope.questions.isEmpty()}">
-                                            <table class="table table-hover">
-                                                <tr>
-                                                    <th>ID</th>
-                                                    <th>Content</th>
-                                                    <th>Subject
-                                                        <select class=" input-sm" style="border-radius: 7px; margin-left: 10px" name="subject">
-                                                            <option ${requestScope.subject eq "all" ? "selected=\"selected\"" : ""} value="all">ALL</option>
+                                        <div class="box-tools m-b-15 row">
+                                            <div class="col-lg-10">
+                                                <form action="list" method="GET" id="filter">
+                                                    <div style="margin: 6px 15px;">
+                                                        <strong>Filter By:</strong>
+                                                        <!--<button class="btn btn-sm btn-default" style="color: white;font-weight: bolder;background-color: #94a8ff;width: 90px;" type="submit">Apply</button>-->
+                                                    </div>
+                                                    <div class="row" style="margin: 8px;">
+                                                        <div class="col-lg-3">
+                                                            Subject:
+                                                            <select onchange="submitForm()" class="form-control input-sm m-b-10" style="border-radius: 7px;" name="subject">
+                                                                <option ${requestScope.subject eq "all" ? "selected=\"selected\"" : ""} value="all">ALL</option>
                                                             <c:forEach items="${requestScope.subjects}" var="s">
                                                                 <option ${s.subject_id eq subject ? "selected=\"selected\"" : ""} value="${s.subject_id}">${s.subject_title}</option>
                                                             </c:forEach>
                                                         </select>
-                                                    </th>
-                                                    <!--<th>Category</th>-->
-                                                    <th>Sub category
-                                                        <select class=" input-sm" style="border-radius: 7px; margin-left: 10px" name="subcategory">
+                                                    </div>
+                                                    <div class="col-lg-3">
+                                                        Sub category
+                                                        <select onchange="submitForm()" class="form-control input-sm m-b-10" style="border-radius: 7px;" name="subcategory">
                                                             <option ${requestScope.subcategory eq "all" ? "selected=\"selected\"" : ""} value="all">ALL</option>
                                                             <c:forEach items="${requestScope.subcate}" var="s">
                                                                 <option ${s.id eq subcategory ? "selected=\"selected\"" : ""} value="${s.id}">${s.name}</option>
                                                             </c:forEach>
                                                         </select>
-                                                    </th>
-                                                    <th>Level
-                                                        <select class=" input-sm" style="border-radius: 7px; margin-left: 10px" name="level">
+
+                                                    </div>
+                                                    <div class="col-lg-3">
+                                                        Level
+                                                        <select onchange="submitForm()" class="form-control input-sm m-b-10" style="border-radius: 7px;" name="level">
                                                             <option ${requestScope.level eq "all" ? "selected=\"selected\"" : ""} value="all">ALL</option>
                                                             <option ${requestScope.level eq "Easy" ? "selected=\"selected\"" : ""} value="Easy">Easy</option>
                                                             <option ${requestScope.level eq "Medium" ? "selected=\"selected\"" : ""} value="Medium">Medium</option>
                                                             <option ${requestScope.level eq "Difficult" ? "selected=\"selected\"" : ""} value="Difficult">Difficult</option>
                                                         </select>
-                                                    </th>
-                                                    <th>Status
-                                                        <select class=" input-sm" style="border-radius: 7px; margin-left: 10px" name="status">
+                                                    </div>
+                                                    <div class="col-lg-3">
+                                                        Status
+                                                        <select onchange="submitForm()" class="form-control input-sm m-b-10" style="border-radius: 7px;" name="status">
                                                             <option ${requestScope.status eq "all" ? "selected=\"selected\"" : ""} value="all">ALL</option>
                                                             <option ${requestScope.status eq "public" ? "selected=\"selected\"" : ""} value="publish">Public</option>
                                                             <option ${requestScope.status eq "unpublic" ? "selected=\"selected\"" : ""} value="unpublic">Un public</option>
                                                         </select>
-                                                    </th>
-                                                    <th>Active</th>
-                                                    <!--<th>Change status</th>-->
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <div class="input-group col-lg-2 row">
+                                            <div style="margin: 6px 0;"><strong>Search:</strong></div><br>
+                                            <div>
+                                                <form action="list" method="GET" style="padding: 0 13px;">
+                                                    <input type="text" name="key" class="form-control input-sm pull-right" style="width: 150px;" placeholder="Search" value="${valueSearch}" />
+                                                    <button class="btn btn-sm btn-default" type="submit"><i class="fa fa-search"></i> </button>                                             
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <c:if test="${requestScope.questions.isEmpty()}">
+                                        <h3>Not Found Questions</h3>
+                                    </c:if>
+                                    <c:if test="${!requestScope.questions.isEmpty()}">
+                                        <table class="table table-hover">
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>Content</th>
+                                                <th>Subject</th>
+                                                <!--<th>Category</th>-->
+                                                <th>Sub category</th>
+                                                <th>Level</th>
+                                                <th>Status</th>
+                                                <th>Action</th>
+                                                <!--<th>Change status</th>-->
+                                            </tr>
+                                            <c:forEach items="${requestScope.questions}" var="q">
+                                                <tr>
+                                                    <td>${q.id}</td>
+                                                    <td>${q.content}</td>
+                                                    <td>${q.subject.subject_title}</td>
+                                                    <!--<td>${q.category.category_value}</td>-->
+                                                    <td>${q.subCategory.name}</td>
+                                                    <td>${q.level}</td>
+                                                    <td>${q.status}</td>
+                                                    <td>
+                                                        <button type="button" style="border: none;" onclick="confirmDelete(${q.id})" class="label btn-danger">Delete</button>
+                                                        <a href="details?questionId=${q.id}" class="label label-primary">Edit</a>
+                                                        <a onclick="changeStatus(${q.id}, '${q.status}')">
+                                                            <i <c:if test="${q.status eq 'publish'}">
+                                                                    class="fa fa-eye-slash"
+                                                                </c:if>
+                                                                <c:if test="${q.status != 'publish'}">
+                                                                    class="fa fa-eye"
+                                                                </c:if>>  
+                                                            </i>
+                                                        </a>
+                                                    </td>
                                                 </tr>
-                                                <c:forEach items="${requestScope.questions}" var="q">
-                                                    <tr>
-                                                        <td>${q.id}</td>
-                                                        <td>${q.content}</td>
-                                                        <td>${q.subject.subject_title}</td>
-                                                        <!--<td>${q.category.category_value}</td>-->
-                                                        <td>${q.subCategory.name}</td>
-                                                        <td>${q.level}</td>
-                                                        <td>${q.status}</td>
-                                                        <td>
-                                                            <button type="button" style="border: none;" onclick="confirmDelete(${q.id})" class="label btn-danger">Delete</button>
-                                                            <a href="details?questionId=${q.id}" class="label label-primary">Edit</a>
-                                                            <a onclick="changeStatus(${q.id}, '${q.status}')">
-                                                                <i <c:if test="${q.status eq 'publish'}">
-                                                                        class="fa fa-eye-slash"
-                                                                    </c:if>
-                                                                    <c:if test="${q.status != 'publish'}">
-                                                                        class="fa fa-eye"
-                                                                    </c:if>>  
-                                                                </i>
-                                                            </a>
-                                                        </td>
-                                                    </tr>
-                                                </c:forEach>
-                                            </table>
-                                        </c:if>
-                                    </form>
+                                            </c:forEach>
+                                        </table>
+                                    </c:if>
                                     <div>
                                         <nav aria-label="Page navigation example">
                                             <ul id="paggingBottom" class="pagination" style="float: right;">
@@ -169,6 +186,9 @@
                                             if (c) {
                                                 window.location.href = "changestatus?id=" + id + "&status=" + status;
                                             }
+                                        }
+                                        function submitForm() {
+                                            document.getElementById('filter').submit();
                                         }
                                     </script>
                                 </div>

@@ -5,6 +5,7 @@
  */
 package dal;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -20,7 +21,7 @@ import model.Account;
 public class HomeDAO extends DBContext {
 
     public ArrayList<Account> getAccounts() {
-
+        Connection connection = getConnection();
         ArrayList<Account> acc = new ArrayList<>();
         String sql = "SELECT * FROM `account` a join `account_profile` inf on inf.account_id = a.account_id";
         try {
@@ -37,13 +38,21 @@ public class HomeDAO extends DBContext {
                 a.setAvatar(rs.getBlob("account_avatar"));
                 acc.add(a);
             }
+            ps.close();
         } catch (SQLException ex) {
             Logger.getLogger(HomeDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(HomeDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return acc;
     }
 
     public Account getInfomation(String user) {
+        Connection connection = getConnection();
         try {
             String sql = "select * from account a join account_profile ap \n"
                     + "on a.account_id = ap.account_id\n"
@@ -62,9 +71,15 @@ public class HomeDAO extends DBContext {
                 a.setFullname(rs.getString(7));
                 return a;
             }
-
+            ps.close();
         } catch (SQLException ex) {
             Logger.getLogger(HomeDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(HomeDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return null;
     }

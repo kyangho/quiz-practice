@@ -69,9 +69,9 @@ public class SettingController extends HomeDirectorController {
         if (URI.compareTo("/director/setting") == 0) {
             super.doGet(request, response);
         } else if (URI.contains(settingAddPath)) {
-            doGetAddSetting(request, response);
-        }else if (URI.contains(settingDetailPath)) {
-            doGetSettingDetails(request, response);
+            doPostAddSetting(request, response);
+        }else if (URI.contains(settingUpdatePath)) {
+            doPostSettingUpdate(request, response);
         }
     }
     // <editor-fold defaultstate="collapsed" desc="Add Setting Servlet methods. Click on the + sign on the left to edit the code.">

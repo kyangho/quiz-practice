@@ -42,7 +42,7 @@ public class QuizResultController extends HttpServlet {
         int numNone = countAnswer(ques_Anses, "none");
         double percent = (double) numCorrect / ques_Anses.size() * 100;
         boolean pass;
-        if (percent > ques_Anses.get(0).getQuizID().getRate()) {
+        if (percent > ques_Anses.get(0).getQuiz().getRate()) {
             pass = true;
         } else {
             pass = false;
@@ -59,13 +59,13 @@ public class QuizResultController extends HttpServlet {
     private int countAnswer(ArrayList<Ques_Ans> ques_Anses, String condition) {
         int count = 0;
         for (Ques_Ans qa : ques_Anses) {
-            if (condition.equals("correct")) {
+            if (condition.equals("correct") && qa.getAnswer() != null) {
                 if (qa.getAnswer().equals(qa.getQuestion().getCorrectAnswer())) {
                     count++;
                 }
             }
             if(condition.equals("none")){
-                if (qa.getQuestion().getCorrectAnswer() == null) {
+                if (qa.getAnswer() == null) {
                     count++;
                 }
             }

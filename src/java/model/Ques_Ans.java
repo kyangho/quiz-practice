@@ -15,19 +15,19 @@ import model.Question;
  */
 public class Ques_Ans {
 
-    private Quiz quizID;
+    private Quiz quiz;
     private Question question;
     private String answer;
 
     public Ques_Ans() {
     }
 
-    public Quiz getQuizID() {
-        return quizID;
+    public Quiz getQuiz() {
+        return quiz;
     }
 
-    public void setQuizID(Quiz quizID) {
-        this.quizID = quizID;
+    public void setQuiz(Quiz quiz) {
+        this.quiz = quiz;
     }
 
     public Question getQuestion() {

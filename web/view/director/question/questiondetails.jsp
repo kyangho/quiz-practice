@@ -29,7 +29,7 @@
                                         <label class="col-sm-2 control-label">Subject *:</label>
                                         <div class="col-sm-10">
                                             <input type="hidden" name="questionId" value="${requestScope.question.id}">
-                                        <select style="width: 100%;" name="subject">
+                                        <select style="width: 100%;" name="subject" class="form-control input-sm m-b-10">
                                             <c:forEach items="${subjects}" var="s">
                                                 <option ${s.subject_id eq question.subject.subject_id ? "selected=\"selected\"" : ""} value="${s.subject_id}">${s.subject_title}</option>
                                             </c:forEach>
@@ -39,7 +39,7 @@
                                 <div class="form-group">
                                     <label class="col-sm-2 control-label">Category *:</label>
                                     <div class="col-sm-10">
-                                        <select id="cate" style="width: 100%;" name="category" onchange="findSubcategory(${question.id})">
+                                        <select class="form-control input-sm m-b-10" id="cate" style="width: 100%;" name="category" onchange="findSubcategory(${question.id})">
                                             <c:forEach items="${categories}" var="c">
                                                 <option ${c.category_id eq question.category.category_id ? "selected=\"selected\"" : ""} value="${c.category_id}">${c.category_value}</option>
                                             </c:forEach>
@@ -49,7 +49,7 @@
                                 <div class="form-group">
                                     <label class="col-sm-2 control-label">Sub-category *:</label>
                                     <div class="col-sm-10">
-                                        <select style="width: 100%;" name="subcategory">
+                                        <select class="form-control input-sm m-b-10" style="width: 100%;" name="subcategory">
                                             <c:forEach items="${subcate}" var="sc">
                                                 <option ${sc.id eq question.subCategory.id ? "selected=\"selected\"" : ""} value="${sc.id}">${sc.name}</option>
                                             </c:forEach>
@@ -105,13 +105,18 @@
                                     <label class="col-sm-2 control-label">Answers *: </label>
                                     <div id="answer" class="col-sm-10">
                                         <c:forEach items="${question.answers}" var="a">
-                                            <div style="margin-bottom: 1%; display: flex;">
-                                                <span hidden="">${a.content} ${question.correctAnswer}</span>
-                                                <input onclick="checkCorrect()"
-                                                       <c:if test="${a.id eq question.correctAnswer}"> checked="checked" </c:if>
-                                                       style="margin: 10px 5px 0 0;" name="correctAnswer" value="${a.content}" type="radio">
-                                                <input class="form-control" name="answer" value="${a.content}">
-                                                <button style="margin-left: -5%;" class="btn btn-success" type="button" onclick="location.href = 'delete?anId=${a.id}&quesid=${question.id}'"><i class="fa fa-trash"></i></button>
+                                            <div class="form-group">
+                                                <div class="col-lg-10 row" style="display: flex;">
+                                                    <div class="input-group m-b-10 col-sm-12">
+                                                        <span class="input-group-addon">
+                                                            <input onclick="checkCorrect()" type="radio"
+                                                                   <c:if test="${a.id eq question.correctAnswer}"> checked="checked" </c:if>
+                                                                   name="correctAnswer" value="${a.content}">
+                                                        </span>
+                                                        <input type="text" class="form-control"  name="answer" value="${a.content}">
+                                                    </div>
+                                                    <button style="height: 34px;margin-left: 89%;position: absolute;" class="btn btn-success" type="button" onclick="location.href = 'delete?anId=${a.id}&quesid=${question.id}'"><i class="fa fa-trash"></i></button>
+                                                </div>
                                             </div>
                                         </c:forEach>
                                     </div>
@@ -157,10 +162,19 @@
             }
             function addQues() {
                 var div = document.getElementById('answer');
-                div.innerHTML += '<div id="add" style="margin-bottom: 1%; display: flex;">' +
-                        '<input onclick="checkCorrect()" name="correctAnswer" style="margin: 10px 5px 0 0;" class="form-check-input" value="no" type="radio">' +
-                        '<input class="form-control" name="answer">' +
-                        '<button style="margin-left: -5%;" class="btn btn-success" onclick="deleteQues()" type="button"><i class="fa fa-trash"></i></button>' +
+//            div.innerHTML += '<div id="add" style="margin-bottom: 1%; display: flex;">' +
+//                    '<input onclick="checkCorrect()" name="correctAnswer" style="margin: 10px 5px 0 0;" class="form-check-input" value="no" type="radio">' +
+//                    '<input class="form-control" name="answer">' +
+//                    '<button style="margin-left: -5%;" class="btn btn-success" onclick="deleteQues()" type="button"><i class="fa fa-trash"></i></button>' +
+//                    '</div>';
+                div.innerHTML += '<div id="add" class="col-lg-10 row" style="display: flex;">' +
+                        '<div class="input-group m-b-10 col-sm-12" style="margin-left: -16px;">' +
+                        '<span class="input-group-addon">' +
+                        '<input onclick="checkCorrect()" type="radio"' +
+                        'name="correctAnswer" value="no"></span>' +
+                        '<input type="text" class="form-control"  name="answer"></div>' +
+                        '<button style="height: 34px;margin-left: 90%;position: absolute;" onclick="deleteQues()"' +
+                        'class="btn btn-success" type="button"><i class="fa fa-trash"></i></button>' +
                         '</div>';
             }
             function deleteQues() {
@@ -178,7 +192,6 @@
                     media.remove();
                 }
             };
-
             function checkCorrect() {
                 var corrects = document.getElementsByName('correctAnswer');
 //                var answers = document.getElementsByName('answer');

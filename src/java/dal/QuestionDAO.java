@@ -1,6 +1,7 @@
 package dal;
 
 import java.io.InputStream;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -25,6 +26,7 @@ public class QuestionDAO extends DBContext {
 
     public ArrayList<Question> getQuestions(int accountId, int pageindex, int pagesize, String key, String subject,
             String subcategory, String level, String status) {
+        Connection connection = getConnection();
         ArrayList<Question> questions = new ArrayList<>();
         PreparedStatement stm = null;
         try {
@@ -108,20 +110,21 @@ public class QuestionDAO extends DBContext {
                 q.setStatus(rs.getString("question_status"));
                 questions.add(q);
             }
+            stm.close();
         } catch (SQLException ex) {
             Logger.getLogger(QuestionDAO.class.getName()).log(Level.SEVERE, null, ex);
-        } 
-//        finally {
-//            try {
-//                connection.close();
-//            } catch (SQLException ex) {
-//                Logger.getLogger(QuestionDAO.class.getName()).log(Level.SEVERE, null, ex);
-//            }
-//        }
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(QuestionDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
         return questions;
     }
 
     public ArrayList<Subcategory> getSubcategorys() {
+        Connection connection = getConnection();
         ArrayList<Subcategory> subcategorys = new ArrayList<>();
         try {
             String sql = "select * from subcategory";
@@ -130,22 +133,22 @@ public class QuestionDAO extends DBContext {
             while (rs.next()) {
                 subcategorys.add(new Subcategory(rs.getInt(1), rs.getString(2)));
             }
+            stm.close();
         } catch (SQLException ex) {
             Logger.getLogger(QuestionDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(QuestionDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
-//        finally {
-//            try {
-//                connection.close();
-//            } catch (SQLException ex) {
-//                Logger.getLogger(QuestionDAO.class.getName()).log(Level.SEVERE, null, ex);
-//            }
-//        }
         return subcategorys;
     }
 
     public int getTotalRows(int accountId, String key, String subject,
             String subcategory, String level, String status) {
-
+        Connection connection = getConnection();
         String sql = "select count(*)\n"
                 + "from question q\n"
                 + "left join quiz_question qq on qq.question_id = q.question_id\n"
@@ -211,21 +214,24 @@ public class QuestionDAO extends DBContext {
             if (rs.next()) {
                 return rs.getInt(1);
             }
+            stm.close();
         } catch (SQLException ex) {
             Logger.getLogger(QuestionDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
-//        finally {
-//            try {
-//                connection.close();
-//            } catch (SQLException ex) {
-//                Logger.getLogger(QuestionDAO.class.getName()).log(Level.SEVERE, null, ex);
-//            }
-//        }
+        finally {
+            try {
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(QuestionDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
         return -1;
     }
 
     public Question getQuestionById(int id, int accountId) {
+        Connection connection = getConnection();
         try {
+
             String sql = "select question.* , quiz_category from question \n"
                     + "join quiz_question on quiz_question.question_id = question.question_id\n"
                     + "join quiz on quiz.quiz_id = quiz_question.quiz_id\n"
@@ -253,56 +259,22 @@ public class QuestionDAO extends DBContext {
                 q.setAnswers(getAnswerForQues(id));
                 return q;
             }
+            stm.close();
         } catch (SQLException ex) {
             Logger.getLogger(QuestionDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
-//        finally {
-//            try {
-//                connection.close();
-//            } catch (SQLException ex) {
-//                Logger.getLogger(QuestionDAO.class.getName()).log(Level.SEVERE, null, ex);
-//            }
-//        }
-        return null;
-    }
-
-    public Question getQuestionById(int id) {
-        try {
-            String sql = "select question.question_id, question_content, question_correct_answer, subject_id, category_id,"
-                    + "question_level, question_status, subcategory_id from question\n"
-                    + "join quiz_question on quiz_question.question_id = question.question_id\n"
-                    + "join quiz on quiz.quiz_id = quiz_question.quiz_id\n"
-                    + "where question.question_id = ? \n";
-            PreparedStatement stm = connection.prepareStatement(sql);
-            stm.setInt(1, id);
-            ResultSet rs = stm.executeQuery();
-            if (rs.next()) {
-                Question q = new Question();
-                q.setId(rs.getInt(1));
-                q.setContent(rs.getString(2));
-                q.setCorrectAnswer(rs.getString(3));
-                q.setSubject(new Subject(rs.getInt(4), null));
-                q.setCategory(new Category(rs.getInt(5), null));
-                q.setLevel(rs.getString(6));
-                q.setStatus(rs.getString(7));
-                q.setSubCategory(new Subcategory(rs.getInt(8), null));
-                q.setAnswers(getAnswerForQues(id));
-                return q;
+        finally {
+            try {
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(QuestionDAO.class.getName()).log(Level.SEVERE, null, ex);
             }
-        } catch (SQLException ex) {
-            Logger.getLogger(QuestionDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
-//        finally {
-//            try {
-//                connection.close();
-//            } catch (SQLException ex) {
-//                Logger.getLogger(QuestionDAO.class.getName()).log(Level.SEVERE, null, ex);
-//            }
-//        }
         return null;
     }
 
     public ArrayList<Subcategory> getSubCategoryByCate(int cateId) {
+        Connection connection = getConnection();
         ArrayList<Subcategory> subcategorys = new ArrayList<>();
         try {
             String sql = "select * from subcategory\n"
@@ -313,20 +285,22 @@ public class QuestionDAO extends DBContext {
             while (rs.next()) {
                 subcategorys.add(new Subcategory(rs.getInt(1), rs.getString(2)));
             }
+            stm.close();
         } catch (SQLException ex) {
             Logger.getLogger(QuestionDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
-//        finally {
-//            try {
-//                connection.close();
-//            } catch (SQLException ex) {
-//                Logger.getLogger(QuestionDAO.class.getName()).log(Level.SEVERE, null, ex);
-//            }
-//        }
+        finally {
+            try {
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(QuestionDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
         return subcategorys;
     }
 
     public ArrayList<Quiz> getQuizForQuestion(int accountId) {
+        Connection connection = getConnection();
         ArrayList<Quiz> quizs = new ArrayList<>();
         try {
             String sql = "select quiz_id, quiz_name from quiz\n";
@@ -344,20 +318,22 @@ public class QuestionDAO extends DBContext {
                 q.setName(rs.getString(2));
                 quizs.add(q);
             }
+            stm.close();
         } catch (SQLException ex) {
             Logger.getLogger(QuestionDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
-//        finally {
-//            try {
-//                connection.close();
-//            } catch (SQLException ex) {
-//                Logger.getLogger(QuestionDAO.class.getName()).log(Level.SEVERE, null, ex);
-//            }
-//        }
+        finally {
+            try {
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(QuestionDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
         return quizs;
     }
 
     public ArrayList<Levels> getLevel() {
+        Connection connection = getConnection();
         ArrayList<Levels> levels = new ArrayList<>();
         try {
             String sql = "select setting_id, setting_value from setting where setting_type = 'level'";
@@ -366,14 +342,22 @@ public class QuestionDAO extends DBContext {
             while (rs.next()) {
                 levels.add(new model.Levels(rs.getInt(1), rs.getString(2)));
             }
+            stm.close();
         } catch (SQLException ex) {
             Logger.getLogger(QuestionDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }finally{
+            try {
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(QuestionDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
 
         return levels;
     }
 
     public ArrayList<Category> getCategory() {
+        Connection connection = getConnection();
         ArrayList<Category> categorys = new ArrayList<>();
         try {
             String sql = "select * from setting where setting_type = 'category';";
@@ -382,26 +366,29 @@ public class QuestionDAO extends DBContext {
             while (rs.next()) {
                 categorys.add(new Category(rs.getInt(1), rs.getString(2), rs.getString(4)));
             }
+            stm.close();
         } catch (SQLException ex) {
             Logger.getLogger(QuestionDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
-//        finally {
-//            try {
-//                connection.close();
-//            } catch (SQLException ex) {
-//                Logger.getLogger(QuestionDAO.class.getName()).log(Level.SEVERE, null, ex);
-//            }
-//        }
+        finally {
+            try {
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(QuestionDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
         return categorys;
     }
 
     public void deleteAnswer(int answerID) {
+        Connection connection = getConnection();
         try {
             connection.setAutoCommit(false);
             String sql = "delete from answer where answer_id = ?;";
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setInt(1, answerID);
             stm.executeUpdate();
+            stm.close();
             connection.commit();
         } catch (SQLException ex) {
             Logger.getLogger(QuestionDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -413,7 +400,7 @@ public class QuestionDAO extends DBContext {
         } finally {
             try {
                 connection.setAutoCommit(true);
-//                connection.close();
+                connection.close();
             } catch (SQLException ex) {
                 Logger.getLogger(QuestionDAO.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -421,6 +408,7 @@ public class QuestionDAO extends DBContext {
     }
 
     public void deleteQuestion(int quesid) {
+        Connection connection = getConnection();
         try {
             connection.setAutoCommit(false);
             String sql = "DELETE FROM `question`\n"
@@ -428,6 +416,7 @@ public class QuestionDAO extends DBContext {
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setInt(1, quesid);
             stm.executeUpdate();
+            stm.close();
             connection.commit();
         } catch (SQLException ex) {
             Logger.getLogger(QuestionDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -439,7 +428,7 @@ public class QuestionDAO extends DBContext {
         } finally {
             try {
                 connection.setAutoCommit(true);
-//                connection.close();
+                connection.close();
             } catch (SQLException ex) {
                 Logger.getLogger(QuestionDAO.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -447,6 +436,7 @@ public class QuestionDAO extends DBContext {
     }
 
     private ArrayList<Answer> getAnswerForQues(int quesId) {
+        Connection connection = getConnection();
         ArrayList<Answer> answers = new ArrayList<>();
         try {
             String sql = "select answer_id, answer_content from answer where question_id = ?";
@@ -456,20 +446,22 @@ public class QuestionDAO extends DBContext {
             while (rs.next()) {
                 answers.add(new Answer(rs.getInt(1), rs.getString(2)));
             }
+            stm.close();
         } catch (SQLException ex) {
             Logger.getLogger(QuestionDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
-//        finally {
-//            try {
-//                connection.close();
-//            } catch (SQLException ex) {
-//                Logger.getLogger(QuestionDAO.class.getName()).log(Level.SEVERE, null, ex);
-//            }
-//        }
+        finally {
+            try {
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(QuestionDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
         return answers;
     }
 
     public void changeStatusQues(int id, String status) {
+        Connection connection = getConnection();
         try {
             connection.setAutoCommit(false);
             String sql = "UPDATE `question`\n"
@@ -480,6 +472,7 @@ public class QuestionDAO extends DBContext {
             stm.setString(1, status);
             stm.setInt(2, id);
             stm.executeUpdate();
+            stm.close();
             connection.commit();
         } catch (SQLException ex) {
             Logger.getLogger(QuestionDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -491,7 +484,7 @@ public class QuestionDAO extends DBContext {
         } finally {
             try {
                 connection.setAutoCommit(true);
-//                connection.close();
+                connection.close();
             } catch (SQLException ex) {
                 Logger.getLogger(QuestionDAO.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -499,6 +492,7 @@ public class QuestionDAO extends DBContext {
     }
 
     public boolean updateQuestion(String quizId, Question q, InputStream media) {
+        Connection connection = getConnection();
         try {
             connection.setAutoCommit(false);
             String deleteAnswer = "DELETE FROM `answer`\n"
@@ -554,6 +548,10 @@ public class QuestionDAO extends DBContext {
                 stm.setInt(7, q.getId());
             }
             stm.executeUpdate();
+            stm.close();
+            stm_2.close();
+            stm_3.close();
+            stm_tmp.close();
             connection.commit();
             return true;
         } catch (SQLException ex) {
@@ -566,7 +564,7 @@ public class QuestionDAO extends DBContext {
         } finally {
             try {
                 connection.setAutoCommit(true);
-//                connection.close();
+                connection.close();
             } catch (SQLException ex) {
                 Logger.getLogger(QuestionDAO.class.getName()).log(Level.SEVERE, null, ex);
             }

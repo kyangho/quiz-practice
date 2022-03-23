@@ -9,7 +9,12 @@
         <!-- Sidebar user panel -->
         <div class="user-panel" style="    display: flex;">
             <div class="pull-left image">
-                <img src="https://th.bing.com/th/id/OIP.CPCyt52dUDhWIhy1K3guLAHaHa?pid=ImgDet&rs=1" class="img-circle" alt="User Image" />
+                <c:if test="${sessionScope.account.avatar == null}">
+                    <img src="https://th.bing.com/th/id/OIP.CPCyt52dUDhWIhy1K3guLAHaHa?pid=ImgDet&rs=1" class="img-circle" alt="User Image" />
+                </c:if>
+                <c:if test="${sessionScope.account.avatar != null}">
+                    <img src="${pageContext.servletContext.contextPath}/profile/avatar?accountID=${account.id}" class="img-circle" >
+                </c:if>
             </div>
             <div class="pull-left info">
                 <p>Hello, ${sessionScope.account.fullname}</p>
@@ -39,17 +44,22 @@
                     <i class="fa fa-book"></i> <span>Posts</span>
                 </a>
             </li>
-            <li ${pageContext.request.requestURI.contains("settinglist") ? "class=\"active\"" : ""}>
-                <a  href="${pageContext.request.contextPath}/director/setting/settinglist">
-                    <i class="fa fa-wrench"></i> <span>Setting</span>
-                </a>
-            </li>
-            <li
-                <c:if test="${tag eq 'userlist'}">class="active"</c:if>  >
-                <a href="${pageContext.request.contextPath}/director/user/userlist">
-                    <i class="fa fa-user"></i> <span>Users</span>
-                </a>
-            </li>
+            <c:forEach items="${sessionScope.account.role}" var="r">
+                <c:if test="${r.id == 1}">
+                    <li ${pageContext.request.requestURI.contains("settinglist") ? "class=\"active\"" : ""}>
+                        <a  href="${pageContext.request.contextPath}/director/setting/settinglist">
+                            <i class="fa fa-wrench"></i> <span>Setting</span>
+                        </a>
+                    </li>
+                    <li
+                        <c:if test="${tag eq 'userlist'}">class="active"</c:if>  >
+                        <a href="${pageContext.request.contextPath}/director/user/userlist">
+                            <i class="fa fa-user"></i> <span>Users</span>
+                        </a>
+                    </li>
+                </c:if>
+            </c:forEach>
+
             <li
                 <c:if test="${tag eq 'subjectlist'}">class="active"</c:if>  >
                 <a href="${pageContext.request.contextPath}/director/subject/subjectlist">

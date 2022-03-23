@@ -42,7 +42,7 @@
                 <div class="num">${numWrong}</div>
                 <div class="title_under">Wrong</div>
             </div>
-            <div class="result_lable2" style="background-color: #493307">
+            <div class="result_lable2" style="background-color: #336699">
                 <div class="num">${numNone}</div>
                 <div class="title_under">No answer</div>
             </div>
@@ -70,7 +70,7 @@
             .result_lable{
                 display: inline-block;
                 vertical-align: top;
-                width: 30%;
+                width: 40%;
                 height: 80px;
                 border-radius: 8px;
                 padding: 6px 0;
@@ -85,7 +85,7 @@
             .result_lable2{
                 display: inline-block;
                 vertical-align: top;
-                width: 40%;
+                width: 26%;
                 height: 80px;
                 border-radius: 8px;
                 padding: 6px 0;
@@ -94,7 +94,7 @@
                 position: relative;
                 border: 1px solid #000;
                 overflow: hidden;
-                margin: 1% 4% 1% 5%;
+                margin: 1% 0% 1% 5%;
                 background-color: black;
             }
             .num{

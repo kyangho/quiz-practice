@@ -30,9 +30,9 @@
                 <div style="text-align: left; margin: 2%;">
                     <h6 class="mb-3">ID: ${requestScope.quiz.id}</h6>
                     <h5 class="mb-3">${requestScope.quiz.title}</h5>
-                    <p>Subject: ${requestScope.quiz.subject}</p>
+                    <p>Subject: Technology</p>
                     <p>Category: ${requestScope.quiz.category}</p>
-                    <p>Type quiz: ${requestScope.quiz.type}</p>
+                    <p>Type quiz: Multiple choice</p>
                     <p>Author: ${requestScope.quiz.author}</p>
                 </div>
                 <c:if test="${sessionScope.account != null  && sessionScope.account.fullname eq requestScope.quiz.author}">

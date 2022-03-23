@@ -5,6 +5,7 @@
  */
 package dal;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -20,8 +21,8 @@ import model.Role;
 public class RoleDAO extends DBContext{
     
     public ArrayList<Role> getRoles(){
+        Connection connection = getConnection();
         ArrayList<Role> roles = new ArrayList<>();
-                
         try {
             String sql = "select setting_id, setting_value from setting where setting_type = 'role';";
             PreparedStatement stm = connection.prepareStatement(sql);
@@ -29,8 +30,15 @@ public class RoleDAO extends DBContext{
             while (rs.next()) {                
                 roles.add(new Role(rs.getInt(1), rs.getString(2)));
             }
+            stm.close();
         } catch (SQLException ex) {
             Logger.getLogger(RoleDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }finally{
+            try {
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(RoleDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return roles;
     }

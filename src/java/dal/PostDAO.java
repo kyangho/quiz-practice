@@ -6,6 +6,7 @@
 package dal;
 
 import java.io.InputStream;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -31,6 +32,7 @@ public class PostDAO extends DBContext {
                 + "`post`.`post_time_created`\n"
                 + "FROM `post`\n"
                 + "ORDER BY post_time_created DESC;";
+        Connection connection = getConnection();
         try {
             PreparedStatement stm = connection.prepareStatement(sqlGetPostInfo);
             ResultSet rs = stm.executeQuery();
@@ -38,14 +40,23 @@ public class PostDAO extends DBContext {
                 Post post = getPostWithId(rs.getInt("post_id"));
                 resPosts.add(post);
             }
+            stm.close();
         } catch (SQLException ex) {
             Logger.getLogger(PostDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(PostDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return resPosts;
     }
 
     public ArrayList<Post> getPostsList(String title, String category, String author, String status, Boolean isFeature, int pageSize, int pageIndex) {
         ArrayList<Post> resPosts = new ArrayList<>();
+        Connection connection = getConnection();
+
         String sql
                 = "select * from\n"
                 + "(select row_number() over (order by post_time_modified DESC ) as stt,\n"
@@ -55,12 +66,12 @@ public class PostDAO extends DBContext {
                 + "p.post_time_modified,\n"
                 + "p.post_status,\n"
                 + "p.post_isFeaturing,\n"
-                + "group_concat(c.category_name) as \"category_name\" \n"
+                + "group_concat(c.setting_name) as \"setting_name\" \n"
                 + "FROM post as p\n"
                 + "LEFT JOIN post_category AS pc ON p.post_id = pc.post_id\n"
-                + "LEFT JOIN category AS c ON pc.category_id = c.category_id\n";
+                + "LEFT JOIN setting AS c ON pc.setting_id = c.setting_id\n";
         title = "post_title LIKE ('%" + title + "%')";
-        category = "category_name LIKE ('%" + category + "%')";
+        category = "setting_name LIKE ('%" + category + "%')";
         author = "post_author LIKE ('%" + author + "%')";
         status = "post_status LIKE ('%" + status + "%')";
         String featureSQL = "";
@@ -72,7 +83,7 @@ public class PostDAO extends DBContext {
             featureSQL = "0";
         }
         if (!title.equals("") || !category.equals("") || !author.equals("") || !status.equals("")) {
-            sql += "WHERE ";
+            sql += "WHERE setting_type = 'Post Category' AND ";
             sql += title + " AND ";
             sql += category + " AND ";
             sql += author + " AND ";
@@ -101,14 +112,23 @@ public class PostDAO extends DBContext {
                 lastId = rs.getInt("post_id");
                 resPosts.add(post);
             }
+            stm.close();
         } catch (SQLException ex) {
             Logger.getLogger(PostDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(PostDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return resPosts;
     }
 
     public ArrayList<Post> getPostsListSortByFeature(String title, String category, String author, String status, Boolean isFeature, int pageSize, int pageIndex) {
         ArrayList<Post> resPosts = new ArrayList<>();
+        Connection connection = getConnection();
+
         String sql
                 = "select * from\n"
                 + "	(select row_number() over (order by post_time_modified DESC ) as stt,\n"
@@ -118,12 +138,12 @@ public class PostDAO extends DBContext {
                 + "p.post_time_modified,\n"
                 + "p.post_status,\n"
                 + "p.post_isFeaturing,\n"
-                + "group_concat(c.category_name) as \"category_name\" \n"
+                + "group_concat(c.setting_name) as \"setting_name\" \n"
                 + "FROM post as p\n"
                 + "LEFT JOIN post_category AS pc ON p.post_id = pc.post_id\n"
-                + "LEFT JOIN category AS c ON pc.category_id = c.category_id\n";
+                + "LEFT JOIN setting AS c ON pc.setting_id = c.setting_id\n";
         title = "post_title LIKE ('%" + title + "%')";
-        category = "category_name LIKE ('%" + category + "%')";
+        category = "setting_name LIKE ('%" + category + "%')";
         author = "post_author LIKE ('%" + author + "%')";
         status = "post_status LIKE ('%" + status + "%')";
         String featureSQL = "";
@@ -135,7 +155,7 @@ public class PostDAO extends DBContext {
             featureSQL = "0";
         }
         if (!title.equals("") || !category.equals("") || !author.equals("") || !status.equals("")) {
-            sql += "WHERE ";
+            sql += "WHERE setting_type = 'Post Category' AND ";
             sql += title + " AND ";
             sql += category + " AND ";
             sql += author + " AND ";
@@ -162,13 +182,22 @@ public class PostDAO extends DBContext {
                 lastId = rs.getInt("post_id");
                 resPosts.add(post);
             }
+            stm.close();
         } catch (SQLException ex) {
             Logger.getLogger(PostDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(PostDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return resPosts;
     }
 
     public Post getPostWithId(int id) {
+        Connection connection = getConnection();
+
         Post resPost = new Post();
         String sqlGetPostInfo = "SELECT \n"
                 + "    p.post_id,\n"
@@ -202,14 +231,23 @@ public class PostDAO extends DBContext {
 
                 resPost.setPostFiles(getPostFileListWithId(resPost.getId()));
             }
+            stm.close();
             resPost.setCategories(getPostCategories(resPost.getId() + "", ""));
         } catch (SQLException ex) {
             Logger.getLogger(PostDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(PostDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return resPost;
     }
 
     public ArrayList<PostFile> getPostFileListWithId(int postId) {
+        Connection connection = getConnection();
+
         ArrayList<PostFile> resPostFileList = new ArrayList<>();
         String sql = "SELECT `post_has_file`.`post_id`,\n"
                 + "    `post_has_file`.`file_id`\n"
@@ -226,14 +264,23 @@ public class PostDAO extends DBContext {
                 PostFile tmpPostFile = getPostFileWithId(postFileId);
                 resPostFileList.add(tmpPostFile);
             }
+            stm.close();
         } catch (SQLException ex) {
             Logger.getLogger(PostDAO.class.getName()).log(Level.SEVERE, null, ex);
             return null;
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(PostDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return resPostFileList;
     }
 
     public PostFile getPostFileWithId(int postFileId) {
+        Connection connection = getConnection();
+
         PostFile resPostFile = new PostFile();
 
         String sql = "SELECT `post_file`.`file_id`,\n"
@@ -252,37 +299,48 @@ public class PostDAO extends DBContext {
                 resPostFile.setType(rs.getString("file_type"));
                 resPostFile.setFileBlob(rs.getBlob("file_blob"));
             }
+            stm.close();
         } catch (SQLException ex) {
             Logger.getLogger(PostDAO.class.getName()).log(Level.SEVERE, null, ex);
             return null;
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(PostDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return resPostFile;
     }
 
     public ArrayList<PostCategory> getPostCategories(String postId, String categoryName) {
+        Connection connection = getConnection();
+
         ArrayList<PostCategory> categories = new ArrayList<>();
 
         String sql = "select pc.post_id,\n"
-                + "	c.category_id,\n"
-                + "    c.category_name,\n"
-                + "    c.category_value\n"
+                + "	s.setting_id,\n"
+                + "    s.setting_name,\n"
+                + "    s.setting_value,\n"
+                + "    s.setting_type\n"
                 + "from post_category as pc\n"
-                + "right join category  as c on pc.category_id = c.category_id\n";
-        if (postId.isEmpty()) {
+                + "left join setting  as s on pc.setting_id = s.setting_id\n";
+        if (postId == null || postId.isEmpty()) {
             sql = "select \n"
-                    + "	c.category_id,\n"
-                    + "    c.category_name,\n"
-                    + "    c.category_value\n"
-                    + "from category as c\n";
+                    + "	s.setting_id,\n"
+                    + "    s.setting_name,\n"
+                    + "    s.setting_value,\n"
+                    + "    s.setting_type\n"
+                    + "from setting as s\n"
+                    + "where setting_type LIKE ('Post Category')";
         }
 
-        if (!postId.isEmpty() || !categoryName.isEmpty()) {
+        if (!postId.isEmpty() && categoryName.isEmpty()) {
             postId = "('%" + postId + "%')";
-            categoryName = "('%" + categoryName + "%')";
-            sql += "WHERE post_id LIKE " + postId + " AND " + "category_name LIKE " + categoryName;
+            sql += "WHERE post_id LIKE " + postId;
         } else if (!categoryName.isEmpty()) {
             categoryName = "('%" + categoryName + "%')";
-            sql += "WHERE category_name LIKE " + categoryName;
+            sql += "WHERE setting_name LIKE " + categoryName;
         }
 
         try {
@@ -291,16 +349,22 @@ public class PostDAO extends DBContext {
 
             while (rs.next()) {
                 PostCategory pc = new PostCategory();
-                pc.setId(rs.getInt("category_id"));
-                pc.setName(rs.getString("category_name"));
-                pc.setValue(rs.getString("category_value"));
+                pc.setId(rs.getInt("setting_id"));
+                pc.setName(rs.getString("setting_name"));
+                pc.setValue(rs.getString("setting_value"));
 
                 categories.add(pc);
             }
+            stm.close();
         } catch (SQLException ex) {
             Logger.getLogger(PostDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(PostDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
-
         return categories;
     }
 
@@ -318,6 +382,8 @@ public class PostDAO extends DBContext {
      */
     public ArrayList<Post> getPostsListSortBy(String title, String category, String author, String feature, String status, int pageSize, int pageIndex) {
         ArrayList<Post> resPosts = new ArrayList<>();
+        Connection connection = getConnection();
+
         String sql
                 = "select * from\n"
                 + "	(select row_number() over ( ";
@@ -367,8 +433,15 @@ public class PostDAO extends DBContext {
                 lastId = rs.getInt("post_id");
                 resPosts.add(post);
             }
+            stm.close();
         } catch (SQLException ex) {
             Logger.getLogger(PostDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(PostDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return resPosts;
     }
@@ -377,6 +450,8 @@ public class PostDAO extends DBContext {
     // <editor-fold defaultstate="collapsed" desc="Insert post SQL. Click on the + sign on the left to edit the code.">
 //======================== INSERT SQL ==============================
     public String insertPost(Post inputPost, InputStream isThumbnail) {
+        Connection connection = getConnection();
+
         String sql = "INSERT INTO `post`\n"
                 + "(`post_thumbnail`,\n"
                 + "`post_title`,\n"
@@ -412,14 +487,23 @@ public class PostDAO extends DBContext {
 
             insertPostCategory(Integer.parseInt(id), inputPost.getCategories());
             connection.setAutoCommit(true);
+            stm.close();
         } catch (SQLException ex) {
             Logger.getLogger(PostDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(PostDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
 
         return id;
     }
 
     public String insertPost(Post inputPost) {
+        Connection connection = getConnection();
+
         String sql = "INSERT INTO `post`\n"
                 + "("
                 + "`post_title`,\n"
@@ -454,17 +538,26 @@ public class PostDAO extends DBContext {
 
             insertPostCategory(Integer.parseInt(id), inputPost.getCategories());
             connection.setAutoCommit(true);
+            stm.close();
         } catch (SQLException ex) {
             Logger.getLogger(PostDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(PostDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
 
         return id;
     }
 
     public boolean insertPostCategory(int postId, ArrayList<PostCategory> categories) {
+        Connection connection = getConnection();
+
         String sql = "INSERT INTO `post_category`\n"
                 + "(`post_id`,\n"
-                + "`category_id`)\n"
+                + "`setting_id`)\n"
                 + "VALUES\n"
                 + "(?,?);";
         try {
@@ -473,16 +566,25 @@ public class PostDAO extends DBContext {
                 stm.setInt(1, postId);
                 stm.setInt(2, pc.getId());
                 stm.executeUpdate();
+                stm.close();
             }
 
         } catch (SQLException ex) {
             Logger.getLogger(PostDAO.class.getName()).log(Level.SEVERE, null, ex);
             return false;
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(PostDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return true;
     }
 
     public boolean insertPostFile(int postId, String name, String type, InputStream isFile) {
+        Connection connection = getConnection();
+
         String sql = "INSERT INTO `post_file`\n"
                 + "(`file_name`,\n"
                 + "`file_type`,\n"
@@ -513,9 +615,17 @@ public class PostDAO extends DBContext {
             stm2.setInt(1, postId);
             stm2.setInt(2, Integer.parseInt(id));
             stm2.executeUpdate();
+            stm.close();
+            stm2.close();
         } catch (SQLException ex) {
             Logger.getLogger(PostDAO.class.getName()).log(Level.SEVERE, null, ex);
             return false;
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(PostDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return true;
     }
@@ -523,6 +633,8 @@ public class PostDAO extends DBContext {
 
     // <editor-fold defaultstate="collapsed" desc="Update post SQL. Click on the + sign on the left to edit the code.">
     public String updatetPost(Post inputPost, InputStream isThumbnail) {
+        Connection connection = getConnection();
+
         String sql = "UPDATE `post`\n"
                 + "SET\n"
                 + "`post_thumbnail` = ?,\n"
@@ -553,14 +665,23 @@ public class PostDAO extends DBContext {
 
             updatePostCategory(inputPost.getId(), inputPost.getCategories());
             connection.setAutoCommit(true);
+            stm.close();
         } catch (SQLException ex) {
             Logger.getLogger(PostDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(PostDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
 
         return id;
     }
 
     public String updatetPost(Post inputPost) {
+        Connection connection = getConnection();
+
         String sql = "UPDATE `post`\n"
                 + "SET\n"
                 + "`post_title` = ?,\n"
@@ -589,8 +710,15 @@ public class PostDAO extends DBContext {
 
             updatePostCategory(inputPost.getId(), inputPost.getCategories());
             connection.setAutoCommit(true);
+            stm.close();
         } catch (SQLException ex) {
             Logger.getLogger(PostDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(PostDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
 
         return id;
@@ -604,6 +732,8 @@ public class PostDAO extends DBContext {
     }
 
     public boolean updatePostThumbnail(int postId, InputStream is) {
+        Connection connection = getConnection();
+
         String sql = "UPDATE `post`\n"
                 + "SET\n"
                 + "`post_thumbnail` = ?\n"
@@ -614,15 +744,24 @@ public class PostDAO extends DBContext {
             stm.setBinaryStream(1, is);
             stm.setInt(2, postId);
             stm.executeUpdate();
+            stm.close();
         } catch (SQLException ex) {
             Logger.getLogger(PostDAO.class.getName()).log(Level.SEVERE, null, ex);
             return false;
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(PostDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
 
         return true;
     }
 
     public boolean updatePostFile(int postId, String fileName, String fileType, InputStream fileContent) {
+        Connection connection = getConnection();
+
         String sql = "UPDATE `post_has_file` as phf\n"
                 + "LEFT JOIN post_file as pf on pf.file_id = phf.file_id\n"
                 + "SET\n"
@@ -638,14 +777,23 @@ public class PostDAO extends DBContext {
             stm.setInt(4, postId);
 
             stm.executeUpdate();
+            stm.close();
         } catch (SQLException ex) {
             Logger.getLogger(PostDAO.class.getName()).log(Level.SEVERE, null, ex);
             return false;
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(PostDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return true;
     }
 
     public boolean updateStatus(int postId, String status) {
+        Connection connection = getConnection();
+
         String sql = "UPDATE `post`\n"
                 + "SET\n"
                 + "post_status = ?,\n"
@@ -657,14 +805,23 @@ public class PostDAO extends DBContext {
             stm.setTimestamp(2, new Timestamp(System.currentTimeMillis()));
             stm.setInt(3, postId);
             stm.executeUpdate();
+            stm.close();
         } catch (SQLException ex) {
             Logger.getLogger(PostDAO.class.getName()).log(Level.SEVERE, null, ex);
             return false;
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(PostDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return true;
     }
 
     public boolean updateFeature(int postId, boolean isFeature) {
+        Connection connection = getConnection();
+
         String sql = "UPDATE `post`\n"
                 + "SET\n"
                 + "post_isFeaturing = ?,\n"
@@ -676,29 +833,47 @@ public class PostDAO extends DBContext {
             stm.setTimestamp(2, new Timestamp(System.currentTimeMillis()));
             stm.setInt(3, postId);
             stm.executeUpdate();
+            stm.close();
         } catch (SQLException ex) {
             Logger.getLogger(PostDAO.class.getName()).log(Level.SEVERE, null, ex);
             return false;
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(PostDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return true;
     }
 //</editor-fold>
 
     public boolean deletePostPostCategory(int postId) {
+        Connection connection = getConnection();
+
         String sql = "DELETE FROM `post_category`\n"
                 + "WHERE post_id = ?;";
         try {
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setInt(1, postId);
             stm.executeUpdate();
+            stm.close();
         } catch (SQLException ex) {
             Logger.getLogger(PostDAO.class.getName()).log(Level.SEVERE, null, ex);
             return false;
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(PostDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return true;
     }
 
     public int countTotalPost() {
+        Connection connection = getConnection();
+
         String sql = "SELECT count(post_id) as total FROM quiz_practice_db.post;";
         int count = 0;
         try {
@@ -707,13 +882,22 @@ public class PostDAO extends DBContext {
             if (rs.next()) {
                 count = rs.getInt("total");
             }
+            stm.close();
         } catch (SQLException ex) {
             Logger.getLogger(PostDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(PostDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return count;
     }
 
     public int countTotalPostWithCondition(String title, String category, String author, String status, int pageSize, int pageIndex) {
+        Connection connection = getConnection();
+
         String sql
                 = "select *, max(stt) as postTotal from\n"
                 + "	(select row_number() over (order by post_time_created DESC ) as stt,\n"
@@ -722,12 +906,12 @@ public class PostDAO extends DBContext {
                 + "p.post_author,\n"
                 + "p.post_time_created,\n"
                 + "p.post_status,\n"
-                + "group_concat(c.category_name) as \"category_name\" \n"
+                + "group_concat(s.setting_name) as \"setting_name\" \n"
                 + "FROM post as p\n"
                 + "LEFT JOIN post_category AS pc ON p.post_id = pc.post_id\n"
-                + "LEFT JOIN category AS c ON pc.category_id = c.category_id\n";
+                + "LEFT JOIN setting AS s ON pc.setting_id = s.setting_id\n";
         title = "post_title LIKE ('%" + title + "%')";
-        category = "category_name LIKE ('%" + category + "%')";
+        category = "setting_name LIKE ('%" + category + "%')";
         author = "post_author LIKE ('%" + author + "%')";
         status = "post_status LIKE ('%" + status + "%')";
         if (!title.equals("") || !category.equals("") || !author.equals("") || !status.equals("")) {
@@ -749,8 +933,16 @@ public class PostDAO extends DBContext {
             while (rs.next()) {
                 count = rs.getInt("postTotal");
             }
+            stm.close();
         } catch (SQLException ex) {
             Logger.getLogger(PostDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(PostDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return count;
     }
