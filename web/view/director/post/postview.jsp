@@ -13,7 +13,7 @@
 <script src="${pageContext.request.contextPath}/ckeditor/ckeditor.js" type="text/javascript"></script>
 
 <link href="${pageContext.request.contextPath}/css/post.css?v=3" rel="stylesheet">
-
+<!doctype html>
 <html lang="en">
     <head>
         <meta charset="UTF-8">

@@ -3,18 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-let questions;
-$.ajax({
-    type: 'post',
-    url: 'game/getquestion',
-    success: function (response) {
-        questions = JSON.parse(response);
-        console.log(questions);
-    }
-})
-
-
-
 //selecting all required elements
 const start_btn = document.querySelector(".start_btn button");
 const info_box = document.querySelector(".info_box");
@@ -28,7 +16,7 @@ const timeText = document.querySelector(".timer .time_left_txt");
 const timeCount = document.querySelector(".timer .timer_sec");
 
 //Attribute
-let timeValue = 15;
+let timeValue = 0;
 let que_count = 0;
 let que_numb = 0;
 let userScore = 0;
@@ -36,18 +24,46 @@ let counter;
 let counterLine;
 let widthValue = 0;
 let user_answer = [];
+let questions;
+let quizJson;
+$.ajax({
+    type: 'post',
+    url: 'game/getquestion',
+    success: function (response) {
+        quizJson = JSON.parse(response);
+        timeValue = quizJson.duration;
+        questions = quizJson.questions;
+        questions.forEach(x => {
+            x.isMark = false;
+        })
+        console.log(questions);
+
+        start_btn.onclick = () => {
+            quiz_box.classList.add("activeQuiz");
+            showQuetions(0);
+            queCounter(0);
+            if (quizJson.title.toString().toLowerCase() == "quiz") {
+                startTimer(0, false);
+            } else if (quizJson.title.toString().toLowerCase() == "test") {
+                startTimer(timeValue, true);
+            }
+            startTimerLine(0);
+            for (var i = 0; i < questions.length; i++) {
+                user_answer[i] = -1;
+            }
+            $.ajax({
+                type: 'post',
+                url: 'game/getquestion',
+            })
+        }
+    }
+})
+
+
+
 
 //Logic
-start_btn.onclick = () => {
-    quiz_box.classList.add("activeQuiz");
-    showQuetions(0);
-    queCounter(0);
-    startTimer(timeValue);
-    startTimerLine(0);
-    for (var i = 0; i < questions.length; i++) {
-        user_answer[i] = -1;
-    }
-}
+
 exit_btn.onclick = () => {
     info_box.classList.remove("activeInfo");
 }
@@ -86,6 +102,47 @@ const next_btn = document.querySelector("footer .next_btn");
 const back_btn = document.querySelector("footer .back_btn");
 const submit_btn = document.querySelector("footer .submit_btn");
 const bottom_ques_counter = document.querySelector("footer .total_que");
+const mark_btn = document.querySelector("footer .btn-mark");
+const show_question_btn = document.querySelector("footer .btn-show-question");
+const shortcutQuestion = document.querySelectorAll('.shortcut-questions div');
+
+for (var i = 0; i < shortcutQuestion.length; i++) {
+    (function () {
+        var k = i;
+        shortcutQuestion[i].addEventListener("click", () => {
+            que_count = k;
+            showQuetions(k);
+            $('.popup').hide();
+            if (que_count < questions.length - 1 && que_count > 0) {
+                back_btn.classList.add("show");
+                next_btn.classList.add("show");
+                submit_btn.classList.remove("show");
+            } else if (que_count == questions.length - 1) {
+                back_btn.classList.add("show");
+                next_btn.classList.remove("show");
+                submit_btn.classList.add("show");
+            } else if (que_count == 0) {
+                back_btn.classList.remove("show");
+                next_btn.classList.add("show");
+                submit_btn.classList.remove("show");
+            }
+        }, false);
+    }()); // immediate invocation
+}
+console.log(shortcutQuestion)
+
+mark_btn.onclick = () => {
+    console.log(shortcutQuestion);
+    if ($('.fa-flag').is(":visible")) {
+        $('.fa-flag').hide();
+        shortcutQuestion[que_count].style.backgroundColor = "#fff";
+        questions[que_count].isMark = false;
+    } else {
+        $('.fa-flag').show()
+        shortcutQuestion[que_count].style.backgroundColor = "#ef564f";
+        questions[que_count].isMark = true;
+    }
+}
 
 //if Back Que button clicked
 back_btn.onclick = () => {
@@ -99,37 +156,31 @@ back_btn.onclick = () => {
     if (que_count == 0) {
         back_btn.classList.remove("show");
     }
+    if (questions[que_count].isMark) {
+        $('.fa-flag').show();
+    } else {
+        $('.fa-flag').hide();
+    }
 }
 // if Next Que button clicked
 next_btn.onclick = () => {
-    if (que_count == questions.length - 1) {
-        next_btn.classList.remove("show");
-    }
     if (que_count < questions.length - 1) {
         que_count++;
+        if (que_count == questions.length - 1) {
+            next_btn.classList.remove("show");
+            submit_btn.classList.add("show");
+        }
         showQuetions(que_count);
         back_btn.classList.add("show");
     } else {
         next_btn.classList.remove("show");
-        submit_btn.classList.add("show");
     }
+
 }
 //Submit question
 submit_btn.onclick = () => {
     if (confirm("Do you want to submit?")) {
-        var tmpQuestions = questions;
-        for (var i = 0; i < tmpQuestions.length; i++) {
-            delete tmpQuestions[i].media;
-        }
-        $.ajax({
-            type: 'post',
-            url: 'submit',
-            data: {questions: JSON.stringify(tmpQuestions), userAnswer: JSON.stringify(user_answer)},
-            dataType: 'json',
-            success: function (response) {
-                console.log("Submit success");
-            }
-        })
+        submit();
     } else {
 
     }
@@ -168,16 +219,13 @@ function showQuetions(index) {
                         var audioUrl = urlCreator.createObjectURL(tmpBlob);
                         document.querySelector(".que-image").innerHTML =
                                 `<div class="embed-responsive embed-responsive-4by3">
-                            <audio src=" ` + audioUrl + `" controls width='440'></audio>
+                            <video src=" ` + videoUrl + `" controls width='440' height='240'   ></video>
                         </div>`
                     } else {
                         var tmpBlob = new Blob([new Uint8Array(questions[0].media.binaryData)], {type: "video/mp4"});
                         var urlCreator = window.URL || window.webkitURL;
                         var videoUrl = urlCreator.createObjectURL(tmpBlob);
-                        document.querySelector(".que-image").innerHTML =
-                                `<div class="embed-responsive embed-responsive-4by3">
-                            <video src=" ` + videoUrl + `" controls width='440' height='240'   ></video>
-                        </div>`
+
                     }
                 })
 
@@ -206,10 +254,25 @@ function showQuetions(index) {
         };
         audio.src = url;
     }
-
+    if (questions[que_count].isMark) {
+        $('.fa-flag').show();
+    } else {
+        $('.fa-flag').hide();
+    }
+    showOptionSelected();
 }
 let tickIconTag = '<div class="icon tick"><i class="fas fa-check"></i></div>';
 let crossIconTag = '<div class="icon cross"><i class="fas fa-times"></i></div>';
+function showOptionSelected() {
+    const options = document.querySelector(".option_list");
+    const allOptions = option_list.children.length;
+    for (i = 0; i < allOptions; i++) {
+        if (user_answer[que_count] == questions[que_count].answers[i].id) {
+            options.children[i].classList.add("selected")
+        }
+    }
+}
+
 function optionSelected(answer) {
     let userAns = answer.textContent;
     let correcAns = questions[que_count].answer;
@@ -218,7 +281,7 @@ function optionSelected(answer) {
     let isSelected = false;
     for (i = 0; i < allOptions; i++) {
         if (option_list.children[i] == answer) {
-            user_answer[que_count] = i;
+            user_answer[que_count] = questions[que_count].answers[i].id;
         }
         if (option_list.children[i].getAttribute("class").includes("selected") == true)
             isSelected = true;
@@ -277,23 +340,50 @@ function showResult() {
         scoreText.innerHTML = scoreTag;
     }
 }
-function startTimer(time) {
-    counter = setInterval(timer, 1000);
-    timeValue = time;
-    function timer() {
+function startTimer(time, isCountdown) {
+    counter = setInterval(() => {
+        console.log()
         timeCount.textContent = time;
-        time--;
+        if (isCountdown == false) {
+            time++;
+        } else {
+            time--;
+        }
+        if (time >= 3600) {
+            var h = parseInt(time / 3600);
+            var m = parseInt(time % 60 / 60);
+            var s = time % 60;
+            if (h < 9)
+                h = "0" + h;
+            if (m < 9)
+                m = "0" + m;
+            if (s < 9)
+                s = "0" + s;
+            timeCount.textContent = h + ":" + m + ":" + s;
+            $('.timer_sec').width(95);
+            $('.timer').width(200);
+        } else if (time >= 60) {
+            $('.timer').width(160);
+            $('.timer_sec').width(60)
+            var m = parseInt(time / 60);
+            var s = time % 60;
+            if (m < 9)
+                m = "0" + m;
+            if (s < 9)
+                s = "0" + s;
+            timeCount.textContent = m + ":" + s;
+
+        }
         if (time < 9) {
             let addZero = timeCount.textContent;
             timeCount.textContent = "0" + addZero;
         }
         if (time < 0) {
             clearInterval(counter);
-            timeText.textContent = "Time Off";
-            const allOptions = option_list.children.length;
-            let correcAns = questions[que_count].answer;
+            submit();
         }
-    }
+    }, 1000);
+    timeValue = time;
 }
 function startTimerLine(time) {
     var delay = 29;
@@ -315,4 +405,36 @@ function queCounter(index) {
 
 function addQuestion() {
     console.log('a')
+}
+
+let modalBtn = document.getElementById("popup-btn");
+let modal = document.querySelector(".popup");
+let closeBtn = document.querySelector(".close-btn");
+modalBtn.onclick = function () {
+    modal.style.display = "block"
+}
+closeBtn.onclick = function () {
+    modal.style.display = "none"
+}
+window.onclick = function (e) {
+    if (e.target == modal) {
+        modal.style.display = "none"
+    }
+}
+
+function submit() {
+    var tmpQuestions = questions;
+    for (var i = 0; i < tmpQuestions.length; i++) {
+        delete tmpQuestions[i].media;
+    }
+    $.ajax({
+        type: 'post',
+        url: 'submit',
+        data: {questions: JSON.stringify(tmpQuestions), userAnswer: JSON.stringify(user_answer)},
+        success: function (response) {
+            if(response == "success"){
+                window.location.href = "./result";
+            }
+        }    
+    })
 }

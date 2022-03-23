@@ -147,9 +147,10 @@
                                             <th style="display: flex">
                                                 Type 
                                                 <select name="type" class=" input-sm" style="border-radius: 7px; margin-left: 10px">
-                                                    <option ${requestScope.type eq "all" ? "selected=\"selected\"" : ""} value="all">All</option>
-                                                    <option ${requestScope.type eq "Free" ? "selected=\"selected\"" : ""} value="Free">Free</option>
-                                                    <option ${requestScope.type eq "User Practices" ? "selected=\"selected\"" : ""} value="User Practices">User Practices</option>
+                                                    <option ${requestScope.cates eq "all" ? "selected=\"selected\"" : ""} value="all">All </option>
+                                                    <c:forEach items="${requestScope.types}" var="s">
+                                                        <option ${requestScope.type eq s.name ? "selected=\"selected\"" : ""} value="${s.name}">${s.value}</option>
+                                                    </c:forEach>
                                                 </select>
                                             </th>
                                         </tr>

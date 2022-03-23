@@ -91,6 +91,7 @@ public class PostSettingController extends HttpServlet {
             throws ServletException, IOException {
         String URI = request.getRequestURI().replaceFirst("/\\w+", "");
         Account account = (Account) request.getSession().getAttribute("account");
+        request.setCharacterEncoding("UTF-8");
 
         if (URI.contains(postNewPath) && account != null) {
             doPostNewPost(request, response);
@@ -284,9 +285,9 @@ public class PostSettingController extends HttpServlet {
             status = values[0];
         }
         Account acc = (Account) request.getSession().getAttribute("account");
-        if (acc.getUsername().compareToIgnoreCase("admin") != 0){
+        if (acc.getUsername().compareToIgnoreCase("admin") != 0) {
             author = acc.getUsername();
-        }   
+        }
         if (paraMap.containsKey("sort")) {
             pd = new PostDAO();
             posts = pd.getPostsListSortBy(title, category, author, feature, status, PAGESIZE, pageIndex);
@@ -410,6 +411,7 @@ public class PostSettingController extends HttpServlet {
         }
         boolean isSuccess = postDAO.updateStatus(Integer.parseInt(id), post.getStatus());
     }
+
     public void doPostChangeFeature(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String id = request.getParameter("id");

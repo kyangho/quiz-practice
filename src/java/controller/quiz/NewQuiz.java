@@ -60,10 +60,9 @@ public class NewQuiz extends HttpServlet {
         quiz.setLevel(request.getParameter("level"));
         quiz.setType(request.getParameter("type"));
         Account acc = new Account();
-        acc.setId(Integer.parseInt(request.getParameter("author")));
+        acc.setId(Integer.parseInt(request.getParameter("author").trim()));
         quiz.setAuthor(acc);
-        
-
+        quiz.setName(request.getParameter("quiz_title"));
         String[] question = request.getParameterValues("question");
         if (question != null) {
             for (String ques : question) {

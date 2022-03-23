@@ -7,6 +7,7 @@ package controller.quiz;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import dal.QuestionAnswerDAO;
 import dal.QuizDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -37,8 +38,8 @@ public class QuizController extends HttpServlet {
             throws ServletException, IOException {
         String URI = request.getRequestURI().replaceFirst("/\\w+", "");
         if (URI.contains(quizGamePath)) {
-            Quiz quiz = (Quiz)request.getSession().getAttribute("quiz");
-            if (quiz == null){
+            Quiz quiz = (Quiz) request.getSession().getAttribute("quiz");
+            if (quiz == null) {
                 response.sendRedirect(request.getContextPath() + "/home");
                 return;
             }
@@ -48,13 +49,15 @@ public class QuizController extends HttpServlet {
             }.getType();
             request.setAttribute("questionJSON", gs.toJson(quiz.getQuestions(), listType));
             request.getRequestDispatcher("/view/quiz/game.jsp").forward(request, response);
-        }else if (URI.contains(quizJoinPath)) {
+        } else if (URI.contains(quizJoinPath)) {
             String id = request.getParameter("quizId");
             QuizDAO quizDAO = new QuizDAO();
             Quiz quiz = quizDAO.getQuizDetail(Integer.parseInt(id));
             request.getSession().setAttribute("quiz", quiz);
+            Gson gs = new Gson();
+            request.getSession().setAttribute("quizJSON", gs.toJson(quiz));
             response.sendRedirect("join/game");
-        } 
+        }
     }
 
     /**
@@ -70,14 +73,13 @@ public class QuizController extends HttpServlet {
             throws ServletException, IOException {
         String URI = request.getRequestURI().replaceFirst("/\\w+", "");
         if (URI.contains(questionPath)) {
-            Quiz quiz = (Quiz)request.getSession().getAttribute("quiz");
-            QuizDAO quizDAO = new QuizDAO();
-            quiz = quizDAO.getQuizDetail(quiz.getId());
+            Quiz quiz = (Quiz) request.getSession().getAttribute("quiz");
             Gson gs = new Gson();
             response.setCharacterEncoding("utf-8");
-            response.getWriter().print(gs.toJson(quiz.getQuestions()));
+            response.getWriter().print(gs.toJson(quiz));
         } else if (URI.contains(submitPath)) {
             Gson gs = new Gson();
+            Quiz quiz = (Quiz) request.getSession().getAttribute("quiz");
             Type listType = new TypeToken<ArrayList<Question>>() {
             }.getType();
             ArrayList<Question> questions = gs.fromJson(request.getParameter("questions"), listType);
@@ -87,7 +89,13 @@ public class QuizController extends HttpServlet {
             for (int i = 0; i < questions.size(); i++) {
                 questions.get(i).setCorrectAnswer(userAnswer[i]);
             }
-            System.out.println(questions);
+            quiz.setQuestions(questions);
+            QuestionAnswerDAO qaDAO = new QuestionAnswerDAO();
+            if (qaDAO.insertUserAnswer(quiz)) {
+                response.getWriter().print("success");
+            } else {
+                response.getWriter().print("fail");
+            }
         }
     }
 
