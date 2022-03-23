@@ -56,8 +56,8 @@
                 <h3>Not found questions!</h3>
             </c:if>
             <c:if test="${questions.size() > 0}">
-                <div id="choose" style="color: blue; font-weight: bolder;"><input onclick="chooseQuestion()" type="checkbox">Select all question</div>
-                <div hidden="" id="unchoose" style="color: blue; font-weight: bolder;"><input onclick="unchooseQuestion()" type="checkbox">Un select all question</div>
+                <div id="choose" style="color: blue; font-weight: bolder;"><input class="form-check-input" onclick="chooseQuestion()" type="checkbox">Select all question</div>
+                <div hidden="" id="unchoose" style="color: blue; font-weight: bolder;"><input class="form-check-input" onclick="unchooseQuestion()" type="checkbox">Un select all question</div>
                 <form action="add" method="POST">
                     <input type="hidden" value="${cateID}" name="cateid">
                     <input type="hidden" value="${subjectID}" name="subjectid">
@@ -65,7 +65,7 @@
                     <table>
                         <c:forEach items="${questions}" var="q">
                             <tr>
-                                <td><input type="checkbox" class="ques" name="questionId" value="${q.id}"></td>
+                                <td><input type="checkbox" class="ques form-check-input" name="questionId" value="${q.id}"></td>
                                 <td>
                                     <p>${q.content}</p>
                                 </td>

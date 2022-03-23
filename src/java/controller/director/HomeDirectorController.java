@@ -27,7 +27,6 @@ public class HomeDirectorController extends HttpServlet {
             response.sendRedirect(request.getContextPath() + "/home");
             return;
         }
-
         request.getRequestDispatcher("/view/director/homedirector.jsp").forward(request, response);
     }
 //        response.sendRedirect(request.getContextPath() + "/home");

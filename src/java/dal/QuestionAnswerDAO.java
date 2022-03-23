@@ -5,12 +5,12 @@
  */
 package dal;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.Answer;
@@ -23,6 +23,7 @@ import model.Question;
 public class QuestionAnswerDAO extends DBContext {
 
     public boolean insertQuestionInfor(Question question) {
+        Connection connection = getConnection();
         String sql = "INSERT INTO `question`\n"
                 + "(`question_content`,`subject_id`,\n"
                 + "`category_id`,`question_media`)\n"
@@ -62,14 +63,24 @@ public class QuestionAnswerDAO extends DBContext {
             updateSTM.setInt(2, Integer.parseInt(id));
             updateSTM.executeUpdate();
             connection.setAutoCommit(true);
+            stm.close();
+            updateSTM.close();
+            idRS.close();
         } catch (SQLException ex) {
             Logger.getLogger(QuestionAnswerDAO.class.getName()).log(Level.SEVERE, null, ex);
             return false;
+        }finally{
+            try {
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(QuestionAnswerDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return true;
     }
 
     public ArrayList<Answer> insertAnswer(int questionId, ArrayList<Answer> answers) {
+        Connection connection = getConnection();
         String sql = "INSERT INTO `answer`\n"
                 + "(`question_id`,\n"
                 + "`answer_content`)\n"
@@ -95,6 +106,12 @@ public class QuestionAnswerDAO extends DBContext {
             connection.setAutoCommit(true);
         } catch (SQLException ex) {
             Logger.getLogger(QuestionAnswerDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }finally{
+            try {
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(QuestionAnswerDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return answers;
     }

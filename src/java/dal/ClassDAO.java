@@ -5,6 +5,7 @@
  */
 package dal;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -21,6 +22,7 @@ import model.classes.Classes;
 public class ClassDAO extends DBContext {
 
     public ArrayList<Classes> getClassList() {
+        Connection connection = getConnection();
         ArrayList<Classes> classes = new ArrayList<>();
         String sql = "SELECT * FROM quiz_practice_db.class";
         try {
@@ -34,13 +36,21 @@ public class ClassDAO extends DBContext {
                 c.setNote(rs.getString(4));
                 classes.add(c);
             }
+            stm.close();
         } catch (SQLException ex) {
             Logger.getLogger(ClassDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }finally{
+            try {
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(ClassDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return classes;
     }
 
     public ArrayList<Classes> getClassList(String key, int pageSize, int pageIndex) {
+        Connection connection = getConnection();
         ArrayList<Classes> classes = new ArrayList<>();
         String sql = "select class_id from \n"
                 + "(select row_number() over (order by class_id asc) as stt, c.class_id, c.class_name, c.class_status, c.class_note, ap.account_id\n"
@@ -63,13 +73,21 @@ public class ClassDAO extends DBContext {
                 Classes c = getClassByID(rs.getInt("class_id"));
                 classes.add(c);
             }
+            stm.close();
         } catch (SQLException ex) {
             Logger.getLogger(ClassDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }finally{
+            try {
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(ClassDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return classes;
     }
 
     public int getTotalRows(String key) {
+        Connection connection = getConnection();
         String where = "";
         String sql = "select count(*) as total from \n"
                 + "(select row_number() over (order by class_id asc) as stt, c.class_id, c.class_name, c.class_status, c.class_note, ap.account_id\n"
@@ -87,13 +105,21 @@ public class ClassDAO extends DBContext {
             if (rs.next()) {
                 return rs.getInt(1);
             }
+            stm.close();
         } catch (SQLException ex) {
             Logger.getLogger(ClassDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }finally{
+            try {
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(ClassDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return -1;
     }
 
     public Classes getClassByID(int classID) {
+        Connection connection = getConnection();
         AccountDAO adao = new AccountDAO();
         String sql = "SELECT * FROM quiz_practice_db.class c\n"
                 + "where c.class_id = ?";
@@ -112,13 +138,21 @@ public class ClassDAO extends DBContext {
 
                 return c;
             }
+            ps.close();
         } catch (SQLException ex) {
             Logger.getLogger(ClassDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }finally{
+            try {
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(ClassDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return null;
     }
 
     public ArrayList<Account> getUserListOfClass(int classID) {
+        Connection connection = getConnection();
         ArrayList<Account> accounts = new ArrayList<>();
         AccountDAO adao = new AccountDAO();
         String sql = "select a.account_id\n"
@@ -134,13 +168,21 @@ public class ClassDAO extends DBContext {
                 Account a = adao.getAccountById(rs.getInt(1));
                 accounts.add(a);
             }
+            stm.close();
         } catch (SQLException ex) {
             Logger.getLogger(ClassDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }finally{
+            try {
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(ClassDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return accounts;
     }
 
     public void updateClass(int classID, String className, String status, String note, int authorID) {
+        Connection connection = getConnection();
         try {
             connection.setAutoCommit(false);
             String sql = "UPDATE `class`\n"
@@ -162,6 +204,7 @@ public class ClassDAO extends DBContext {
             stm.setInt(5, classID);
             stm.executeUpdate();
             connection.commit();
+            stm.close();
         } catch (SQLException ex) {
             Logger.getLogger(ClassDAO.class.getName()).log(Level.SEVERE, null, ex);
             try {
@@ -172,6 +215,7 @@ public class ClassDAO extends DBContext {
         } finally {
             try {
                 connection.setAutoCommit(true);
+                connection.close();
             } catch (SQLException ex) {
                 Logger.getLogger(ClassDAO.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -179,6 +223,7 @@ public class ClassDAO extends DBContext {
     }
 
     public void ChangeStatus(int id, String status) {
+        Connection connection = getConnection();
         try {
             String sql = "UPDATE `class`\n"
                     + "SET\n"
@@ -192,12 +237,20 @@ public class ClassDAO extends DBContext {
             }
             stm.setInt(2, id);
             stm.executeUpdate();
+            stm.close();
         } catch (SQLException ex) {
             Logger.getLogger(ClassDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }finally{
+            try {
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(ClassDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 
     public void insertClass(String className, String note, String status, int authorID) {
+        Connection connection = getConnection();
         try {
             connection.setAutoCommit(false);
             String sql = "INSERT INTO `class`\n"
@@ -213,6 +266,7 @@ public class ClassDAO extends DBContext {
             }
             stm.setInt(4, authorID);
             stm.executeUpdate();
+            stm.close();
             connection.commit();
         } catch (SQLException ex) {
             Logger.getLogger(ClassDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -224,6 +278,7 @@ public class ClassDAO extends DBContext {
         } finally {
             try {
                 connection.setAutoCommit(true);
+                connection.close();
             } catch (SQLException ex) {
                 Logger.getLogger(ClassDAO.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -231,6 +286,7 @@ public class ClassDAO extends DBContext {
     }
 
     public void insertAccountToClass(int classID, int accountID) {
+        Connection connection = getConnection();
         try {
             connection.setAutoCommit(false);
             String sql = "INSERT INTO `class_user`\n"
@@ -240,6 +296,7 @@ public class ClassDAO extends DBContext {
             stm.setInt(1, classID);
             stm.setInt(2, accountID);
             stm.executeUpdate();
+            stm.close();
             connection.commit();
         } catch (SQLException ex) {
             Logger.getLogger(ClassDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -251,6 +308,7 @@ public class ClassDAO extends DBContext {
         } finally {
             try {
                 connection.setAutoCommit(true);
+                connection.close();
             } catch (SQLException ex) {
                 Logger.getLogger(ClassDAO.class.getName()).log(Level.SEVERE, null, ex);
             }
