@@ -19,6 +19,8 @@ import model.Question;
 import model.Quiz;
 import model.Quiz_Account;
 import model.Subject;
+import model.Answer;
+import model.Ques_Ans;
 
 /**
  *
@@ -807,11 +809,58 @@ public class QuizDAO extends DBContext {
 
     public static void main(String[] args) {
         QuizDAO qdb = new QuizDAO();
-//        for (Question q : qdb.getQuizById(1).getQuestions()) {
-//            System.out.println(q.toString());
-//        }
-        System.out.println(qdb.getPracticeByQuizID(1, 3).getQuiz().getName());
-//        System.out.println(qdb.totalRowsForQuizPractice(3));
+        ArrayList<Ques_Ans> ques_Anses = qdb.getQuestion_AnswerList("all", 3);
+        for (Ques_Ans ques_Anse : ques_Anses) {
+            System.out.println(ques_Anse.getQuiz().getId() + " " + ques_Anse.getQuestion().getCorrectAnswer() + " " + ques_Anse.getAnswer());
+        }
     }
 
+    public ArrayList<Ques_Ans> getQuestion_AnswerList(String search, int accountID) {
+        QuestionDAO qdao = new QuestionDAO();
+        Connection connection = getConnection();
+        ArrayList<Ques_Ans> ques_Anses = new ArrayList<>();
+        try {
+            String sql = "SELECT q.question_id, answer_id, qu.quiz_id FROM user_answer ua\n"
+                    + "join  question q on ua.question_id = q.question_id\n"
+                    + "join quiz qu on qu.quiz_id = ua.quiz_id\n"
+                    + "where account_id = ?\n";
+            if (search.equals("wrong")) {
+                sql += "and answer_id <> question_correct_answer and answer_id is not null";
+            } else if (search.equals("correct")) {
+                sql += "and answer_id = question_correct_answer";
+            } else if (search.equals("none")) {
+                sql += "and answer_id is null";
+            }
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setInt(1, accountID);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                Ques_Ans qa = new Ques_Ans();
+                qa.setQuestion(qdao.getQuestionById(rs.getInt(1), 1));
+                qa.setAnswer(rs.getString(2));
+                qa.setQuiz(getQuizById(rs.getInt(3)));
+                ques_Anses.add(qa);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(QuestionDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return ques_Anses;
+    }
+
+    public Answer getAnswerByID(int id) {
+        Connection connection = getConnection();
+        try {
+            String sql = "select answer_id, answer_content from answer where answer_id = ?";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setInt(1, id);
+            ResultSet rs = stm.executeQuery();
+            if (rs.next()) {
+                Answer a = new Answer(rs.getInt(1), rs.getString(2));
+                return a;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(QuestionDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
 }

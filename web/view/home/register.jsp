@@ -33,17 +33,17 @@
                     <div class="card-body rounded-bottom bg-primary p-5">
                         <form id="register_form" action="${pageContext.request.contextPath}/register" method="post">
                             <div class="form-group">
-                                <input name="register_username" type="text" class="form-control border-0 p-4" placeholder="Username" required="required" />
+                                <input name="register_username" type="text" class="form-control border-0 p-4" placeholder="Username" required/>
                             </div>
                             <div class="form-group">
-                                <input id="password" name="register_password" type="password" class="form-control border-0 p-4" placeholder="Password" required="required" />
+                                <input id="password" name="register_password" type="password" class="form-control border-0 p-4" placeholder="Password" required/>
                             </div>
                             <div class="form-group">
-                                <input id="re_password" name="re_password" type="password" class="form-control border-0 p-4" placeholder="Re-password" required="required" />
+                                <input id="re_password" name="re_password" type="password" class="form-control border-0 p-4" placeholder="Re-password" required/>
                             </div>
                             <div id="password_alert" style="color: white;"></div>
                             <div class="form-group">
-                                <input name="register_fullname" type="text" class="form-control border-0 p-4" placeholder="Fullname" required="required"
+                                <input name="register_fullname" type="text" class="form-control border-0 p-4" placeholder="Fullname" required
                                        pattern="^[a-zA-ZaAàÀảẢãÃáÁạẠăĂằẰẳẲẵẴắẮặẶâÂầẦẩẨẫẪấẤậẬbBcCdDđĐeEèÈẻẺẽẼéÉẹẸêÊềỀểỂễỄếẾệỆfFgGhHiIìÌỉỈĩĨíÍịỊjJkKlLmMnNoOòÒỏỎõÕóÓọỌôÔồỒổỔỗỖốỐộỘơƠờỜởỞỡỠớỚợỢpPqQrRsStTuUùÙủỦũŨúÚụỤưƯừỪửỬữỮứỨựỰvVwWxXyYỳỲỷỶỹỸýÝỵỴ\s]+$"
                                        title="Name must't contain number and special characters"/>
                             </div>
@@ -53,10 +53,10 @@
                                 <input name="gender" type="radio" value="female"/>Female
                             </div>
                             <div class="form-group">
-                                <input name="register_email" type="email" class="form-control border-0 p-4" placeholder="Email" required="required" />
+                                <input name="register_email" type="email" class="form-control border-0 p-4" placeholder="Email" required/>
                             </div>
                             <div class="form-group">
-                                <input name="register_phone" type="tel" class="form-control border-0 p-4" placeholder="Phone number" required="required" />
+                                <input name="register_phone" type="tel" class="form-control border-0 p-4" placeholder="Phone number" required/>
                             </div>
                             <div>
                                 <button class="btn btn-dark btn-block border-0 py-3" type="button" onclick="checkRePassword()">Register</button>
@@ -65,22 +65,17 @@
                                 <p style="color: white;">Username, email or phone number already in use</p>
                             </c:if>
                         </form>
-                            <script>
-                                function checkRePassword(){
-                                    var password = document.getElementById("password").value;
-                                    var re_password = document.getElementById("re_password").value;
-                                    if(password === re_password){
-                                        document.getElementById("register_form").onsubmit = function(){
-                                            return true;
-                                        }
-                                    }else{
-                                        document.getElementById("password_alert").innerHTML+="<p>Password and Re-password not match</p>";
-                                        document.getElementById("register_form").onsubmit = function(){
-                                            return false;
-                                        }
-                                    }
+                        <script>
+                            function checkRePassword() {
+                                var password = document.getElementById("password").value;
+                                var re_password = document.getElementById("re_password").value;
+                                if (password === re_password) {
+                                    document.getElementById("register_form").submit();
+                                } else {
+                                    document.getElementById("password_alert").innerHTML = "<p>Password and Re-password not match</p>";
                                 }
-                            </script>
+                            }
+                        </script>
                     </div>
                 </div>
             </div>
