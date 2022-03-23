@@ -5,6 +5,7 @@
  */
 package dal;
 
+import controller.TypeConfigController;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -18,7 +19,9 @@ import model.Category;
 import model.Question;
 import model.Quiz;
 import model.Quiz_Account;
+import model.Setting;
 import model.Subject;
+import model.Type;
 
 /**
  *
@@ -32,24 +35,25 @@ public class QuizDAO extends DBContext {
         Connection connection = getConnection();
         ArrayList<Quiz> quizs = new ArrayList<>();
         String sql = "select * from (select row_number()over (order by quiz_id asc) as stt,\n"
-                + "q.quiz_id, q.quiz_title, s.subject_title, c.category_name, q.quiz_level\n"
-                + "                , q.quiz_type, ap.account_fullname as Author, q.quiz_status\n"
+                + "q.quiz_id, q.quiz_title, s.subject_title, c.setting_name, q.quiz_level\n"
+                + "                , q.quiz_type, ap.account_fullname as Author\n"
                 + "                FROM quiz as q \n"
-                + "                left join subject as s on q.subject_id = s.subject_id \n"
-                + "                left join category as c on q.category_id = c.category_id\n"
-                + "                left join account_profile as ap on q.account_id = ap.account_id";
+                + "                left join subject as s on q.quiz_subject = s.subject_id \n"
+                + "                left join setting as c on q.quiz_category = c.setting_id\n"
+                + "                left join quiz_account as qa on qa.quiz_id = q.quiz_id"
+                + "                left join account_profile as ap on qa.account_id = ap.account_id";
         if (subject != null && category != null && quiz_type != null) {
             if (!subject.equalsIgnoreCase("all") && !category.equalsIgnoreCase("all") && !quiz_type.equalsIgnoreCase("all")) {
-                sql += " where s.subject_title = '" + subject + "' and c.category_name = '" + category + "' and q.quiz_type = '" + quiz_type + "'";
+                sql += " where s.subject_title = '" + subject + "' and c.setting_name = '" + category + "' and q.quiz_type = '" + quiz_type + "'";
             }
             if (subject.equalsIgnoreCase("all") && !category.equalsIgnoreCase("all") && !quiz_type.equalsIgnoreCase("all")) {
-                sql += " where  c.category_name = '" + category + "' and q.quiz_type = '" + quiz_type + "'";
+                sql += " where  c.setting_name = '" + category + "' and q.quiz_type = '" + quiz_type + "'";
             }
             if (subject.equalsIgnoreCase("all") && category.equalsIgnoreCase("all") && !quiz_type.equalsIgnoreCase("all")) {
                 sql += " where q.quiz_type = '" + quiz_type + "' ";
             }
             if (subject.equalsIgnoreCase("all") && !category.equalsIgnoreCase("all") && quiz_type.equalsIgnoreCase("all")) {
-                sql += " where c.category_name = '" + category + "'";
+                sql += " where c.setting_name = '" + category + "'";
             }
             if (!subject.equalsIgnoreCase("all") && category.equalsIgnoreCase("all") && !quiz_type.equalsIgnoreCase("all")) {
                 sql += " where s.subject_title = '" + subject + "'  and q.quiz_type = '" + quiz_type + "'";
@@ -58,7 +62,7 @@ public class QuizDAO extends DBContext {
                 sql += " where s.subject_title = '" + subject + "'";
             }
             if (!subject.equalsIgnoreCase("all") && !category.equalsIgnoreCase("all") && quiz_type.equalsIgnoreCase("all")) {
-                sql += " where s.subject_title = '" + subject + "' and c.category_name = '" + category + "'";
+                sql += " where s.subject_title = '" + subject + "' and c.setting_name = '" + category + "'";
             }
         }
         if (search_quiz_title != null) {
@@ -79,14 +83,13 @@ public class QuizDAO extends DBContext {
                 q.setTitle(rs.getString("quiz_title"));
                 q.setLevel(rs.getString("quiz_level"));
                 q.setType(rs.getString("quiz_type"));
-                q.setStatus(rs.getString("quiz_status"));
 
                 Subject sub = new Subject();
                 sub.setSubject_title(rs.getString("subject_title"));
                 q.setSubject(sub);
 
                 Category cate = new Category();
-                cate.setCategory_name(rs.getString("category_name"));
+                cate.setCategory_name(rs.getString("setting_name"));
                 q.setCategory(cate);
                 Account acc = new Account();
                 acc.setFullname(rs.getString("Author"));
@@ -110,21 +113,22 @@ public class QuizDAO extends DBContext {
         Connection connection = getConnection();
         try {
             String sql = "select count(*) as total From  quiz\n"
-                    + "join subject as s on quiz.subject_id = s.subject_id\n"
-                    + "join category as c on quiz.category_id = c.category_id\n"
-                    + "join account_profile as ap on quiz_account.account_id = ap.account_id";
+                    + "left join subject as s on quiz.quiz_subject = s.subject_id\n"
+                    + "left join setting as c on quiz.quiz_category = c.setting_id\n"
+                    + "left join quiz_account as qa on qa.quiz_id = quiz.quiz_id\n"
+                    + "join account_profile as ap on qa.account_id = ap.account_id";
             if (subject != null && category != null && quiz_type != null) {
                 if (!subject.equalsIgnoreCase("all") && !category.equalsIgnoreCase("all") && !quiz_type.equalsIgnoreCase("all")) {
-                    sql += " where subject_title = '" + subject + "' and category_name = '" + category + "' and quiz_type = '" + quiz_type + "'; ";
+                    sql += " where subject_title = '" + subject + "' and setting_name = '" + category + "' and quiz_type = '" + quiz_type + "'; ";
                 }
                 if (subject.equalsIgnoreCase("all") && !category.equalsIgnoreCase("all") && !quiz_type.equalsIgnoreCase("all")) {
-                    sql += " where  category_name = '" + category + "' and quiz_type = '" + quiz_type + "'; ";
+                    sql += " where  setting_name = '" + category + "' and quiz_type = '" + quiz_type + "'; ";
                 }
                 if (subject.equalsIgnoreCase("all") && category.equalsIgnoreCase("all") && !quiz_type.equalsIgnoreCase("all")) {
                     sql += " where quiz_type = '" + quiz_type + "'; ";
                 }
                 if (subject.equalsIgnoreCase("all") && !category.equalsIgnoreCase("all") && quiz_type.equalsIgnoreCase("all")) {
-                    sql += " where category_name = '" + category + "'; ";
+                    sql += " where setting_name = '" + category + "'; ";
                 }
                 if (!subject.equalsIgnoreCase("all") && category.equalsIgnoreCase("all") && !quiz_type.equalsIgnoreCase("all")) {
                     sql += " where subject_title = '" + subject + "'  and quiz_type = '" + quiz_type + "'; ";
@@ -133,7 +137,7 @@ public class QuizDAO extends DBContext {
                     sql += " where subject_title = '" + subject + "'; ";
                 }
                 if (!subject.equalsIgnoreCase("all") && !category.equalsIgnoreCase("all") && quiz_type.equalsIgnoreCase("all")) {
-                    sql += " where subject_title = '" + subject + "' and category_name = '" + category + "'; ";
+                    sql += " where subject_title = '" + subject + "' and setting_name = '" + category + "'; ";
                 }
             }
             if (search_quiz_title != null) {
@@ -186,15 +190,15 @@ public class QuizDAO extends DBContext {
     public ArrayList<Category> getCates() {
         Connection connection = getConnection();
         ArrayList<Category> c = new ArrayList<>();
-        String sql = "SELECT * FROM category;";
+        String sql = "SELECT * FROM setting where setting_type = 'Category'";
         try {
             ps = connection.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 Category cate = new Category();
-                cate.setCategory_id(rs.getInt("category_id"));
-                cate.setCategory_name(rs.getString("category_name"));
-                cate.setCategory_value(rs.getString("category_value"));
+                cate.setCategory_id(rs.getInt("setting_id"));
+                cate.setCategory_name(rs.getString("setting_name"));
+                cate.setCategory_value(rs.getString("setting_value"));
                 c.add(cate);
             }
             ps.close();
@@ -522,7 +526,7 @@ public class QuizDAO extends DBContext {
         Connection connection = getConnection();
         try {
             connection.setAutoCommit(false);
-            String sql = "UPDATE `quiz` SET `quiz_title` = ?, `subject_id` = ?, `category_id` = ?, `quiz_level` = ?,\n"
+            String sql = "UPDATE `quiz` SET `quiz_title` = ?, `subject_id` = ?, `setting_id` = ?, `quiz_level` = ?,\n"
                     + "`quiz_type` = ?\n"
                     + "WHERE (`quiz_id` = ?) ;";
             PreparedStatement ps = connection.prepareStatement(sql);
@@ -803,7 +807,13 @@ public class QuizDAO extends DBContext {
         }
         return null;
     }
-
+    public ArrayList<Setting> getQuizTypes(){
+        SettingDAO sd = new SettingDAO();
+        TypeConfigController tcc = new TypeConfigController();
+        ArrayList<Type> types = tcc.getTypesList();
+        ArrayList<Setting> settings = sd.getALLSetting(10000, 1, types.get(5).getName(), "all", "all");
+        return settings;
+    }
     public static void main(String[] args) {
         QuizDAO qdb = new QuizDAO();
 //        for (Question q : qdb.getQuizById(1).getQuestions()) {
