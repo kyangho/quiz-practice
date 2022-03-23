@@ -5,6 +5,7 @@
  */
 package dal;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -21,7 +22,7 @@ import model.Subject;
 public class SubjectDAO extends DBContext {
 
     public ArrayList<Subject> getAllSubject_2(int pageSize, int pageIndex, String status, String subject_title) {
-//        String s = "SELECT * FROM quiz_db.`subject` as s join quiz_db.`user` on s.user_id = `user`.user_id";
+        Connection connection = getConnection();
         String sql = "select * from (select row_number() over (order by subject_id ) as stt,\n"
                 + "subject_id, subject_title, subject_status, subject_author, ap.account_fullname, ap.account_id FROM quiz_db.`subject` \n"
                 + "as s join quiz_db.`account` on s.subject_author = `account`.account_id \n"
@@ -34,14 +35,20 @@ public class SubjectDAO extends DBContext {
         if (subject_title != null) {
             sql += " where subject_title like '%" + subject_title + "%'";
         }
-        sql += " ) as t where  t.stt >= (? - 1)*? + 1 AND t.stt <= ? * ?";
+        sql += ") as t";
+        if (pageIndex != 0 && pageSize != 0) {
+            sql += " where  t.stt >= (? - 1)*? + 1 AND t.stt <= ? * ?";
+        }
+
         ArrayList<Subject> subjects = new ArrayList<>();
         try {
             PreparedStatement stm = connection.prepareStatement(sql);
-            stm.setInt(1, pageIndex);
-            stm.setInt(2, pageSize);
-            stm.setInt(3, pageIndex);
-            stm.setInt(4, pageSize);
+            if (pageIndex != 0 && pageSize != 0) {
+                stm.setInt(1, pageIndex);
+                stm.setInt(2, pageSize);
+                stm.setInt(3, pageIndex);
+                stm.setInt(4, pageSize);
+            }
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
                 Subject subject = new Subject();
@@ -53,14 +60,23 @@ public class SubjectDAO extends DBContext {
                 subject.setSubject_Author(u);
                 subjects.add(subject);
             }
+            stm.close();
+           
         } catch (SQLException ex) {
             Logger.getLogger(SettingDAO.class.getName()).log(Level.SEVERE, null, ex);
             return null;
+        }finally{
+            try {
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(SubjectDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return subjects;
     }
 
     public int getRowcount(String status, String subject_title) {
+        Connection connection = getConnection();
         try {
             String sql = "select count(*) as total From  quiz_db.subject";
             if (status != null) {
@@ -77,13 +93,21 @@ public class SubjectDAO extends DBContext {
             if (rs.next()) {
                 return rs.getInt("total");
             }
+            ps.close();
         } catch (SQLException e) {
             Logger.getLogger(SubjectDAO.class.getName()).log(Level.SEVERE, null, e);
+        }finally{
+            try {
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(SubjectDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return -1;
     }
 
     public Subject getSubjectDetail(String subject_id) {
+        Connection connection = getConnection();
         try {
             String sql = "select s.subject_id,s.subject_title, ap.account_fullname, s.subject_status\n"
                     + "FROM quiz_db.`subject` \n"
@@ -106,29 +130,44 @@ public class SubjectDAO extends DBContext {
                     sub.setSubject_Author(acc);
                 }
             }
+            ps.close();
             return sub;
 
         } catch (SQLException ex) {
             Logger.getLogger(SubjectDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }finally{
+            try {
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(SubjectDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return null;
     }
 
     public void inserSubject(Subject subject) {
+        Connection connection = getConnection();
         try {
             String sql = "INSERT INTO `subject` (`subject_title`, `subject_author`, `subject_status`) VALUES (?,?, ?);";
             PreparedStatement ps = connection.prepareStatement(sql);
             ps.setString(1, subject.getSubject_title());
             ps.setInt(2, subject.getSubject_Author().getId());
             ps.setString(3, subject.getSubject_status());
-
             ps.executeUpdate();
+            ps.close();
         } catch (SQLException ex) {
             Logger.getLogger(SubjectDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }finally{
+            try {
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(SubjectDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 
     public void editSubject(Subject sub) {
+        Connection connection = getConnection();
         try {
             String sql = "UPDATE `subject`\n"
                     + "SET\n"
@@ -142,12 +181,20 @@ public class SubjectDAO extends DBContext {
             ps.setString(3, sub.getSubject_status());
             ps.setInt(4, sub.getSubject_id());
             ps.executeUpdate();
+            ps.close();
         } catch (SQLException ex) {
             Logger.getLogger(SubjectDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }finally{
+            try {
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(SubjectDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 
     public boolean unpublishedSubject(int subjectId) {
+        Connection connection = getConnection();
         try {
             String sql = "UPDATE `subject` SET `subject_status` = ?"
                     + " WHERE (`subject_id` = ?);";
@@ -155,14 +202,22 @@ public class SubjectDAO extends DBContext {
             ps.setString(1, "Unpublished");
             ps.setInt(2, subjectId);
             ps.executeUpdate();
+            ps.close();
         } catch (SQLException ex) {
             Logger.getLogger(SubjectDAO.class.getName()).log(Level.SEVERE, null, ex);
             return false;
+        }finally{
+            try {
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(SubjectDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return true;
     }
 
     public boolean publishedSubject(int subjectId) {
+        Connection connection = getConnection();
         try {
             String sql = "UPDATE `subject` SET `subject_status` = ?"
                     + " WHERE (`subject_id` = ?);";
@@ -170,29 +225,45 @@ public class SubjectDAO extends DBContext {
             ps.setString(1, "Published");
             ps.setInt(2, subjectId);
             ps.executeUpdate();
+            ps.close();
         } catch (SQLException ex) {
             Logger.getLogger(SubjectDAO.class.getName()).log(Level.SEVERE, null, ex);
             return false;
+        }finally{
+            try {
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(SubjectDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return true;
     }
 
     public void deleteSubject(int id) {
+        Connection connection = getConnection();
         try {
             String sql = "delete from quiz_db.`subject` where `subject`.subject_id = ?";
             PreparedStatement ps = connection.prepareStatement(sql);
             ps.setInt(1, id);
             ps.executeUpdate();
+            ps.close();
         } catch (SQLException ex) {
             Logger.getLogger(SubjectDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }finally{
+            try {
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(SubjectDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
+
     public static void main(String[] args) {
         SubjectDAO s = new SubjectDAO();
         for (Subject dSubject : s.getAllSubject_2(1, 2, "all", null)) {
             System.out.println(dSubject.getSubject_id());
         }
-        
+
     }
 }
 

@@ -5,6 +5,7 @@
  */
 package dal;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -20,6 +21,7 @@ import model.Setting;
 public class SettingDAO extends DBContext {
 
     public Setting getSettingById(int id) {
+        Connection connection = getConnection();
         String sql_select = "SELECT \n"
                 + "    `setting`.`setting_name`,\n"
                 + "    `setting`.`setting_type`,\n"
@@ -43,14 +45,21 @@ public class SettingDAO extends DBContext {
                 setting.setStatus(rs.getString("setting_status"));
                 return setting;
             }
-
+            stm.close();
         } catch (SQLException ex) {
             Logger.getLogger(SettingDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }finally{
+            try {
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(SettingDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return null;
     }
 
     public int totalRowsInSetting(String status, String type, String setting_name) {
+        Connection connection = getConnection();
         try {
             String sql = "select count(*) as toltalRows from setting\n";
             if (status != null && type != null) {
@@ -75,14 +84,22 @@ public class SettingDAO extends DBContext {
             if (rs.next()) {
                 return rs.getInt("toltalRows");
             }
+            stm.close();
         } catch (SQLException ex) {
             Logger.getLogger(SettingDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }finally{
+            try {
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(SettingDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
 
         return -1;
     }
 
     public boolean insertSetting(Setting setting) {
+        Connection connection = getConnection();
         String sql_insert = "INSERT INTO `setting`\n"
                 + "	(`setting_name`,`setting_type`,\n"
                 + "    `setting_description`,`setting_value`,\n"
@@ -96,16 +113,23 @@ public class SettingDAO extends DBContext {
             stm.setString(3, setting.getDescription());
             stm.setString(4, setting.getValue());
             stm.setString(5, setting.getStatus());
-
             stm.executeUpdate();
+            stm.close();
         } catch (SQLException ex) {
             Logger.getLogger(SettingDAO.class.getName()).log(Level.SEVERE, null, ex);
             return false;
+        }finally{
+            try {
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(SettingDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return true;
     }
 
     public boolean updateSetting(Setting setting) {
+        Connection connection = getConnection();
         String sql_update = "UPDATE `setting`\n"
                 + "SET\n"
                 + "	`setting_name` = ?,`setting_type` = ?,\n"
@@ -120,16 +144,23 @@ public class SettingDAO extends DBContext {
             stm.setString(4, setting.getValue());
             stm.setString(5, setting.getStatus().toUpperCase());
             stm.setInt(6, setting.getId());
-
             stm.executeUpdate();
+            stm.close();
         } catch (SQLException ex) {
             Logger.getLogger(SettingDAO.class.getName()).log(Level.SEVERE, null, ex);
             return false;
+        }finally{
+            try {
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(SettingDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return true;
     }
 
     public boolean deactiveSetting(int settingId) {
+        Connection connection = getConnection();
         String sql = "UPDATE `setting`\n"
                 + "SET`setting_status` = ?\n"
                 + "WHERE `setting_id` = ?;";
@@ -138,16 +169,23 @@ public class SettingDAO extends DBContext {
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setString(1, "DEACTIVE");
             stm.setInt(2, settingId);
-
             stm.executeUpdate();
+            stm.close();
         } catch (SQLException ex) {
             Logger.getLogger(SettingDAO.class.getName()).log(Level.SEVERE, null, ex);
             return false;
+        }finally{
+            try {
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(SettingDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return true;
     }
 
     public boolean activeSetting(int settingId) {
+        Connection connection = getConnection();
         String sql = "UPDATE `setting`\n"
                 + "SET`setting_status` = ?\n"
                 + "WHERE `setting_id` = ?;";
@@ -156,16 +194,23 @@ public class SettingDAO extends DBContext {
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setString(1, "ACTIVE");
             stm.setInt(2, settingId);
-
             stm.executeUpdate();
+            stm.close();
         } catch (SQLException ex) {
             Logger.getLogger(SettingDAO.class.getName()).log(Level.SEVERE, null, ex);
             return false;
+        }finally{
+            try {
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(SettingDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return true;
     }
 
     public ArrayList<Setting> getALLSetting(int pageSize, int pageIndex, String type, String status, String setting_name) {
+        Connection connection = getConnection();
         String sql_get = "select * from\n"
                 + "             (select row_number() over (order by setting_id ) as stt, s.* \n"
                 + "                    from setting s\n";
@@ -205,9 +250,16 @@ public class SettingDAO extends DBContext {
 
                 settings.add(setting);
             }
+            stm.close();
         } catch (SQLException ex) {
             Logger.getLogger(SettingDAO.class.getName()).log(Level.SEVERE, null, ex);
             return null;
+        }finally{
+            try {
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(SettingDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return settings;
 

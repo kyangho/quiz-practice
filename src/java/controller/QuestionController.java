@@ -185,24 +185,25 @@ public class QuestionController extends HttpServlet {
             throws ServletException, IOException {
         Account account = (Account) request.getSession().getAttribute("account");
         String quesId = request.getParameter("questionId");
-        if (quesId == null) {
-            quesId = request.getAttribute("quesid").toString();
-        }
         String cateId = request.getParameter("cateid");
         QuestionDAO qdao = new QuestionDAO();
         Question question = qdao.getQuestionById(Integer.parseInt(quesId), account.getId());
         request.setAttribute("question", question);
+        ArrayList<Subcategory> sub;
         if (cateId == null) {
-            request.setAttribute("subcate", qdao.getSubCategoryByCate(question.getCategory().getCategory_id()));
+            sub = qdao.getSubCategoryByCate(question.getCategory().getCategory_id());
+            request.setAttribute("subcate", sub);
         } else {
-            request.setAttribute("subcate", qdao.getSubCategoryByCate(Integer.parseInt(cateId)));
+            sub = qdao.getSubCategoryByCate(Integer.parseInt(cateId));
+            request.setAttribute("subcate", sub);
         }
+//        for (Subcategory subcategory : sub) {
+//            response.getWriter().print(subcategory.getName());
+//        }
         QuizDAO q = new QuizDAO();
         request.setAttribute("level", qdao.getLevel());
         request.setAttribute("categories", qdao.getCategory());
         request.setAttribute("subjects", q.getsubs());
-//        request.setAttribute("quizs", qdao.getQuizForQuestion(account.getId()));
-//        request.setAttribute("quizId", qdao.getQuizIdOfQuestion(question.getId()));
         request.setAttribute("tag", "question");
         request.getRequestDispatcher("../view/director/question/questiondetails.jsp").forward(request, response);
     }
@@ -215,9 +216,7 @@ public class QuestionController extends HttpServlet {
         response.getWriter().print(anId + " " + quesid);
         if (anId != null && quesid != null) {
             qdao.deleteAnswer(Integer.parseInt(anId));
-            request.setAttribute("quesid", quesid);
-            request.setAttribute("tag", "question");
-            request.getRequestDispatcher("details").forward(request, response);
+            request.getRequestDispatcher("details?questionId=" + quesid).forward(request, response);
         }
 
         if (anId == null && quesid != null) {
@@ -329,37 +328,38 @@ public class QuestionController extends HttpServlet {
             String line;
             boolean isFirstLine = true;
             while ((line = br.readLine()) != null) {
-                if (isFirstLine){
+                if (isFirstLine) {
                     isFirstLine = false;
                     continue;
                 }
                 Question question = new Question();
                 String[] infors = line.split("(?<=\"),|(?!(.{1,9999}\\\")),");
-                if (infors[0].isEmpty()){
+                if (infors[0].isEmpty()) {
                     continue;
                 }
                 question.setContent(infors[0]);
-                for(Category c : categories){
-                    if (c.getCategory_value().compareToIgnoreCase(infors[1]) == 0){
+                for (Category c : categories) {
+                    if (c.getCategory_value().compareToIgnoreCase(infors[1]) == 0) {
                         question.setCategory(c);
                     }
                 }
-                for (Subcategory sc : subcategories){
-                    if (sc.getName().compareToIgnoreCase(infors[1]) == 0){
+                for (Subcategory sc : subcategories) {
+                    if (sc.getName().compareToIgnoreCase(infors[1]) == 0) {
                         question.setSubCategory(sc);
                     }
                 }
-                for (int i = 2; i < infors.length; i++){
+                for (int i = 2; i < infors.length; i++) {
                     question.getAnswers().add(new Answer(1, infors[i]));
                 }
-                if (question.getAnswers().size() >= 2){
+                if (question.getAnswers().size() >= 2) {
                     questions.add(question);
                 }
             }
             QuestionAnswerDAO qaDAO = new QuestionAnswerDAO();
-            for (Question q : questions){
+            for (Question q : questions) {
                 qaDAO.insertQuestionInfor(q);
             }
         }
+        response.sendRedirect("list");
     }
 }

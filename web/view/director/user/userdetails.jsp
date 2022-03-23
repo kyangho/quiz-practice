@@ -26,13 +26,13 @@
                             <div class="col-lg-4">
                                 <div class="avatar" style="box-shadow: 0 0 5px 2px;margin-top: 12%;">
                                 <c:if test="${account.avatar eq null && account.gender}">
-                                    <img style="    border-radius: 50%; width: 73%; margin: 3% 11%;" src="https://anhdep123.com/wp-content/uploads/2021/05/avatar-trang-dep.jpg" alt=""/>
+                                    <img class="img-circle" style="width: 73%; margin: 3% 11%;" src="https://anhdep123.com/wp-content/uploads/2021/05/avatar-trang-dep.jpg" alt=""/>
                                 </c:if>
                                 <c:if test="${account.avatar eq null && !account.gender}">
-                                    <img style="    border-radius: 50%; width: 73%; margin: 3% 11%;" src="https://anhdep123.com/wp-content/uploads/2021/05/hinh-avatar-trang.jpg" alt=""/>
+                                    <img class="img-circle" style="width: 73%; margin: 3% 11%;" src="https://anhdep123.com/wp-content/uploads/2021/05/hinh-avatar-trang.jpg" alt=""/>
                                 </c:if>
                                 <c:if test="${account.avatar != null}">
-                                    <img style="    border-radius: 50%; width: 73%; margin: 3% 11%" src="${account.avatar}" alt=""/>
+                                    <img src="${pageContext.servletContext.contextPath}/profile/avatar?accountID=${account.id}" class="img-circle" >
                                 </c:if>
                             </div>
                         </div>

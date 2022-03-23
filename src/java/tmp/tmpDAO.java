@@ -7,6 +7,7 @@ package tmp;
 
 import dal.DBContext;
 import dal.QuestionDAO;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -26,6 +27,7 @@ import model.Subject;
 public class tmpDAO extends DBContext {
 
     public ArrayList<Ques_Ans> getQuestion_AnswerList(String search) {
+        Connection connection = getConnection();
         QuestionDAO qdao = new QuestionDAO();
         ArrayList<Ques_Ans> ques_Anses = new ArrayList<>();
         try {
@@ -52,6 +54,7 @@ public class tmpDAO extends DBContext {
     }
 
     public Answer getAnswerByID(int id) {
+        Connection connection = getConnection();
         try {
             String sql = "select answer_id, answer_content from answer where answer_id = ?";
             PreparedStatement stm = connection.prepareStatement(sql);

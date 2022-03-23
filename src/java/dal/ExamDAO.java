@@ -4,6 +4,7 @@
  */
 package dal;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -20,6 +21,7 @@ public class ExamDAO extends DBContext {
 
 //lay exam list sort by updatedDate
     public ArrayList<Exam> getExams() {
+        Connection connection = getConnection();
         ArrayList<Exam> exams = new ArrayList<>();
         String sql = "SELECT `exam`.`id`,\n"
                 + "    `exam`.`thumbnail`,\n"
@@ -52,14 +54,22 @@ public class ExamDAO extends DBContext {
                 exam.setClassName(classDAO.getClassByID(classId).getClassName());
                 exams.add(exam);
             }
+            stm.close();
         } catch (SQLException ex) {
             Logger.getLogger(ExamDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }finally{
+            try {
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(ExamDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return exams;
     }
 
 //lay examlist theo search sort by updatedDate
     public ArrayList<Exam> getExams(String subject, String category, String type, String search) {
+        Connection connection = getConnection();
         ArrayList<Exam> exams = new ArrayList<>();
         String sql = "SELECT `exam`.`id`,\n"
                 + "    `exam`.`thumbnail`,\n"
@@ -94,13 +104,21 @@ public class ExamDAO extends DBContext {
                 exam.setClassName(classDAO.getClassByID(classId).getClassName());
                 exams.add(exam);
             }
+            stm.close();
         } catch (SQLException ex) {
             Logger.getLogger(ExamDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }finally{
+            try {
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(ExamDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return exams;
     }
 
     public Exam getExamDetail(int id) {
+        Connection connection = getConnection();
         Exam exam = new Exam();
         String sql = "SELECT `exam`.`id`,\n"
                 + "    `exam`.`thumbnail`,\n"
@@ -133,8 +151,15 @@ public class ExamDAO extends DBContext {
                 ClassDAO classDAO = new ClassDAO();
                 exam.setClassName(classDAO.getClassByID(classId).getClassName());
             }
+            stm.close();
         } catch (SQLException ex) {
             Logger.getLogger(ExamDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }finally{
+            try {
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(ExamDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return exam;
     }

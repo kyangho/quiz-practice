@@ -13,7 +13,7 @@ import model.Exam;
  *
  * @author kienct
  */
-@WebServlet(name = "ExamDetailController", urlPatterns = {"/exam/detail"})
+@WebServlet(name = "ExamDetailController", urlPatterns = {"/detail"})
 public class ExamDetailController extends HttpServlet {
 
     @Override

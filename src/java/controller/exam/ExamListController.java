@@ -43,7 +43,15 @@ ArrayList<Exam> exams = dao.getExams();
         String category = request.getParameter("category");
         String type = request.getParameter("type");
         String search = request.getParameter("search_exam_title");
-        ArrayList<Exam> exams = dao.getExams(subject, category, type, search);
+        if (category == null){
+            category = "";
+        }else if (category.compareToIgnoreCase("all") == 0){
+            category = "";
+        }
+        if (search == null){
+            search = "";
+        }
+        ArrayList<Exam> exams = dao.getExams("", category, "", search);
         ArrayList<Category> cates = q.getCates();
         request.setAttribute("search_exam_title", search);
         request.setAttribute("exams", exams);
@@ -52,7 +60,7 @@ ArrayList<Exam> exams = dao.getExams();
         request.setAttribute("category", category);
         request.setAttribute("type", type);
         request.setAttribute("subs", subs);
-        request.getRequestDispatcher("../view/exam/examlist.jsp").forward(request, response);
+        request.getRequestDispatcher("/view/exam/examlist.jsp").forward(request, response);
 
     }
 

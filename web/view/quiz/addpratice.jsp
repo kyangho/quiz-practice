@@ -2,120 +2,104 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <jsp:include page="../home/header_footer/header.jsp"></jsp:include>
     <div class="row" style="margin: 2%;">
-    <c:if test="${sessionScope.account!= null}">
-        <div class="col-lg-4 col-sm-3 row">
-            <a style="margin-bottom: 2%;" class="col-lg-7 btn btn-circle btn-success" href="list"><i class="bi bi-arrow-return-left"></i> Practice List</a>
-            <a class="col-lg-7  btn btn-circle btn-danger" href="#"><i class="bi bi-bookmark-plus"></i></i> Create new Quiz</a>
-        </div>
-    </c:if>
-    <c:if test="${sessionScope.account == null}">
-        <div class="col-lg-3 col-sm-3">
-        </div>
-    </c:if>
-    <div class="col-sm-9 col-lg-7">
-        <form action="details" method="POST">
-            <div class="form-outline mb-4" style="display: flex;">
-                <input type="text" value="${requestScope.keySearch}" name="keySearch" class="form-control"placeholder="Find a quiz">
-                <button type="submit" class="btn btn-primary">
-                    <i class="fas fa-search"></i>
-                </button>
-            </div>
-        </form>
+        <div class="col-lg-2">
+        <c:if test="${sessionScope.account != null}">
+            <a class="btn btn-circle btn-success" href="list"><i class="bi bi-arrow-return-left"></i> Practice List</a>
+        </c:if>
     </div>
+        <form action="add" method="GET" class="col-lg-9 row" id="searchQues">
+        <h2><strong>Please choose options to select some questions for new practice!</strong></h2>
+        <div class="col-lg-3">
+            Subject: 
+            <select name="subject" class="form-select form-select-sm" aria-label=".form-select-sm example">
+                <option value="all">Choose subject</option>    
+                <c:forEach items="${subject}" var="s">
+                    <option ${s.subject_id eq subjectID ? "selected=\"selected\"" : ""} value="${s.subject_id}">${s.subject_title}</option>
+                </c:forEach>
+            </select>
+        </div>
+        <div class="col-lg-3">
+            Category:
+            <select name="category" class="form-select form-select-sm" onchange="submitForm()" aria-label=".form-select-sm example">
+                <option value="all">Choose category</option>   
+                <c:forEach items="${categories}" var="c">
+                    <option ${c.category_id eq cateID ? "selected=\"selected\"" : ""} value ="${c.category_id}">${c.category_value}</option>
+                </c:forEach>
+            </select>
+        </div>
+        <div class="col-lg-3">
+            Sub-category:
+            <select name="subcate" class="form-select form-select-sm" aria-label=".form-select-sm example">
+                <option value="all">Choose sub-category</option>   
+                <c:forEach items="${subcate}" var="sb">
+                    <option ${sb.id eq subcateId ? "selected=\"selected\"" : ""} value="${sb.id}">${sb.name}</option>
+                </c:forEach>
+            </select>
+        </div>
+        <div class="col-lg-2">
+            Number of questions:
+            <input value="${noQues}" type="text" name="noQues" placeholder="Number of questions" style="border: solid 1px #d7cece;" class="form-select-sm" aria-label=".form-select-sm example">
+        </div>
+        <div class="col-lg-1">
+            <button style="margin-top: 20px; height: 34px;" class="btn btn-primary" type="submit">Search</button>
+        </div>
+
+    </form>
 </div>
 <div class="container-fluid">
-    <div class="row flex-nowrap">
-        <div class="col py-3">
+    <div class="row flex-nowrap" style="margin: 2%;">
+        <div class="col-lg-2">
+        </div>
+        <div class="col-lg-9">
             <!-- Service Start -->
-            <div class="container-xxl py-5" style="margin-left: 7%;">
-                <c:if test="${keySearch == null}">
-                    <div class="row" style="margin-bottom: 1%; margin-left: 2%;">
-                        <div class="col-lg-10 col-sm-10">
-                            <h5 class="mb-3">Some outstanding quizzes</h5>
-                        </div>
-                    </div>
-                    <div class="container">
-                        <div class="row g-4">
-                            <c:forEach items="${requestScope.quizs}" var="q">
-                                <div class="col-lg-3 col-sm-6 wow fadeInUp" data-wow-delay="0.1s">
-                                    <div class="service-item text-center pt-3" style="box-shadow: 0px 0px 6px 1px grey;">
-                                        <a href="details?quizID=${q.id}">
-                                            <div class="p-4" style="text-align: left;">
-                                                <div class="img-responsive ImagePreviewLoader">
-                                                    <img class="img-fluid" src="${pageContext.request.contextPath}/img/quiz1.jpg" alt=""/>
-                                                </div>
-                                                <h5 class="mb-3">${q.title}</h5>
-                                                <p>By: ${q.author.fullname}</p>
-                                                <p class="quiz">${q.questions.size()} Qs</p>
-                                                <!--<p style="background-color: red; border-radius: 10px; color: white; text-align: center;">Result</p>-->
-                                            </div>
-                                        </a>
-                                    </div>
-                                </div>
-                            </c:forEach>
-                        </div>
-                    </div>
-                </c:if>
-                <c:if test="${keySearch != null}">
-                    <div class="container">
-                        <div class="row g-4">
-                            <c:forEach items="${requestScope.quizs}" var="q">
-                                <div class="col-lg-3 col-sm-6 wow fadeInUp" data-wow-delay="0.1s">
-                                    <div class="service-item text-center pt-3" style="box-shadow: 0px 0px 6px 1px grey;">
-                                        <a href="details?quizID=${q.id}">
-                                            <div class="p-4" style="text-align: left;">
-                                                <div class="img-responsive ImagePreviewLoader">
-                                                    <img class="img-fluid" src="${pageContext.request.contextPath}/img/quiz1.jpg" alt=""/>
-                                                </div>
-                                                <h5 class="mb-3">${q.title}</h5>
-                                                <p>By: ${q.author.fullname}</p>
-                                                <p class="quiz">${q.questions.size()} Qs</p>
-                                                <!--<p style="background-color: red; border-radius: 10px; color: white; text-align: center;">Result</p>-->
-                                            </div>
-                                        </a>
-                                    </div>
-                                </div>
-                            </c:forEach>
-                            <div class="paging">   
-                                <nav style="margin: 0 75%;">
-                                    <ul class="pager" style="display: flex;">
-                                        <c:if test="${requestScope.pageindex > 1}">
-                                            <li class="page-item"><a style="background-color: #026407;" class="page" onclick="pagging('${requestScope.url}', ${requestScope.pageindex - 1}, '${requestScope.keySearch}')">Previous</a></li>
-                                            </c:if>
-                                            <c:if test="${requestScope.quizs.size() >= requestScope.pagesize}">
-                                            <li class="page-item"><a style="background-color: #026407;" class="page" onclick="pagging('${requestScope.url}', ${requestScope.pageindex + 1}, '${requestScope.keySearch}')">Next</a></li>
-                                            </c:if>
-                                    </ul>
-                                </nav>
-                            </div>
-                            <script language='javascript'>
-                                function pagging(url, index, key) {
-//                                    console.log(window.location.href);
-//                                    var uri = window.location.href;
-//                                    if (uri.indexOf("&pageindex=") != -1) {
-//                                        uri = uri.split("&pageIndex=")[0];
-//                                        uri = uri + '&';
-//                                    } else if (uri.indexOf("?pageindex=") != -1) {
-//                                        uri = uri.split("?pageindex=")[0];
-//                                        uri = uri + '?';
-//                                    } else if (uri.indexOf("details?") == -1) {
-//                                        uri = uri + '?';
-//                                    } else if (uri.indexOf("&pageindex=") == -1) {
-//                                        uri = uri + '&';
-//                                    }
-
-                                    window.location.href = url + index;
-//                                    uri = uri + '?keySearch=' + key +'&pageindex=' + index;
-//                                    console.log(uri);
-                                }
-                            </script>
-                        </div>
-                    </div>
-                </c:if>
-            </div>
+            <c:if test="${questions.size() == 0}">
+                <h3>Not found questions!</h3>
+            </c:if>
+            <c:if test="${questions.size() > 0}">
+                <div id="choose" style="color: blue; font-weight: bolder;"><input class="form-check-input" onclick="chooseQuestion()" type="checkbox">Select all question</div>
+                <div hidden="" id="unchoose" style="color: blue; font-weight: bolder;"><input class="form-check-input" onclick="unchooseQuestion()" type="checkbox">Un select all question</div>
+                <form action="add" method="POST">
+                    <input type="hidden" value="${cateID}" name="cateid">
+                    <input type="hidden" value="${subjectID}" name="subjectid">
+                    <input type="hidden" value="${subcateId}" name="subcateid">
+                    <table>
+                        <c:forEach items="${questions}" var="q">
+                            <tr>
+                                <td><input type="checkbox" class="ques form-check-input" name="questionId" value="${q.id}"></td>
+                                <td>
+                                    <p>${q.content}</p>
+                                </td>
+                            </tr>
+                        </c:forEach>
+                    </table>
+                    <button class="btn btn-danger" type="submit">Practice</button>
+                </form>
+            </c:if>
         </div>
     </div>
 </div>
+<script>
+    function chooseQuestion() {
+        var question = document.getElementsByClassName('ques');
+        for (var i = 0; i < question.length; i++) {
+            question[i].checked = true;
+        }
+        document.getElementById('unchoose').hidden = false;
+        document.getElementById('choose').hidden = true;
+    }
+    function unchooseQuestion() {
+        document.getElementById('unchoose').hidden = true;
+        document.getElementById('choose').hidden = false;
+        var question = document.getElementsByClassName('ques');
+        for (var i = 0; i < question.length; i++) {
+            question[i].checked = false;
+        }
+    }
+    
+    function submitForm(){
+        document.getElementById('searchQues').submit();
+    }
+</script>
 <style>
     .quiz{
         width: 66px;

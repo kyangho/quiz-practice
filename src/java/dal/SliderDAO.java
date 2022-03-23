@@ -6,6 +6,7 @@
 package dal;
 
 import java.io.InputStream;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -21,6 +22,7 @@ import model.Slider;
 public class SliderDAO extends DBContext {
 
     public ArrayList<Slider> getAllSliders(int pageSize, int pageIndex, String status, String title) {
+        Connection connection = getConnection();
         ArrayList<Slider> list = new ArrayList<>();
         try {
             String sql = "select * from (select row_number()over (order by slider_id asc) as stt, \n"
@@ -52,13 +54,21 @@ public class SliderDAO extends DBContext {
                 s.setNote(rs.getString("slider_note"));
                 list.add(s);
             }
+            ps.close();
         } catch (SQLException ex) {
             Logger.getLogger(SliderDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }finally{
+            try {
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(SliderDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return list;
     }
 
     public void changeStatus(int id, String status) {
+        Connection connection = getConnection();
         try {
             String sql = "UPDATE quiz_db.slider\n"
                     + "SET\n"
@@ -71,14 +81,22 @@ public class SliderDAO extends DBContext {
                 stm.setString(1, "Hide");
             }
             stm.setInt(2, id);
-            System.out.println(stm);
+//            System.out.println(stm);
             stm.executeUpdate();
+            stm.close();
         } catch (SQLException ex) {
             Logger.getLogger(SliderDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }finally{
+            try {
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(SliderDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 
     public int getRowcount(String status, String title) {
+        Connection connection = getConnection();
         try {
             String sql = "select count(*) as total From  quiz_db.slider as s ";
             if (status != null) {
@@ -94,13 +112,21 @@ public class SliderDAO extends DBContext {
             if (rs.next()) {
                 return rs.getInt("total");
             }
+            ps.close();
         } catch (SQLException ex) {
             Logger.getLogger(SliderDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }finally{
+            try {
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(SliderDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return -1;
     }
 
     public Slider GetSliderByID(String id) {
+        Connection connection = getConnection();
         String query = "SELECT * FROM quiz_db.slider where slider.slider_id =  ?";
         try {
             PreparedStatement ps = connection.prepareStatement(query);
@@ -116,13 +142,21 @@ public class SliderDAO extends DBContext {
                 s.setNote(rs.getString("slider_note"));
                 return s;
             }
+            ps.close();
         } catch (SQLException ex) {
             Logger.getLogger(SliderDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }finally{
+            try {
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(SliderDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return null;
     }
 
     public void addSlider(String title, InputStream fileContent, String backlink, String status, String note) {
+        Connection connection = getConnection();
         try {
             String sql = "INSERT INTO `slider` (`slider_title`, `slider_backlink`, `slider_status`, `slider_note`";
             if (fileContent != null) {
@@ -142,13 +176,21 @@ public class SliderDAO extends DBContext {
                 ps.setBlob(5, fileContent);
             }
             ps.executeUpdate();
+            ps.close();
         } catch (SQLException ex) {
             Logger.getLogger(SliderDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }finally{
+            try {
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(SliderDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 
     public void updateSlider(int id, String title, InputStream fileContent, String backlink, String status, String note) {
         int row = 0;
+        Connection connection = getConnection();
         String query = "UPDATE `slider` SET `slider_title` = ?, \n"
                 + " `slider_backlink` = ?, `slider_status` = ?, `slider_note` = ?\n";
         if (fileContent != null) {
@@ -167,11 +209,18 @@ public class SliderDAO extends DBContext {
             } else {
                 ps.setInt(5, id);
             }
-            System.out.println(query);
+//            System.out.println(query);
             row = ps.executeUpdate();
+            ps.close();
         } catch (SQLException ex) {
             Logger.getLogger(SliderDAO.class.getName()).log(Level.SEVERE, null, ex);
             System.out.println(ex.getMessage());
+        }finally{
+            try {
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(SliderDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 }
