@@ -51,7 +51,7 @@
                                         <div style="margin: 0 0 1% 75%; ">
                                             <button class="btn btn-sm btn-default" style="color: white;font-weight: bolder;background-color: #94a8ff;width: 90px;" type="submit">Apply</button>
                                         </div>
-                                        <c:if test="${!requestScope.quiz.isEmpty()}">
+                                        <%--<c:if test="${!requestScope.quiz.isEmpty()}">--%>
                                             <table class="table table-hover">
                                                 <tr>
                                                     <th>ID</th>
@@ -102,7 +102,7 @@
                                                 </c:forEach>
                                                 </tr>
                                             </table>
-                                        </c:if>    
+                                        <%--</c:if>--%>    
                                     </form>
                                     <div id="paggingBottom" class="pageLine" style=" margin: 1%; float: right;">
                                     </div>

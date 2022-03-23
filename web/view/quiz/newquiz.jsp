@@ -95,9 +95,16 @@
                             </tr>
                             <tr>
                                 <td>Author quiz </td>
-                                <td style=" padding-left: 32px;"> 
-                                    ${sessionScope.account.fullname}
-                                    <input name="author"  type="hidden" value=" ${sessionScope.account.id}">
+                                <td> 
+                                    <select name="author" style="width: 501px;  margin-left: 32px;">
+                                        <c:forEach items="${requestScope.account}" var="a">
+                                            <option 
+                                                value="${a.id}">${a.fullname}
+                                            </option>
+                                        </c:forEach>
+                                    </select>
+                                    <!--                                    ${sessionScope.account.fullname}
+                                                                        <input name="author"  type="hidden" value=" ${sessionScope.account.id}">-->
                                 </td>
                             </tr>
                             <tr>
@@ -111,7 +118,7 @@
                             </td>
                             </tr>
                         </table> <br>
-                        <button style="border:none; margin-left: 48%;" onclick="add_child()"><i class="fas fa-plus-circle"></i></button>
+                        <a style="border:none; margin-left: 48%;" onclick="add_child()"><i class="fas fa-plus-circle"></i></a>
                         <br><input style="width: 70px" type="submit" value="Save"><br>
                     </form>
                 </div>
@@ -124,6 +131,7 @@
     function add_child() {
         var p = document.createElement("textarea");
         p.style.padding = "10px";
+
         p.style.color = "white";
         p.style.width = "501px";
         p.style.margin = "10px 0 0 0";
