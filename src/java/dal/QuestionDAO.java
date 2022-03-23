@@ -84,10 +84,11 @@ public class QuestionDAO extends DBContext {
             }
             if (pageindex != 0 || pagesize != 0) {
                 int start = (pageindex - 1) * pagesize;
-                sql += "limit " + start + "," + pagesize + "\n";
+                sql += "group by q.question_id \n"
+                        + "limit " + start + "," + pagesize + "\n";
             }
 
-            sql += ") as ques";
+            sql += " ) as ques";
 //            System.out.println(sql);
             stm = connection.prepareStatement(sql);
             for (Map.Entry<Integer, Object[]> entry : params.entrySet()) {
@@ -149,7 +150,9 @@ public class QuestionDAO extends DBContext {
     public int getTotalRows(int accountId, String key, String subject,
             String subcategory, String level, String status) {
         Connection connection = getConnection();
-        String sql = "select count(*)\n"
+        String sql = "select sum(t.tt) as totalRow from (\n"
+                + "select count(*) as tt from (\n"
+                + "select q.question_id as id\n"
                 + "from question q\n"
                 + "left join quiz_question qq on qq.question_id = q.question_id\n"
                 + "left join quiz on qq.quiz_id = quiz.quiz_id\n"
@@ -157,7 +160,7 @@ public class QuestionDAO extends DBContext {
                 + "left join `subject` s on s.subject_id = q.subject_id\n"
                 + "left join setting st on quiz.quiz_category = st.setting_id\n"
                 + "left join setting st1 on q.question_level = st1.setting_id\n"
-                + "	where (1=1)\n";
+                + "where (1=1)\n";
         if (accountId != 1) {
             sql += "AND quiz_author = " + accountId + "\n";
         }
@@ -198,7 +201,9 @@ public class QuestionDAO extends DBContext {
             param[1] = status;
             params.put(paramIndex, param);
         }
-//            System.out.println(sql);
+        sql += "group by q.question_id ) as a\n"
+                + ") as t";
+        System.out.println(sql);
         PreparedStatement stm = null;
         try {
             stm = connection.prepareStatement(sql);
@@ -217,8 +222,7 @@ public class QuestionDAO extends DBContext {
             stm.close();
         } catch (SQLException ex) {
             Logger.getLogger(QuestionDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        finally {
+        } finally {
             try {
                 connection.close();
             } catch (SQLException ex) {
@@ -262,8 +266,7 @@ public class QuestionDAO extends DBContext {
             stm.close();
         } catch (SQLException ex) {
             Logger.getLogger(QuestionDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        finally {
+        } finally {
             try {
                 connection.close();
             } catch (SQLException ex) {
@@ -288,8 +291,7 @@ public class QuestionDAO extends DBContext {
             stm.close();
         } catch (SQLException ex) {
             Logger.getLogger(QuestionDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        finally {
+        } finally {
             try {
                 connection.close();
             } catch (SQLException ex) {
@@ -321,8 +323,7 @@ public class QuestionDAO extends DBContext {
             stm.close();
         } catch (SQLException ex) {
             Logger.getLogger(QuestionDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        finally {
+        } finally {
             try {
                 connection.close();
             } catch (SQLException ex) {
@@ -345,7 +346,7 @@ public class QuestionDAO extends DBContext {
             stm.close();
         } catch (SQLException ex) {
             Logger.getLogger(QuestionDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }finally{
+        } finally {
             try {
                 connection.close();
             } catch (SQLException ex) {
@@ -369,8 +370,7 @@ public class QuestionDAO extends DBContext {
             stm.close();
         } catch (SQLException ex) {
             Logger.getLogger(QuestionDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        finally {
+        } finally {
             try {
                 connection.close();
             } catch (SQLException ex) {
@@ -449,8 +449,7 @@ public class QuestionDAO extends DBContext {
             stm.close();
         } catch (SQLException ex) {
             Logger.getLogger(QuestionDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        finally {
+        } finally {
             try {
                 connection.close();
             } catch (SQLException ex) {
@@ -572,7 +571,12 @@ public class QuestionDAO extends DBContext {
         return false;
     }
 
-    public static void main(String[] args) {
-        QuestionDAO qdao = new QuestionDAO();
-    }
+//    public static void main(String[] args) {
+//        QuestionDAO qdao = new QuestionDAO();
+//        for (Question question : qdao.getQuestions(1, 1, 10, null, "all", "all", null, "publish")) {
+//            System.out.println(question.getId() + " " + question.getContent());
+//        }
+//
+//        System.out.println(qdao.getTotalRows(1, null, "all", "all", null, "publish"));
+//    }
 }

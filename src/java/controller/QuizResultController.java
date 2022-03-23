@@ -5,6 +5,7 @@
  */
 package controller;
 
+import controller.auth.BaseRequiredAuthController;
 import dal.QuizDAO;
 import model.Ques_Ans;
 import java.io.IOException;
@@ -22,7 +23,7 @@ import model.Account;
  * @author Vu Duc Tien
  */
 @WebServlet(name = "QuizResultController", urlPatterns = {"/quiz/game/result"})
-public class QuizResultController extends HttpServlet {
+public class QuizResultController extends BaseRequiredAuthController {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -83,7 +84,7 @@ public class QuizResultController extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    protected void processGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }
@@ -97,7 +98,7 @@ public class QuizResultController extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+    protected void processPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }
