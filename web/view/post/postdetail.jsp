@@ -18,6 +18,18 @@
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
+<style>
+    .cke_top, .cke_bottom{
+        display: none !important;
+    }
+    .cke_chrome{
+        outline: none;
+        border: none !important;
+    }
+
+
+</style>
+
 <jsp:include page="../home/header_footer/header.jsp"></jsp:include>
 
     <div class="container-fluid col-sm-11 pt-50 post-content">
@@ -103,8 +115,11 @@
                         <a href="">
                             <img  class="col-sm-12 rounded img-fluid w-100 img-responsive pt-2" src="${pageContext.request.contextPath}/post/image?id=${post.id}" alt="">
                         </a>
-                        <div style="white-space: pre-line;">
-                            ${post.content}
+                        <div class="col-sm-12" style="margin-left: -20px">
+                            <textarea name="postContent"  id="postContent" contenteditable="false" rows="10" class="col-sm-12">
+                                ${requestScope.post.content}
+                            </textarea>
+
                         </div>
                         <div style="padding-top: 30px">
                             <h6>Attach file:</h6>
@@ -127,3 +142,8 @@
 </div>
 </div>
 <jsp:include page="../home/header_footer/footer.jsp"></jsp:include>
+    <script>
+        CKEDITOR.replace('postContent', {
+            customConfig: '${pageContext.request.contextPath}/ckeditor/emptyButtonConfig.js'
+        });
+</script>

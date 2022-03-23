@@ -33,9 +33,9 @@ public class QuizDAO extends DBContext {
                 + "q.quiz_id, q.quiz_title, s.subject_title, c.category_name, q.quiz_level\n"
                 + "                , q.quiz_type, ap.account_fullname as Author, q.quiz_status\n"
                 + "                FROM quiz as q \n"
-                + "                join subject as s on q.subject_id = s.subject_id \n"
-                + "                join category as c on q.category_id = c.category_id\n"
-                + "                join account_profile as ap on q.account_id = ap.account_id";
+                + "                left join subject as s on q.subject_id = s.subject_id \n"
+                + "                left join category as c on q.category_id = c.category_id\n"
+                + "                left join account_profile as ap on q.account_id = ap.account_id";
         if (subject != null && category != null && quiz_type != null) {
             if (!subject.equalsIgnoreCase("all") && !category.equalsIgnoreCase("all") && !quiz_type.equalsIgnoreCase("all")) {
                 sql += " where s.subject_title = '" + subject + "' and c.category_name = '" + category + "' and q.quiz_type = '" + quiz_type + "'";
@@ -102,7 +102,7 @@ public class QuizDAO extends DBContext {
             String sql = "select count(*) as total From  quiz\n"
                     + "join subject as s on quiz.subject_id = s.subject_id\n"
                     + "join category as c on quiz.category_id = c.category_id\n"
-                    + "join account_profile as ap on quiz.account_id = ap.account_id";
+                    + "join account_profile as ap on quiz_account.account_id = ap.account_id";
             if (subject != null && category != null && quiz_type != null) {
                 if (!subject.equalsIgnoreCase("all") && !category.equalsIgnoreCase("all") && !quiz_type.equalsIgnoreCase("all")) {
                     sql += " where subject_title = '" + subject + "' and category_name = '" + category + "' and quiz_type = '" + quiz_type + "'; ";
@@ -179,17 +179,17 @@ public class QuizDAO extends DBContext {
 
     public Quiz getQuizDetail(int id) {
         try {
-            String sql = " select quiz.quiz_id, quiz_title, quiz_img, quiz_level\n"
-                    + "                           , quiz_rate, quiz_time_end, quiz_time_start, quiz_type\n"
-                    + "                           , account_fullname as author, subject_title, quiz.quiz_status, c.category_value, quiz_account.quiz_rate,\n"
+            String sql = " select quiz.quiz_id, quiz_title, quiz_level\n"
+                    + "                           , quiz_rate, quiz_duration, quiz_type\n"
+                    + "                           , account_fullname as author, subject_title, c.setting_value, c.setting_name, quiz_account.rate,\n"
                     + "                           question.question_content\n"
                     + "                           from quiz \n"
-                    + "                           join quiz_account on quiz_account.quiz_id = quiz.quiz_id\n"
-                    + "                           join account_profile as ap on quiz.account_id = ap.account_id\n"
-                    + "                           join category as c on quiz.category_id = c.category_id \n"
-                    + "                           join `subject` on quiz.subject_id = `subject`.subject_id\n"
-                    + "                           join quiz_question as qq on quiz.quiz_id = qq.quiz_id\n"
-                    + "                           join `question` on qq.question_id = question.question_id\n"
+                    + "                           left join quiz_account on quiz_account.quiz_id = quiz.quiz_id\n"
+                    + "                           left join account_profile as ap on quiz_account.account_id = ap.account_id\n"
+                    + "                           left join setting as c on quiz.quiz_category = c.setting_id \n"
+                    + "                           left join `subject` on quiz.quiz_subject = `subject`.subject_id\n"
+                    + "                           left join quiz_question as qq on quiz.quiz_id = qq.quiz_id\n"
+                    + "                           left join `question` on qq.question_id = question.question_id\n"
                     + "                           where quiz.quiz_id = ?\n";
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setInt(1, id);
@@ -199,18 +199,18 @@ public class QuizDAO extends DBContext {
                 Quiz q = new Quiz();
                 q.setId(rs.getInt("quiz_id"));
                 q.setTitle(rs.getString("quiz_title"));
-                q.setImg(rs.getString("quiz_img"));
                 q.setLevel(rs.getString("quiz_level"));
                 q.setRate(rs.getDouble("quiz_rate"));
                 q.setType(rs.getString("quiz_type"));
                 q.setRate(rs.getInt("quiz_rate"));
-
+                q.setDuration(rs.getInt("quiz_duration"));
                 Account a = new Account();
                 a.setFullname(rs.getString("author"));
                 q.setAuthor(a);
 
                 Category c = new Category();
-                c.setCategory_value(rs.getString("category_value"));
+                c.setCategory_name(rs.getString("setting_name"));
+                c.setCategory_value(rs.getString("setting_value"));
                 q.setCategory(c);
 
                 Subject s = new Subject();
@@ -218,7 +218,6 @@ public class QuizDAO extends DBContext {
                 q.setSubject(s);
 
                 q.setQuestions(getQuestionOfQuiz(q.getId()));
-                q.setStatus(rs.getString("quiz_status"));
                 return q;
 
             }
