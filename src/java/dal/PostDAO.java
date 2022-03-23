@@ -707,9 +707,9 @@ public class PostDAO extends DBContext {
             stm.setString(8, inputPost.getBrief());
             stm.setInt(9, inputPost.getId());
             stm.executeUpdate();
+            connection.setAutoCommit(true);
 
             updatePostCategory(inputPost.getId(), inputPost.getCategories());
-            connection.setAutoCommit(true);
             stm.close();
         } catch (SQLException ex) {
             Logger.getLogger(PostDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -850,14 +850,13 @@ public class PostDAO extends DBContext {
 
     public boolean deletePostPostCategory(int postId) {
         Connection connection = getConnection();
-
         String sql = "DELETE FROM `post_category`\n"
                 + "WHERE post_id = ?;";
         try {
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setInt(1, postId);
             stm.executeUpdate();
-            stm.close();
+
         } catch (SQLException ex) {
             Logger.getLogger(PostDAO.class.getName()).log(Level.SEVERE, null, ex);
             return false;

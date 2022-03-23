@@ -111,14 +111,6 @@
                                                 <a class="badge badge-success align-text-bottom ml-1" href="list?category=${category.name}">${category.value}</a> 
                                             </c:forEach>
                                         </div>
-                                        <div class="d-flex flex-row align-items-center ms-2">
-                                            <c:if test="${post.status == 'PUBLISH'}">
-                                                <span class="badge badge-primary align-text-bottom ml-1" href="list?status=${post.status}">${post.status}</span> 
-                                            </c:if>
-                                            <c:if test="${post.status != 'PUBLISH'}">
-                                                <span class="badge badge-danger align-text-bottom ml-1" href="list?status=${post.status}">${post.status}</span> 
-                                            </c:if>
-                                        </div>
                                     </div>
                                     <div class="d-flex flex-row mt-3"> 
                                         <!--<img src="https://i.imgur.com/rvQ3LAt.jpg" width="50" class="rounded-circle">-->

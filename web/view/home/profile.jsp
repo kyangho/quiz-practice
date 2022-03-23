@@ -60,6 +60,9 @@
                                         <input name="phone" type="tel" class="form-control border-0 p-4" placeholder="Phone number" value="${sessionScope.account.phone}" required
                                                pattern="^[0-9]+$" title="Phone number must't contain letter character"/>
                                     </div>
+                                     <div class="form-group">
+                                         <a class="btn btn-warning" href="changepassword">Change password</a>
+                                    </div>
                                 </div>
                                 <div>
                                     <button class="btn btn-dark btn-block border-0 py-3" type="submit">Save</button>

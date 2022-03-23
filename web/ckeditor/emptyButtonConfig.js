@@ -4,9 +4,12 @@
  */
 
 CKEDITOR.editorConfig = function (config) {
-    config.removeButtons = 'Source,Save,NewPage,Templates,ExportPdf,Preview,Print,PasteFromWord,PasteText,Paste,Copy,Cut,Undo,Redo,Replace,Find,SelectAll,Scayt,Form,Bold,Italic,Checkbox,CopyFormatting,RemoveFormat,Underline,Radio,TextField,Strike,Textarea,Subscript,Select,Superscript,Button,ImageButton,HiddenField,NumberedList,BulletedList,Indent,Outdent,Blockquote,CreateDiv,JustifyRight,JustifyBlock,BidiLtr,BidiRtl,JustifyCenter,JustifyLeft,Language,Link,Unlink,Anchor,Table,Image,HorizontalRule,SpecialChar,Smiley,PageBreak,Iframe,FontSize,Font,Format,Styles,TextColor,BGColor,Maximize,ShowBlocks,About';
     // Simplify the dialog windows.
     config.removeDialogTabs = 'image:advanced;link:advanced';
     config.removePlugins = 'elementspath';
-config.removePlugins = 'resize';
+    config.removePlugins = 'resize';
+    config.format_tags = 'p;h1;h2;h3;pre';
+    config.contenteditable = false;
+    config.disableAutoInline = true;
+    config.readOnly = true;
 };

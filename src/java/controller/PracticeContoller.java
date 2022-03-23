@@ -147,7 +147,7 @@ public class PracticeContoller extends HttpServlet {
             sub = qdao.getSubCategoryByCate(Integer.parseInt(cate));
             request.setAttribute("subcate", sub);
 //            qdao = new QuestionDAO();
-            ArrayList<Question> questions = qdao.getQuestions(1, 1, Integer.parseInt(noQues), null, subject, subcate, null, null);
+            ArrayList<Question> questions = qdao.getQuestions(1, 1, Integer.parseInt(noQues), null, subject, subcate, null, "publish");
             request.setAttribute("questions", questions);
             request.setAttribute("subjectID", subject);
             request.setAttribute("subcateId", subcate);
@@ -183,11 +183,15 @@ public class PracticeContoller extends HttpServlet {
         q.setType("publish");
         q.setTitle("Quiz");
         q.setQuestions(ques);
+        Account account = (Account) request.getSession().getAttribute("account");
+        q.setAuthor(account);
         QuizDAO quizDAO = new QuizDAO();
         int id = quizDAO.insertPractice(q);
         if (id != -1) {
+            Quiz doQuiz = quizDAO.getQuizDetail(id);
+            request.getSession().setAttribute("quiz", doQuiz);
 //            request.getRequestDispatcher("quiz/join?quizId=" + id).forward(request, response);
-            response.sendRedirect("list");
+            response.sendRedirect("../quiz/join/game");
         } else {
             response.getWriter().print("Error");
         }

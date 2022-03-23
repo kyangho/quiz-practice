@@ -101,8 +101,8 @@
                     <a href="contact.html" class="nav-item nav-link">Contact</a>
                     <!--<a href="${pageContext.request.contextPath}/quiz/listquiz" class="nav-item nav-link">List Quizzes</a>-->
                     <c:forEach items="${sessionScope.account.role}" var="r">
-                        <c:if test="${r.roleName == 'admin'}">
-                            <a href="${pageContext.request.contextPath}/profile" class="nav-item nav-link">List User</a>
+                        <c:if test="${r.roleName == 'Admin'}">
+                            <a href="${pageContext.request.contextPath}/listuser" class="nav-item nav-link <c:if test="${requestScope.tag eq 'list_user'}">active</c:if>">List User</a>
                         </c:if>
                     </c:forEach>
                     <%--<c:forEach items="${sessionScope.account.role}" var="r">--%>

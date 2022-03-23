@@ -20,4 +20,8 @@
         <id>5</id>
         <name>Post Category</name>
     </type>
+    <type>
+        <id>6</id>
+        <name>Quiz Type</name>
+    </type>
 </types>

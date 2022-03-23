@@ -3,11 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package controller;
+package controller.homepage;
 
-import controller.auth.BaseRequiredAuthController;
+import dal.HomeDAO;
 import dal.QuizDAO;
-import model.Ques_Ans;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -17,13 +16,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import model.Account;
+import model.Quiz_Account;
 
 /**
  *
- * @author Vu Duc Tien
+ * @author Yankee
  */
-@WebServlet(name = "QuizResultController", urlPatterns = {"/quiz/game/result"})
-public class QuizResultController extends BaseRequiredAuthController {
+@WebServlet(name = "listuser", urlPatterns = {"/listuser"})
+public class listuser extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -36,42 +36,19 @@ public class QuizResultController extends BaseRequiredAuthController {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        QuizDAO qdao = new QuizDAO();
-        Account a = (Account) request.getSession().getAttribute("account");
-        ArrayList<Ques_Ans> ques_Anses = qdao.getQuestion_AnswerList("all", a.getId());
-        int numCorrect = countAnswer(ques_Anses, "correct");
-        int numNone = countAnswer(ques_Anses, "none");
-        double percent = (double) numCorrect / ques_Anses.size() * 100;
-        boolean pass;
-        if (percent > ques_Anses.get(0).getQuiz().getRate()) {
-            pass = true;
-        } else {
-            pass = false;
-        }
-        request.setAttribute("numCorrect", numCorrect);
-        request.setAttribute("numNone", numNone);
-        request.setAttribute("numWrong", ques_Anses.size() - numCorrect - numNone);
-        request.setAttribute("percent", String.format("%.2f", percent));
-        request.setAttribute("pass", pass);
-        request.setAttribute("ques_Anses", ques_Anses);
-        request.getRequestDispatcher("../../view/quiz/result.jsp").forward(request, response);
-    }
-
-    private int countAnswer(ArrayList<Ques_Ans> ques_Anses, String condition) {
-        int count = 0;
-        for (Ques_Ans qa : ques_Anses) {
-            if (condition.equals("correct") && qa.getAnswer() != null) {
-                if (qa.getAnswer().equals(qa.getQuestion().getCorrectAnswer())) {
-                    count++;
-                }
-            }
-            if(condition.equals("none")){
-                if (qa.getAnswer() == null) {
-                    count++;
-                }
-            }
-        }
-        return count;
+        HomeDAO hdbc = new HomeDAO();
+        ArrayList<Account> accounts = hdbc.getAccounts();
+//        String admin = "admin";
+//        Account account = (Account) request.getSession().getAttribute("account");
+//        request.setAttribute("IsAdmin", admin);
+//        if (account != null) {
+//            QuizDAO qdb = new QuizDAO();
+//            ArrayList<Quiz_Account> quizzesPractice = qdb.getQuizzesPractice(account.getId(), 1, 4);
+//            request.setAttribute("practices", quizzesPractice);
+//        }
+        request.setAttribute("tag", "list_user");
+        request.setAttribute("information", accounts);
+        request.getRequestDispatcher("view/home/listUser.jsp").forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -84,7 +61,7 @@ public class QuizResultController extends BaseRequiredAuthController {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void processGet(HttpServletRequest request, HttpServletResponse response)
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }
@@ -98,7 +75,7 @@ public class QuizResultController extends BaseRequiredAuthController {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void processPost(HttpServletRequest request, HttpServletResponse response)
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }

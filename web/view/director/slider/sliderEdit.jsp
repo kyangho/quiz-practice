@@ -70,21 +70,28 @@
                                             <div class="form-group">
                                                 <label class="col-sm-2 col-sm-2 control-label">ThumbNail</label>
                                                 <div class="col-sm-10">
-                                                    <img src="${pageContext.servletContext.contextPath}/slider/imagin?id=${slider.id}" width="300px" class="img-fluid" >
+                                                    <img id="image" src="${pageContext.servletContext.contextPath}/slider/imagin?id=${slider.id}" width="300px" class="img-fluid" >
+                                                    <input style="padding-top: 20px;" type="file" name="thumbnail" id="files" />
+
                                                 </div>
                                             </div>
                                         </c:if>
-                                        <div class="form-group">
-                                            <label class="col-sm-2 col-sm-2 control-label">Upload Image</label>
-                                            <div class="col-sm-10">
-                                                <img id="image" width="300px" style="padding-bottom: 10px" class="img-fluid" >
-                                                <input type="file" name="thumbnail" id="files" />
+                                        <c:if test="${requestScope.add eq 'add'}" >
+                                            <div class="form-group">
+                                                <label class="col-sm-2 col-sm-2 control-label">Upload Image</label>
+                                                <div class="col-sm-10" style="margin-top: -15px;">
+                                                    <img id="image" width="300px" style="padding: 20px 0;"  class="img-fluid" >
+                                                    <input type="file" name="thumbnail" id="files" />
+                                                </div>
                                             </div>
-                                        </div>
+                                        </c:if>
+
                                         <div class="form-group">
                                             <label class="col-sm-2 col-sm-2 control-label">Backlink</label>
                                             <div class="col-sm-10">
-                                                <input value="${slider.backlink}" required name="backlink" type="text" class="form-control">
+                                                <input value="${slider.backlink}" id="gfg" type="url" pattern="[Hh][Tt][Tt][Pp][Ss]?:\/\/(?:(?:[a-zA-Z\u00a1-\uffff0-9]+-?)*[a-zA-Z\u00a1-\uffff0-9]+)(?:\.(?:[a-zA-Z\u00a1-\uffff0-9]+-?)*[a-zA-Z\u00a1-\uffff0-9]+)*(?:\.(?:[a-zA-Z\u00a1-\uffff]{2,}))(?::\d{2,5})?(?:\/[^\s]*)?"  required name="backlink" autocomplete="off" class="form-control">
+                                                <p id="GFG" style="color:red; font-size:15px;">
+                                                </p>
                                             </div>
                                         </div>
                                         <div class="form-group">
@@ -105,13 +112,11 @@
                                             </div>
                                         </div>
                                         <div style="margin-left: 40%; margin-top: -30px; padding-bottom: 30px">
-                                            <!--<button style="float: left" type="submit"  id="buu" class="btn btn-success btn-lg ">Edit</button>-->
-
                                             <c:if test="${requestScope.edit eq 'edit'}">
-                                                <button style="float: left" type="submit"  id="buu" class="btn btn-success btn-lg ">Edit</button>
+                                                <button style="float: left" onclick="geeks()" type="submit"  id="buu" class="btn btn-success btn-lg ">Edit</button>
                                             </c:if>
                                             <c:if test="${requestScope.add eq 'add'}">
-                                                <button style="float: left" type="submit"  id="add" class="btn btn-success btn-lg ">Add Slider</button>
+                                                <button style="float: left" onclick="geeks()" type="submit"  id="add" class="btn btn-success btn-lg ">Add Slider</button>
                                             </c:if>
                                             <a href="list"><div style="float: left; margin-left: 5px" id="buu" class="btn btn-danger btn-lg ">Cancel</div></a>
                                         </div>
@@ -132,6 +137,10 @@
             };
             reader.readAsDataURL(this.files[0]);
         };
+        function geeks() {
+            var link = document.getElementById("gfg").pattern;
+            document.getElementById("GFG").innerHTML = "Url partern: " + link + "<br>Ex: https://youtube.com";
+        }
     </script>
 
 </html>

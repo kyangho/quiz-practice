@@ -59,7 +59,7 @@ public class AccountDAO extends DBContext {
             Logger.getLogger(AccountDAO.class.getName()).log(Level.SEVERE, null, ex);
         } catch (Exception e) {
             Logger.getLogger(AccountDAO.class.getName()).log(Level.SEVERE, null, e);
-        }finally{
+        } finally {
             try {
                 connection.close();
             } catch (SQLException ex) {
@@ -67,21 +67,6 @@ public class AccountDAO extends DBContext {
             }
         }
         return null;
-    }
-
-    public static void main(String[] args) {
-//        AccountDAO adbc = new AccountDAO();
-//        Account account = adbc.getAccountById(1);
-////        System.out.println(account.toString());
-//        Account a = new Account();
-//        a.setFullname("Tom");
-//        a.setEmail("sdfsdf");
-//        a.setPhone("5126532");
-//        a.setStatus("active");
-//        a.setUsername("jdfhdjfdg");
-//        a.setGender(true);
-//        a.getRole().add(new Role(1, "fsdhfjds"));
-//        adbc.insertAccount(a, "ac");
     }
 
     public Account isExistAccount(String phone, String email, String username, String condition) {
@@ -107,7 +92,7 @@ public class AccountDAO extends DBContext {
             stm.close();
         } catch (SQLException ex) {
             Logger.getLogger(AccountDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }finally{
+        } finally {
             try {
                 connection.close();
             } catch (SQLException ex) {
@@ -360,7 +345,7 @@ public class AccountDAO extends DBContext {
             stm.close();
         } catch (SQLException ex) {
             Logger.getLogger(AccountDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }finally{
+        } finally {
             try {
                 connection.close();
             } catch (SQLException ex) {
@@ -388,7 +373,7 @@ public class AccountDAO extends DBContext {
             }
         } catch (SQLException ex) {
             Logger.getLogger(AccountDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }finally{
+        } finally {
             try {
                 connection.close();
             } catch (SQLException ex) {
@@ -398,7 +383,8 @@ public class AccountDAO extends DBContext {
         return roles;
     }
 
-    public ArrayList<Account> getAllAccountsByFilter(int pageindex, int pageSize, String id, String fullname, String email, String phone, String roleID, String status, String keySearch) {
+    public ArrayList<Account> getAllAccountsByFilter(int pageindex, int pageSize, String id, 
+            String fullname, String email, String phone, String roleID, String status, String keySearch) {
         Connection connection = getConnection();
         ArrayList<Account> accounts = new ArrayList<>();
 
@@ -494,7 +480,7 @@ public class AccountDAO extends DBContext {
             stm.close();
         } catch (SQLException ex) {
             Logger.getLogger(AccountDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }finally{
+        } finally {
             try {
                 connection.close();
             } catch (SQLException ex) {
@@ -517,7 +503,8 @@ public class AccountDAO extends DBContext {
         return flag;
     }
 
-    public int totalRowsByAccountInfor(String id, String fullname, String email, String phone, String roleID, String status, String keySearch) {
+    public int totalRowsByAccountInfor(String id, String fullname, String email, String phone,
+            String roleID, String status, String keySearch) {
         Connection connection = getConnection();
         ArrayList<Account> accounts = new ArrayList<>();
         String sql = "select count(*) as stt"
@@ -588,7 +575,7 @@ public class AccountDAO extends DBContext {
             stm.close();
         } catch (SQLException ex) {
             Logger.getLogger(AccountDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }finally{
+        } finally {
             try {
                 connection.close();
             } catch (SQLException ex) {
@@ -619,7 +606,7 @@ public class AccountDAO extends DBContext {
             stm.close();
         } catch (SQLException ex) {
             Logger.getLogger(AccountDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }finally{
+        } finally {
             try {
                 connection.close();
             } catch (SQLException ex) {
@@ -643,7 +630,7 @@ public class AccountDAO extends DBContext {
             stm.close();
         } catch (SQLException ex) {
             Logger.getLogger(AccountDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }finally{
+        } finally {
             try {
                 connection.close();
             } catch (SQLException ex) {
@@ -666,7 +653,7 @@ public class AccountDAO extends DBContext {
             stm.close();
         } catch (SQLException ex) {
             Logger.getLogger(AccountDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }finally{
+        } finally {
             try {
                 connection.commit();
             } catch (SQLException ex) {
@@ -693,7 +680,7 @@ public class AccountDAO extends DBContext {
             return accounts;
         } catch (SQLException ex) {
             Logger.getLogger(AccountDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }finally{
+        } finally {
             try {
                 connection.close();
             } catch (SQLException ex) {
@@ -702,4 +689,5 @@ public class AccountDAO extends DBContext {
         }
         return null;
     }
+
 }

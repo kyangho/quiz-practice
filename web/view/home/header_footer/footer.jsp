@@ -97,6 +97,8 @@
 <script src="${pageContext.request.contextPath}/lib/owlcarousel/owl.carousel.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<script src="${pageContext.request.contextPath}/ckeditor/ckeditor.js" type="text/javascript"></script>
+
 <!-- Template Javascript -->
 <script src="${pageContext.request.contextPath}/js/main.js"></script>
 </body>

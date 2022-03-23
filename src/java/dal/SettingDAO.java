@@ -227,7 +227,11 @@ public class SettingDAO extends DBContext {
         }
 
         if (setting_name != null) {
-            sql_get += "where setting_name like '%" + setting_name + "%'";
+            if (status != null && type != null) {
+                sql_get += " AND setting_name like '%" + setting_name + "%'";
+            }else{
+                sql_get += "where setting_name like '%" + setting_name + "%'";
+            }
         }
 
         if (pageIndex != 0 || pageSize != 0) {
