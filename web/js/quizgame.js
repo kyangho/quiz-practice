@@ -433,7 +433,7 @@ function submit() {
         data: {questions: JSON.stringify(tmpQuestions), userAnswer: JSON.stringify(user_answer)},
         success: function (response) {
             if(response == "success"){
-                window.location.href = "../../home";
+                window.location.href = "./result";
             }
         }    
     })

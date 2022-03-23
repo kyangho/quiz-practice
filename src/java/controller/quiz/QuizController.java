@@ -7,6 +7,7 @@ package controller.quiz;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import dal.QuestionAnswerDAO;
 import dal.QuizDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -89,7 +90,12 @@ public class QuizController extends HttpServlet {
                 questions.get(i).setCorrectAnswer(userAnswer[i]);
             }
             quiz.setQuestions(questions);
-            response.getWriter().print("success");
+            QuestionAnswerDAO qaDAO = new QuestionAnswerDAO();
+            if (qaDAO.insertUserAnswer(quiz)) {
+                response.getWriter().print("success");
+            } else {
+                response.getWriter().print("fail");
+            }
         }
     }
 
