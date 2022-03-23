@@ -188,8 +188,10 @@ public class PracticeContoller extends HttpServlet {
         QuizDAO quizDAO = new QuizDAO();
         int id = quizDAO.insertPractice(q);
         if (id != -1) {
+            Quiz doQuiz = quizDAO.getQuizDetail(id);
+            request.getSession().setAttribute("quiz", doQuiz);
 //            request.getRequestDispatcher("quiz/join?quizId=" + id).forward(request, response);
-            response.sendRedirect("list");
+            response.sendRedirect("../quiz/join/game");
         } else {
             response.getWriter().print("Error");
         }
