@@ -110,6 +110,13 @@ public class QuizDAO extends DBContext {
         return quizs;
     }
 
+    public static void main(String[] args) {
+        QuizDAO q = new QuizDAO();
+        q.getQuiz(1, 3, null, null, null, null);
+        System.out.println();
+
+    }
+
     public int getRowcount(String subject, String category, String quiz_type, String search_quiz_title) {
         Connection connection = getConnection();
         try {
@@ -820,14 +827,6 @@ public class QuizDAO extends DBContext {
         ArrayList<Type> types = tcc.getTypesList();
         ArrayList<Setting> settings = sd.getALLSetting(10000, 1, types.get(5).getName(), "all", "all");
         return settings;
-    }
-
-    public static void main(String[] args) {
-        QuizDAO qdb = new QuizDAO();
-        ArrayList<Ques_Ans> ques_Anses = qdb.getQuestion_AnswerList("all", 3);
-        for (Ques_Ans ques_Anse : ques_Anses) {
-            System.out.println(ques_Anse.getQuiz().getId() + " " + ques_Anse.getQuestion().getCorrectAnswer() + " " + ques_Anse.getAnswer());
-        }
     }
 
     public ArrayList<Ques_Ans> getQuestion_AnswerList(String search, int accountID) {
