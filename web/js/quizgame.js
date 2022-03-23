@@ -31,6 +31,7 @@ $.ajax({
     url: 'game/getquestion',
     success: function (response) {
         quizJson = JSON.parse(response);
+        console.log(quizJson);
         timeValue = quizJson.duration;
         questions = quizJson.questions;
         questions.forEach(x => {
