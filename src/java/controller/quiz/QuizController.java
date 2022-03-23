@@ -18,6 +18,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import model.Account;
 import model.Question;
 import model.Quiz;
 
@@ -37,6 +38,7 @@ public class QuizController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String URI = request.getRequestURI().replaceFirst("/\\w+", "");
+
         if (URI.contains(quizGamePath)) {
             Quiz quiz = (Quiz) request.getSession().getAttribute("quiz");
             if (quiz == null) {
@@ -52,10 +54,10 @@ public class QuizController extends HttpServlet {
         } else if (URI.contains(quizJoinPath)) {
             String id = request.getParameter("quizId");
             QuizDAO quizDAO = new QuizDAO();
-            Quiz quiz = quizDAO.getQuizDetail(Integer.parseInt(id));
-            request.getSession().setAttribute("quiz", quiz);
+            Quiz quizData = quizDAO.getQuizDetail(Integer.parseInt(id));
+            request.getSession().setAttribute("quiz", quizData);
             Gson gs = new Gson();
-            request.getSession().setAttribute("quizJSON", gs.toJson(quiz));
+            request.getSession().setAttribute("quizJSON", gs.toJson(quizData));
             response.sendRedirect("join/game");
         }
     }
@@ -89,6 +91,8 @@ public class QuizController extends HttpServlet {
             for (int i = 0; i < questions.size(); i++) {
                 questions.get(i).setCorrectAnswer(userAnswer[i]);
             }
+            Account acc = (Account) request.getSession().getAttribute("account");
+            quiz.setAuthor(acc);
             quiz.setQuestions(questions);
             QuestionAnswerDAO qaDAO = new QuestionAnswerDAO();
             if (qaDAO.insertUserAnswer(quiz)) {
@@ -96,6 +100,7 @@ public class QuizController extends HttpServlet {
             } else {
                 response.getWriter().print("fail");
             }
+            request.getSession().removeAttribute("quiz");
         }
     }
 

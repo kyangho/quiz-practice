@@ -91,7 +91,7 @@
                     <button class="quit">Quit Quiz</button>
                 </div>
             </div>
-            <script src="${pageContext.request.contextPath}/js/quizgame.js"></script>
+            <script src="${pageContext.request.contextPath}/js/quizgame.js?v=1"></script>
             <script></script>
         </div>
 
