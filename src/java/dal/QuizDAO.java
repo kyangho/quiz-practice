@@ -519,7 +519,7 @@ public class QuizDAO extends DBContext {
             stm.setInt(1, questionID);
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
-                answers.add(new Answer(rs.getInt(1), rs.getString(3)));
+                answers.add(new Answer(rs.getInt(1), rs.getString(2)));
             }
             stm.close();
         } catch (SQLException ex) {
@@ -723,7 +723,7 @@ public class QuizDAO extends DBContext {
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
                 Question q = new Question(rs.getInt(1), rs.getString(2), rs.getString(3));
-                q.setMedia(rs.getBlob(9));
+                q.setMedia(rs.getBlob("question_media"));
                 q.setAnswers(getAnswerOfQues(q.getId()));
                 questions.add(q);
 

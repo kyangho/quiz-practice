@@ -193,6 +193,7 @@ function showQuetions(index) {
     let que_tag = '<span>' + (index + 1) + ". " + questions[index].content + '</span>';
     let option_tag = "";
     for (var i = 0; i < questions[index].answers.length; i++) {
+        console.log(questions[index].answers[i]);
         option_tag += '<div class="option"><span>' + questions[index].answers[i].content + '</span></div>';
     }
     que_text.innerHTML = que_tag;
