@@ -45,7 +45,7 @@
                 </a>
             </li>
             <c:forEach items="${sessionScope.account.role}" var="r">
-                <c:if test="${r.roleName eq 'admin'}">
+                <c:if test="${r.id == 1}">
                     <li ${pageContext.request.requestURI.contains("settinglist") ? "class=\"active\"" : ""}>
                         <a  href="${pageContext.request.contextPath}/director/setting/settinglist">
                             <i class="fa fa-wrench"></i> <span>Setting</span>

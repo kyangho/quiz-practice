@@ -21,7 +21,7 @@
                                 <p class="fs-5 text-white mb-4 pb-2">Vero elitr justo clita lorem. Ipsum dolor at sed stet sit diam no. Kasd rebum ipsum et diam justo clita et kasd rebum sea sanctus eirmod elitr.</p>
                                 <a href="" class="btn btn-primary py-md-3 px-md-5 me-3 animated slideInLeft">Read More</a>
                             <c:if test="${sessionScope.account == null}">
-                                <a href="" class="btn btn-light py-md-3 px-md-5 animated slideInRight">Join Now</a>
+                                <a href="login" class="btn btn-light py-md-3 px-md-5 animated slideInRight">Join Now</a>
                             </c:if>
                         </div>
                     </div>
@@ -39,7 +39,7 @@
                             <p class="fs-5 text-white mb-4 pb-2">Vero elitr justo clita lorem. Ipsum dolor at sed stet sit diam no. Kasd rebum ipsum et diam justo clita et kasd rebum sea sanctus eirmod elitr.</p>
                             <a href="#" class="btn btn-primary py-md-3 px-md-5 me-3 animated slideInLeft">Read More</a>
                             <c:if test="${sessionScope.account == null}">
-                                <a href="#" class="btn btn-light py-md-3 px-md-5 animated slideInRight">Join Now</a>
+                                <a href="login" class="btn btn-light py-md-3 px-md-5 animated slideInRight">Join Now</a>
                             </c:if>
 
                         </div>
@@ -54,7 +54,7 @@
 <!-- Service Start -->
 <div class="container-xxl py-5">
     <div class="container">
-        <c:if test="${sessionScope.account != null}">
+        <c:if test="${sessionScope.account != null && practices.size() > 0}">
             <div class="row col-lg-12">
                 <div class="col-sm-6">
                     <a href="practice/list"><h5 class="mb-3">Recent Activities</h5></a>
