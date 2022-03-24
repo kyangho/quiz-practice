@@ -29,7 +29,7 @@
                                 <input name="repeatpass" type="password" class="form-control border-0 p-4" placeholder="Re-enter Password" required="required" />
                             </div>
                             <div>
-                                <button class="btn btn-dark btn-block border-0 py-3" type="submit">Reset password</button>
+                                <button class="btn btn-dark btn-block border-0 py-3" type="submit">Save</button>
                             </div>
                             <c:if test="${requestScope.wrongRepeat == true}" >
                                 <p>Password repeat does not match!</p>
