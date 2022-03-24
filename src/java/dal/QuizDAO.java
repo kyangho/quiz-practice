@@ -835,8 +835,8 @@ public class QuizDAO extends DBContext {
         ArrayList<Ques_Ans> ques_Anses = new ArrayList<>();
         try {
             String sql = "SELECT q.question_id, answer_id, qu.quiz_id FROM user_answer ua\n"
-                    + "join  question q on ua.question_id = q.question_id\n"
-                    + "join quiz qu on qu.quiz_id = ua.quiz_id\n"
+                    + "left join  question q on ua.question_id = q.question_id\n"
+                    + "left join quiz qu on qu.quiz_id = ua.quiz_id\n"
                     + "where account_id = ?\n";
             if (search.equals("wrong")) {
                 sql += "and answer_id <> question_correct_answer and answer_id is not null";

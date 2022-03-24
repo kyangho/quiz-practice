@@ -391,7 +391,7 @@ public class PostDAO extends DBContext {
             sql += "order by post_title " + title;
         }
         if (category.compareTo("") != 0) {
-            sql += "order by category_name " + category;
+            sql += "order by setting_name " + category;
         }
         if (author.compareTo("") != 0) {
             sql += "order by post_author " + author;
@@ -409,10 +409,10 @@ public class PostDAO extends DBContext {
                 + "p.post_time_created,\n"
                 + "p.post_status,\n"
                 + "p.post_isFeaturing,\n"
-                + "group_concat(c.category_name) as \"category_name\" \n"
+                + "group_concat(c.setting_name) as \"setting_name\" \n"
                 + "FROM post as p\n"
                 + "LEFT JOIN post_category AS pc ON p.post_id = pc.post_id\n"
-                + "LEFT JOIN category AS c ON pc.category_id = c.category_id\n";
+                + "LEFT JOIN setting AS c ON pc.setting_id = c.setting_id AND c.setting_type = 'Post Category'\n";
         sql += "group by p.post_id\n";
         sql += "        ) as t\n"
                 + " where  t.stt >= (? - 1) * ? + 1 AND t.stt <= ? * ?\n";
@@ -663,7 +663,6 @@ public class PostDAO extends DBContext {
             stm.setInt(10, inputPost.getId());
             stm.executeUpdate();
 
-            updatePostCategory(inputPost.getId(), inputPost.getCategories());
             connection.setAutoCommit(true);
             stm.close();
         } catch (SQLException ex) {
@@ -709,7 +708,6 @@ public class PostDAO extends DBContext {
             stm.executeUpdate();
             connection.setAutoCommit(true);
 
-            updatePostCategory(inputPost.getId(), inputPost.getCategories());
             stm.close();
         } catch (SQLException ex) {
             Logger.getLogger(PostDAO.class.getName()).log(Level.SEVERE, null, ex);
