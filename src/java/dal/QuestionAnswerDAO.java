@@ -164,8 +164,7 @@ public class QuestionAnswerDAO extends DBContext {
         Connection connection = getConnection();
         try {
             PreparedStatement stm = connection.prepareStatement(sql);
-            stm.setInt(1, quizId);
-            stm.setInt(2, accountId);
+            stm.setInt(1, accountId);
             stm.executeUpdate();
             stm.close();
         } catch (SQLException ex) {
