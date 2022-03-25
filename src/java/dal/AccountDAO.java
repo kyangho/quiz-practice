@@ -667,7 +667,7 @@ public class AccountDAO extends DBContext {
         ArrayList<Account> accounts = new ArrayList<>();
         String sql = "SELECT account_id FROM account_role ar\n"
                 + "join setting r on ar.setting_id = r.setting_id\n"
-                + "where r.role_name = ?";
+                + "where r.role_ = ?";
         try {
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setString(1, role);
