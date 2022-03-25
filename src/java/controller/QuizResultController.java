@@ -9,11 +9,9 @@ import controller.auth.BaseRequiredAuthController;
 import dal.QuizDAO;
 import model.Ques_Ans;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import model.Account;
@@ -43,7 +41,7 @@ public class QuizResultController extends BaseRequiredAuthController {
         int numNone = countAnswer(ques_Anses, "none");
         double percent = (double) numCorrect / ques_Anses.size() * 100;
         boolean pass;
-        if (percent > ques_Anses.get(0).getQuiz().getRate()) {
+        if (percent > 50) {
             pass = true;
         } else {
             pass = false;

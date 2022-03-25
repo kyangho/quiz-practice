@@ -94,8 +94,7 @@
                             <c:if test="${sessionScope.account != null}">
                                 <a href="${pageContext.request.contextPath}/practice/list"class="dropdown-item <c:if test="${requestScope.tag eq 'list'}">active</c:if>">Practice List</a>
                             </c:if>
-                            <a href="testimonial.html" class="dropdown-item">Testimonial</a>
-                            <a href="404.html" class="dropdown-item">404 Page</a>
+                            <a href="${pageContext.request.contextPath}/test/list" class="dropdown-item">Test List</a>
                         </div>
                     </div>
                     <a href="contact.html" class="nav-item nav-link">Contact</a>

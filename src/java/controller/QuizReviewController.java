@@ -9,11 +9,9 @@ import controller.auth.BaseRequiredAuthController;
 import dal.QuizDAO;
 import model.Ques_Ans;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import model.Account;
@@ -39,7 +37,7 @@ public class QuizReviewController extends BaseRequiredAuthController {
             throws ServletException, IOException {
         QuizDAO qdao = new QuizDAO();
         Account a = (Account) request.getSession().getAttribute("account");
-        ArrayList<Ques_Ans> ques_Anses = qdao.getQuestion_AnswerList("all", a.getId());
+        ArrayList<Ques_Ans> ques_Anses = qdao.getQuestion_AnswerList("all", 1);
         request.setAttribute("ques_Anses", ques_Anses);
         request.setAttribute("search", "all");
         request.getRequestDispatcher("../../view/quiz/review.jsp").forward(request, response);
@@ -59,7 +57,7 @@ public class QuizReviewController extends BaseRequiredAuthController {
         String search = request.getParameter("search");
         QuizDAO qdao = new QuizDAO();
         Account a = (Account) request.getSession().getAttribute("account");
-        ArrayList<Ques_Ans> ques_Anses = qdao.getQuestion_AnswerList(search, a.getId());
+        ArrayList<Ques_Ans> ques_Anses = qdao.getQuestion_AnswerList(search, 1);
         request.setAttribute("ques_Anses", ques_Anses);
         request.setAttribute("search", search);
         request.getRequestDispatcher("../../view/quiz/review.jsp").forward(request, response);

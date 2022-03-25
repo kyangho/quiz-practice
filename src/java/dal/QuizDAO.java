@@ -23,6 +23,7 @@ import model.Setting;
 import model.Subject;
 import model.Type;
 import model.Ques_Ans;
+import model.post.Post;
 
 /**
  *
@@ -112,9 +113,7 @@ public class QuizDAO extends DBContext {
 
     public static void main(String[] args) {
         QuizDAO q = new QuizDAO();
-        q.getQuiz(1, 3, null, null, null, null);
-        System.out.println();
-
+        System.out.println(q.countTotalTestWithCondition("", "", "", 1, 5));
     }
 
     public int getRowcount(String subject, String category, String quiz_type, String search_quiz_title) {
@@ -835,8 +834,8 @@ public class QuizDAO extends DBContext {
         ArrayList<Ques_Ans> ques_Anses = new ArrayList<>();
         try {
             String sql = "SELECT q.question_id, answer_id, qu.quiz_id FROM user_answer ua\n"
-                    + "join  question q on ua.question_id = q.question_id\n"
-                    + "join quiz qu on qu.quiz_id = ua.quiz_id\n"
+                    + "left join  question q on ua.question_id = q.question_id\n"
+                    + "left join quiz qu on qu.quiz_id = ua.quiz_id\n"
                     + "where account_id = ?\n";
             if (search.equals("wrong")) {
                 sql += "and answer_id <> question_correct_answer and answer_id is not null";
@@ -876,5 +875,191 @@ public class QuizDAO extends DBContext {
             Logger.getLogger(QuestionDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
+    }
+
+    public ArrayList<Quiz> getTestsListSortByUpdateDate(String title, String category, String author, int pageSize, int pageIndex) {
+        ArrayList<Quiz> resTests = new ArrayList<>();
+        Connection connection = getConnection();
+
+        String sql
+                = "select * from\n"
+                + "	(SELECT row_number() over (order by q.quiz_id DESC ) as stt,\n"
+                + "	q.`quiz_id`,\n"
+                + "    q.`quiz_name`,\n"
+                + "    q.`quiz_title`,\n"
+                + "    q.quiz_description,\n"
+                + "    q.`quiz_category`,\n"
+                + "    q.`quiz_author`,\n"
+                + "    q.`quiz_type`,\n"
+                + "    a.username,\n"
+                + "    group_concat(s.setting_value) as setting_value\n"
+                + "FROM `quiz_practice_db_test_2`.`quiz` as q\n"
+                + "LEFT OUTER JOIN setting as s on s.setting_id = q.quiz_category\n"
+                + "LEFT JOIN account as a on a.account_id = q.quiz_author\n"
+                + "WHERE q.quiz_description is not null AND\n";
+        title = "quiz_name LIKE ('%" + title + "%')";
+        category = "setting_value LIKE ('%" + category + "%')";
+        author = "a.username LIKE ('%" + author + "%')";
+
+        if (!title.equals("") || !category.equals("") || !author.equals("")) {
+            sql += title + " AND ";
+            sql += category + " AND ";
+            sql += author + "\n";
+        }
+        sql += "GROUP BY q.quiz_id)as t\n";
+        sql += " where  t.stt >= (? - 1) * ? + 1 AND t.stt <= ? * ?;";
+        try {
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setInt(1, pageIndex);
+            stm.setInt(2, pageSize);
+            stm.setInt(3, pageIndex);
+            stm.setInt(4, pageSize);
+            ResultSet rs = stm.executeQuery();
+            int lastId = -1;
+            while (rs.next()) {
+                Quiz test = getQuizById(rs.getInt("quiz_id"));
+                resTests.add(test);
+            }
+            stm.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(PostDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(PostDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return resTests;
+    }
+
+    public int countTotalTestWithCondition(String title, String category, String author, int pageSize, int pageIndex) {
+        ArrayList<Quiz> resTests = new ArrayList<>();
+        Connection connection = getConnection();
+
+        String sql
+                = "SELECT q.`quiz_id`,\n"
+                + "    q.`quiz_name`,\n"
+                + "    q.`quiz_title`,\n"
+                + "    q.quiz_description,\n"
+                + "    q.`quiz_category`,\n"
+                + "    q.`quiz_author`,\n"
+                + "    q.`quiz_type`,\n"
+                + "    a.username,\n"
+                + "    group_concat(s.setting_value) as setting_value\n"
+                + "FROM `quiz_practice_db_test_2`.`quiz` as q\n"
+                + "LEFT OUTER JOIN setting as s on s.setting_id = q.quiz_category\n"
+                + "LEFT JOIN account as a on a.account_id = q.quiz_author\n"
+                + "WHERE q.quiz_description is not null AND\n";
+        title = "quiz_name LIKE ('%" + title + "%')";
+        category = "setting_value LIKE ('%" + category + "%')";
+        author = "a.username LIKE ('%" + author + "%')";
+
+        if (!title.equals("") || !category.equals("") || !author.equals("")) {
+            sql += title + " AND ";
+            sql += category + " AND ";
+            sql += author + "\n";
+        }
+        sql += "GROUP BY q.quiz_id;";
+        try {
+            PreparedStatement stm = connection.prepareStatement(sql);
+            ResultSet rs = stm.executeQuery();
+            int lastId = -1;
+            while (rs.next()) {
+                Quiz test = getQuizById(rs.getInt("quiz_id"));
+                Account acc = new Account();
+                acc.setUsername(rs.getString("username"));
+                test.setAuthor(acc);
+                resTests.add(test);
+            }
+            stm.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(PostDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(PostDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return resTests.size();
+    }
+
+    public Quiz getQuizDetailById(int id) {
+        Quiz quiz = new Quiz();
+        Connection connection = getConnection();
+        String sql
+                = "SELECT q.`quiz_id`,\n"
+                + "    q.`quiz_name`,\n"
+                + "    q.`quiz_title`,\n"
+                + "    q.quiz_description,\n"
+                + "    q.`quiz_category`,\n"
+                + "    q.`quiz_author`,\n"
+                + "    q.`quiz_type`,\n"
+                + "    a.username,\n"
+                + "    group_concat(s.setting_value) as setting_value\n"
+                + "FROM `quiz_practice_db_test_2`.`quiz` as q\n"
+                + "LEFT OUTER JOIN setting as s on s.setting_id = q.quiz_category\n"
+                + "LEFT JOIN account as a on a.account_id = q.quiz_author\n"
+                + "WHERE q.quiz_id = ?";
+        try {
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setInt(1, id);
+            ResultSet rs = stm.executeQuery();
+            if (rs.next()) {
+                Account acc = new Account();
+                acc.setUsername(rs.getString("username"));
+                quiz.setAuthor(acc);
+                quiz.setId(rs.getInt("quiz_id"));
+                quiz.setName(rs.getString("quiz_name"));
+                quiz.setDescription(rs.getString("quiz_description"));
+                Category category = new Category();
+                category.setCategory_value(rs.getString("setting_value"));
+                quiz.setCategory(category);
+            }
+        } catch (SQLException ex) {
+
+            Logger.getLogger(QuizDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(QuizDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return quiz;
+    }
+
+    public ArrayList<Setting> getQuizCategories() {
+        ArrayList<Setting> categories = new ArrayList<Setting>();
+        String sql = "SELECT `setting`.`setting_id`,\n"
+                + "    `setting`.`setting_name`,\n"
+                + "    `setting`.`setting_type`,\n"
+                + "    `setting`.`setting_value`,\n"
+                + "    `setting`.`setting_status`\n"
+                + "FROM `quiz_practice_db_test_2`.`setting`\n"
+                + "WHERE setting_type = \"Category\";";
+        Connection connection = getConnection();
+        try {
+            PreparedStatement stm = connection.prepareStatement(sql);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                Setting category = new Setting();
+                category.setId(rs.getInt("setting_id"));
+                category.setName(rs.getString("setting_name"));
+                category.setValue(rs.getString("setting_value"));
+                categories.add(category);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(QuizDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(QuizDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
+        return categories;
     }
 }
