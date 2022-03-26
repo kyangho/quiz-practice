@@ -656,6 +656,7 @@ body > .header .navbar {
     height: 50px;
     margin-bottom: 0;
     margin-left: 220px;
+    display: none;
 }
 body > .header .navbar .sidebar-toggle {
     float: left;
