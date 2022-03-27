@@ -29,7 +29,7 @@ public class ExamListController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         ArrayList<Exam> exams = dao.getExams();
-        ArrayList<Subject> subs = q.getsubs();
+        ArrayList<Subject> subs = q.getSubs();
         QuestionDAO questionDAO = new QuestionDAO();
         ArrayList<Category> cates = questionDAO.getCategory();
         request.setAttribute("exams", exams);
@@ -41,7 +41,7 @@ public class ExamListController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        ArrayList<Subject> subs = q.getsubs();
+        ArrayList<Subject> subs = q.getSubs();
         String subject = request.getParameter("subject");
         String category = request.getParameter("category");
         String type = request.getParameter("type");

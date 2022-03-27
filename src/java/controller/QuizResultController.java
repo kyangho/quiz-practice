@@ -43,7 +43,7 @@ public class QuizResultController extends BaseRequiredAuthController {
         int numNone = countAnswer(ques_Anses, "none");
         double percent = (double) numCorrect / ques_Anses.size() * 100;
         boolean pass;
-        if (percent > ques_Anses.get(0).getQuiz().getRate()) {
+        if (percent > 50) {
             pass = true;
         } else {
             pass = false;

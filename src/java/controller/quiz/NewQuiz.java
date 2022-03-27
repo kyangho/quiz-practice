@@ -37,7 +37,7 @@ public class NewQuiz extends HttpServlet {
         QuizDAO q = new QuizDAO();
         QuestionDAO questionDAO = new QuestionDAO();
         ArrayList<Category> cates = questionDAO.getCategory();
-        ArrayList<Subject> subs = q.getsubs();
+        ArrayList<Subject> subs = q.getSubs();
         request.setAttribute("subs", subs);
         request.setAttribute("category", cates);
         request.getRequestDispatcher("../view/quiz/newquiz.jsp").forward(request, response);

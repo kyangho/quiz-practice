@@ -130,7 +130,7 @@ public class PracticeContoller extends HttpServlet {
         }
         QuizDAO qdbt = new QuizDAO();
         QuestionDAO qdao = new QuestionDAO();
-        ArrayList<Subject> subs = qdbt.getsubs();
+        ArrayList<Subject> subs = qdbt.getSubs();
         request.setAttribute("subject", subs);
         ArrayList<Category> category = qdao.getCategory();
         request.setAttribute("categories", category);

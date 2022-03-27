@@ -169,7 +169,7 @@ public class QuizDAO extends DBContext {
         return -1;
     }
 
-    public ArrayList<Subject> getsubs() {
+    public ArrayList<Subject> getSubs() {
         Connection connection = getConnection();
         ArrayList<Subject> s = new ArrayList<>();
         String sql = "SELECT * FROM subject;";
@@ -343,7 +343,7 @@ public class QuizDAO extends DBContext {
                     String s = question.getContent();
                     Question qu = new Question();
                     qu.setContent(s);
-                    getquestion(qu.getContent(), q.getId());
+                    getQuestion(qu.getContent(), q.getId());
                 }
             }
             ps_insert_quiz.close();
@@ -564,7 +564,7 @@ public class QuizDAO extends DBContext {
                 String s = question.getContent();
                 Question qu = new Question();
                 qu.setContent(s);
-                getquestion(qu.getContent(), q.getId());
+                getQuestion(qu.getContent(), q.getId());
             }
             ps.close();
             connection.commit();
@@ -680,7 +680,7 @@ public class QuizDAO extends DBContext {
         }
     }
 
-    public ArrayList<Question> getquestion(String s, int id) {
+    public ArrayList<Question> getQuestion(String s, int id) {
         Connection connection = getConnection();
         ArrayList<Question> qs = new ArrayList<>();
         try {
@@ -835,8 +835,8 @@ public class QuizDAO extends DBContext {
         ArrayList<Ques_Ans> ques_Anses = new ArrayList<>();
         try {
             String sql = "SELECT q.question_id, answer_id, qu.quiz_id FROM user_answer ua\n"
-                    + "join  question q on ua.question_id = q.question_id\n"
-                    + "join quiz qu on qu.quiz_id = ua.quiz_id\n"
+                    + "left join  question q on ua.question_id = q.question_id\n"
+                    + "left join quiz qu on qu.quiz_id = ua.quiz_id\n"
                     + "where account_id = ?\n";
             if (search.equals("wrong")) {
                 sql += "and answer_id <> question_correct_answer and answer_id is not null";

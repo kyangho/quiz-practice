@@ -72,7 +72,7 @@ public class ListQuizController extends HttpServlet {
         request.setAttribute("category", category);
         request.setAttribute("subject", subject);
         int totalpage = (totalrows % pagesize == 0) ? totalrows / pagesize : totalrows / pagesize + 1;
-        ArrayList<Subject> subs = q.getsubs();
+        ArrayList<Subject> subs = q.getSubs();
         QuestionDAO questionDAO = new QuestionDAO();
         ArrayList<Category> cates = questionDAO.getCategory();
         request.setAttribute("pageindex", pageindex);
@@ -117,7 +117,7 @@ public class ListQuizController extends HttpServlet {
             url = "listquiz?search_quiz_title=" + search_quiz_title + "&page=";
         }
         int totalpage = (totalrows % pagesize == 0) ? totalrows / pagesize : totalrows / pagesize + 1;
-        ArrayList<Subject> subs = q.getsubs();
+        ArrayList<Subject> subs = q.getSubs();
         ArrayList<Category> cates = q.getCates();
         ArrayList<Setting> types = q.getQuizTypes();
         request.setAttribute("types", types);

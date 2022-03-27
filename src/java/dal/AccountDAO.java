@@ -32,6 +32,7 @@ public class AccountDAO extends DBContext {
                     + "FROM account as a\n"
                     + "JOIN account_profile as ap on a.account_id = ap.account_id\n"
                     + "WHERE a.username = ?";
+
             PreparedStatement stm1 = connection.prepareStatement(sql1);
             stm1.setString(1, username);
             ResultSet rs1 = stm1.executeQuery();
@@ -112,21 +113,7 @@ public class AccountDAO extends DBContext {
                     + "`account_status`)\n"
                     + "VALUES\n"
                     + "(?,?,?);\n";
-            PreparedStatement stm1 = connection.prepareStatement(sql1);
-            System.out.println(account.getPassword());
-            if (account.getPassword() == null || account.getPassword().trim().length() == 0) {
-                account.setPassword(BCrypt.withDefaults().hashToString(12, account.getEmail().toCharArray()));
-            }
-            stm1.setString(1, account.getUsername());
-            stm1.setString(2, account.getPassword());
-            stm1.setString(3, condition.toUpperCase());
-            stm1.executeUpdate();
             String sql3 = "SELECT LAST_INSERT_ID();";
-            PreparedStatement stm3 = connection.prepareStatement(sql3);
-            ResultSet rs = stm3.executeQuery();
-            if (rs.next()) {
-                account.setId(rs.getInt("LAST_INSERT_ID()"));
-            }
             String sql2 = "INSERT INTO `account_profile`\n"
                     + "(`account_id`,\n"
                     + "`account_email`,\n"
@@ -136,6 +123,22 @@ public class AccountDAO extends DBContext {
                     + "`account_avatar`)\n"
                     + "VALUES\n"
                     + "(?,?,?,?,?,?);";
+            PreparedStatement stm1 = connection.prepareStatement(sql1);
+            System.out.println(account.getPassword());
+            if (account.getPassword() == null || account.getPassword().trim().length() == 0) {
+                account.setPassword(BCrypt.withDefaults().hashToString(12, account.getEmail().toCharArray()));
+            }
+            stm1.setString(1, account.getUsername());
+            stm1.setString(2, account.getPassword());
+            stm1.setString(3, condition.toUpperCase());
+            stm1.executeUpdate();
+
+            PreparedStatement stm3 = connection.prepareStatement(sql3);
+            ResultSet rs = stm3.executeQuery();
+            if (rs.next()) {
+                account.setId(rs.getInt("LAST_INSERT_ID()"));
+            }
+
             PreparedStatement stm2 = connection.prepareStatement(sql2);
             stm2.setInt(1, account.getId());
             stm2.setString(2, account.getEmail());
@@ -219,11 +222,6 @@ public class AccountDAO extends DBContext {
                     + "SET\n"
                     + "`account_status` = ?\n"
                     + "WHERE `account_id` = ?;";
-            PreparedStatement stm1 = connection.prepareStatement(sql1);
-            stm1.setString(1, account.getStatus().toUpperCase());
-            stm1.setInt(2, account.getId());
-            stm1.executeUpdate();
-
             String sql2 = "UPDATE `account_profile`\n"
                     + "SET\n"
                     + "`account_email` = ?,\n"
@@ -232,6 +230,19 @@ public class AccountDAO extends DBContext {
                     + "`account_gender` = ?,\n"
                     + "`account_avatar` = ?\n"
                     + "WHERE `account_id` = ?;";
+            String sql3 = "DELETE FROM `account_role`\n"
+                    + "WHERE account_id = ?;";
+            String sql4 = "INSERT INTO `account_role`\n"
+                    + "(`account_id`,\n"
+                    + "`setting_id`)\n"
+                    + "VALUES\n"
+                    + "(?,\n"
+                    + "?);";
+            PreparedStatement stm1 = connection.prepareStatement(sql1);
+            stm1.setString(1, account.getStatus().toUpperCase());
+            stm1.setInt(2, account.getId());
+            stm1.executeUpdate();
+
             PreparedStatement stm2 = connection.prepareStatement(sql2);
             stm2.setString(1, account.getEmail());
             stm2.setString(2, account.getPhone());
@@ -240,18 +251,11 @@ public class AccountDAO extends DBContext {
             stm2.setBlob(5, account.getAvatar());
             stm2.setInt(6, account.getId());
             stm2.executeUpdate();
-            String sql3 = "DELETE FROM `account_role`\n"
-                    + "WHERE account_id = ?;";
+
             PreparedStatement stm3 = connection.prepareStatement(sql3);
             stm3.setInt(1, account.getId());
             stm3.executeUpdate();
 
-            String sql4 = "INSERT INTO `account_role`\n"
-                    + "(`account_id`,\n"
-                    + "`setting_id`)\n"
-                    + "VALUES\n"
-                    + "(?,\n"
-                    + "?);";
             PreparedStatement stm4 = connection.prepareStatement(sql4);
             for (Role role : account.getRole()) {
                 stm4.setInt(1, account.getId());
@@ -383,7 +387,7 @@ public class AccountDAO extends DBContext {
         return roles;
     }
 
-    public ArrayList<Account> getAllAccountsByFilter(int pageindex, int pageSize, String id, 
+    public ArrayList<Account> getAllAccountsByFilter(int pageindex, int pageSize, String id,
             String fullname, String email, String phone, String roleID, String status, String keySearch) {
         Connection connection = getConnection();
         ArrayList<Account> accounts = new ArrayList<>();

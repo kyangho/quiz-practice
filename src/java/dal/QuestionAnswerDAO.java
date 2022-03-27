@@ -160,7 +160,7 @@ public class QuestionAnswerDAO extends DBContext {
 
     public boolean deleteUserAnswer(int quizId, int accountId) {
         String sql = "DELETE FROM `quiz_practice_db_test_2`.`user_answer`\n"
-                + "WHERE quiz_id = ? AND account_id = ?;";
+                + "WHERE account_id = ?;";
         Connection connection = getConnection();
         try {
             PreparedStatement stm = connection.prepareStatement(sql);
