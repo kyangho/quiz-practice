@@ -51,10 +51,15 @@
                                             </div>
                                             <div class="form-group">
                                                 <div class="col-sm-11">
-                                                    Content<p class="text-danger" style="display: inline"> *</p>:
-                                                    <textarea class="form-control rounded-2" name="postContent" 
-                                                              placeholder="Write content here" 
-                                                              rows="20" required></textarea>
+                                                <textarea name="postContent"  id="postContent" contenteditable="false" rows="10" class="ckeditor col-sm-12">
+                                                    ${requestScope.post.content}
+                                                </textarea>
+                                                <script>
+                                                    CKEDITOR.config.readOnly = true;
+                                                    CKEDITOR.replace('postContent', {
+                                                        customConfig: '${pageContext.request.contextPath}/ckeditor/emptyButtonConfig.js'
+                                                    });
+                                                </script>
                                                 </div>
                                             </div>
                                             <div class="form-group">

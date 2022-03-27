@@ -53,7 +53,8 @@ public class PostDAO extends DBContext {
         return resPosts;
     }
 
-    public ArrayList<Post> getPostsList(String title, String category, String author, String status, Boolean isFeature, int pageSize, int pageIndex) {
+    public ArrayList<Post> getPostsList(String title, String category, String author, 
+            String status, Boolean isFeature, int pageSize, int pageIndex) {
         ArrayList<Post> resPosts = new ArrayList<>();
         Connection connection = getConnection();
 
@@ -125,7 +126,8 @@ public class PostDAO extends DBContext {
         return resPosts;
     }
 
-    public ArrayList<Post> getPostsListSortByFeature(String title, String category, String author, String status, Boolean isFeature, int pageSize, int pageIndex) {
+    public ArrayList<Post> getPostsListSortByFeature(String title, String category, String author, 
+            String status, Boolean isFeature, int pageSize, int pageIndex) {
         ArrayList<Post> resPosts = new ArrayList<>();
         Connection connection = getConnection();
 
@@ -561,19 +563,20 @@ public class PostDAO extends DBContext {
                 + "VALUES\n"
                 + "(?,?);";
         try {
+            connection.setAutoCommit(false);
             for (PostCategory pc : categories) {
                 PreparedStatement stm = connection.prepareStatement(sql);
                 stm.setInt(1, postId);
                 stm.setInt(2, pc.getId());
                 stm.executeUpdate();
-                stm.close();
             }
-
+            connection.commit();
         } catch (SQLException ex) {
             Logger.getLogger(PostDAO.class.getName()).log(Level.SEVERE, null, ex);
             return false;
         } finally {
             try {
+                connection.setAutoCommit(true);
                 connection.close();
             } catch (SQLException ex) {
                 Logger.getLogger(PostDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -892,7 +895,8 @@ public class PostDAO extends DBContext {
         return count;
     }
 
-    public int countTotalPostWithCondition(String title, String category, String author, String status, int pageSize, int pageIndex) {
+    public int countTotalPostWithCondition(String title, String category, String author, 
+            String status, int pageSize, int pageIndex) {
         Connection connection = getConnection();
 
         String sql

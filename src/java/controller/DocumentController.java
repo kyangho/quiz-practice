@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package controller.director;
+package controller;
 
 import dal.PostDAO;
 import java.io.IOException;
@@ -32,19 +32,18 @@ import model.post.PostFile;
  *
  * @author ducky
  */
-@WebServlet(name = "PostSettingController", urlPatterns = {"/director/post/*"})
+@WebServlet(name = "PostController", urlPatterns = {"/post/*"})
 @MultipartConfig(maxFileSize = 1024 * 1024 * 1024 * 17)
-public class PostSettingController extends HttpServlet {
+public class DocumentController extends HttpServlet {
 
-    private static final String postListPath = "/director/post/list";
-    private static final String postDetailPath = "/director/post/view";
-    private static final String postNewPath = "/director/post/new";
-    private static final String postImagePath = "/director/post/image";
-    private static final String postUpdatePath = "/director/post/update";
-    private static final String postRetrievePath = "/director/post/file";
-    private static final String postChangeStatusPath = "/director/post/changestatus";
-    private static final String postChangeFeaturePath = "/director/post/changefeature";
-    private static final int PAGESIZE = 5;
+    private static final String postListPath = "/post/list";
+    private static final String postDetailPath = "/post/detail";
+    private static final String postNewPath = "/post/new";
+    private static final String postImagePath = "/post/image";
+    private static final String postUpdatePath = "/post/update";
+    private static final String postRetrievePath = "/post/file";
+
+    private static final int PAGESIZE = 7;
 
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -59,18 +58,13 @@ public class PostSettingController extends HttpServlet {
             throws ServletException, IOException {
         String URI = request.getRequestURI().replaceFirst("/\\w+", "");
         Account account = (Account) request.getSession().getAttribute("account");
+        ArrayList<Post> posts = new ArrayList<>();
         if (URI.contains(postListPath)) {
             doGetPostList(request, response);
         } else if (URI.contains(postDetailPath)) {
             doGetPostDetail(request, response);
-        } else if (URI.contains(postUpdatePath) && account != null) {
-            doGetUpdatePost(request, response);
         } else if (URI.contains(postImagePath)) {
             doGetPostThumbnail(request, response);
-        } else if (URI.contains(postNewPath) && account != null) {
-            doGetNewPost(request, response);
-        } else if (URI.contains("/post/thumbnail")) {
-            request.getRequestDispatcher("/view/post/postthumbnail.jsp").forward(request, response);
         } else if (URI.contains(postRetrievePath)) {
             doGetFileRetrieve(request, response);
         } else {
@@ -91,20 +85,11 @@ public class PostSettingController extends HttpServlet {
             throws ServletException, IOException {
         String URI = request.getRequestURI().replaceFirst("/\\w+", "");
         Account account = (Account) request.getSession().getAttribute("account");
-        request.setCharacterEncoding("UTF-8");
 
-        if (URI.contains(postNewPath) && account != null) {
-            doPostNewPost(request, response);
-        } else if (URI.contains(postUpdatePath) && account != null) {
-            doPostUpdatePost(request, response);
-        } else if (URI.contains("thumbnail")) {
+        if (URI.contains("/post/thumbnail")) {
             doPostPostThumbnail(request, response);
-        } else if (URI.contains("file")) {
+        } else if (URI.contains("/post/file")) {
             doPostUploadFile(request, response);
-        } else if (URI.contains(postChangeStatusPath)) {
-            doPostChangeStatus(request, response);
-        } else if (URI.contains(postChangeFeaturePath)) {
-            doPostChangeFeature(request, response);
         } else {
             response.sendRedirect(request.getContextPath() + "/home");
         }
@@ -125,8 +110,12 @@ public class PostSettingController extends HttpServlet {
         } catch (Exception e) {
 
         }
+        ArrayList<Post> featurePosts = pd.getPostsList("", "", "", "PUBLISH", true, 5, 1);
+        request.setAttribute("featurePosts", featurePosts);
+        ArrayList<PostCategory> categories = pd.getPostCategories("", "");
         request.setAttribute("post", post);
-        request.getRequestDispatcher("/view/director/post/postview.jsp").forward(request, response);
+        request.setAttribute("categories", categories);
+        request.getRequestDispatcher("/view/post/postdetail.jsp").forward(request, response);
     }
 
     protected void doGetNewPost(HttpServletRequest request, HttpServletResponse response)
@@ -136,7 +125,7 @@ public class PostSettingController extends HttpServlet {
         ArrayList<PostCategory> categories = pd.getPostCategories("", "");
         request.setAttribute("categories", categories);
 
-        request.getRequestDispatcher("/view/director/post/postnew.jsp").forward(request, response);
+        request.getRequestDispatcher("/view/post/postnew.jsp").forward(request, response);
     }
 
     protected void doPostNewPost(HttpServletRequest request, HttpServletResponse response)
@@ -198,7 +187,7 @@ public class PostSettingController extends HttpServlet {
 
         }
         request.setAttribute("post", post);
-        request.getRequestDispatcher("/view/director/post/postupdate.jsp").forward(request, response);
+        request.getRequestDispatcher("/view/post/postupdate.jsp").forward(request, response);
     }
 
     protected void doPostUpdatePost(HttpServletRequest request, HttpServletResponse response)
@@ -208,7 +197,6 @@ public class PostSettingController extends HttpServlet {
         String title = parasMap.get("postTitle")[0];
         String brief = parasMap.get("postBrief")[0];
         String content = parasMap.get("postContent")[0];
-        String feature = parasMap.get("feature")[0];
         String[] categories = parasMap.get("categories");
         PostDAO postDAO = new PostDAO();
         Post p = postDAO.getPostWithId(Integer.parseInt(id));
@@ -224,7 +212,7 @@ public class PostSettingController extends HttpServlet {
         p.setCategories(categoryList);
         p.setDateModified(now);
         p.setStatus("PUBLISH");
-        p.setIsFeature(Boolean.valueOf(feature));
+        p.setIsFeature(false);
         p.setBrief(brief);
 
         Part thumbnailPart = request.getPart("thumbnail"); // Retrieves <input type="file" name="thumbnail">
@@ -252,8 +240,6 @@ public class PostSettingController extends HttpServlet {
         String category = "";
         String author = "";
         String status = "";
-        String title = "";
-        String feature = "";
         int pageIndex;
         try {
             pageIndex = Integer.parseInt(request.getParameter("pageIndex"));
@@ -263,14 +249,6 @@ public class PostSettingController extends HttpServlet {
         if (paraMap.containsKey("search")) {
             String[] values = paraMap.get("search");
             search = values[0];
-        }
-        if (paraMap.containsKey("title")) {
-            String[] values = paraMap.get("title");
-            title = values[0];
-        }
-        if (paraMap.containsKey("feature")) {
-            String[] values = paraMap.get("feature");
-            feature = values[0];
         }
         if (paraMap.containsKey("category")) {
             String[] values = paraMap.get("category");
@@ -284,23 +262,8 @@ public class PostSettingController extends HttpServlet {
             String[] values = paraMap.get("status");
             status = values[0];
         }
-        Account acc = (Account) request.getSession().getAttribute("account");
-        if (acc.getUsername().compareToIgnoreCase("admin") != 0) {
-            author = acc.getUsername();
-        }
-        if (paraMap.containsKey("sort")) {
-            pd = new PostDAO();
-            posts = pd.getPostsListSortBy(title, category, author, feature, status, PAGESIZE, pageIndex);
-        } else {
-            Boolean isFeature = null;
-            if (feature.compareToIgnoreCase("true") == 0) {
-                isFeature = true;
-            } else if (feature.compareToIgnoreCase("false") == 0) {
-                isFeature = false;
-            }
-            pd = new PostDAO();
-            posts = pd.getPostsList(search, category, author, status, isFeature, PAGESIZE, pageIndex);
-        }
+        pd = new PostDAO();
+        posts = pd.getPostsListSortByFeature(search, category, author, "PUBLISH", null, PAGESIZE, pageIndex);
         pd = new PostDAO();
         ArrayList<PostCategory> categories = pd.getPostCategories("", "");
         PostCategory currentCategory = null;
@@ -311,28 +274,19 @@ public class PostSettingController extends HttpServlet {
 //                break;
 //            }
 //        }
-
-        int postTotal = 0;
-        if (paraMap.containsKey("sort")) {
-            pd = new PostDAO();
-            postTotal = pd.countTotalPostWithCondition("", "", "", "", PAGESIZE, pageIndex);
-        } else {
-            pd = new PostDAO();
-            postTotal = pd.countTotalPostWithCondition(search, category, author, status, PAGESIZE, pageIndex);
-        }
+        pd = new PostDAO();
+        int postTotal = pd.countTotalPostWithCondition(search, category, author, status, PAGESIZE, pageIndex);
         double pageTotal = Math.ceil((double) postTotal / (double) PAGESIZE);
-        if (pageIndex < 1 || pageIndex > pageTotal) {
-            response.sendRedirect("list");
-            return;
-        }
-
+        pd = new PostDAO();
+        ArrayList<Post> featurePosts = pd.getPostsList("", "", "", "PUBLISH", true, 5, 1);
+        request.setAttribute("featurePosts", featurePosts);
         request.setAttribute("pageTotal", pageTotal);
         request.setAttribute("pageSize", PAGESIZE);
         request.setAttribute("pageIndex", pageIndex);
         request.setAttribute("currentCategory", currentCategory);
         request.setAttribute("categories", categories);
         request.setAttribute("posts", posts);
-        request.getRequestDispatcher("/view/director/post/postlist.jsp").forward(request, response);
+        request.getRequestDispatcher("/view/post/postlist.jsp").forward(request, response);
     }
 
     public void doGetPostThumbnail(HttpServletRequest request, HttpServletResponse response)
@@ -397,28 +351,5 @@ public class PostSettingController extends HttpServlet {
             os.close();
         } catch (SQLException ex) {
         }
-    }
-
-    public void doPostChangeStatus(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        String id = request.getParameter("id");
-        PostDAO postDAO = new PostDAO();
-        Post post = postDAO.getPostWithId(Integer.parseInt(id));
-        if (post.getStatus().compareToIgnoreCase("publish") == 0) {
-            post.setStatus("UNPUBLISH");
-        } else {
-            post.setStatus("PUBLISH");
-        }
-        boolean isSuccess = postDAO.updateStatus(Integer.parseInt(id), post.getStatus());
-    }
-
-    public void doPostChangeFeature(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        String id = request.getParameter("id");
-        PostDAO postDAO = new PostDAO();
-        Post post = postDAO.getPostWithId(Integer.parseInt(id));
-        Date now = new Date(System.currentTimeMillis());
-        post.setIsFeature(!post.isIsFeature());
-        boolean isSuccess = postDAO.updateFeature(Integer.parseInt(id), post.isIsFeature());
     }
 }
