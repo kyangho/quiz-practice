@@ -486,7 +486,7 @@ public class PostDAO extends DBContext {
             if (idRS.next()) {
                 id = idRS.getString("id");
             }
-
+            connection.commit();
             insertPostCategory(Integer.parseInt(id), inputPost.getCategories());
             connection.setAutoCommit(true);
             stm.close();
@@ -710,7 +710,7 @@ public class PostDAO extends DBContext {
             stm.setInt(9, inputPost.getId());
             stm.executeUpdate();
             connection.setAutoCommit(true);
-
+            updatePostCategory(inputPost.getId(), inputPost.getCategories());
             stm.close();
         } catch (SQLException ex) {
             Logger.getLogger(PostDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -798,7 +798,7 @@ public class PostDAO extends DBContext {
         String sql = "UPDATE `post`\n"
                 + "SET\n"
                 + "post_status = ?,\n"
-                + "post_date_modified = ?\n"
+                + "post_time_modified = ?\n"
                 + "WHERE post_id = ?;";
         try {
             PreparedStatement stm = connection.prepareStatement(sql);

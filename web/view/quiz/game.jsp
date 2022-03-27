@@ -19,7 +19,7 @@
     <body>
         <div class="quiz_box">
             <header>
-                <div class="title">Quiz</div>
+                <div class="title"><a href="${pageContext.request.contextPath}/home" style="text-decoration: none">Quiz</a></div>
                 <div class="timer">
                     <div class="time_left_txt">Time Left</div>
                     <div class="timer_sec">15</div>
