@@ -48,7 +48,7 @@ public class SettingDAO extends DBContext {
             stm.close();
         } catch (SQLException ex) {
             Logger.getLogger(SettingDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }finally{
+        } finally {
             try {
                 connection.close();
             } catch (SQLException ex) {
@@ -87,7 +87,7 @@ public class SettingDAO extends DBContext {
             stm.close();
         } catch (SQLException ex) {
             Logger.getLogger(SettingDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }finally{
+        } finally {
             try {
                 connection.close();
             } catch (SQLException ex) {
@@ -101,11 +101,11 @@ public class SettingDAO extends DBContext {
     public boolean insertSetting(Setting setting) {
         Connection connection = getConnection();
         String sql_insert = "INSERT INTO `setting`\n"
-                + "	(`setting_name`,`setting_type`,\n"
-                + "    `setting_description`,`setting_value`,\n"
-                + "    `setting_status`)\n"
-                + "VALUES\n"
-                + "(?,?,?,?,?);";
+                + "         (`setting_name`,`setting_type`,\n"
+                + "         `setting_description`,`setting_value`,\n"
+                + "         `setting_status`)\n"
+                + "         VALUES\n"
+                + "         (?,?,?,?,?);";
         try {
             PreparedStatement stm = connection.prepareStatement(sql_insert);
             stm.setString(1, setting.getName());
@@ -118,7 +118,7 @@ public class SettingDAO extends DBContext {
         } catch (SQLException ex) {
             Logger.getLogger(SettingDAO.class.getName()).log(Level.SEVERE, null, ex);
             return false;
-        }finally{
+        } finally {
             try {
                 connection.close();
             } catch (SQLException ex) {
@@ -131,11 +131,11 @@ public class SettingDAO extends DBContext {
     public boolean updateSetting(Setting setting) {
         Connection connection = getConnection();
         String sql_update = "UPDATE `setting`\n"
-                + "SET\n"
-                + "	`setting_name` = ?,`setting_type` = ?,\n"
-                + "	`setting_description` = ?,`setting_value` = ?,\n"
-                + "	`setting_status` = ?\n"
-                + "WHERE `setting_id` = ?;";
+                + "         SET\n"
+                + "         `setting_name` = ?,`setting_type` = ?,\n"
+                + "         `setting_description` = ?,`setting_value` = ?,\n"
+                + "         `setting_status` = ?\n"
+                + "         WHERE `setting_id` = ?;";
         try {
             PreparedStatement stm = connection.prepareStatement(sql_update);
             stm.setString(1, setting.getName());
@@ -149,7 +149,7 @@ public class SettingDAO extends DBContext {
         } catch (SQLException ex) {
             Logger.getLogger(SettingDAO.class.getName()).log(Level.SEVERE, null, ex);
             return false;
-        }finally{
+        } finally {
             try {
                 connection.close();
             } catch (SQLException ex) {
@@ -174,7 +174,7 @@ public class SettingDAO extends DBContext {
         } catch (SQLException ex) {
             Logger.getLogger(SettingDAO.class.getName()).log(Level.SEVERE, null, ex);
             return false;
-        }finally{
+        } finally {
             try {
                 connection.close();
             } catch (SQLException ex) {
@@ -199,7 +199,7 @@ public class SettingDAO extends DBContext {
         } catch (SQLException ex) {
             Logger.getLogger(SettingDAO.class.getName()).log(Level.SEVERE, null, ex);
             return false;
-        }finally{
+        } finally {
             try {
                 connection.close();
             } catch (SQLException ex) {
@@ -213,7 +213,7 @@ public class SettingDAO extends DBContext {
         Connection connection = getConnection();
         String sql_get = "select * from\n"
                 + "             (select row_number() over (order by setting_id ) as stt, s.* \n"
-                + "                    from setting s\n";
+                + "              from setting s\n";
         if (status != null && type != null) {
             if (!type.equals("all") && !status.equals("all")) {
                 sql_get += "where setting_type = '" + type + "'" + " AND setting_status = '" + status + "'";
@@ -229,15 +229,16 @@ public class SettingDAO extends DBContext {
         if (setting_name != null) {
             if (status != null && type != null) {
                 sql_get += " AND setting_name like '%" + setting_name + "%'";
-            }else{
+            } else {
                 sql_get += "where setting_name like '%" + setting_name + "%'";
             }
         }
 
         if (pageIndex != 0 || pageSize != 0) {
-                int start = (pageIndex - 1) * pageSize;
-                sql_get += ") as st limit " + start + "," + pageSize + "\n";
-            }
+            int start = (pageIndex - 1) * pageSize;
+            sql_get += ") as st limit " + start + "," + pageSize + "\n";
+        }
+        System.out.println(sql_get);
         ArrayList<Setting> settings = new ArrayList<>();
         try {
             PreparedStatement stm = connection.prepareStatement(sql_get);
@@ -258,7 +259,7 @@ public class SettingDAO extends DBContext {
         } catch (SQLException ex) {
             Logger.getLogger(SettingDAO.class.getName()).log(Level.SEVERE, null, ex);
             return null;
-        }finally{
+        } finally {
             try {
                 connection.close();
             } catch (SQLException ex) {
@@ -269,12 +270,12 @@ public class SettingDAO extends DBContext {
 
     }
 
-//    public static void main(String[] args) {
-//        SettingDAO sdb = new SettingDAO();
-//        System.out.println(sdb.totalRowsInSetting(null, null, "a"));
-//        for (Setting setting :sdb.GetALLSetting(2, 1, "role", "Active", null)) {
-//            System.out.println(setting.toString());
-//            System.out.println("");
-//        }
-//    }
+    public static void main(String[] args) {
+        SettingDAO sdb = new SettingDAO();
+        System.out.println(sdb.totalRowsInSetting(null, null, "a"));
+        for (Setting setting :sdb.getALLSetting(1, 2, null, null, null)) {
+            System.out.println(setting.toString());
+            System.out.println("");
+        }
+    }
 }

@@ -30,13 +30,8 @@
                 </a>
             </li>
             <li>
-                <a href="#">
+                <a href="${pageContext.request.contextPath}/director/dashboard">
                     <i class="fa fa-dashboard"></i> <span>Dashboard</span>
-                </a>
-            </li>
-            <li>
-                <a href="#">
-                    <i class="fa fa-gavel"></i> <span>General</span>
                 </a>
             </li>
             <li ${pageContext.request.requestURI.contains("post") ? "class=\"active\"" : ""}>

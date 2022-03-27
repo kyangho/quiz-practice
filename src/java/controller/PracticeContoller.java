@@ -130,7 +130,7 @@ public class PracticeContoller extends HttpServlet {
         }
         QuizDAO qdbt = new QuizDAO();
         QuestionDAO qdao = new QuestionDAO();
-        ArrayList<Subject> subs = qdbt.getsubs();
+        ArrayList<Subject> subs = qdbt.getSubs();
         request.setAttribute("subject", subs);
         ArrayList<Category> category = qdao.getCategory();
         request.setAttribute("categories", category);
@@ -183,8 +183,8 @@ public class PracticeContoller extends HttpServlet {
         q.setType("publish");
         q.setTitle("Quiz");
         q.setQuestions(ques);
-        Account account = (Account) request.getSession().getAttribute("account");
-        q.setAuthor(account);
+//        Account account = (Account) request.getSession().getAttribute("account");
+//        q.setAuthor(account);
         QuizDAO quizDAO = new QuizDAO();
         int id = quizDAO.insertPractice(q);
         if (id != -1) {

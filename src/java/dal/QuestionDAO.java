@@ -32,7 +32,8 @@ public class QuestionDAO extends DBContext {
         try {
             String sql = "select * from (\n"
                     + "	  select  row_number()over (order by q.question_id asc) as stt,\n"
-                    + "		q.*, s.subject_title, sb.subcategory_name, quiz.quiz_category, st.setting_value as category,\n"
+                    + "		q.*, s.subject_title, sb.subcategory_name, quiz.quiz_category,\n"
+                    + "         st.setting_value as category,\n"
                     + "        st1.setting_value as `level`\n"
                     + "from question q\n"
                     + "left join quiz_question qq on qq.question_id = q.question_id\n"
@@ -496,31 +497,13 @@ public class QuestionDAO extends DBContext {
             connection.setAutoCommit(false);
             String deleteAnswer = "DELETE FROM `answer`\n"
                     + "WHERE question_id = ?;";
-            PreparedStatement stm_2 = connection.prepareStatement(deleteAnswer);
-            stm_2.setInt(1, q.getId());
-            stm_2.executeUpdate();
-
             String insertAnswer = "INSERT INTO `answer`\n"
                     + "(`question_id`,\n"
                     + "`answer_content`)\n"
                     + "VALUES\n"
                     + "(?,\n"
                     + "?);";
-            PreparedStatement stm_3 = connection.prepareStatement(insertAnswer);
-            for (Answer answer : q.getAnswers()) {
-                stm_3.setInt(1, q.getId());
-                stm_3.setString(2, answer.getContent());
-                stm_3.executeUpdate();
-            }
             String sql_tmp = "select answer_id from answer where answer_content = ? and question_id = ?\n";
-            PreparedStatement stm_tmp = connection.prepareStatement(sql_tmp);
-            stm_tmp.setString(1, q.getCorrectAnswer());
-            stm_tmp.setInt(2, q.getId());
-            ResultSet rs = stm_tmp.executeQuery();
-            String correctAns = null;
-            if (rs.next()) {
-                correctAns = new String(rs.getString(1));
-            }
             String sql = "UPDATE `quiz_db`.`question`\n"
                     + "SET\n"
                     + "`question_content` = ?,\n"
@@ -533,6 +516,25 @@ public class QuestionDAO extends DBContext {
                 sql += ", `question_media` = ?\n";
             }
             sql += "WHERE `question_id` = ?";
+            PreparedStatement stm_2 = connection.prepareStatement(deleteAnswer);
+            stm_2.setInt(1, q.getId());
+            stm_2.executeUpdate();
+
+            PreparedStatement stm_3 = connection.prepareStatement(insertAnswer);
+            for (Answer answer : q.getAnswers()) {
+                stm_3.setInt(1, q.getId());
+                stm_3.setString(2, answer.getContent());
+                stm_3.executeUpdate();
+            }
+            PreparedStatement stm_tmp = connection.prepareStatement(sql_tmp);
+            stm_tmp.setString(1, q.getCorrectAnswer());
+            stm_tmp.setInt(2, q.getId());
+            ResultSet rs = stm_tmp.executeQuery();
+            String correctAns = null;
+            if (rs.next()) {
+                correctAns = new String(rs.getString(1));
+            }
+
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setString(1, q.getContent());
             stm.setInt(2, q.getSubCategory().getId());

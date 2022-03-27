@@ -168,7 +168,7 @@ public class QuizDAO extends DBContext {
         return -1;
     }
 
-    public ArrayList<Subject> getsubs() {
+    public ArrayList<Subject> getSubs() {
         Connection connection = getConnection();
         ArrayList<Subject> s = new ArrayList<>();
         String sql = "SELECT * FROM subject;";
@@ -342,7 +342,7 @@ public class QuizDAO extends DBContext {
                     String s = question.getContent();
                     Question qu = new Question();
                     qu.setContent(s);
-                    getquestion(qu.getContent(), q.getId());
+                    getQuestion(qu.getContent(), q.getId());
                 }
             }
             ps_insert_quiz.close();
@@ -563,7 +563,7 @@ public class QuizDAO extends DBContext {
                 String s = question.getContent();
                 Question qu = new Question();
                 qu.setContent(s);
-                getquestion(qu.getContent(), q.getId());
+                getQuestion(qu.getContent(), q.getId());
             }
             ps.close();
             connection.commit();
@@ -679,7 +679,7 @@ public class QuizDAO extends DBContext {
         }
     }
 
-    public ArrayList<Question> getquestion(String s, int id) {
+    public ArrayList<Question> getQuestion(String s, int id) {
         Connection connection = getConnection();
         ArrayList<Question> qs = new ArrayList<>();
         try {

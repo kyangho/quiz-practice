@@ -37,7 +37,7 @@ public class EditQuizController extends HttpServlet {
         QuestionDAO questionDAO = new QuestionDAO();
         ArrayList<Category> cates = questionDAO.getCategory();
         QuizDAO q = new QuizDAO();
-        ArrayList<Subject> subs = q.getsubs();
+        ArrayList<Subject> subs = q.getSubs();
         Quiz quiz = q.getQuizDetail(id);
         request.setAttribute("subs", subs);
         request.setAttribute("category", cates);
