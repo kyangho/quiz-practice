@@ -68,7 +68,7 @@
                     pointStrokeColor: "#fff",
                     pointHighlightFill: "#fff",
                     pointHighlightStroke: "rgba(220,220,220,1)",
-                    data: [65, 59, 80, 81, 56, 55, 40]
+                    data: [100, 200, 88, 90, 100, 120, 40]
                 }, {
                     label: "My Second dataset",
                     fillColor: "rgba(151,187,205,0.2)",

@@ -65,17 +65,5 @@ public class ExamListController extends HttpServlet {
         request.setAttribute("type", type);
         request.setAttribute("subs", subs);
         request.getRequestDispatcher("/view/exam/examlist.jsp").forward(request, response);
-
     }
-
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
-    @Override
-    public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
-
 }
